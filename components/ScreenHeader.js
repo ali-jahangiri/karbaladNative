@@ -6,7 +6,7 @@ import { useStyle } from '../Hooks/useStyle';
 import { generateColor } from "../utils";
 
 import Para from './Para';
-const ScreenHeader = ({ title }) => {
+const ScreenHeader = ({ title}) => {
     const appendStyle =  useStyle(style)
     return (
         <View style={appendStyle.container}>

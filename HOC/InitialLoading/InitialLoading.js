@@ -4,8 +4,8 @@ import { useFonts } from 'expo-font';
 import LoadingScreen from "./LoadingScreen";
 
 
-
 import { useStyleDispatcher } from "../../Hooks/useStyle"
+import api from '../../api';
 
 const InitialLoading = ({ children }) => {
     // Note put all of your first data fetching , grab styles and mote !
@@ -18,9 +18,10 @@ const InitialLoading = ({ children }) => {
 
     const dispatcher = useStyleDispatcher()
     useEffect(() => {
+        
         const globalStyle = {
             baseBorderRadius : 15,
-            primary : "#346751",
+            primary : '#f25998',
             secondary : '#dbe6fd',
         }
         dispatcher({ globalStyle })

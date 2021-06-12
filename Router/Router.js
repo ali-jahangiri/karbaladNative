@@ -4,14 +4,10 @@ import { NavigationContainer } from "@react-navigation/native";
 import TabNavigation from "./TabNavigation";
 import navigationTheme from './navigationTheme';
 
-
-const Router = () => {
-    return (
-        <NavigationContainer theme={navigationTheme}>
+const Router = () => (
+    <NavigationContainer theme={navigationTheme}>
             <TabNavigation />
-        </NavigationContainer>
-    )
-}
-
+    </NavigationContainer>
+)
 
 export default Router;

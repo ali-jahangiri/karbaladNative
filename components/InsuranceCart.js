@@ -7,11 +7,11 @@ import { useStyle } from '../Hooks/useStyle';
 import { generateColor } from '../utils';
 
 
-const InsuranceCart = ({ icon , name , onItemPress , cat }) => {
+const InsuranceCart = ({ icon , name , onItemPress , cat , id }) => {
     const appendStyle = useStyle(style);
 
     return (
-        <TouchableWithoutFeedback style={{ flex : 1 }} onPress={() => onItemPress({cat , name})}>
+        <TouchableWithoutFeedback style={{ flex : 1 }} onPress={() => onItemPress({cat , name , id})}>
             <View style={appendStyle.container}>
                 <Para size={18}>{name}</Para>
                 {/* TODO later add webIcon image component with this mock image */}
