@@ -6,22 +6,23 @@ import { generateColor } from '../utils';
 import CarItemUsage from './CarItemUsage';
 import Para from './Para';
 
-const CarItem = ({ dataName , hasNestedData , nestedDataName , nestedData , id , selectHandler , index }) => {
+const CarItem = ({ dataName , hasNestedData , nestedData , id , selectHandler , index }) => {
     const appendStyle = useStyle(style);
     
     const onPressHandler = () => {
         if(hasNestedData) {
-
+            selectHandler(prev => ({...prev , id , nestedData }))
         }
     }
 
     return (
-        <TouchableOpacity onPress={onPressHandler}>
+        <TouchableOpacity style={{ width : "48%" }} onPress={onPressHandler}>
                 <View style={appendStyle.container}>    
-                    <Para >{dataName}</Para>
                     <View style={appendStyle.indexWrapper}>
-                        <Para>{index + 1}</Para>
+                        <Para size={10}>{index + 1}</Para>
+                        <View style={appendStyle.bullet} />
                     </View>
+                    <Para style={{ alignSelf : "center" }} align="center">{dataName}</Para>
                 </View>
         </TouchableOpacity>
     )
@@ -31,18 +32,23 @@ const CarItem = ({ dataName , hasNestedData , nestedDataName , nestedData , id ,
 const style = ({ primary , secondary , baseBorderRadius }) => StyleSheet.create({
     container : {
         paddingHorizontal : 10,
-        paddingVertical : 20,
+        paddingVertical : 15,
         borderWidth : 2,
         borderRadius : baseBorderRadius,
         borderColor : generateColor(primary , 3),
-        marginVertical : 10
+        marginVertical : 10,
+        alignItems : 'flex-end',
+        justifyContent : 'center',
     },
     itemSelected : {
-        borderColor : generateColor(primary , 9)
+        borderColor : generateColor(primary , 9),
+        alignSelf : 'flex-end'
     },
     indexWrapper : {
-
-    }
+        borderRadius : baseBorderRadius,
+        alignItems : 'center',
+        justifyContent : 'center',
+    },
 })
 
 export default CarItem;

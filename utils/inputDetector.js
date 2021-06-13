@@ -1,8 +1,13 @@
 import React from 'react';
 
 import CarCategory from '../components/CarCategory';
-import CarItem from '../components/CarItem';
 import Para from '../components/Para';
+
+// car section components
+import CarDirectory from "../components/CarDirectory";
+import CarUsageDirectory from '../components/CarUsageDirectory';
+import SearchBox from '../components/SearchBox';
+
 
 const InputDetector = ({typesName , isCarCase , temporary : { value , setValue } , formData}) => {
     switch(typesName) {
@@ -10,17 +15,17 @@ const InputDetector = ({typesName , isCarCase , temporary : { value , setValue }
             break;
             case "DropDown" : 
             // NOTE checking for CAR case
-            console.log('ttt' , typesName);
             if(isCarCase) {
+
+                const onSearchBoxChange = value => {
+                    setValue(prev => ({...prev , searchFilterBase : value}))
+                }
                 return (
                     <>
+                        <SearchBox value={value.searchFilterBase} onChange={onSearchBoxChange} />
                         <CarCategory value={value} setValue={setValue} list={isCarCase} />
-                        {
-                            formData
-                                .filter(el => el.carGroupId === value.CarId)
-                                .map((el , i) => <CarItem index={i} key={i} {...el} />)
-
-                        }
+                        <CarDirectory handler={setValue} value={value} currentAvailableItems={formData.filter(el => el.carGroupId === value.CarId)} />
+                        <CarUsageDirectory items={value?.nestedData} />
                     </>
                 )
             }

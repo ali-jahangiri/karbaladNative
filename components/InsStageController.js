@@ -29,6 +29,7 @@ const style = ({ primary , baseBorderRadius }) => StyleSheet.create({
         width: "100%",
         flexDirection : 'row',
         justifyContent : 'space-between',
+        marginTop: 10
     },
     btn : {
         width: "49%",

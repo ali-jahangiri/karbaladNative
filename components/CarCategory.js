@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { StyleSheet , ScrollView , View , Image } from 'react-native';
 import Para from './Para';
-import config from '../config';
+
 import { imageFinder } from '../utils';
 import { useStyle } from '../Hooks/useStyle';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
+import { Feather } from '@expo/vector-icons';
+import StepperLabel from './StepperLabel';
 
 const CarCategory = ({ list , value : { CarId }, setValue}) => {
     const appendStyle = useStyle(style)
@@ -17,6 +19,7 @@ const CarCategory = ({ list , value : { CarId }, setValue}) => {
 
     return (
         <ScrollView>
+            <StepperLabel title="انتخاب شرکت سازنده" />
             <View style={appendStyle.container}>
                 {
                     list.slice(0 , currentLimit).map((el , i) => (
@@ -38,7 +41,8 @@ const CarCategory = ({ list , value : { CarId }, setValue}) => {
             {
                 currentLimit < list.length && 
                 <TouchableOpacity style={appendStyle.moreItem} onPress={nextLimitStepHandler}>
-                    <Para color="grey" align="center">گزینه های بیشتر</Para>
+                    <Feather name="plus" size={22} color="grey" />
+                    <Para style={{ margin: 10 }} color="grey" align="center">گزینه های بیشتر</Para>
                 </TouchableOpacity>
             }
         </ScrollView>
@@ -52,7 +56,6 @@ const style = ({ primary , baseBorderRadius }) => StyleSheet.create({
         flexWrap : 'wrap',
         alignItems : 'center',
         justifyContent : 'space-between',
-        marginVertical : 20
     },
     itemContainer : {
         flexDirection : 'row',
@@ -68,10 +71,13 @@ const style = ({ primary , baseBorderRadius }) => StyleSheet.create({
     },
     moreItem : {
         width: '50%',
-        backgroundColor : '#8b8d940d',
+        backgroundColor : '#8b8d9408',
         marginHorizontal : "25%",
         padding: 10,
-        borderRadius : baseBorderRadius
+        borderRadius : baseBorderRadius,
+        flexDirection : "row",
+        alignItems : 'center',
+        justifyContent : 'center'
     }
 })
 

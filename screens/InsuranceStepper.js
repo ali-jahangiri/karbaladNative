@@ -14,7 +14,7 @@ const InsuranceStepper = ({ id , name }) => {
     const [insuranceData, setInsuranceData] = useState(null);
     const [loading, setLoading] = useState(true);
 
-    const [inputValue, setInputValue] = useState({});
+    const [valueStore, setValueStore] = useState({});
 
     const appendStyle = useStyle(style)
 
@@ -29,9 +29,10 @@ const InsuranceStepper = ({ id , name }) => {
 
     // TODO change text of prev btn when stage is === 1
     // TODO add fallback for destructuring key for title and so on
-    console.log(insuranceData , '*');
+    
     const nextStepHandler = () => {
-        setCurrentStage(prev => prev + 1)
+        setCurrentStage(prev => prev + 1);
+
     }
 
 
@@ -51,13 +52,13 @@ const InsuranceStepper = ({ id , name }) => {
             console.log('currentStage' , currentStageData);
             
             return <InsStage
-                carCategory={carCaseChecker(currentStageData.formData ,insuranceData.carGroup )}
-                inputValue={inputValue}
-                inputValueSetter={setInputValue}
-                stageNumber={{ length : flattedStage.length , currentStage }} 
-                title={insuranceData.pages[currentStage].title}  
-                categoryName={name} 
-                {...currentStageData} />
+                    carCategory={carCaseChecker(currentStageData.formData ,insuranceData.carGroup )}
+                    inputValue={valueStore}
+                    inputValueSetter={setValueStore}
+                    stageNumber={{ length : flattedStage.length , currentStage }} 
+                    title={insuranceData.pages[currentStage].title}  
+                    categoryName={name} 
+                    {...currentStageData} />
         }
     }
 

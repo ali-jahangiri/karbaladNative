@@ -3,24 +3,30 @@ import { StyleSheet } from 'react-native';
 
 import { View , TouchableOpacity } from 'react-native';
 import { useStyle } from '../Hooks/useStyle';
+import { generateColor } from '../utils';
 import Para from './Para';
 
-const CarItemUsage = ({ name , id , selectHandler }) => {
+const CarItemUsage = ({ dataName , id , selectHandler }) => {
     const appendStyle = useStyle(style)
-
     return (
-        <TouchableOpacity onPress={() => selectHandler({name , id})}>
-            <View style={appendStyle.container}>
-                <Para>{name}</Para>
-            </View>
+        <TouchableOpacity style={appendStyle.container} onPress={() => selectHandler({dataName , id})}>
+            <Para align="center">{dataName}</Para>
         </TouchableOpacity>
     )
 }
 
-const style = () => StyleSheet.create({
+const style = ({ primary , baseBorderRadius }) => StyleSheet.create({
     container : {
-
+        width: "48%",
+        borderWidth : 2,
+        borderColor : generateColor(primary , 4),
+        borderRadius : baseBorderRadius,
+        paddingVertical : 20,
+        marginVertical : "2%",
+        alignItems : 'center',
+        justifyContent : 'center'
     }
+
 })
 
 export default CarItemUsage

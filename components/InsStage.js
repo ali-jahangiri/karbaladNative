@@ -10,7 +10,7 @@ import Para from './Para';
 const InsStage = (props) => {
     const { title , stageNumber , nextStageHandler , previousStageHandler , categoryName , inputValue , inputValueSetter , typesName , formData , formName , carCategory} = props
     const appendStyle = useStyle(style);
-    const [temporaryValue, setTemporaryValue] = useState({value : "" , key : ""});
+    const [temporaryValue, setTemporaryValue] = useState({ searchFilterBase : "" });
     
 
     const changeHandler = value => {
