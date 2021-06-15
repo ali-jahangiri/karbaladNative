@@ -9,13 +9,20 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Feather } from '@expo/vector-icons';
 import StepperLabel from './StepperLabel';
 
-const CarCategory = ({ list , value : { CarId }, setValue}) => {
+const CarCategory = ({ list , value : { CarCategoryId , searchFilterBase}, setValue}) => {
     const appendStyle = useStyle(style)
     const [currentLimit, setCurrentLimit] = useState(10);
 
-    const nextLimitStepHandler = () => setCurrentLimit(prev => prev + 10)
 
-    const selectHandler = id => setValue(prev => ({ ...prev ,  CarId : id}))
+    const categorySelectHandler = category => {
+        setValue({ key : "CarCategoryId" , value : category.id });
+        
+        // when we select a car brand we should clean up previous car usage and wait for new usage in later  actions
+        setValue({ key : "usageItems", value : [] });
+    }
+
+    // if we have a filter base for cars , we don't need see carCategory component
+    if(searchFilterBase) return null;
 
     return (
         <ScrollView>
@@ -24,9 +31,9 @@ const CarCategory = ({ list , value : { CarId }, setValue}) => {
                 {
                     list.slice(0 , currentLimit).map((el , i) => (
                         <TouchableOpacity 
-                            onPress={() => selectHandler(el.id)} 
+                            onPress={() => categorySelectHandler(el)} 
                             key={i}
-                            style={[appendStyle.itemContainer , CarId === el.id ? appendStyle.selectedItem : undefined]}
+                            style={[appendStyle.itemContainer , CarCategoryId === el.id && appendStyle.selectedItem]}
                             >
                             
                             <Image source={{
@@ -40,7 +47,7 @@ const CarCategory = ({ list , value : { CarId }, setValue}) => {
             </View>
             {
                 currentLimit < list.length && 
-                <TouchableOpacity style={appendStyle.moreItem} onPress={nextLimitStepHandler}>
+                <TouchableOpacity style={appendStyle.moreItem} onPress={() => setCurrentLimit(prev => prev + 10)}>
                     <Feather name="plus" size={22} color="grey" />
                     <Para style={{ margin: 10 }} color="grey" align="center">گزینه های بیشتر</Para>
                 </TouchableOpacity>

@@ -6,18 +6,19 @@ import Para from './Para';
 
 import { Feather } from '@expo/vector-icons';
 
-const InsStageController = ({ onNext , onPrevious }) => {
+const InsStageController = ({ onNext , onPrevious , backLabel , nextLabe }) => {
+    
     const appendStyle = useStyle(style);
     const { primary } = useStyle();
-
+    
     return (
         <View style={appendStyle.container}>
-            <TouchableOpacity style={[appendStyle.btn , { backgroundColor : generateColor(primary , 9) }]}>
+            <TouchableOpacity onPress={onNext} style={[appendStyle.btn , { backgroundColor : generateColor(primary , 9) }]}>
                 <Feather name="chevron-left" size={24} color="black" />
-                <Para align="center" weight="bold" onPress={onNext}>مرحله بعد</Para>
+                <Para align="center" weight="bold" >{nextLabe || "مرحله بعد"}</Para>
             </TouchableOpacity>
-            <TouchableOpacity style={[appendStyle.btn , { backgroundColor : "#d3d3d317" }]}>
-                <Para align="center" weight="bold" onPress={onPrevious}>مرحله قبل</Para>
+            <TouchableOpacity onPress={onPrevious} style={[appendStyle.btn , { backgroundColor : "#d3d3d317" }]}>
+                <Para align="center" weight="bold" >{backLabel || "مرحله قبل"}</Para>
                 <Feather name="chevron-right" size={24} color="black" />
             </TouchableOpacity>
         </View>

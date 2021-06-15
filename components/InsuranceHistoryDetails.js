@@ -53,8 +53,7 @@ const InsuranceHistoryDetails = () => {
     
     const { color : statusColor , title : statusTitle , icon : statusIcon } = statusChecker(factorModeId);
     const appendStyle = useStyle(style , statusColor);
-    console.log(rest);
-
+    
     const pressHandler = () => {
         // user pay the cost
         if(factorModeId >= 3) navigation.navigate("insuranceHistoryImages" , {insImages , id , insuranceCoName , categorysFullName })

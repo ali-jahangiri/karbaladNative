@@ -11,6 +11,7 @@ import TabScreenHeader from '../components/TabScreenHeader';
 import HomeInsRouter from '../Router/HomeInsRouter';
 import ScreenWrapper from '../components/ScreenWrapper';
 import InsuranceStepper from './InsuranceStepper';
+import InsuranceResultPreview from '../components/InsuranceResultPreview';
 
 const InsIndexScreen = ({ navigation }) => {
     const routeChangeHandler = routeParameters => 
@@ -47,7 +48,8 @@ const NestedInsStepScreen = ({ route : { params : { cat , name , id } }, navigat
 
 const Home = () => <HomeInsRouter
                         indexScreen={InsIndexScreen} 
-                        nestedScreen={NestedInsStepScreen}  />
+                        nestedScreen={NestedInsStepScreen}
+                        resultPreview={InsuranceResultPreview}  />
 
 
 export default Home;

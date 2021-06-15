@@ -1,19 +1,22 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import CarItemUsage from './CarItemUsage';
-import Para from './Para';
 import StepperLabel from './StepperLabel';
 
 
-const CarUsageDirectory = ({ items }) => {
-
+const CarUsageDirectory = ({ items , selectHandler , currentSelectedUsage }) => {
+    
     if(items?.length) return (
         <>
         <StepperLabel title="کاربری خودرو" />
         <View style={style.container}>
             {
                 items?.map((el , i) => (
-                    <CarItemUsage key={i} {...el} />
+                    <CarItemUsage
+                    currentSelected={currentSelectedUsage} 
+                    selectHandler={selectHandler}
+                    key={i} 
+                    {...el} />
                 ))
             }
         </View>

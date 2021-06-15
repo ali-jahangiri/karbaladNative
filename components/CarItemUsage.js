@@ -6,25 +6,34 @@ import { useStyle } from '../Hooks/useStyle';
 import { generateColor } from '../utils';
 import Para from './Para';
 
-const CarItemUsage = ({ dataName , id , selectHandler }) => {
-    const appendStyle = useStyle(style)
+const CarItemUsage = ({ dataName , id , selectHandler , currentSelected }) => {
+    const appendStyle = useStyle(style);
+    const onSelect = () => {
+        selectHandler({ value : id , isNested : true })
+    }
+
     return (
-        <TouchableOpacity style={appendStyle.container} onPress={() => selectHandler({dataName , id})}>
+        <TouchableOpacity style={[appendStyle.container , currentSelected === id ? appendStyle.selectedItem : null]} onPress={onSelect}>
             <Para align="center">{dataName}</Para>
         </TouchableOpacity>
     )
 }
 
-const style = ({ primary , baseBorderRadius }) => StyleSheet.create({
+const style = ({ primary , secondary , baseBorderRadius }) => StyleSheet.create({
     container : {
         width: "48%",
         borderWidth : 2,
-        borderColor : generateColor(primary , 4),
+        borderColor : secondary,
         borderRadius : baseBorderRadius,
         paddingVertical : 20,
         marginVertical : "2%",
         alignItems : 'center',
-        justifyContent : 'center'
+        justifyContent : 'center',
+        height: 100,
+        maxHeight : 200
+    },
+    selectedItem : {
+        borderColor : generateColor(primary , 5),
     }
 
 })

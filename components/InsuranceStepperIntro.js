@@ -26,7 +26,7 @@ const InsuranceStepperIntro = ({  title , desc , nextStepHandler }) => {
                     {
                         desc && <Para style={appendStyle.desc}>{desc}</Para>
                     }
-                    <TouchableOpacity onPress={nextStepHandler} style={appendStyle.nextStep}>
+                    <TouchableOpacity onPress={() => nextStepHandler()} style={appendStyle.nextStep}>
                         <Feather name="chevron-left" size={30} color="black" />
                         <Para size={20} style={appendStyle.nextStepText} weight="bold">شروع</Para>
                     </TouchableOpacity>

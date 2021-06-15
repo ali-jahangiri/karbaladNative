@@ -1,50 +1,85 @@
 import React, { useState } from 'react';
-import { StatusBar, StyleSheet, View , ScrollView, PermissionsAndroid } from 'react-native';
+import { StatusBar, StyleSheet, View ,  Alert } from 'react-native';
 import { useStyle } from '../Hooks/useStyle';
 import { generateColor } from '../utils';
 import InputDetector from '../utils/inputDetector';
 import InsStageController from './InsStageController';
 import Para from './Para';
 
+import { persianDate } from '../utils';
 
 const InsStage = (props) => {
-    const { title , stageNumber , nextStageHandler , previousStageHandler , categoryName , inputValue , inputValueSetter , typesName , formData , formName , carCategory} = props
-    const appendStyle = useStyle(style);
-    const [temporaryValue, setTemporaryValue] = useState({ searchFilterBase : "" });
+    const { stageNumber , nextStageHandler , prevStageHandler , categoryName , store , typesName , formData , formName , carCategory , isRequierd , lbLName} = props
     
+    const nestedKeyName = `Nested_${formName}`;
+    
+    const appendStyle = useStyle(style);
+    const [err, setErr] = useState(false)
+    const [temporaryValue, setTemporaryValue] = useState({ searchFilterBase : "" , formName : store[formName] || formName , [nestedKeyName] : store[nestedKeyName] , date : persianDate.dateInstance});
 
-    const changeHandler = value => {
-
+    const temporaryChangeHandler = ({key = formName , value , isNested}) => {
+        setTemporaryValue(prev => ({
+            ...prev,
+            [isNested ? `Nested_${key}`: key] : value
+        }));
+    }
+    
+    const pushToNextStageHandler = () => {
+        
+        if(isRequierd && (!temporaryValue[formName] && !temporaryValue[nestedKeyName] )) setErr(true);
+        else {
+            const haveNestedKey = formData[0]?.hasNestedData ? { [nestedKeyName]: temporaryValue[nestedKeyName] } : undefined
+            setErr(false);
+            const pureTarget = {
+                [formName] : temporaryValue[formName],
+                ...haveNestedKey
+            }
+            nextStageHandler(pureTarget)
+            setTemporaryValue(prev => ({ ...prev , searchFilterBase : "" }))
+        }
     }
 
     return (
         <View style={appendStyle.container}>
             <View style={appendStyle.header}>
-                <View style={appendStyle.stageNumber}>
-                    <Para> مرحله {stageNumber.currentStage} از {stageNumber.length}</Para>
+                <View style={{ flexDirection : 'row' , justifyContent : 'space-between' , width : "100%"}}>
+                    <View style={appendStyle.stageNumber}>
+                        <Para> مرحله {stageNumber.currentStage} از {stageNumber.length}</Para>
+                    </View>
+                    <Para weight="bold" size={20}>{categoryName}</Para>
                 </View>
                 <View>
-                    <Para weight="bold" size={20}>{categoryName}</Para>
-                    <View style={{ flexDirection : "row" , alignItems : 'center' , justifyContent : 'center' }}>
-                        <Para color='grey' size={18}>{title}</Para>
+                    <View style={appendStyle.titleContainer}>
+                        <Para color='grey' size={18}>{lbLName}</Para>
                         <View style={appendStyle.divider} />
                     </View>
-
                 </View>
+                {
+                    isRequierd === false &&
+                    <View style={appendStyle.optionalStepContainer}>
+                        <Para color="grey">مرحله اختیاری</Para>
+                    </View>
+                }
             </View>
-            <ScrollView>
                 <View style={appendStyle.stagePlayground}>
                     {
                         <InputDetector
+                            formNameNested={`Nested_${formName}`}
+                            formName={formName}
                             isCarCase={carCategory}
                             typesName={typesName} 
-                            carCategory={carCategory}  
-                            temporary={{value : temporaryValue , setValue : setTemporaryValue}} 
+                            temporary={{value : temporaryValue , setValue : temporaryChangeHandler}} 
                             {...props} />
                     }
                 </View>
-            </ScrollView>
-            <InsStageController onNext={nextStageHandler} onPrevious={previousStageHandler} />
+            {
+                err && Alert.alert("" , "مراحل را تکمیل کنید."  , 
+                    [{
+                        text: "تایید",
+                        onPress : () => setErr(false)},
+                    ])
+            }
+            <InsStageController nextLabe={stageNumber.currentStage === stageNumber.length - 1 && "اتمام"} backLabel={stageNumber.currentStage === 1 && "بازگشت"} onNext={pushToNextStageHandler} onPrevious={prevStageHandler} />
         </View>
     )
 }
@@ -57,24 +92,41 @@ const style = ({ primary , baseBorderRadius }) => StyleSheet.create({
         marginHorizontal : "5%"
     },
     header : {
-        flexDirection : 'row',
         marginTop: StatusBar.currentHeight + 10,
-        alignItems : 'center',
+        alignItems : 'flex-end',
         justifyContent : 'space-between',
+        width: "100%",
     },
     stageNumber : {
         flexDirection : 'row',
+        padding: 10,
+        alignSelf : "flex-start"
     },
     stagePlayground : {
         flex : 1,
+        // backgroundColor : 'red',
+
     },
+    titleContainer : {
+        flexDirection : "row" , 
+        alignItems : 'center' , 
+        justifyContent : 'center',
+        marginVertical : 6,
+    },  
     divider : {
         width: 25,
         height: 10,
         backgroundColor : generateColor(primary , 3),
         borderRadius : baseBorderRadius,
         marginLeft : 10
-    }   
+    },
+    optionalStepContainer: {
+        backgroundColor : "#f7f7f7",
+        borderRadius : baseBorderRadius,
+        padding: 10,
+        borderWidth : 2,
+        borderColor : '#e4e4e4',
+    }
 })
 
 export default InsStage;

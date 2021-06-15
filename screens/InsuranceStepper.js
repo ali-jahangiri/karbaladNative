@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View , ActivityIndicator } from 'react-native';
 import InsuranceStepperIntro from '../components/InsuranceStepperIntro';
-import Para from '../components/Para';
 import InsStage from '../components/InsStage';
 
 import api from "../api";
@@ -15,6 +14,8 @@ const InsuranceStepper = ({ id , name }) => {
     const [loading, setLoading] = useState(true);
 
     const [valueStore, setValueStore] = useState({});
+
+    console.log('STORE' , valueStore);    
 
     const appendStyle = useStyle(style)
 
@@ -30,15 +31,12 @@ const InsuranceStepper = ({ id , name }) => {
     // TODO change text of prev btn when stage is === 1
     // TODO add fallback for destructuring key for title and so on
     
-    const nextStepHandler = () => {
+    const nextStepHandler = newTempValueForSet => {
         setCurrentStage(prev => prev + 1);
+        if(newTempValueForSet) setValueStore(prev => ({ ...prev , ...newTempValueForSet}))
+    }   
 
-    }
-
-
-    const previousStepHandler = () => {
-
-    }
+    const previousStepHandler = () => setCurrentStage(prev => prev - 1)
 
     const stageRenderChecker = () => {
         if(currentStage === 0) {
@@ -49,14 +47,20 @@ const InsuranceStepper = ({ id , name }) => {
         }else {
             const flattedStage = insuranceData.pages.map(el => el.forms).flat(1)
             const currentStageData = flattedStage[currentStage];
-            console.log('currentStage' , currentStageData);
+            console.log(currentStageData , 'CURRENT STAGE DATA');
+
+            // if we reach to end step (stage) of insurance stepper we should navigate  to result preview
+            if(!currentStageData.formData) {
+                return navigation.navigate("insuranceResultPreview" , valueStore);
+            }
             
-            return <InsStage
+            else return <InsStage
+                    nextStageHandler={nextStepHandler}
+                    prevStageHandler={previousStepHandler}
                     carCategory={carCaseChecker(currentStageData.formData ,insuranceData.carGroup )}
-                    inputValue={valueStore}
-                    inputValueSetter={setValueStore}
+                    store={valueStore}
                     stageNumber={{ length : flattedStage.length , currentStage }} 
-                    title={insuranceData.pages[currentStage].title}  
+                    title={insuranceData.pages[currentStage]?.title}  
                     categoryName={name} 
                     {...currentStageData} />
         }
