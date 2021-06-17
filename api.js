@@ -4,7 +4,8 @@ import config from "./config"
 const api = axios.create({
     headers : {
         packageName : config.packageName
-    }
+    },
+    baseURL : `${config.serverPath}/MobileApi/`
 })
 
 

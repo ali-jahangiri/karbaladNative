@@ -4,7 +4,7 @@ import carCaseChecker from "./carCaseChecker";
 import imageFinder from "./imageFinder";
 import debounce from './debounce'
 import persianDate from "./Date";
-import numberSeparator from "./numberSeprator";
+import numberSeparator from "./numberSeparator";
 
 
 
@@ -15,5 +15,5 @@ export {
     imageFinder,
     debounce,
     persianDate,
-    numberSeparator
+    numberSeparator,
 }

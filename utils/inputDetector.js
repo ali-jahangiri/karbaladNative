@@ -94,7 +94,7 @@ const InputDetector = ({typesName , isCarCase , temporary : { value , setValue }
                                                     value={el.id} 
                                                     key={i} 
                                                     onSelect={value => setValue({ value })} >
-                                                    {el.dataName}
+                                                    {el.dataName} - {Number(el.dataName) + 621}
                                                 </SelectBoxItem> )}
                     </SelectBox>
                 </React.Fragment>

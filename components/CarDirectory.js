@@ -7,8 +7,6 @@ import CarItem from './CarItem';
 import StepperLabel from './StepperLabel';
 
 const CarDirectory = ({ currentAvailableItems , selectedCar , handler , categoryWasSelected ,isSearchFilterApplied }) => {
-    console.log(selectedCar , "****///***//****/");
-    console.log(currentAvailableItems);
     // No result case handler
     if(!categoryWasSelected && isSearchFilterApplied && !currentAvailableItems.length) return <Para style={{ marginVertical : 20 }} align="center" weight="bold" color="grey">نتیجه ای یافت نشد.</Para>
 

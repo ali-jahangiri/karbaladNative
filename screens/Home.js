@@ -12,6 +12,8 @@ import HomeInsRouter from '../Router/HomeInsRouter';
 import ScreenWrapper from '../components/ScreenWrapper';
 import InsuranceStepper from './InsuranceStepper';
 import InsuranceResultPreview from '../components/InsuranceResultPreview';
+import InsuranceConfirm from '../components/InsuranceConfirm';
+import InsuranceQuickEdit from '../components/InsuranceQuickEdit';
 
 const InsIndexScreen = ({ navigation }) => {
     const routeChangeHandler = routeParameters => 
@@ -49,7 +51,9 @@ const NestedInsStepScreen = ({ route : { params : { cat , name , id } }, navigat
 const Home = () => <HomeInsRouter
                         indexScreen={InsIndexScreen} 
                         nestedScreen={NestedInsStepScreen}
-                        resultPreview={InsuranceResultPreview}  />
+                        resultPreview={InsuranceResultPreview}
+                        resultConfirm={InsuranceConfirm}
+                        quickEdit={InsuranceQuickEdit}  />
 
 
 export default Home;

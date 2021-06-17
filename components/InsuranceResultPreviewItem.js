@@ -1,0 +1,165 @@
+import React, { useState } from 'react';
+import { Image, RecyclerViewBackedScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { useStyle } from '../Hooks/useStyle';
+import { generateColor, imageFinder } from '../utils';
+import Para from './Para';
+
+import Wealth from './Wealth';
+
+import { Feather } from '@expo/vector-icons';
+import InsResultMoreDetails from './InsResultPreviewMoreDetails';
+import { useNavigation } from '@react-navigation/native';
+
+const InsuranceResultPreviewItem = ({ insName , factorItems , insIconUrl , catFullName , showValue , tavangariMali , tedadeShoabKhesarat , rezayatAzMablaghPardakhti , outInsurance : moreDetailsValue }) => {
+    const appendStyle = useStyle(style);
+    const [moreDetailsActive, setMoreDetailsActive] = useState(false);
+    const { primary } = useStyle();
+    const navigation = useNavigation()
+    const orderHandler = () => {
+        navigation.push('insuranceConfirm' , { factorItems , insModel : { name : insName , icon : insIconUrl , category: catFullName , price : showValue ,  } } )
+    }
+
+    console.log(moreDetailsValue);
+
+    return (
+        <View style={appendStyle.container}>
+            <View style={appendStyle.header}>
+                <View style={{ marginRight : 10 , justifyContent : 'center'}}>
+                    <Para  size={20}>{insName}</Para>
+                    {/* <Para color="grey">{'2000'}</Para> */}
+                </View>
+                <Image resizeMode="center" source={{
+                    uri : imageFinder(insIconUrl),
+                    width : 60,
+                    height: 60
+                }} />
+            </View>
+            <View style={appendStyle.details}>
+                    {
+                        tavangariMali ? <View style={appendStyle.wealth}>
+                            <Para style={appendStyle.detailsLabel}>سطح توانگری</Para>
+                            <Wealth wealthNumber={tavangariMali} />
+                        </View> : null
+                    }
+                    {
+                        rezayatAzMablaghPardakhti ? <View>
+                                    <Para style={appendStyle.detailsLabel}>رضایت مشتری</Para>
+                                    <View style={appendStyle.satisfaction}>
+                                        <View style={appendStyle.satisfactionIcon}>
+                                            <Feather name="thumbs-up" size={20} color={generateColor(primary , 8)} />
+                                        </View>
+                                        <Para align="center" weight="bold" size={18} color={generateColor(primary , 9)} style={appendStyle.detailsValue}>{rezayatAzMablaghPardakhti}</Para>
+                                    </View>
+                        </View> : null
+                    }
+                    {
+                        tedadeShoabKhesarat ? <View>
+                            <View>
+                                <Para>تعداد شعب</Para>   
+                                <Para>پرداخت خسارت</Para>   
+                            </View>
+                            <View style={appendStyle.branchesCount}>
+                                    <View style={appendStyle.satisfactionIcon}>
+                                        <Feather name="hexagon" size={20} color={generateColor(primary , 8)} />
+                                    </View>
+                                    <Para align="center" weight="bold" size={18} color={generateColor(primary , 8)}>{tedadeShoabKhesarat}</Para>
+                            </View>
+                        </View> : null
+                    }
+                </View>
+            {
+                moreDetailsValue.length ? <InsResultMoreDetails
+                                            visible={moreDetailsActive} 
+                                            setVisibility={setMoreDetailsActive}
+                                            data={moreDetailsValue} /> : null
+            }
+            <View style={appendStyle.ctaContainer}>
+                <View style={appendStyle.price}>
+                    <Para size={10} color="grey" style={{ marginRight : 5 }}>تومان</Para>
+                    <Para size={16} weight="bold">{showValue}</Para>
+                </View>
+                <TouchableOpacity style={appendStyle.cta} onPress={orderHandler}>
+                    <Para align="center" weight="bold">سفارش</Para>
+                </TouchableOpacity>
+            </View>
+            <View style={appendStyle.divider} />
+        </View>
+    )
+}
+
+const style = ({ primary , baseBorderRadius , secondary }) => StyleSheet.create({
+    container : {
+        width: "90%",
+        marginHorizontal : '5%',
+        // marginVertical : 30,
+        marginTop : 10
+    },
+    ctaContainer : {
+        flexDirection : 'row',
+        justifyContent : 'space-between',
+        alignItems : 'flex-end',
+        marginTop : 20
+    },
+    cta : {
+        backgroundColor : generateColor(primary , 8),
+        borderRadius : baseBorderRadius,
+        padding : 15,
+        flex : 1
+    },
+    price : {
+        flexDirection : 'row',
+        alignItems : 'center',
+        flex: 1,
+    },  
+    header : {
+        flexDirection : 'row',
+        justifyContent : "flex-end",
+    },
+    details : {
+        flexDirection : "row",
+        justifyContent : 'space-between',
+        marginVertical : 20,
+    },
+    detailsLabel : {
+        marginBottom : 10
+    },
+    satisfaction : {
+        backgroundColor : generateColor(primary , 2),
+        borderRadius : baseBorderRadius,
+        padding: 10,
+        height: "100%",
+        flex: 1,
+        justifyContent : 'space-between',
+        },
+    satisfactionIcon : {
+        width: "100%",
+        backgroundColor : "#fff2",
+        padding: 10,
+        alignItems : 'center',
+        justifyContent : 'center',
+        borderRadius : baseBorderRadius
+    },
+    branchesCount : {
+        backgroundColor : generateColor(primary , 2),
+        borderRadius : baseBorderRadius,
+        paddingHorizontal: 10,
+        paddingTop : 10,
+        justifyContent : 'space-between',
+        flex: 1
+    },
+    branchesCountLabel : {
+        flexDirection : 'row',
+        justifyContent : 'space-between'
+    },
+    divider : {
+        backgroundColor : secondary ,
+        width: "70%",
+        height: 2,
+        marginHorizontal : "15%",
+        marginTop : 50,
+        marginBottom : 10,
+        borderRadius : baseBorderRadius
+    }
+})
+
+export default InsuranceResultPreviewItem;

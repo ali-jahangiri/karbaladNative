@@ -12,7 +12,6 @@ const MultiSelect = ({ values = [], onChange , items = [] }) => {
     const appendStyle = useStyle(style);
     const { primary } = useStyle();
 
-    console.log(values);
     const selectHandler = item => {
         const wasSelected = values.find(el => el === item.id);
         if(wasSelected) {

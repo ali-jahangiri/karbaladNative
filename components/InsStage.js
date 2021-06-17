@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import { StatusBar, StyleSheet, View ,  Alert } from 'react-native';
+
 import { useStyle } from '../Hooks/useStyle';
+
+import { persianDate } from '../utils';
 import { generateColor } from '../utils';
 import InputDetector from '../utils/inputDetector';
+
 import InsStageController from './InsStageController';
 import Para from './Para';
 
-import { persianDate } from '../utils';
 
 const InsStage = (props) => {
     const { stageNumber , nextStageHandler , prevStageHandler , categoryName , store , typesName , formData , formName , carCategory , isRequierd , lbLName} = props
@@ -15,18 +18,37 @@ const InsStage = (props) => {
     
     const appendStyle = useStyle(style);
     const [err, setErr] = useState(false)
-    const [temporaryValue, setTemporaryValue] = useState({ searchFilterBase : "" , formName : store[formName] || formName , [nestedKeyName] : store[nestedKeyName] , date : persianDate.dateInstance});
+    const [temporaryValue, setTemporaryValue] = useState({ 
+        searchFilterBase : "" , 
+        formName : store[formName] || formName , 
+        [nestedKeyName] : store[nestedKeyName] , 
+        date : persianDate.dateInstance });
+
+    
 
     const temporaryChangeHandler = ({key = formName , value , isNested}) => {
-        setTemporaryValue(prev => ({
-            ...prev,
-            [isNested ? `Nested_${key}`: key] : value
-        }));
+        if(['Float' , "Int" , "Long" , "CheckedForm"].includes(typesName)) {
+            setTemporaryValue(prev => ({
+                ...prev,
+                [isNested ? `Nested_${key}`: key] : value
+            }));
+        }else {
+            const newClonedTemp = {...temporaryValue , [isNested ? `Nested_${key}`: key] : value};
+            
+            const haveNestedKey = formData[0]?.hasNestedData ? { [nestedKeyName]: newClonedTemp[nestedKeyName] } : undefined
+            const pureTarget = {
+                [formName] : newClonedTemp[formName],
+                ...haveNestedKey
+            }
+            nextStageHandler(pureTarget)
+            setTemporaryValue(prev => ({ ...prev , searchFilterBase : "" }))
+        }
     }
     
     const pushToNextStageHandler = () => {
         
         if(isRequierd && (!temporaryValue[formName] && !temporaryValue[nestedKeyName] )) setErr(true);
+        
         else {
             const haveNestedKey = formData[0]?.hasNestedData ? { [nestedKeyName]: temporaryValue[nestedKeyName] } : undefined
             setErr(false);
@@ -79,7 +101,11 @@ const InsStage = (props) => {
                         onPress : () => setErr(false)},
                     ])
             }
-            <InsStageController nextLabe={stageNumber.currentStage === stageNumber.length - 1 && "اتمام"} backLabel={stageNumber.currentStage === 1 && "بازگشت"} onNext={pushToNextStageHandler} onPrevious={prevStageHandler} />
+            <InsStageController 
+                nextLabe={stageNumber.currentStage === stageNumber.length && "اتمام"} 
+                backLabel={stageNumber.currentStage === 1 && "بازگشت"} 
+                onNext={pushToNextStageHandler} 
+                onPrevious={prevStageHandler} />
         </View>
     )
 }

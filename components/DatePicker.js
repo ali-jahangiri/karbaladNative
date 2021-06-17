@@ -10,7 +10,10 @@ import { persianDate } from '../utils';
 const DatePicker = ({ date = persianDate.dateInstance,  onChange}) => {
     
     const appendStyle = useStyle(style);
-    
+    useEffect(() => {
+        const initialDate = persianDate.stringDateToObject(date);
+        onChange({ value : `${initialDate.year}/${initialDate.month}/${initialDate.day}`});
+    } , [])
     const internalStateHandler = ({ key , value }) => {
         const oldDate = persianDate.stringDateToObject(date);
         const newDate = {...oldDate , [key] : value};

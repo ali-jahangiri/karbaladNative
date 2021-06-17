@@ -9,7 +9,7 @@ const SelectBoxItem = ({ onSelect , value , children , selectedInStore}) => {
     const appendStyle = useStyle(style , selectedInStore)
     return (
         <TouchableOpacity style={appendStyle.container} onPress={() => onSelect(value)}>
-            <Para style={appendStyle.text} size={16}>{children}</Para>
+            <Para style={appendStyle.text} size={16}>{`${children}`.trim()}</Para>
             <View style={appendStyle.statusBullet} />
         </TouchableOpacity>
     )
