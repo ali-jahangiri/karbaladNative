@@ -16,7 +16,7 @@ const InsResultMoreDetails = ({ visible , setVisibility, data }) => {
     return (
         <React.Fragment>
             <TouchableOpacity onPress={() => setVisibility(prev => !prev)} style={appendStyle.moreDetailsCta}>
-                <Feather name="chevron-down" size={20} color="black" />
+                <Feather name={visible ? "chevron-up" : "chevron-down"} size={20} color="black" />
                 <Para style={{ marginLeft : 5 }}>{visible ? "جزئیات کمتر" : "جزئیات بیشتر"}</Para>
             </TouchableOpacity>
             {
@@ -26,7 +26,6 @@ const InsResultMoreDetails = ({ visible , setVisibility, data }) => {
                         if(isDescCase(el.name)) {
                             return (
                                 <View key={i}>
-                                    <Para color={"grey"}>{`توضیح ${i + 1}`}</Para>
                                     <Para>{el.name.slice(1)}</Para>
                                 </View>
                             )

@@ -31,16 +31,13 @@ const InsuranceStepper = ({ id , name }) => {
     } , [])
 
 
-    
-    // TODO change text of prev btn when stage is === 1
-    // TODO add fallback for destructuring key for title and so on
-    
+
     const nextStepHandler = newTempValueForSet => {
         setCurrentStage(prev => prev + 1);
         if(newTempValueForSet) setValueStore(prev => ({ ...prev , ...newTempValueForSet}))
     }   
 
-    const previousStepHandler = () => setCurrentStage(prev => prev - 1)
+    const previousStepHandler = () => setCurrentStage(prev => prev - 1);
 
     const stageRenderChecker = () => {
         if(currentStage === 0) {
@@ -55,9 +52,10 @@ const InsuranceStepper = ({ id , name }) => {
             // if we reach to end step (stage) of insurance stepper we should navigate  to result preview
             
             if(!currentStageData) {
-                navigation.navigate("insuranceResultPreview" , { id , valueStore , flattedStage });
+                navigation.navigate("insuranceResultPreview" , { id , valueStore , flattedStage , carCategory : insuranceData?.carGroup});
                 return null
             }
+            
             
             else {
                 return <InsStage
@@ -67,7 +65,7 @@ const InsuranceStepper = ({ id , name }) => {
                             store={valueStore}
                             stageNumber={{ length : flattedStage.length - 1, currentStage }} 
                             title={insuranceData.pages[currentStage]?.title}  
-                            categoryName={name} 
+                            categoryName={name}
                             {...currentStageData} />
             }
         }

@@ -14,6 +14,7 @@ import InsuranceStepper from './InsuranceStepper';
 import InsuranceResultPreview from '../components/InsuranceResultPreview';
 import InsuranceConfirm from '../components/InsuranceConfirm';
 import InsuranceQuickEdit from '../components/InsuranceQuickEdit';
+import Installment from './Installment';
 
 const InsIndexScreen = ({ navigation }) => {
     const routeChangeHandler = routeParameters => 
@@ -34,6 +35,7 @@ const NestedInsStepScreen = ({ route : { params : { cat , name , id } }, navigat
         navigation.push('stepScreen' , routeParameters);   
         
     const renderChecker = () => {
+        // don't have any sub item , therefore this is end stage of selection insurance category's
         if(!cat.length) return <InsuranceStepper name={name} id={id} />
         else return (
             <ScreenWrapper>
@@ -53,7 +55,8 @@ const Home = () => <HomeInsRouter
                         nestedScreen={NestedInsStepScreen}
                         resultPreview={InsuranceResultPreview}
                         resultConfirm={InsuranceConfirm}
-                        quickEdit={InsuranceQuickEdit}  />
-
+                        quickEdit={InsuranceQuickEdit}  
+                        installment={Installment}
+                        />
 
 export default Home;

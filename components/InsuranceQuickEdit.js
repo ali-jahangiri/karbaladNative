@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, View , StatusBar, ScrollView, TouchableOpacity } from 'react-native';
 import { useStyle } from '../Hooks/useStyle';
 
-import { generateColor } from '../utils';
+import { generateColor, numberSeparator } from '../utils';
 import InputDetector from '../utils/inputDetector';
 
 import Drawer from './Drawer';
@@ -27,12 +27,19 @@ export const valueFinder = (store , selectedValue) =>  {
             }
             return store.formData.find(el => el.id === selectedValue)?.dataName
         }
+        case "CreateYear": {
+            return selectedValue ?  store.formData.find(el => el.id === selectedValue).dataName : selectedValue
+            
+        }
         case "Date" : 
-        case "CreateYear":
         case "Long" :
         case "Int" :
-        case "Float" : 
+        case "Float" : {
+            return selectedValue ? numberSeparator(selectedValue) : selectedValue
+        }
+        default : {
             return selectedValue;
+        }
         
     }
 }
@@ -49,6 +56,7 @@ const InsuranceQuickEdit = ({ navigation , route : { params } }) => {
     // this value define current selected option for changing and
     const currentForm = params.selectedInsData.find(el => el.lbLName === currentSetting);
 
+
     const selectAnChangeOptionHandler = ({ label , key , typesName}) => {
         setIsDrawerOpen(true);
         setCurrentFormName(key);
@@ -59,14 +67,23 @@ const InsuranceQuickEdit = ({ navigation , route : { params } }) => {
     const temporaryChangeHandler = ({key = currentFormName , value , isNested }) => {
         // if we are change a key of selected insurance case , if new value don't have any difference with settled value in store , don't apply it and don't change temporary state 
         // if(params.valueStore[key] === value) return undefined
+        
+        // store values should store any ways because we need recovery feature
         setTempState(prev => ({
             ...prev,
-            [isNested ? `Nested_${key}` : key] : value
-        }))
-        !['Float' , "Int" , "Long" , "CheckedForm"].includes(currentTypeName) && setIsDrawerOpen(false)
+            [isNested ? `Nested_${key}` : key] : value,
+        }));
+
+        if(key === "searchFilterBase") return;
+        if(!currentForm?.formData[0]?.isCar && !['Float' , "Int" , "Long" , "CheckedForm" , "Date"].includes(currentTypeName)) {
+            setIsDrawerOpen(false)
+        }
     }
 
-    const applyChangeHandler = () => setIsDrawerOpen(false);
+    const applyChangeHandler = () => {
+        setIsDrawerOpen(false);
+        setTempState(prev => ({ ...prev , searchFilterBase : "" }))
+    };
 
     const discardHandler = () => {
         const leanedObject = {};
@@ -75,7 +92,7 @@ const InsuranceQuickEdit = ({ navigation , route : { params } }) => {
             .map(([key , value]) => {
                 if(key !== currentFormName) leanedObject[key] = value
         });
-        setTempState(leanedObject);
+        setTempState({...leanedObject , searchFilterBase : ""});
         setIsDrawerOpen(false);
     }
 
@@ -116,7 +133,7 @@ const InsuranceQuickEdit = ({ navigation , route : { params } }) => {
                 // if we have a change in temp value , then we gonna see controller ( confirmChange )
                 Object.values(tempState).length ? <TouchableOpacity style={appendStyle.newResultCta} onPress={getNewResultHandler}>
                             <Feather style={{ marginRight : 10 }} name="arrow-left" size={24} color="black" />
-                            <Para weight="bold" align="center">دریافت نتیجه جدید</Para>
+                            <Para weight="bold" align="center">استعلام مجدد</Para>
                         </TouchableOpacity> : null
             }
             {
@@ -127,16 +144,20 @@ const InsuranceQuickEdit = ({ navigation , route : { params } }) => {
                     onDone={applyChangeHandler} 
                     title={currentSetting} 
                     extendStyle={{ padding : 10 }}
-                    showController={['Float' , "Int" , "Long" , "CheckedForm"].includes(currentTypeName)}
+                    showController={currentForm?.formData[0]?.isCar || tempState?.searchFilterBase || ['Float' , "Int" , "Long" , "CheckedForm" , "Date"].includes(currentTypeName)}
                     >
-                    <View>
+                    <View style={{ flex : 1 }}>
                         {
                             <InputDetector
                                 formData={currentForm.formData}
                                 typesName={currentForm.typesName}
                                 formName={currentForm.formName}
                                 temporary={{ value: tempState , setValue : temporaryChangeHandler }}
-                                isCarCase={false}
+                                isCarCase={currentForm?.formData[0]?.isCar && params?.carCategory}
+                                formNameNested={`Nested_${currentFormName}`}
+                                maxNumber={currentForm?.maxNumber}
+                                minNumber={currentForm?.minNumber}
+                                step={currentForm?.step}
                             />
                         }
                     </View>

@@ -13,6 +13,7 @@ import DatePicker from '../components/DatePicker';
 import { ScrollView } from 'react-native';
 import InputNumber from '../components/InputNumber';
 import MultiSelect from '../components/MultiSelect';
+import SelectBoxOptimized from '../components/SelectBoxOptimized';
 
 
 
@@ -48,9 +49,10 @@ const InputDetector = ({typesName , isCarCase , temporary : { value , setValue }
                 )
             }
             else {
-                const selectHandler = value => {
-                    setValue({ value })
-                }
+                if(formData.length > 50) return <SelectBoxOptimized 
+                                                    items={formData.slice(70)} 
+                                                    selectedItem={value[formName]}
+                                                    onSelect={value => setValue({ value })} />
                 return (
                     <SelectBox>
                         {
@@ -59,7 +61,7 @@ const InputDetector = ({typesName , isCarCase , temporary : { value , setValue }
                                 .map((el , i) => (
                                 <SelectBoxItem 
                                     selectedInStore={value[formName] === el.id} 
-                                    onSelect={selectHandler}  
+                                    onSelect={value => setValue({ value })}  
                                     key={i} 
                                     value={el.id} >
                                     {el.dataName}
@@ -77,7 +79,12 @@ const InputDetector = ({typesName , isCarCase , temporary : { value , setValue }
         case "Int" :
         case "Float" :
             return (
-                <InputNumber isNotLimited={!maxNumber} length={{ max : maxNumber || 100000000 , min : minNumber ||0 }} stepForEachOperation={step || 10000} value={value[formName] || 0} onChange={setValue} />
+                <InputNumber 
+                    isNotLimited={!maxNumber} 
+                    length={{ max : maxNumber || 100000000 , min : minNumber ||0 }} 
+                    stepForEachOperation={step || 10000} 
+                    value={value[formName] || 0} 
+                    onChange={setValue} />
             )
         case "CreateYear":
             return (
@@ -94,7 +101,7 @@ const InputDetector = ({typesName , isCarCase , temporary : { value , setValue }
                                                     value={el.id} 
                                                     key={i} 
                                                     onSelect={value => setValue({ value })} >
-                                                    {el.dataName} - {Number(el.dataName) + 621}
+                                                    {`${el.dataName} - ${Number(el.dataName) + 621}`}
                                                 </SelectBoxItem> )}
                     </SelectBox>
                 </React.Fragment>

@@ -11,30 +11,43 @@ import { Feather } from '@expo/vector-icons';
 import { generateColor } from '../utils';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-const InsuranceResultPreview = ({ route : { params : { id , valueStore , flattedStage : selectedInsData } } , navigation }) => {
+const InsuranceResultPreview = ({ route : { params : { id , valueStore , flattedStage : selectedInsData , carCategory } } , navigation }) => {
     const [initialLoading, setInitialLoading] = useState(true);
     const [responseValues, setResponseValues] = useState({});
     const appendStyle = useStyle(style);
+
     useEffect(() => {
         api.post('GetInsuranceQuoteId' , { formData : JSON.stringify({ ...valueStore , Id : id }) })
             .then(({ data }) =>  data)
             .then(id => {
-                api.post('GetInsuranceQuotes' , { formulaId : `${id}` })
+                // TODO remove mock id
+                api.post('GetInsuranceQuotes' , { formulaId : `${22671}` })
                     .then(({ data }) => {
                         setResponseValues(data);
-                        setInitialLoading(false)
+                        setInitialLoading(false);
+                        console.log(data , 'data');
+                        // if(Boolean(data?.insuranceQuotes?.addInsCoAmountV2[0].catFullName)) return navigation.navigate("home")
                     })
-            })
-    return () => {
-        // with this state change , we force entire component get re render and all new params and send new request
-        setInitialLoading(true)
-    }
+            });
+        return () => {
+            // with this state change , we force entire component get re render and all new params and send new request
+            setInitialLoading(true);
+        }
     } , [valueStore]);
     
+
+    // useEffect(() => {
+    //     if(Boolean(responseValues.insuranceQuotes?.addInsCoAmountV2[0].catFullName)) {
+    //         navigation.navigate("home")
+    //     }
+    // } , [responseValues])
+
     const quickEditHandler = () => {
-        navigation.push('insuranceQuickEdit' ,{ server :  responseValues.insuranceQuotes.factorItems , valueStore , selectedInsData , id })
+        navigation.push('insuranceQuickEdit' ,{ server :  responseValues.insuranceQuotes.factorItems , valueStore , selectedInsData , id , carCategory })
     }
     
+
+
     return initialLoading ? <Para>loading</Para> : (
         <View style={appendStyle.container}>
             <View style={appendStyle.header}>
@@ -49,7 +62,12 @@ const InsuranceResultPreview = ({ route : { params : { id , valueStore , flatted
             <ScrollView >
             {
                 responseValues?.insuranceQuotes?.addInsCoAmountV2?.map((el , i) => (
-                    <InsuranceResultPreviewItem {...el} key={i} />
+                    <InsuranceResultPreviewItem
+                            reqId={id}
+                            installmentList={responseValues.installmetFormouls}
+                            factorItems={responseValues.insuranceQuotes.factorItems} 
+                            {...el}
+                            key={i} />
                 ))
             }
             </ScrollView>

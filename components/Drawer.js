@@ -13,9 +13,9 @@ const Drawer = ({ children , extendStyle , onCancel , onDone , title , showContr
             <TouchableOpacity activeOpacity={1} onPress={onClose} style={appendStyle.overlay} />
             <View style={appendStyle.content}>
             <Para align="center" weight="bold" size={18}>{title}</Para>
-                <ScrollView>
+                <View style={{ flex : 1 }}>
                     {children}
-                </ScrollView>
+                </View>
                 {
                     showController ? <View style={appendStyle.ctaContainer}>
                     <TouchableOpacity onPress={onDone} style={appendStyle.doneCta}>

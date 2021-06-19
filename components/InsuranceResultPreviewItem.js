@@ -10,22 +10,21 @@ import { Feather } from '@expo/vector-icons';
 import InsResultMoreDetails from './InsResultPreviewMoreDetails';
 import { useNavigation } from '@react-navigation/native';
 
-const InsuranceResultPreviewItem = ({ insName , factorItems , insIconUrl , catFullName , showValue , tavangariMali , tedadeShoabKhesarat , rezayatAzMablaghPardakhti , outInsurance : moreDetailsValue }) => {
+const InsuranceResultPreviewItem = ({ insName , factorItems , insIconUrl , formulId , catFullName , showValue , tavangariMali , tedadeShoabKhesarat , rezayatAzMablaghPardakhti , outInsurance : moreDetailsValue ,  installmentList , reqId , installment_Value }) => {
     const appendStyle = useStyle(style);
     const [moreDetailsActive, setMoreDetailsActive] = useState(false);
     const { primary } = useStyle();
-    const navigation = useNavigation()
+    const navigation = useNavigation();
+    
     const orderHandler = () => {
-        navigation.push('insuranceConfirm' , { factorItems , insModel : { name : insName , icon : insIconUrl , category: catFullName , price : showValue ,  } } )
+        navigation.push('insuranceConfirm' , { factorItems , insModel : { name : insName , icon : insIconUrl , category: catFullName , price : showValue ,  } , haveInstallment : installmentList.find(el => el === formulId) , reqId , installment_Value } )
     }
-
-    console.log(moreDetailsValue);
 
     return (
         <View style={appendStyle.container}>
             <View style={appendStyle.header}>
                 <View style={{ marginRight : 10 , justifyContent : 'center'}}>
-                    <Para  size={20}>{insName}</Para>
+                    <Para size={18}>{insName}</Para>
                     {/* <Para color="grey">{'2000'}</Para> */}
                 </View>
                 <Image resizeMode="center" source={{

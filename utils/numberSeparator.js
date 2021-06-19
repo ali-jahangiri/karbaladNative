@@ -1,5 +1,5 @@
 const numberSeparator = number => {
-    const endResult = [];
+  const endResult = [];
   String(number)
     .split("")
     .reverse()

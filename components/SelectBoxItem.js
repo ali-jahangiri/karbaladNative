@@ -23,7 +23,6 @@ const style = ({ primary , baseBorderRadius  } , selectedInStore) => StyleSheet.
         flexDirection : 'row',
         justifyContent : 'center',
         marginVertical : 10,
-        // backgroundColor : "red"
     },
     statusBullet : {
         borderRadius : baseBorderRadius -5 ,

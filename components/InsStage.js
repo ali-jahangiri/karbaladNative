@@ -22,19 +22,20 @@ const InsStage = (props) => {
         searchFilterBase : "" , 
         formName : store[formName] || formName , 
         [nestedKeyName] : store[nestedKeyName] , 
-        date : persianDate.dateInstance });
+        date : persianDate.dateInstance 
+        });
 
-    
 
     const temporaryChangeHandler = ({key = formName , value , isNested}) => {
-        if(['Float' , "Int" , "Long" , "CheckedForm"].includes(typesName)) {
-            setTemporaryValue(prev => ({
-                ...prev,
-                [isNested ? `Nested_${key}`: key] : value
-            }));
-        }else {
+        // save change inside temp state
+        setTemporaryValue(prev => ({
+            ...prev,
+            [isNested ? `Nested_${key}`: key] : value
+        }));
+        if(carCategory || ['Float' , "Int" , "Long" , "CheckedForm" , 'Date'].includes(typesName)) return undefined;
+        else {
+        // push change directly in main end result store
             const newClonedTemp = {...temporaryValue , [isNested ? `Nested_${key}`: key] : value};
-            
             const haveNestedKey = formData[0]?.hasNestedData ? { [nestedKeyName]: newClonedTemp[nestedKeyName] } : undefined
             const pureTarget = {
                 [formName] : newClonedTemp[formName],
@@ -130,8 +131,6 @@ const style = ({ primary , baseBorderRadius }) => StyleSheet.create({
     },
     stagePlayground : {
         flex : 1,
-        // backgroundColor : 'red',
-
     },
     titleContainer : {
         flexDirection : "row" , 

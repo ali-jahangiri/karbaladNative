@@ -1,27 +1,123 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Image, PermissionsAndroid, ScrollView, StatusBar, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useStyle } from '../Hooks/useStyle';
+import { generateColor, imageFinder } from '../utils';
+import InsConfirmItem from './InsConfirmItem';
+
 import Para from './Para';
+import NextStepBtn from "./NextStepBtn";
+
+import ScreenWrapper from "./ScreenWrapper";
 
 
-const InsuranceConfirm = ({ route : { params } , navigation }) => {
+const InsuranceConfirm = ({ route : { params : { factorItems , insModel , haveInstallment , reqId , installment_Value } } , navigation }) => {
     const appendStyle = useStyle(style);
-    console.log(params);
+    const { secondary , primary } = useStyle();
+    
+    console.log(haveInstallment , "sss");
+
+    const installmentHandler = () => {
+        navigation.push("insuranceInstallment" , { installmentId : haveInstallment , reqId , installment_Value })
+    }
+
     return (
-        <View style={appendStyle.container}>
+        <ScreenWrapper>
             <View style={appendStyle.header}>
-                <Para></Para>
+                <NextStepBtn
+                    direction="right"
+                    extendStyle={{ alignSelf : "flex-end", marginRight : 20 }}
+                    containerBgColor={generateColor(secondary , 9)}
+                    onPress={navigation.goBack} />
+                <Image 
+                    resizeMode="center" 
+                    source={{
+                        uri : imageFinder(insModel.icon),
+                        width: 80,
+                        height: 80
+                    }} />
+                <Para size={18} align="center" weight="bold">{insModel.name}</Para>
+                <Para size={16} color="grey">{insModel.category}</Para>
+                
             </View>
-        </View>
+            
+                <ScrollView>
+                    <View style={appendStyle.starterBullet} />
+                    {
+                        factorItems?.map((el , i) => (
+                            <InsConfirmItem 
+                                index={i}
+                                label={el.lable} 
+                                value={el.show_Value} 
+                                key={i} />
+                        ))
+                    }
+                </ScrollView>
+
+                    <View style={appendStyle.ctaContainer}>
+                        <View style={appendStyle.price}>
+                            <Para size={12} color="grey" style={appendStyle.priceUnit}>تومان</Para>
+                            <Para size={18} weight="bold">{insModel.price}</Para>
+                        </View>
+                        <View style={appendStyle.actionsContainer}>
+                            <TouchableOpacity style={[appendStyle.action , { backgroundColor : generateColor(primary , 5) }]}>
+                                <Para weight="bold" align="center" size={16}>سفارش</Para>
+                            </TouchableOpacity>
+                            {
+                                haveInstallment ? <TouchableOpacity onPress={installmentHandler} style={[appendStyle.action , { backgroundColor : generateColor(primary , 3) }]}>
+                                        <Para weight="bold" align="center" size={16}>قسطی</Para>
+                                    </TouchableOpacity> : null
+                            }
+                        </View>
+                    </View>
+        </ScreenWrapper>
     )
 }
 
-const style = () => StyleSheet.create({
+const style = ({ baseBorderRadius , primary }) => StyleSheet.create({
     container : {
-
+        flex: 1
     },
     header : {
-
+        alignItems : "center",
+        marginTop : StatusBar.currentHeight + 10
+    },
+    price : {
+        flexDirection : "row",
+        alignItems : 'center',
+        height: "100%",
+        flex: .35
+    },  
+    ctaContainer : {
+        flexDirection : "row",
+        alignItems : 'center',
+        justifyContent : 'space-between',
+        width: "90%",
+        marginHorizontal : "5%"
+    },
+    actionsContainer : {
+        borderRadius : baseBorderRadius ,
+        flexDirection : "row",
+        justifyContent : "space-between",
+        flex: .7,
+        borderRadius : 15,
+        overflow: "hidden"
+    },
+    action : {
+        flex: 1,
+        width: "100%",
+        padding: 15
+    },
+    priceUnit : {
+        position: "absolute",
+        top: -10,
+    },
+    starterBullet : {
+        width : 15,
+        height : 15,
+        marginTop : 10,
+        borderRadius : baseBorderRadius,
+        backgroundColor : generateColor(primary , 3),
+        alignSelf : "center",
     }
 })
 
