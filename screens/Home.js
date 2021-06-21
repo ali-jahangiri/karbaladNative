@@ -15,6 +15,8 @@ import InsuranceResultPreview from '../components/InsuranceResultPreview';
 import InsuranceConfirm from '../components/InsuranceConfirm';
 import InsuranceQuickEdit from '../components/InsuranceQuickEdit';
 import Installment from './Installment';
+import InsuranceRequirements from '../components/InsuranceRequirements';
+import InsurancePay from '../components/InsurancePay';
 
 const InsIndexScreen = ({ navigation }) => {
     const routeChangeHandler = routeParameters => 
@@ -57,6 +59,8 @@ const Home = () => <HomeInsRouter
                         resultConfirm={InsuranceConfirm}
                         quickEdit={InsuranceQuickEdit}  
                         installment={Installment}
+                        requirement={InsuranceRequirements}
+                        payment={InsurancePay}
                         />
 
 export default Home;

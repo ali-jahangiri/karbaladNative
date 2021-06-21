@@ -38,7 +38,6 @@ const style = ({ baseBorderRadius , primary } , extendStyle , isControllerEnable
         width: "100%",
         height: "100%",
         backgroundColor : "#2e2e225e",
-
     },
     overlay : {
         backgroundColor : "transparent",

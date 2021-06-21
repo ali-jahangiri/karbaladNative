@@ -23,6 +23,12 @@ const stringDateToObject = string => {
   }
 }
 
+
+const objectDateToString = object => {
+  const { year , month , day } = object;
+  return `${year}/${month}/${day}`
+}
+
 const persianDate = (() => {
     const now = fixNumbers(new Date().toLocaleDateString('fa-IR'))
     const currentYears = Number(now.slice(0 , now.indexOf('/')));
@@ -37,7 +43,8 @@ const persianDate = (() => {
         currentYears,
         now,
         dateInstance : `${currentYears}/1/1`,
-        stringDateToObject
+        stringDateToObject,
+        objectDateToString
     }
 })();
 

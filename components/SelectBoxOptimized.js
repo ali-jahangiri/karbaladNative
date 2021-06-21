@@ -8,7 +8,7 @@ import SelectBoxItem from './SelectBoxItem';
 
 import { Feather } from '@expo/vector-icons';
 
-const SelectBoxOptimized = ({ items , onSelect , selectedItem }) => {
+const SelectBoxOptimized = ({ items , onSelect , selectedItem  , labelKey = "dataName"}) => {
     const [currentStep, setCurrentStep] = useState(() => {
         if(items.findIndex(el => el.id === selectedItem) < 10) {
             return 10
@@ -30,7 +30,7 @@ const SelectBoxOptimized = ({ items , onSelect , selectedItem }) => {
                             value={el.id}
                             key={i}
                         >
-                            {el.dataName}
+                            {el?.[labelKey]}
                         </SelectBoxItem>
                     ))
                 }

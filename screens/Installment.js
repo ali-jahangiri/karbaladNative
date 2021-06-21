@@ -1,23 +1,60 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet } from 'react-native';
+import { ScrollView, StatusBar, StyleSheet, View } from 'react-native';
 
 import api from '../api';
+import InstallmentItem from '../components/InstallmentItem';
 import Para from '../components/Para';
 
-import ScreenWrapper from "../components/ScreenWrapper";
+import TabScreenHeader from '../components/TabScreenHeader';
 
-const Installment = ({ route : { params : { installmentId , reqId } } , navigation }) => {
+import ScreenWrapper from "../components/ScreenWrapper";
+import { useStyle } from '../Hooks/useStyle';
+import { generateColor } from '../utils';
+
+const Installment = ({ route : { params : { factorId , reqId , installment_Value} } , navigation }) => {
     const [installment, setInstallment] = useState({});
+    const [loading, setLoading] = useState(true);
     
+    const appendStyle = useStyle(style);
+    const { primary } = useStyle();
+
     useEffect(() => {
-        api.post("getInsstallments" , { formulaId : installmentId , requestId : 22671 })
+        api.post("getInsstallments" , { formulaId : factorId , requestId : 22671 })
             .then(({ data }) => {
-                console.log(data , 'data');
+                setInstallment(data);
+                setLoading(true);
             })
-    } , [])
+    } , []);
+
+
+    const navigateToRequirementHandler = (id) => {
+        navigation.push("insuranceRequirements" , { factorId , reqId ,  })
+    }
+
     return (
         <ScreenWrapper>
-            <Para>500</Para>
+            <TabScreenHeader 
+                navigation={navigation} 
+                title="انتخاب طرح قسطی" 
+                extendStyle={{ backgroundColor : generateColor(primary , 6) , marginBottom : 20 }} />
+            {
+                loading ? 
+                <ScrollView>
+                    {
+                        installment
+                        ?.installmentData
+                        ?.map((el , i) => <InstallmentItem
+                                            onSelect={navigateToRequirementHandler}
+                                            isLastItem={i === installment?.installmentData.length - 1}
+                                            key={i} 
+                                            details={el.details} 
+                                            title={el.title} 
+                                            insuranceInstallmentPrice={installment_Value}
+                                            {...el} />)
+                    }
+                </ScrollView>
+                : <Para>loading</Para>
+            }
         </ScreenWrapper>
     )
 }
@@ -26,6 +63,9 @@ const Installment = ({ route : { params : { installmentId , reqId } } , navigati
 const style = () => StyleSheet.create({
     container : {
 
+    },
+    header : {
+        marginTop : StatusBar.currentHeight + 10 
     }
 })
 

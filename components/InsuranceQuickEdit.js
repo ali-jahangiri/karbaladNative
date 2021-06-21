@@ -31,7 +31,9 @@ export const valueFinder = (store , selectedValue) =>  {
             return selectedValue ?  store.formData.find(el => el.id === selectedValue).dataName : selectedValue
             
         }
-        case "Date" : 
+        case "Date" : {
+            return selectedValue;
+        }
         case "Long" :
         case "Int" :
         case "Float" : {

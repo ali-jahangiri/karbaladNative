@@ -14,10 +14,8 @@ const InsuranceConfirm = ({ route : { params : { factorItems , insModel , haveIn
     const appendStyle = useStyle(style);
     const { secondary , primary } = useStyle();
     
-    console.log(haveInstallment , "sss");
-
     const installmentHandler = () => {
-        navigation.push("insuranceInstallment" , { installmentId : haveInstallment , reqId , installment_Value })
+        navigation.push("insuranceInstallment" , { factorId : haveInstallment , reqId , installment_Value })
     }
 
     return (

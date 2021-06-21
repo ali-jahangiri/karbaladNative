@@ -49,7 +49,7 @@ const InsuranceHistoryDetails = () => {
     const navigation = useNavigation();
     const { params } = useRoute();
     
-    const { iconUrl , createTime , insuranceCoName , factorModeId , categorysFullName , insImages , nCode , reciverName , reciverFamily , mobile ,areasFullName , reciverPhone , reciverMobile ,factorItems, exactAddress , genders , id , birthDay, ...rest} = params
+    const { iconUrl , createTime , insuranceCoName , factorModeId , categorysFullName , insImages , nCode , reciverName , reciverFamily , mobile ,areasFullName , reciverPhone , reciverMobile ,factorItems, exactAddress , genders , id , birthDay, showCta = true , ...rest} = params
     
     const { color : statusColor , title : statusTitle , icon : statusIcon } = statusChecker(factorModeId);
     const appendStyle = useStyle(style , statusColor);
@@ -123,9 +123,11 @@ const InsuranceHistoryDetails = () => {
             </View>
         </View>
     </ScrollView>
-    <TouchableOpacity onPress={pressHandler} style={appendStyle.cta}>
-        <Para align="center" style={appendStyle.ctaText} weight="bold">{factorModeId >= 3 ? "مشاهده تصاویر بیمه نامه" : 'پرداخت'}</Para>
-    </TouchableOpacity>
+    {
+        showCta ? <TouchableOpacity onPress={pressHandler} style={appendStyle.cta}>
+            <Para align="center" style={appendStyle.ctaText} weight="bold">{factorModeId >= 3 ? "مشاهده تصاویر بیمه نامه" : 'پرداخت'}</Para>
+        </TouchableOpacity> : null
+    }
     </>
     )
 }
