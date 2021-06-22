@@ -21,8 +21,7 @@ const InsuranceRequirements = ({ route : { params } , navigation }) => {
     const [dynamicStore, setDynamicStore] = useState({});
 
     const appendStyle = useStyle(style)
-
-    console.log(params , "***");
+    
     const goToPaymentHandler = () => {
         // api.post("" , {
         //     ...staticStore,

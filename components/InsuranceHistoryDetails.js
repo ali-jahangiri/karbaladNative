@@ -1,6 +1,6 @@
 import { useNavigation, useRoute } from '@react-navigation/core';
 import React from 'react';
-import { Button, Image, ScrollView, StyleSheet, View , TouchableOpacity } from 'react-native';
+import { Image, ScrollView, StyleSheet, View , TouchableOpacity } from 'react-native';
 import { useStyle } from '../Hooks/useStyle';
 import { generateColor, statusChecker } from '../utils';
 import Para from './Para';
@@ -48,7 +48,7 @@ const listViewStyle = ({ primary , baseBorderRadius }) => StyleSheet.create({
 const InsuranceHistoryDetails = () => {
     const navigation = useNavigation();
     const { params } = useRoute();
-    
+
     const { iconUrl , createTime , insuranceCoName , factorModeId , categorysFullName , insImages , nCode , reciverName , reciverFamily , mobile ,areasFullName , reciverPhone , reciverMobile ,factorItems, exactAddress , genders , id , birthDay, showCta = true , ...rest} = params
     
     const { color : statusColor , title : statusTitle , icon : statusIcon } = statusChecker(factorModeId);

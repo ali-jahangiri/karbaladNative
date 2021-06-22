@@ -4,7 +4,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 
 const Stack = createStackNavigator();
 
-const HomeInsRouter = ({ indexScreen , nestedScreen , resultPreview , resultConfirm , quickEdit , installment , requirement , payment}) => {
+const HomeInsRouter = ({ indexScreen , nestedScreen , resultPreview , resultConfirm , quickEdit , installment , requirement , payment , paymentMoreDetails }) => {
     return (
         <React.Fragment>
             <Stack.Navigator screenOptions={{ headerShown : false }}>
@@ -16,6 +16,7 @@ const HomeInsRouter = ({ indexScreen , nestedScreen , resultPreview , resultConf
                 <Stack.Screen name="insuranceInstallment" component={installment} />
                 <Stack.Screen name="insuranceRequirements" component={requirement} />
                 <Stack.Screen name="insurancePayment" component={payment} />
+                <Stack.Screen name="insurancePaymentMoreDetails" component={paymentMoreDetails} />
             </Stack.Navigator>
         </React.Fragment>
     )

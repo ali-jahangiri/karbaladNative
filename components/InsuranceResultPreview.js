@@ -35,7 +35,6 @@ const InsuranceResultPreview = ({ route : { params : { id , valueStore , flatted
         }
     } , [valueStore]);
     
-
     // useEffect(() => {
     //     if(Boolean(responseValues.insuranceQuotes?.addInsCoAmountV2[0].catFullName)) {
     //         navigation.navigate("home")

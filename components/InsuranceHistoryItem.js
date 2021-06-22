@@ -12,7 +12,7 @@ import { useNavigation } from '@react-navigation/core';
 
 
 const InsuranceHistoryItem = props => {
-    const { categorysFullName ,  iconUrl , createTime ,  insuranceCoName , factorModeId} = props;
+    const { categorysFullName , createTime ,  insuranceCoName , factorModeId} = props;
 
     const appendStyle = useStyle(style);
     const { primary } = useStyle()

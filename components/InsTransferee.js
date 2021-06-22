@@ -56,6 +56,7 @@ const InsTransferee = ({ onChange , store }) => {
             key : "AreaId",
             label : "منطقه",
             component : () => <DropDown
+                                key={"25e_69_983"}
                                 onSelect={id => changeHandler('AreaId' , id)}
                                 placeholder="لطفا منطقه سکونت خود را انتخاب کنید" 
                                 items={mock.areas} 
@@ -64,10 +65,6 @@ const InsTransferee = ({ onChange , store }) => {
         
     ]
 
-
-    useEffect(() => {
-        console.log(store , "STOE");
-    } , [store])
 
     return (
         <View style={appendStyle.container}>

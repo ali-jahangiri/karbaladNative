@@ -17,6 +17,7 @@ import InsuranceQuickEdit from '../components/InsuranceQuickEdit';
 import Installment from './Installment';
 import InsuranceRequirements from '../components/InsuranceRequirements';
 import InsurancePay from '../components/InsurancePay';
+import MoreDetailsPay from '../components/MoreDetailsPay';
 
 const InsIndexScreen = ({ navigation }) => {
     const routeChangeHandler = routeParameters => 
@@ -61,6 +62,7 @@ const Home = () => <HomeInsRouter
                         installment={Installment}
                         requirement={InsuranceRequirements}
                         payment={InsurancePay}
+                        paymentMoreDetails={MoreDetailsPay}
                         />
 
 export default Home;

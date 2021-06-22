@@ -5,7 +5,7 @@ import imageFinder from "./imageFinder";
 import debounce from './debounce'
 import persianDate from "./Date";
 import numberSeparator from "./numberSeparator";
-
+import toFarsiNumber from "./toPersianNumber";
 
 
 export {
@@ -16,4 +16,5 @@ export {
     debounce,
     persianDate,
     numberSeparator,
+    toFarsiNumber
 }
