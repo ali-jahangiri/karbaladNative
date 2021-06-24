@@ -8,6 +8,7 @@ import api from "../api";
 import { useStyle } from '../Hooks/useStyle';
 import { carCaseChecker } from '../utils';
 import { useNavigation } from '@react-navigation/native';
+import Loading from '../components/Loading';
 
 const InsuranceStepper = ({ id , name }) => {
     const navigation = useNavigation();
@@ -71,8 +72,7 @@ const InsuranceStepper = ({ id , name }) => {
         }
     }
 
-    return loading ? 
-    <ActivityIndicator />
+    return loading ? <Loading />
     : <>
         <View style={appendStyle.container}>
             {

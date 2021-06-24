@@ -36,7 +36,7 @@ const CarCategory = ({ list , value : { CarCategoryId , searchFilterBase}, setVa
                             style={[appendStyle.itemContainer , CarCategoryId === el.id && appendStyle.selectedItem]}
                             >
                             
-                            <Image source={{
+                            <Image style={[{ opacity : .5  }, CarCategoryId === el.id && appendStyle.selectedItemImage]} source={{
                                 uri : imageFinder(el.imageUrl) ,
                                 width: 60,
                                 height : 60
@@ -48,7 +48,7 @@ const CarCategory = ({ list , value : { CarCategoryId , searchFilterBase}, setVa
             {
                 currentLimit < list.length && 
                 <TouchableOpacity style={appendStyle.moreItem} onPress={() => setCurrentLimit(prev => prev + 10)}>
-                    <Feather name="plus" size={22} color="grey" />
+                    <Feather name="chevron-down" size={22} color="grey" />
                     <Para style={{ margin: 10 }} color="grey" align="center">گزینه های بیشتر</Para>
                 </TouchableOpacity>
             }
@@ -61,8 +61,10 @@ const style = ({ primary , baseBorderRadius }) => StyleSheet.create({
         flex: 1,
         flexDirection : 'row',
         flexWrap : 'wrap',
-        alignItems : 'center',
         justifyContent : 'space-between',
+    },
+    selectedItemImage : {
+        opacity: 1
     },
     itemContainer : {
         flexDirection : 'row',
@@ -72,6 +74,7 @@ const style = ({ primary , baseBorderRadius }) => StyleSheet.create({
         borderRadius : baseBorderRadius,
         borderWidth : 2,
         borderColor : "transparent",
+
     },
     selectedItem : {
         borderColor : primary,        
@@ -80,11 +83,12 @@ const style = ({ primary , baseBorderRadius }) => StyleSheet.create({
         width: '50%',
         backgroundColor : '#8b8d9408',
         marginHorizontal : "25%",
-        padding: 10,
+        padding: 5,
         borderRadius : baseBorderRadius,
         flexDirection : "row",
         alignItems : 'center',
-        justifyContent : 'center'
+        justifyContent : 'center',
+        marginTop : 10
     }
 })
 

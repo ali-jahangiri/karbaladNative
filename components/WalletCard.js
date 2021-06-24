@@ -88,7 +88,8 @@ const style = ({ primary , baseBorderRadius }) => StyleSheet.create({
         marginHorizontal : "5%",
         overflow: "hidden",
         height : 230,
-        justifyContent : 'space-between'
+        justifyContent : 'space-between',
+        marginBottom : 10,
     },
     lastTransaction : {
         backgroundColor : '#fff5',

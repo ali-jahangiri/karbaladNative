@@ -67,8 +67,6 @@ const InsuranceQuickEdit = ({ navigation , route : { params } }) => {
     }
 
     const temporaryChangeHandler = ({key = currentFormName , value , isNested }) => {
-        // if we are change a key of selected insurance case , if new value don't have any difference with settled value in store , don't apply it and don't change temporary state 
-        // if(params.valueStore[key] === value) return undefined
         
         // store values should store any ways because we need recovery feature
         setTempState(prev => ({
@@ -109,6 +107,10 @@ const InsuranceQuickEdit = ({ navigation , route : { params } }) => {
         setTempState({})
         navigation.goBack()
     }
+
+
+    console.log(params.selectedInsData);
+
 
     return (
         <View style={appendStyle.container}>

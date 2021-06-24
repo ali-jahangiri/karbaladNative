@@ -2,7 +2,7 @@ import { Feather } from '@expo/vector-icons';
 import React from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useStyle } from '../Hooks/useStyle';
-import { generateColor } from '../utils';
+import { generateColor, toFarsiNumber } from '../utils';
 import Para from './Para';
 
 
@@ -16,8 +16,8 @@ const InsResultMoreDetails = ({ visible , setVisibility, data }) => {
     return (
         <React.Fragment>
             <TouchableOpacity onPress={() => setVisibility(prev => !prev)} style={appendStyle.moreDetailsCta}>
-                <Feather name={visible ? "chevron-up" : "chevron-down"} size={20} color="black" />
-                <Para style={{ marginLeft : 5 }}>{visible ? "جزئیات کمتر" : "جزئیات بیشتر"}</Para>
+                <Feather name={visible ? "chevron-up" : "chevron-down"} size={20} color="grey" />
+                <Para color="grey" style={{ marginLeft : 5 }}>{visible ? "جزئیات کمتر" : "جزئیات بیشتر"}</Para>
             </TouchableOpacity>
             {
                 visible && <View>
@@ -33,7 +33,7 @@ const InsResultMoreDetails = ({ visible , setVisibility, data }) => {
                             <View style={appendStyle.moreDetailsItem} key={i}>
                             <View style={{ flexDirection : 'row' , alignItems : 'center' }}>
                                 <Para color="grey" size={10} style={{ marginRight : 5 }}>تومان</Para>
-                                <Para>{el.showValue}</Para>
+                                <Para>{toFarsiNumber(el.showValue)}</Para>
                             </View>
                             <View style={{ flexDirection : 'row' , alignItems : 'center' }}>
                                 <Para>{el.name}</Para>
@@ -62,7 +62,7 @@ const style = ({ primary , baseBorderRadius }) => StyleSheet.create({
         flexDirection : 'row',
         alignItems : 'center',
         justifyContent : 'center',
-        marginVertical : 10,
+        marginVertical : 25,
     },
     moreDetailsBulletItem : {
         backgroundColor : generateColor(primary ,5),

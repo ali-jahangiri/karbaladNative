@@ -3,7 +3,7 @@ import { StatusBar, StyleSheet, View ,  Alert } from 'react-native';
 
 import { useStyle } from '../Hooks/useStyle';
 
-import { persianDate } from '../utils';
+import { persianDate, toFarsiNumber } from '../utils';
 import { generateColor } from '../utils';
 import InputDetector from '../utils/inputDetector';
 
@@ -32,7 +32,7 @@ const InsStage = (props) => {
             ...prev,
             [isNested ? `Nested_${key}`: key] : value
         }));
-        if(carCategory || ['Float' , "Int" , "Long" , "CheckedForm" , 'Date'].includes(typesName)) return undefined;
+        if(carCategory || ['Float' , "Int" , "Long" , "CheckedForm" , 'Date'].includes(typesName) || key === "searchFilterBase") return undefined;
         else {
         // push change directly in main end result store
             const newClonedTemp = {...temporaryValue , [isNested ? `Nested_${key}`: key] : value};
@@ -67,7 +67,7 @@ const InsStage = (props) => {
             <View style={appendStyle.header}>
                 <View style={{ flexDirection : 'row' , justifyContent : 'space-between' , width : "100%"}}>
                     <View style={appendStyle.stageNumber}>
-                        <Para> مرحله {stageNumber.currentStage} از {stageNumber.length}</Para>
+                        <Para> مرحله {toFarsiNumber(stageNumber.currentStage)} از {toFarsiNumber(stageNumber.length)}</Para>
                     </View>
                     <Para weight="bold" size={20}>{categoryName}</Para>
                 </View>
@@ -146,11 +146,11 @@ const style = ({ primary , baseBorderRadius }) => StyleSheet.create({
         marginLeft : 10
     },
     optionalStepContainer: {
-        backgroundColor : "#f7f7f7",
+        backgroundColor : "#fffcfc",
         borderRadius : baseBorderRadius,
         padding: 10,
         borderWidth : 2,
-        borderColor : '#e4e4e4',
+        borderColor : '#ededed',
     }
 })
 

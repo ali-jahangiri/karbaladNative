@@ -30,7 +30,7 @@ const style = ({ primary , secondary , baseBorderRadius }) => StyleSheet.create(
         alignItems : 'center',
         justifyContent : 'center',
         height: 100,
-        maxHeight : 200
+        maxHeight : 200,
     },
     selectedItem : {
         borderColor : generateColor(primary , 5),

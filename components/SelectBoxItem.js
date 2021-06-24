@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useStyle } from '../Hooks/useStyle';
-import { generateColor } from '../utils';
+import { generateColor, toFarsiNumber } from '../utils';
 import Para from './Para';
 
 
@@ -9,7 +9,7 @@ const SelectBoxItem = ({ onSelect , value , children , selectedInStore}) => {
     const appendStyle = useStyle(style , selectedInStore)
     return (
         <TouchableOpacity style={appendStyle.container} onPress={() => onSelect(value)}>
-            <Para style={appendStyle.text} size={16}>{`${children}`.trim()}</Para>
+            <Para style={appendStyle.text} size={16}>{toFarsiNumber(`${children}`.trim())}</Para>
             <View style={appendStyle.statusBullet} />
         </TouchableOpacity>
     )
@@ -18,11 +18,11 @@ const SelectBoxItem = ({ onSelect , value , children , selectedInStore}) => {
 
 const style = ({ primary , baseBorderRadius  } , selectedInStore) => StyleSheet.create({
     container : {
-        padding: 10,
         alignItems : 'center',
         flexDirection : 'row',
         justifyContent : 'center',
-        marginVertical : 10,
+        padding: 20,
+        height: 70
     },
     statusBullet : {
         borderRadius : baseBorderRadius -5 ,

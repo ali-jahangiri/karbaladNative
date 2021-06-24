@@ -18,7 +18,7 @@ import SelectBoxOptimized from '../components/SelectBoxOptimized';
 
 
 const InputDetector = ({typesName , isCarCase , temporary : { value , setValue } , formData , formName , formNameNested , step , maxNumber = 1000000 , minNumber = 0}) => {
-    
+    console.log(typesName);
     switch(typesName) {
         case "Info" :
             break;
@@ -27,7 +27,7 @@ const InputDetector = ({typesName , isCarCase , temporary : { value , setValue }
             if(isCarCase) {
                 return (
                     <ScrollView>
-                        <SearchBox 
+                        <SearchBox
                             placeholder="نام خودرو موردنظر را جستجو کنید" 
                             value={value.searchFilterBase} 
                             onChange={value => setValue({key : 'searchFilterBase' , value})} />
@@ -54,7 +54,7 @@ const InputDetector = ({typesName , isCarCase , temporary : { value , setValue }
                                                     selectedItem={value[formName]}
                                                     onSelect={value => setValue({ value })} />
                 return (
-                    <SelectBox>
+                    <SelectBox selectedIndex={formData?.findIndex(el => el.id === value[formName])}>
                         {
                             formData
                                 ?.filter(el => el.dataName)
@@ -89,13 +89,15 @@ const InputDetector = ({typesName , isCarCase , temporary : { value , setValue }
         case "CreateYear":
             return (
                 <React.Fragment>  
-                    <SearchBox  
+                    <SearchBox
+                        searchType="number-pad"
                         placeholder="سال ساخت خودرو را وارد کنید" 
                         onChange={value => setValue({ key : "searchFilterBase" , value })}
                         value={value?.searchFilterBase} />
-                        <SelectBox>
+                        <SelectBox 
+                            selectedIndex={formData?.findIndex(el => el.id === value[formName])}>
                             {formData
-                                ?.filter(el => value?.searchFilterBase ? el.dataName.includes(value?.searchFilterBase) : el)
+                                ?.filter(el => value?.searchFilterBase ? el.dataName.includes(value?.searchFilterBase) || `${Number(el.dataName) + 621}`.includes(value?.searchFilterBase): el)
                                 ?.map((el , i) => <SelectBoxItem 
                                                     selectedInStore={value[formName] === el.id} 
                                                     value={el.id} 

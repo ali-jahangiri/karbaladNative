@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Image, RecyclerViewBackedScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useStyle } from '../Hooks/useStyle';
-import { generateColor, imageFinder } from '../utils';
+import { generateColor, imageFinder, toFarsiNumber } from '../utils';
 import Para from './Para';
 
 import Wealth from './Wealth';
@@ -36,19 +36,19 @@ const InsuranceResultPreviewItem = ({ insName , factorItems , insIconUrl , formu
             <View style={appendStyle.details}>
                     {
                         tavangariMali ? <View style={appendStyle.wealth}>
-                            <Para style={appendStyle.detailsLabel}>سطح توانگری</Para>
                             <Wealth wealthNumber={tavangariMali} />
+                            <Para size={16} style={appendStyle.detailsLabel}>سطح توانگری</Para>
                         </View> : null
                     }
                     {
-                        rezayatAzMablaghPardakhti ? <View>
-                                    <Para style={appendStyle.detailsLabel}>رضایت مشتری</Para>
+                        rezayatAzMablaghPardakhti ? <View style={appendStyle.wealth}>
                                     <View style={appendStyle.satisfaction}>
                                         <View style={appendStyle.satisfactionIcon}>
                                             <Feather name="thumbs-up" size={20} color={generateColor(primary , 8)} />
                                         </View>
                                         <Para align="center" weight="bold" size={18} color={generateColor(primary , 9)} style={appendStyle.detailsValue}>{rezayatAzMablaghPardakhti}</Para>
                                     </View>
+                                    <Para size={16} style={appendStyle.detailsLabel}>رضایت مشتری</Para>
                         </View> : null
                     }
                     {
@@ -66,21 +66,22 @@ const InsuranceResultPreviewItem = ({ insName , factorItems , insIconUrl , formu
                         </View> : null
                     }
                 </View>
+            
+            <View style={appendStyle.ctaContainer}>
+                <View style={appendStyle.price}>
+                    <Para size={10} color="grey" style={{ marginRight : 5 }}>تومان</Para>
+                    <Para size={18} weight="bold">{toFarsiNumber(showValue)}</Para>
+                </View>
+                <TouchableOpacity style={appendStyle.cta} onPress={orderHandler}>
+                    <Para align="center" weight="bold">سفارش</Para>
+                </TouchableOpacity>
+            </View>
             {
                 moreDetailsValue.length ? <InsResultMoreDetails
                                             visible={moreDetailsActive} 
                                             setVisibility={setMoreDetailsActive}
                                             data={moreDetailsValue} /> : null
             }
-            <View style={appendStyle.ctaContainer}>
-                <View style={appendStyle.price}>
-                    <Para size={10} color="grey" style={{ marginRight : 5 }}>تومان</Para>
-                    <Para size={16} weight="bold">{showValue}</Para>
-                </View>
-                <TouchableOpacity style={appendStyle.cta} onPress={orderHandler}>
-                    <Para align="center" weight="bold">سفارش</Para>
-                </TouchableOpacity>
-            </View>
             <View style={appendStyle.divider} />
         </View>
     )
@@ -90,7 +91,6 @@ const style = ({ primary , baseBorderRadius , secondary }) => StyleSheet.create(
     container : {
         width: "90%",
         marginHorizontal : '5%',
-        // marginVertical : 30,
         marginTop : 10
     },
     ctaContainer : {
@@ -98,6 +98,12 @@ const style = ({ primary , baseBorderRadius , secondary }) => StyleSheet.create(
         justifyContent : 'space-between',
         alignItems : 'flex-end',
         marginTop : 20
+    },
+    wealth : {
+        flexDirection : "row",
+        width: "100%",
+        justifyContent : "space-between",
+        alignItems : 'center'
     },
     cta : {
         backgroundColor : generateColor(primary , 8),
@@ -115,18 +121,18 @@ const style = ({ primary , baseBorderRadius , secondary }) => StyleSheet.create(
         justifyContent : "flex-end",
     },
     details : {
-        flexDirection : "row",
         justifyContent : 'space-between',
         marginVertical : 20,
     },
     detailsLabel : {
-        marginBottom : 10
+        marginBottom : 10,
+        flex: 1
     },
     satisfaction : {
         backgroundColor : generateColor(primary , 2),
         borderRadius : baseBorderRadius,
         padding: 10,
-        height: "100%",
+        height: 60,
         flex: 1,
         justifyContent : 'space-between',
         },
@@ -152,10 +158,9 @@ const style = ({ primary , baseBorderRadius , secondary }) => StyleSheet.create(
     },
     divider : {
         backgroundColor : secondary ,
-        width: "70%",
+        width: "98%",
         height: 2,
-        marginHorizontal : "15%",
-        marginTop : 50,
+        marginHorizontal : "1%",
         marginBottom : 10,
         borderRadius : baseBorderRadius
     }

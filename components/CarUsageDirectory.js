@@ -27,7 +27,7 @@ const CarUsageDirectory = ({ items , selectHandler , currentSelectedUsage }) => 
 
 const style = StyleSheet.create({
     container : {
-        flexDirection : "row",
+        flexDirection : "row-reverse",
         flexWrap : 'wrap',
         justifyContent : "space-between",
     }

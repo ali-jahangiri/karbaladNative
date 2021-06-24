@@ -10,6 +10,7 @@ import {useStyle} from "../Hooks/useStyle"
 import { Feather } from '@expo/vector-icons';
 import { generateColor } from '../utils';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import Loading from './Loading';
 
 const InsuranceResultPreview = ({ route : { params : { id , valueStore , flattedStage : selectedInsData , carCategory } } , navigation }) => {
     const [initialLoading, setInitialLoading] = useState(true);
@@ -25,7 +26,6 @@ const InsuranceResultPreview = ({ route : { params : { id , valueStore , flatted
                     .then(({ data }) => {
                         setResponseValues(data);
                         setInitialLoading(false);
-                        console.log(data , 'data');
                         // if(Boolean(data?.insuranceQuotes?.addInsCoAmountV2[0].catFullName)) return navigation.navigate("home")
                     })
             });
@@ -47,7 +47,7 @@ const InsuranceResultPreview = ({ route : { params : { id , valueStore , flatted
     
 
 
-    return initialLoading ? <Para>loading</Para> : (
+    return initialLoading ? <Loading /> : (
         <View style={appendStyle.container}>
             <View style={appendStyle.header}>
                 <TouchableOpacity onPress={quickEditHandler} style={appendStyle.editContainer}>

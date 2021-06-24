@@ -3,17 +3,33 @@ import { StyleSheet, TextInput, View } from 'react-native';
 import { useStyle } from '../Hooks/useStyle';
 import { Feather } from '@expo/vector-icons';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { numberSeparator } from '../utils';
+import { numberSeparator, toFarsiNumber } from '../utils';
 
 const makePureNumber = string => Number(string.replaceAll(',' , ""))
+
+var
+persianNumbers = [/۰/g, /۱/g, /۲/g, /۳/g, /۴/g, /۵/g, /۶/g, /۷/g, /۸/g, /۹/g],
+arabicNumbers  = [/٠/g, /١/g, /٢/g, /٣/g, /٤/g, /٥/g, /٦/g, /٧/g, /٨/g, /٩/g],
+fixNumbers = function (str)
+{
+  if(typeof str === 'string')
+  {
+    for(var i=0; i<10; i++)
+    {
+      str = str.replace(persianNumbers[i], i).replace(arabicNumbers[i], i);
+    }
+  }
+  return str;
+};
 
 const InputNumber = ({ onChange , stepForEachOperation = 10000, value = String(stepForEachOperation) , length : { max , min } , isNotLimited}) => {
     const appendStyle = useStyle(style);
     
     const changeHandler = value => {
-        if(makePureNumber(value) < max || isNotLimited ) {
+        let newValue = fixNumbers(value);
+        if(makePureNumber(newValue) < max || isNotLimited ) {
             
-            onChange({ value : makePureNumber(value) })
+            onChange({ value : makePureNumber(newValue) })
         }
     }
 
@@ -36,7 +52,7 @@ const InputNumber = ({ onChange , stepForEachOperation = 10000, value = String(s
                         maxLength={numberSeparator(max).length} 
                         style={appendStyle.input} 
                         onChangeText={changeHandler} 
-                        value={numberSeparator(value)} />
+                        value={numberSeparator(toFarsiNumber(value))} />
                 </View>
                 <TouchableOpacity onPress={decreaseHandler} style={appendStyle.controller}>
                     <Feather name="minus" size={24} color="black" />
@@ -64,7 +80,7 @@ const style = ({ baseBorderRadius , secondary }) => StyleSheet.create({
     },
     input : {
         fontSize : 22,
-        fontWeight : 'bold',
+        fontFamily : "bold",
         textAlign : 'center',
     }
 })

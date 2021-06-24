@@ -13,7 +13,6 @@ import InsPayDeliveryOption from './InsPayDeliveryOption';
 import InsDetailsPay from './InsDetailsPay';
 import InsurerInfoPay from './InsurarInfoPay';
 import InsTransfereePay from './InsTransfereePay';
-// import { TabActions } from '@react-navigation/native';
 
 const InsurancePay = ({ route : { id }, navigation }) => {
     const [payResponse, setPayResponse] = useState(mock)
@@ -32,17 +31,19 @@ const InsurancePay = ({ route : { id }, navigation }) => {
         //         setLoading(false)
         //     })
         // TODO set this value when request get completed
-        setDeliverOption(payResponse.deliveryModelsItems.find(el => el.thisDefault).id)
-    } , [])
-    
-    useEffect(() => {
-        navigation.addListener("beforeRemove" , e => {
+        setDeliverOption(payResponse.deliveryModelsItems.find(el => el.thisDefault).id);
+
+        const unsubscribe = navigation.addListener("beforeRemove" , e => {
             e.preventDefault();
+            navigation.push("home")
+            unsubscribe()
             // const jumpToAction = TabActions.jumpTo('insurance', { screen : "insuranceHistoryDetails" , params : { ...payResponse } } );
             // navigation.dispatch(jumpToAction);
-            navigation.navigate("insurance" , { screen : "insuranceHistoryDetails" , params : { ...payResponse } })
-        })
-    } , [navigation]);
+            // navigation.navigate("insurance" , { screen : "insuranceHistoryDetails" , params : { ...payResponse } })
+        });
+        return () => unsubscribe()
+    } , [])
+    
 
     const goToMoreDetailsScreenHandler = () => {
         navigation.push('insurancePaymentMoreDetails' , { items : payResponse.factorItems })
@@ -81,9 +82,9 @@ const InsurancePay = ({ route : { id }, navigation }) => {
                         <InsTransfereePay {...payResponse} />
                     </ScrollView>
                 <View style={appendStyle.price}>
-                    <View style={{ flexDirection : "row" }}>
+                    <View style={{ flexDirection : "row" , alignItems : "center" }}>
                         <Para style={{ marginRight : 5 }} color="grey">تومان</Para>
-                        <Para weight="bold" size={16}>{numberSeparator(toFarsiNumber(payResponse.amount + additionalPrice))}</Para>
+                        <Para weight="bold" size={18}>{numberSeparator(toFarsiNumber(payResponse.amount + additionalPrice))}</Para>
                     </View>
                     <Para size={16}>مبلغ قابل پرداخت</Para>
                 </View>

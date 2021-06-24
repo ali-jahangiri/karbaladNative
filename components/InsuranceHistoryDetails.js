@@ -89,15 +89,15 @@ const InsuranceHistoryDetails = () => {
                     
                             <View style={appendStyle.column}>
                                         <Para style={appendStyle.label}>رشته بیمه</Para>
-                                        <Para size={16} style={appendStyle}>{categorysFullName}</Para>
+                                        <Para size={16}>{categorysFullName}</Para>
                             </View>
                             <View style={appendStyle.column}>
                                 <Para style={appendStyle.label}>تاریخ ثبت</Para>
-                                <Para size={16} style={appendStyle}>{new Date(createTime).toLocaleDateString('fa-IR')}</Para>
+                                <Para size={16}>{new Date(createTime).toLocaleDateString('fa-IR')}</Para>
                             </View>
                             <View style={appendStyle.column}>
                                 <Para style={appendStyle.label}>شماره پیگیری</Para>
-                                <Para size={16} style={appendStyle}>{id}</Para>
+                                <Para size={16}>{id}</Para>
                             </View>
                             
                     <Para style={appendStyle.label}>مشخصات تحویل گیرنده</Para>
@@ -133,9 +133,9 @@ const InsuranceHistoryDetails = () => {
 }
 
 const style = ({ primary , secondary , baseBorderRadius } , statusColor) => StyleSheet.create({
-    firstDetails : {
-        width: "100%",
-    },
+    // firstDetails : {
+    //     width: "100%",
+    // },
     statusContainer : {
         flexDirection : 'row',
         overflow: "hidden",

@@ -3,7 +3,7 @@ import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useStyle } from '../Hooks/useStyle';
 import Para from './Para';
 import { Feather } from '@expo/vector-icons';
-import { generateColor } from '../utils';
+import { generateColor, toFarsiNumber } from '../utils';
 
 import { valueFinder } from "./InsuranceQuickEdit";
 
@@ -17,11 +17,6 @@ const InsuranceQuickEditItem = ({ label , onEdit , value , index  , store , temp
     return (
         <View style={appendStyle.container}>
             <View style={appendStyle.labelContainer}>
-                <Para >{label}</Para>
-                <View style={appendStyle.index}>
-                    <Para>{index}</Para>
-                </View>
-            </View>
             <TouchableOpacity 
                 onPress={() => onEdit({ label , value , key : currentPartOfStore.formName ,  typesName :currentPartOfStore.typesName })} 
                 style={appendStyle.ctaContainer}>
@@ -30,6 +25,15 @@ const InsuranceQuickEditItem = ({ label , onEdit , value , index  , store , temp
                     name={wasChange ? "edit-3" : "edit-2"} 
                     size={24} 
                     color={wasChange ? primary : "grey"} /> 
+                </TouchableOpacity>
+                <View style={{ flexDirection : "row" , alignItems : 'center' }}>
+                    <Para >{label}</Para>
+                    <View style={appendStyle.index}>
+                        <Para color="grey">{toFarsiNumber(index)}</Para>
+                    </View>
+                </View>
+            </View>
+            <View style={appendStyle.valueContainer}>
                 {
                     Array.isArray(value) ? value?.map((el , i) =>  <Para key={i} style={{ marginHorizontal : 10 }} weight="bold" align="right" color={wasChange ? primary : "grey"} >{i + 1} . {el}</Para>)
                     : <Para 
@@ -37,10 +41,11 @@ const InsuranceQuickEditItem = ({ label , onEdit , value , index  , store , temp
                         weight="bold" 
                         align="right" 
                         color={wasChange ? primary : "grey"} >
-                                {valueFinder(store.find(el => el.formName === currentPartOfStore.formName) , tempStore[currentPartOfStore.formName]) || value}
+                                {toFarsiNumber(valueFinder(store.find(el => el.formName === currentPartOfStore.formName) , tempStore[currentPartOfStore.formName]) || value)}
                     </Para>
                 }
-            </TouchableOpacity>
+                <View style={appendStyle.valueBullet} />
+            </View>
         </View>
     )
 }
@@ -52,7 +57,7 @@ const style = ({ baseBorderRadius , primary } , wasChange ) => StyleSheet.create
         width: "90%",
         marginHorizontal :  "5%",
         justifyContent : 'space-between',
-        marginVertical : 20
+        marginVertical : 20,
     },
     index : {
         backgroundColor : "#2e2e2e10",
@@ -66,17 +71,28 @@ const style = ({ baseBorderRadius , primary } , wasChange ) => StyleSheet.create
     ctaContainer : {
         flexDirection : 'row',
         alignItems :'center',
-        alignSelf : "flex-start",
-        backgroundColor : wasChange ?  generateColor(primary ,2) : "lightgrey",
-        padding: 10,
+        justifyContent : "center",
+        backgroundColor : wasChange ?  generateColor(primary ,2) : "#2e2e2e10",
+        height: 55,
+        width: 55,
         borderRadius : baseBorderRadius,
         maxWidth : maxWidth,
-        marginTop : 5
     },
     labelContainer : {
         flexDirection : 'row',
-        alignSelf : 'flex-end',
-        alignItems : 'center'
+        justifyContent : 'space-between',
+        alignItems : "flex-start"
+    },
+    valueContainer : {
+        flexDirection : 'row',
+        justifyContent : 'flex-end',
+        alignItems : "center"
+    },  
+    valueBullet : {
+        width: wasChange ? 55 :  36,
+        height : 10,
+        backgroundColor : wasChange ? generateColor(primary , 2) :  '#2e2e2e10',
+        borderRadius : baseBorderRadius
     }
 })
 

@@ -33,14 +33,17 @@ const formItems = [
         label : "تاریخ تولد",
         component : (handler , value) => {
             return (
-                <DatePickerInput value={value || persianDate.now} onChange={value => handler("BirthDay" , value)} />
+                <View key="32b284c4-80d0-476d-867f" style={{ marginVertical : 10 }}>  
+                    <Para color="grey" weight="bold" style={{ marginTop : 10 , marginRight : 10 }} >تاریخ تولد</Para>
+                    <DatePickerInput  value={value || persianDate.now} onChange={value => handler("BirthDay" , value)} />
+                </View>
             )
         }
     },
     {
         key : "Genders",
         label : "جنسیت",
-        component : handler => <GenderSelector selectHandler={handler} />
+        component : handler => <GenderSelector key="bbf22ecc-3ff0-488d-9a75-4084d13eb208" selectHandler={handler} />
     },
     {
         key : "InsAddress",

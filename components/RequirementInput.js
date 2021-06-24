@@ -13,7 +13,8 @@ const RequirementInput = ({ currentActive , onChange , setCurrentActive , index 
         }else {
             onChange(formName , "")
         }
-    } , [defaultValue])
+    } , [defaultValue]);
+    let placeholder = label
     return (
         <View style={[appendStyle.item , {marginTop : currentActive === index || store?.[formName] ? 40 : 10}]}>
                         <Para style={{...appendStyle.inputLabel , ...{top : currentActive === index || store?.[formName]  ? -30 : 10 }}}>{label}</Para>
@@ -21,7 +22,7 @@ const RequirementInput = ({ currentActive , onChange , setCurrentActive , index 
                             defaultValue={defaultValue || ''}
                             keyboardType={keyboardType}
                             onFocus={() => setCurrentActive(index)}
-                            placeholder={label}
+                            placeholder={placeholder}
                             onBlur={() => setCurrentActive(null)}
                             style={[appendStyle.input , index === currentActive ? appendStyle.focusedInput : {}]}
                             value={store?.[formName]}

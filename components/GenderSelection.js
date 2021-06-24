@@ -46,7 +46,7 @@ const style = ({ primary , baseBorderRadius }) => StyleSheet.create({
         paddingVertical : 15
     },  
     selectedItem : {
-        backgroundColor : generateColor(primary , 9)
+        backgroundColor : generateColor(primary , 5)
     }
 })
 

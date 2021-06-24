@@ -28,7 +28,7 @@ const Installment = ({ route : { params : { factorId , reqId , installment_Value
 
 
     const navigateToRequirementHandler = (id) => {
-        navigation.push("insuranceRequirements" , { factorId , reqId ,  })
+        navigation.push("insuranceRequirements" , { factorId , reqId })
     }
 
     return (

@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useStyle } from '../Hooks/useStyle';
-import { generateColor } from '../utils';
+import { generateColor, toFarsiNumber } from '../utils';
 import Para from './Para';
 
 
@@ -15,7 +15,7 @@ const InsConfirmItem = ({ label , value , index}) => {
             <View style={appendStyle.labelContainer}>
                 <Para align="center" color="grey" size={15}>{label}</Para>
             </View>
-            <Para align="center" size={16}>{value}</Para>
+            <Para align="center" size={16}>{toFarsiNumber(value)}</Para>
         </View>
     )
 }

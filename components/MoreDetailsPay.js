@@ -8,9 +8,10 @@ import TabScreenHeader from './TabScreenHeader';
 
 const MoreDetailsPay = ({ navigation , route : { params : { items } } }) => {
     const appendStyle =  useStyle(style);
+    const { primary } = useStyle()
     return (
         <ScreenWrapper style={appendStyle.container}>
-            <TabScreenHeader navigation={navigation} title="جزئیات بیمه نامه"  />
+            <TabScreenHeader extendStyle={{ backgroundColor : generateColor(primary , 5)}} navigation={navigation} title="جزئیات بیمه نامه"  />
             <View style={appendStyle.itemContainer}>
                 <ScrollView>
                     {
@@ -42,7 +43,7 @@ const style = ({ primary , baseBorderRadius }) => StyleSheet.create({
     itemContainer : {
         width: "90%",
         marginHorizontal : "5%",
-        flex : 1
+        flex : 1,
     },
     comeBack : {
         backgroundColor : generateColor(primary , 5),

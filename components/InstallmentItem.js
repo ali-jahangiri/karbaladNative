@@ -1,13 +1,16 @@
 import React from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useStyle } from '../Hooks/useStyle';
-import { generateColor, numberSeparator } from '../utils';
+import { generateColor, numberSeparator, toFarsiNumber } from '../utils';
 import Para from './Para';
 
 import { Feather } from '@expo/vector-icons';
 
 const InstallmentItem = ({ title , details , insuranceInstallmentPrice , onSelect , id , pishPercent , ghestCount , stepMount , isLastItem }) => {
     const appendStyle = useStyle(style , isLastItem);
+
+    const  price = Math.ceil((insuranceInstallmentPrice - ((insuranceInstallmentPrice * pishPercent) / 100)) / ghestCount);
+    const prepayment = (insuranceInstallmentPrice * pishPercent) / 100;
     return (
         <View style={appendStyle.container}>
             <View style={appendStyle.header}>
@@ -17,31 +20,37 @@ const InstallmentItem = ({ title , details , insuranceInstallmentPrice , onSelec
                 </View>
             </View>
             <View style={appendStyle.values}>
-                <View style={appendStyle.row}>
-                    <View style={appendStyle.priceUnit}>
-                        <Para style={{ marginRight : 10 }} color="grey">تومان</Para>
-                        <Para style={appendStyle.value}>{numberSeparator((insuranceInstallmentPrice * pishPercent) / 100)}</Para>
+                   <View style={appendStyle.row}>
+                        <View style={appendStyle.priceUnit}>
+                            {
+                                prepayment ? <><Para style={{ marginRight : 5 }} color="grey">تومان</Para>
+                                <Para weight="bold" style={appendStyle.value}>{toFarsiNumber(numberSeparator(prepayment))}</Para></> : <Para>ندارد</Para>
+                            }
+                            
+                        </View>
+                        <Para style={appendStyle.label}>پیش پرداخت</Para>
                     </View>
-                    <Para style={appendStyle.label}>پیش پرداخت</Para>
-                </View>
                 <View style={appendStyle.row}>
                     <View style={appendStyle.priceUnit}>
-                        <Para style={{ marginRight : 10 }} color="grey">تومان</Para>
-                        <Para style={appendStyle.value}>{numberSeparator(Math.ceil((insuranceInstallmentPrice - ((insuranceInstallmentPrice * pishPercent) / 100)) / ghestCount))}</Para>
+                        <Para style={{ marginRight : 5 }} color="grey">تومان</Para>
+                        <Para weight="bold" style={appendStyle.value}>{toFarsiNumber(numberSeparator(price))}</Para>
                     </View>
                     <Para style={appendStyle.label}>مبلغ هر قسط</Para>
                 </View>
                 <View style={appendStyle.row}>
                     <View style={appendStyle.priceUnit}>
-                        <Para style={{ marginRight : 10 }} color="grey">ماه</Para>
-                        <Para style={appendStyle.value}>{stepMount}</Para>
+                        <Para style={{ marginRight : 5 }} color="grey">ماه</Para>
+                        <Para style={appendStyle.value}>{toFarsiNumber(stepMount)}</Para>
                     </View>
                     <Para style={appendStyle.label}>فاصله بین هر قسط</Para>
                 </View>
-                <View style={appendStyle.row}>
-                    <Para style={appendStyle.value}>{ghestCount}</Para>
-                    <Para style={appendStyle.label}>تعداد قسط </Para>
-                </View>
+                {
+                    ghestCount ? <View style={appendStyle.row}>
+                        <Para style={appendStyle.value}>{toFarsiNumber(ghestCount)}</Para>
+                        <Para style={appendStyle.label}>تعداد قسط </Para>
+                    </View> : null
+                }
+                
             </View>
             <View style={appendStyle.details}>
                 <Para color="grey">جزئیات</Para>
@@ -104,7 +113,6 @@ const style = ({ primary , baseBorderRadius , secondary } , isLastItem) => Style
     },
     value : {
         fontSize : 17,
-        fontWeight : "bold"
     },
     row : {
         flexDirection : "row",

@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useStyle } from '../Hooks/useStyle';
-import { numberSeparator, toFarsiNumber } from '../utils';
+import { generateColor, numberSeparator, toFarsiNumber } from '../utils';
 import Para from './Para';
 
 
@@ -24,13 +24,13 @@ const WalletTransaction = ({ title , createTime , amount , lineResult , index })
             </View>
             <View style={{ flexDirection : "row" , justifyContent : 'space-between' , alignItems : "center" , width : "95%" , marginHorizontal :"2.5%" , marginTop : 10}}>
                 <View style={appendStyle.amount}>
-                    <Para color={amount < 0 ? "black" : primary}>تومان</Para>
-                    <Para size={18} weight="bold" color={amount < 0 ? "black" : primary}>{numberSeparator(toFarsiNumber(amount))}</Para>
+                    <Para style={{ marginRight : 5 }} color={amount < 0 ? "grey" : generateColor(primary , 8)}>تومان</Para>
+                    <Para size={18} weight="bold" color={amount < 0 ? "black" : primary}>{`${amount > 0 ? "+" :""}${numberSeparator(toFarsiNumber(amount))}`}</Para>
                 </View>
                 <View style={appendStyle.time}>
                     <Para>{`${toFarsiNumber(new Date(createTime).toLocaleDateString('fa-IR'))}`}</Para>
                     <Para> - </Para>
-                    <Para color="grey">{toFarsiNumber(time)}</Para>
+                    <Para color="grey">{toFarsiNumber(time.slice(0 , time.lastIndexOf(":")))}</Para>
                 </View>
             </View>
         </View>
@@ -39,9 +39,9 @@ const WalletTransaction = ({ title , createTime , amount , lineResult , index })
 
 const style = ({ primary , baseBorderRadius }) => StyleSheet.create({
     container : {
-        marginVertical : 20,
         width: "90%",
-        marginHorizontal : "5%"
+        marginHorizontal : "5%",
+        marginVertical : 30,
     },
     time : {
         flexDirection : "row",

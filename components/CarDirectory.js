@@ -25,7 +25,7 @@ const CarDirectory = ({ currentAvailableItems , selectedCar , handler , category
 
 const style = StyleSheet.create({
     container : {
-        flexDirection : 'row',
+        flexDirection : 'row-reverse',
         flexWrap : "wrap",
         alignContent : 'center',
         justifyContent : 'space-between'

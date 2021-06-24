@@ -1,6 +1,6 @@
 import { Feather } from '@expo/vector-icons';
 import React, { useState } from 'react';
-import { StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Switch, TouchableOpacity, View } from 'react-native';
 import { useStyle } from '../Hooks/useStyle';
 import { generateColor } from '../utils';
 import Para from './Para';
@@ -31,10 +31,12 @@ const FurtherInfo = ({ onChange , items , valueStore}) => {
                     <View style={appendStyle.titleDivider} />
                 </View>
             </TouchableOpacity>
+            
             <View style={{ display : showMore ? "flex" : "none" }}>
             {
                 items.map((el , i) => (
-                    <RequirementInput 
+                    <RequirementInput
+                        key={i}
                         store={valueStore} 
                         onChange={onInputChange} 
                         label={el.name} 

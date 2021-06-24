@@ -5,16 +5,19 @@ import { StyleSheet, View } from 'react-native';
 import Router from './Router/Router';
 import InitialLoading from './HOC/InitialLoading/InitialLoading';
 import StyleProvider from './HOC/StyleProvider/StyleProvider';
+import AuthProvider from './Auth/AuthProvider';
 
 export default function App() {
   
   return (
     <View style={generalStyle.appContainer}>
-      <StyleProvider>
-        <InitialLoading>
-          <Router />
-        </InitialLoading>
+      {/* <AuthProvider> */}
+        <StyleProvider>
+          <InitialLoading>
+            <Router />
+          </InitialLoading>
       </StyleProvider>
+      {/* </AuthProvider> */}
       <StatusBar style="auto" />
     </View>
   );

@@ -2,16 +2,16 @@ import React from 'react';
 import { StyleSheet, TextInput , View } from 'react-native';
 import { useStyle } from '../Hooks/useStyle';
 
-const SearchBox = ({ value = "" , onChange , placeholder = "نام مورد نطر خود را جستجو کنید" }) => {
+const SearchBox = ({ value = "" , onChange , searchType = "default", placeholder = "نام مورد نطر خود را جستجو کنید" }) => {
     const appendStyle = useStyle(style)
-
     return (
         <View style={appendStyle.container}>
-            <TextInput 
-            style={appendStyle.input}
-            placeholder={placeholder}
-            onChangeText={onChange} 
-            value={value} />
+            <TextInput
+                keyboardType={searchType}
+                style={appendStyle.input}
+                placeholder={placeholder}
+                onChangeText={onChange} 
+                value={value} />
         </View>
     )
 }
@@ -25,7 +25,7 @@ const style = ({ baseBorderRadius , }) => StyleSheet.create({
         borderWidth : 2,
         borderRadius : baseBorderRadius,
         padding: 10,
-        borderColor : "rgba(0,0,0,0.25)",
+        borderColor : "rgba(0,0,0,0.1)",
         fontFamily : 'bold',
         color: "grey",
         fontSize : 15

@@ -17,10 +17,10 @@ const InsuranceStepperIntro = ({  title , desc , nextStepHandler }) => {
     return (
         <View style={{ flex : 1 , justifyContent : 'center' }}>
             <View style={appendStyle.container}>
-                <NextStepBtn extendStyle={appendStyle.backCta} containerBgColor={generateColor(secondary , 8)} onPress={navigation.goBack} />
+                <NextStepBtn direction="right" extendStyle={appendStyle.backCta} containerBgColor={generateColor(secondary , 8)} onPress={navigation.goBack} />
                 <View style={{ flex: 1 , justifyContent : "center" }}>
                     <View style={appendStyle.icon}>
-                        <Feather name="file-text" size={55} color={generateColor(primary , 9)} />
+                        <Feather name="file-text" size={40} color={generateColor(primary , 6)} />
                     </View>
                     <Para weight="bold" size={20} align="center" style={appendStyle.title}>{title}</Para>
                     {
@@ -46,9 +46,9 @@ const style = ({ primary ,  baseBorderRadius}) => StyleSheet.create({
         marginTop : StatusBar.currentHeight + 10
     },
     icon : {
-        width : 100,
-        height: 100,
-        backgroundColor : generateColor(primary , 3),
+        width : 75,
+        height: 75,
+        backgroundColor : generateColor(primary , 2),
         borderRadius : baseBorderRadius,
         padding: 10,
         alignItems : 'center',
@@ -64,7 +64,7 @@ const style = ({ primary ,  baseBorderRadius}) => StyleSheet.create({
         color: 'grey'
     },
     nextStep : {
-        backgroundColor : primary,
+        backgroundColor : generateColor(primary , 8),
         width: "100%",
         alignItems : 'center',
         flexDirection : 'row',
@@ -76,7 +76,7 @@ const style = ({ primary ,  baseBorderRadius}) => StyleSheet.create({
         marginLeft : 5,
     },
     backCta : {
-        alignSelf : "flex-start",
+        alignSelf : "flex-end",
     }
 })
 

@@ -16,9 +16,10 @@ const SelectBoxOptimized = ({ items , onSelect , selectedItem  , labelKey = "dat
             return items.findIndex(el => el.id === selectedItem) + 5
         }
     });
+    
     const appendStyle = useStyle(style);
-
     const containerRef = useRef();
+
     return (
         <View style={appendStyle.container}>
             <ScrollView ref={containerRef} onContentSizeChange={() => containerRef.current.scrollToEnd({ animated : true })}>

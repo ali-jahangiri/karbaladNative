@@ -103,7 +103,7 @@ const style = ({ primary , baseBorderRadius }) => StyleSheet.create({
 
     },
     imageIcon : {
-        color: generateColor(primary , 8),
+        color: generateColor(primary , 5),
         marginRight : 10
     },  
     header : {
@@ -127,9 +127,10 @@ const style = ({ primary , baseBorderRadius }) => StyleSheet.create({
         alignItems : 'center',
     },
     ctaContainer : {
-        flexDirection : "row",
-        backgroundColor : generateColor(primary , 5),
-        padding : 10,
+        // flexDirection : "row",
+        alignItems : 'center',
+        backgroundColor : generateColor(primary , 1),
+        padding : 20,
         borderRadius : baseBorderRadius
     },
     index : {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Image, PermissionsAndroid, ScrollView, StatusBar, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useStyle } from '../Hooks/useStyle';
-import { generateColor, imageFinder } from '../utils';
+import { generateColor, imageFinder, toFarsiNumber } from '../utils';
 import InsConfirmItem from './InsConfirmItem';
 
 import Para from './Para';
@@ -16,6 +16,10 @@ const InsuranceConfirm = ({ route : { params : { factorItems , insModel , haveIn
     
     const installmentHandler = () => {
         navigation.push("insuranceInstallment" , { factorId : haveInstallment , reqId , installment_Value })
+    }
+
+    const goDirectlyToRequirement = () => {
+        navigation.push("insuranceRequirements" , { factorId : haveInstallment , reqId })
     }
 
     return (
@@ -54,10 +58,10 @@ const InsuranceConfirm = ({ route : { params : { factorItems , insModel , haveIn
                     <View style={appendStyle.ctaContainer}>
                         <View style={appendStyle.price}>
                             <Para size={12} color="grey" style={appendStyle.priceUnit}>تومان</Para>
-                            <Para size={18} weight="bold">{insModel.price}</Para>
+                            <Para size={18} weight="bold">{toFarsiNumber(insModel.price)}</Para>
                         </View>
                         <View style={appendStyle.actionsContainer}>
-                            <TouchableOpacity style={[appendStyle.action , { backgroundColor : generateColor(primary , 5) }]}>
+                            <TouchableOpacity onPress={goDirectlyToRequirement} style={[appendStyle.action , { backgroundColor : generateColor(primary , 5) }]}>
                                 <Para weight="bold" align="center" size={16}>سفارش</Para>
                             </TouchableOpacity>
                             {
