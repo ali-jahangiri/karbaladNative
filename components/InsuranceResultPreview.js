@@ -10,7 +10,9 @@ import {useStyle} from "../Hooks/useStyle"
 import { Feather } from '@expo/vector-icons';
 import { generateColor } from '../utils';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+
 import Loading from './Loading';
+import EmptyState from './EmptyState';
 
 const InsuranceResultPreview = ({ route : { params : { id , valueStore , flattedStage : selectedInsData , carCategory } } , navigation }) => {
     const [initialLoading, setInitialLoading] = useState(true);
@@ -21,12 +23,10 @@ const InsuranceResultPreview = ({ route : { params : { id , valueStore , flatted
         api.post('GetInsuranceQuoteId' , { formData : JSON.stringify({ ...valueStore , Id : id }) })
             .then(({ data }) =>  data)
             .then(id => {
-                // TODO remove mock id
-                api.post('GetInsuranceQuotes' , { formulaId : `${22671}` })
+                api.post('GetInsuranceQuotes' , { formulaId : id})
                     .then(({ data }) => {
                         setResponseValues(data);
                         setInitialLoading(false);
-                        // if(Boolean(data?.insuranceQuotes?.addInsCoAmountV2[0].catFullName)) return navigation.navigate("home")
                     })
             });
         return () => {
@@ -35,17 +35,10 @@ const InsuranceResultPreview = ({ route : { params : { id , valueStore , flatted
         }
     } , [valueStore]);
     
-    // useEffect(() => {
-    //     if(Boolean(responseValues.insuranceQuotes?.addInsCoAmountV2[0].catFullName)) {
-    //         navigation.navigate("home")
-    //     }
-    // } , [responseValues])
-
+    
     const quickEditHandler = () => {
         navigation.push('insuranceQuickEdit' ,{ server :  responseValues.insuranceQuotes.factorItems , valueStore , selectedInsData , id , carCategory })
     }
-    
-
 
     return initialLoading ? <Loading /> : (
         <View style={appendStyle.container}>
@@ -53,23 +46,31 @@ const InsuranceResultPreview = ({ route : { params : { id , valueStore , flatted
                 <TouchableOpacity onPress={quickEditHandler} style={appendStyle.editContainer}>
                     <Feather name="edit-2" size={30} color="white" />   
                 </TouchableOpacity>
-                    <View>
+                <View>
                         <Para>نتایج جستجو در : </Para>
                         <Para weight="bold" size={20}>{responseValues?.insuranceQuotes?.addInsCoAmountV2[0].catFullName}</Para>
-                    </View>
-            </View>    
-            <ScrollView >
+                </View>
+            </View>
             {
-                responseValues?.insuranceQuotes?.addInsCoAmountV2?.map((el , i) => (
-                    <InsuranceResultPreviewItem
-                            reqId={id}
-                            installmentList={responseValues.installmetFormouls}
-                            factorItems={responseValues.insuranceQuotes.factorItems} 
-                            {...el}
-                            key={i} />
-                ))
-            }
-            </ScrollView>
+                responseValues?.insuranceQuotes?.addInsCoAmountV2?.length ? (<ScrollView >
+                {
+                    responseValues?.insuranceQuotes?.addInsCoAmountV2?.map((el , i) => (
+                        <InsuranceResultPreviewItem
+                                reqId={id}
+                                installmentList={responseValues.installmetFormouls}
+                                factorItems={responseValues.insuranceQuotes.factorItems} 
+                                {...el}
+                                key={i} />
+                    ))
+                }
+                </ScrollView> ) : <EmptyState
+                    actionHandler={() => navigation.push('home')}
+                    title="نتیجه ای یافت نشد:(" 
+                    desc="نتیجه ای برای این استعلام حاصل نشد . مجددا تلاش نمایید." 
+                    ctaText="بازگشت"/>
+            } 
+                
+           
         </View>
     )
 }

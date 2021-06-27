@@ -22,20 +22,21 @@ const InsuranceStepper = ({ id , name }) => {
     
     const appendStyle = useStyle(style)
 
+    
     useEffect(() => {
         setLoading(true)
         api.post("GetInsuranceForm" , { categoryId : id })
-            .then(({ data }) => {
-                setInsuranceData(data)
-                setLoading(false)
+        .then(({ data }) => {
+            setInsuranceData(data)
+            setLoading(false)
             });
     } , [])
 
 
 
-    const nextStepHandler = newTempValueForSet => {
+    const nextStepHandler = haveNewTempValueForSet => {
         setCurrentStage(prev => prev + 1);
-        if(newTempValueForSet) setValueStore(prev => ({ ...prev , ...newTempValueForSet}))
+        if(haveNewTempValueForSet) setValueStore(prev => ({ ...prev , ...haveNewTempValueForSet}))
     }   
 
     const previousStepHandler = () => setCurrentStage(prev => prev - 1);
@@ -50,7 +51,7 @@ const InsuranceStepper = ({ id , name }) => {
             const flattedStage = insuranceData.pages.map(el => el.forms).flat(1)
             const currentStageData = flattedStage[currentStage];
             
-            // if we reach to end step (stage) of insurance stepper we should navigate  to result preview
+            // if we reach to end step (stage) of insurance stepper we should navigate to result preview
             
             if(!currentStageData) {
                 navigation.navigate("insuranceResultPreview" , { id , valueStore , flattedStage , carCategory : insuranceData?.carGroup});

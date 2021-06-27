@@ -108,10 +108,9 @@ const InsuranceQuickEdit = ({ navigation , route : { params } }) => {
         navigation.goBack()
     }
 
-
-    console.log(params.selectedInsData);
-
-
+    console.log(params.selectedInsData , "tester");
+    console.log(params.server , 'server');
+    
     return (
         <View style={appendStyle.container}>
             <View style={appendStyle.header}>

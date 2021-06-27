@@ -18,7 +18,6 @@ import SelectBoxOptimized from '../components/SelectBoxOptimized';
 
 
 const InputDetector = ({typesName , isCarCase , temporary : { value , setValue } , formData , formName , formNameNested , step , maxNumber = 1000000 , minNumber = 0}) => {
-    console.log(typesName);
     switch(typesName) {
         case "Info" :
             break;
@@ -49,10 +48,18 @@ const InputDetector = ({typesName , isCarCase , temporary : { value , setValue }
                 )
             }
             else {
-                if(formData.length > 50) return <SelectBoxOptimized 
-                                                    items={formData.slice(70)} 
-                                                    selectedItem={value[formName]}
-                                                    onSelect={value => setValue({ value })} />
+                if(formData.length > 50) return (
+                    <React.Fragment>
+                        <SearchBox
+                            placeholder="نام خودرو موردنظر را جستجو کنید" 
+                            value={value.searchFilterBase} 
+                            onChange={value => setValue({key : 'searchFilterBase' , value})} />
+                        <SelectBoxOptimized
+                                           items={formData.filter(el => el.dataName.includes(value.searchFilterBase))} 
+                                           selectedItem={value[formName]}
+                                           onSelect={value => setValue({ value })} />
+                    </React.Fragment>
+                )
                 return (
                     <SelectBox selectedIndex={formData?.findIndex(el => el.id === value[formName])}>
                         {

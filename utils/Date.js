@@ -14,6 +14,10 @@ fixNumbers = function (str)
   return str;
 };
 
+export {
+  fixNumbers
+}
+
 const stringDateToObject = string => {
   const [year , month , day] = string.split('/')
   return {

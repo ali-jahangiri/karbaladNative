@@ -26,7 +26,7 @@ const InitialLoading = ({ children }) => {
         setter(userDataMock)
         const globalStyle = {
             baseBorderRadius : 15,
-            primary : '#f25998',
+            primary : '#04009A',
             secondary : '#dbe6fd',
         }
         dispatcher({ globalStyle })

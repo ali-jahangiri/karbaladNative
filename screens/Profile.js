@@ -1,16 +1,25 @@
 import { useScrollToTop } from '@react-navigation/native';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useRef } from 'react';
 import { Image, ScrollView, StyleSheet, View } from 'react-native';
 import Para from '../components/Para';
 import ScreenHeader from '../components/ScreenHeader';
 
 import { useStyle } from '../Hooks/useStyle';
+import { useSelector } from '../Store/Y-state';
 
 const Profile = () => {
     const appendStyle = useStyle(style)
     const container = useRef()
-    useScrollToTop(container)
+    useScrollToTop(container);
+
+
+    const state = useSelector(state => state)
+        
+    useEffect(() => {
+        console.log(state , 's');
+    } , )
+
     return (
         <ScrollView ref={container}>
             <ScreenHeader extendStyle={{}} title="پروفایل" />

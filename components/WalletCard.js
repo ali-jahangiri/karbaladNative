@@ -15,8 +15,9 @@ const WalletCart = ({ finalResult = "" }) => {
     const [chargeAmountPrice, setChargeAmountPrice] = useState(1000);
     const [chargeViewActive, setChargeViewActive] = useState(false);
 
+
     const resetAmountHandler = () => {
-        setChargeAmountPrice(1000)
+        setChargeAmountPrice(1000);
     }
 
     const redirectToWebPay = () => {

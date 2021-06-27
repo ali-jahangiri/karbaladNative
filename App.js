@@ -7,17 +7,28 @@ import InitialLoading from './HOC/InitialLoading/InitialLoading';
 import StyleProvider from './HOC/StyleProvider/StyleProvider';
 import AuthProvider from './Auth/AuthProvider';
 
+
+import { ErrorBoundary } from "./Providers"
+import StoreProvider from './Store/Y-state';
+
+import myStore from './Store/myStore';
+
+
 export default function App() {
   
   return (
     <View style={generalStyle.appContainer}>
-      {/* <AuthProvider> */}
-        <StyleProvider>
-          <InitialLoading>
-            <Router />
-          </InitialLoading>
-      </StyleProvider>
-      {/* </AuthProvider> */}
+      <ErrorBoundary>
+        <StoreProvider store={myStore}>
+          {/* <AuthProvider> */}
+          <StyleProvider>
+            <InitialLoading>
+              <Router />
+            </InitialLoading>
+          </StyleProvider>
+          {/* </AuthProvider> */}
+        </StoreProvider>
+      </ErrorBoundary>
       <StatusBar style="auto" />
     </View>
   );

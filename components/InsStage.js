@@ -27,14 +27,16 @@ const InsStage = (props) => {
 
 
     const temporaryChangeHandler = ({key = formName , value , isNested}) => {
-        // save change inside temp state
+        // save change inside temp state in all case
         setTemporaryValue(prev => ({
             ...prev,
             [isNested ? `Nested_${key}`: key] : value
         }));
+        // if component that trigger changeHandler was searchBoc , we shouldn't go to next step therefore : || key === "searchFilterBase"
+        // or current step input type was one of 'Float' , "Int" , "Long" , "CheckedForm" , 'Date' don't go next step until we user trigger next btn
         if(carCategory || ['Float' , "Int" , "Long" , "CheckedForm" , 'Date'].includes(typesName) || key === "searchFilterBase") return undefined;
         else {
-        // push change directly in main end result store
+        // push change directly in main end result store without user event 
             const newClonedTemp = {...temporaryValue , [isNested ? `Nested_${key}`: key] : value};
             const haveNestedKey = formData[0]?.hasNestedData ? { [nestedKeyName]: newClonedTemp[nestedKeyName] } : undefined
             const pureTarget = {
@@ -67,7 +69,12 @@ const InsStage = (props) => {
             <View style={appendStyle.header}>
                 <View style={{ flexDirection : 'row' , justifyContent : 'space-between' , width : "100%"}}>
                     <View style={appendStyle.stageNumber}>
-                        <Para> مرحله {toFarsiNumber(stageNumber.currentStage)} از {toFarsiNumber(stageNumber.length)}</Para>
+                        {
+                            stageNumber.currentStage === stageNumber.length ?
+                                 <Para>مرحله آخر</Para> : 
+                                 <Para> مرحله {toFarsiNumber(stageNumber.currentStage)} از {toFarsiNumber(stageNumber.length)}</Para>
+                        }
+                        
                     </View>
                     <Para weight="bold" size={20}>{categoryName}</Para>
                 </View>

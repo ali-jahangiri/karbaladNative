@@ -2,7 +2,8 @@ import React, { useRef, useState } from 'react';
 import { StyleSheet, TextInput, View } from 'react-native';
 import { useStyle } from '../Hooks/useStyle';
 
-import { persianDate } from "../utils";
+import { persianDate, toFarsiNumber } from "../utils";
+import { fixNumbers } from '../utils/Date';
 import Para from './Para';
 
 const DatePickerInput = ({ onChange , value = persianDate.now}) => {
@@ -16,9 +17,9 @@ const DatePickerInput = ({ onChange , value = persianDate.now}) => {
 
     const changeHandler = (unit , inputValue , length , index) => {
         
-        const dateClone = persianDate.stringDateToObject(value)
-        let converted = Number(inputValue);
-
+        const dateClone = persianDate.stringDateToObject(value);
+        let converted = Number(fixNumbers(inputValue));
+        
         const valueChecker = (() => {
             if(unit === "month") {
                 if(converted > 12) return 12
@@ -46,8 +47,8 @@ const DatePickerInput = ({ onChange , value = persianDate.now}) => {
                     ref={yearRef}
                     keyboardType="numeric" 
                     style={appendStyle.input} 
-                    maxLength={4} 
-                    value={`${persianDate.stringDateToObject(value).year}`} 
+                    maxLength={4}
+                    value={toFarsiNumber(`${persianDate.stringDateToObject(value).year}`)} 
                     onChangeText={value => changeHandler('year' , value , 4 , 0)} />
             </View>
             <View style={appendStyle.separator}>
@@ -58,7 +59,7 @@ const DatePickerInput = ({ onChange , value = persianDate.now}) => {
                     ref={monthRef}
                     keyboardType="numeric" style={appendStyle.input} 
                     maxLength={2} 
-                    value={`${persianDate.stringDateToObject(value).month}`} 
+                    value={toFarsiNumber(`${persianDate.stringDateToObject(value).month}`)} 
                     onChangeText={value => changeHandler('month' , value , 2 , 1)} />
             </View>
             <View style={appendStyle.separator}>
@@ -69,7 +70,7 @@ const DatePickerInput = ({ onChange , value = persianDate.now}) => {
                     ref={dayRef}  keyboardType="numeric" 
                 style={appendStyle.input} 
                 maxLength={2} 
-                value={`${persianDate.stringDateToObject(value).day}`} 
+                value={toFarsiNumber(`${persianDate.stringDateToObject(value).day}`)} 
                 onChangeText={value => changeHandler('day' , value ,2  , 2)} />
             </View>
         </View>
@@ -87,7 +88,7 @@ const style = () => StyleSheet.create({
     input : {
         fontSize : 18,
         textAlign : "center",
-        fontWeight : "bold"
+        fontFamily : "bold"
     },
     separator : {
 
