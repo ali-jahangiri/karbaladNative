@@ -1,6 +1,6 @@
 import React from 'react';
 import { createContext, useState } from "react";
-import Login from "../screens/Login";
+import Login from "../../screens/Login";
 
 const AuthContext = createContext();
 

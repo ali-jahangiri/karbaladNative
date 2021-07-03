@@ -9,6 +9,7 @@ import { useStyleDispatcher } from "../../Hooks/useStyle"
 import api from '../../api';
 
 import userDataMock from "../../utils/userDetails.mock";
+import Login from '../../screens/Login';
 
 const InitialLoading = ({ children }) => {
     // Note put all of your first data fetching , grab styles and mote !
@@ -32,7 +33,7 @@ const InitialLoading = ({ children }) => {
         dispatcher({ globalStyle })
     } , []);
 
-    return  loaded ? children : <LoadingScreen />
+    return  loaded ? <Login /> : <LoadingScreen />
 }
 
 
