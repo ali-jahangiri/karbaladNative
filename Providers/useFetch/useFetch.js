@@ -1,7 +1,11 @@
 import { useContext, useEffect, useState } from "react";
+import client from "../../client";
+import encrypt from "../../utils/encrypt";
 import { FetchContext } from "./FetchProvider";
 
-import Input from "../../components/Input";
+import appConfig from "../../config";
+
+import clientConfig from "../../client";
 
 const useFetch = (path, config) => {
   const { api } = useContext(FetchContext);
@@ -10,21 +14,28 @@ const useFetch = (path, config) => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  const enhancedApi = (() => {
+    return api.post(`/baseApi/getServerTime`)
+                .then(({ data }) => {
+                    let serverTime = +data.split(" ")[1].split(':')[1];
+                        return api.post("/baseApi/getAppToken" , {
+                            Key : encrypt.encrypt({
+                                UserName : appConfig.adminUserName,
+                                Password : appConfig.adminPassword
+                            }, serverTime)
+                            })
+                            .then(({ data }) => {
+                              if(data === clientConfig.static.ACCESS_DENIED) throw new Error(data)
+                              else return api
+                            }).catch(err => {
+                                throw new Error(err.message)
+                            })
+                }).catch(err => {
+                  throw new Error(err);
+                });
+  })()
 
-  const [inputValue, setInputValue] = useState({});
-
-
-  const inputChangeHandler= (key , value) => {
-    setInputValue(prev => ({
-      ...prev,
-      [key] : value
-    }))
-  }
-
-  const enhancedApi = () => {
-    // TODO handle status error ;
-    
-  }
+  if(path === true) return enhancedApi
 
   useEffect(() => {
     // we use useEffect to force our parent component that already use this hoo to re render with this new state
@@ -44,7 +55,6 @@ const useFetch = (path, config) => {
         api
           .get(path)
           .then(({ data }) => {
-
             setResponse(data);
             setLoading(false);
           })

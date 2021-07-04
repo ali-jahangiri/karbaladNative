@@ -1,6 +1,8 @@
 const config = {
-    packageName : "insurco.ir",
-    serverPath: "https://insurco.ir"
+    packageName : "babimeh.com",
+    serverPath: "https://babimeh.com",
+    adminUserName : "insurcoApp",
+    adminPassword : "123456789",
 }
 
 

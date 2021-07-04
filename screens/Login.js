@@ -1,23 +1,97 @@
-import React, { useEffect, useState } from 'react';
-import { StatusBar, StyleSheet, TouchableOpacity, View } from 'react-native';
+import React, { useState } from 'react';
+import { StatusBar, StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
 import Para from '../components/Para';
 import { useStyle } from '../Hooks/useStyle';
-import { generateColor } from '../utils';
+import { generateColor, toFarsiNumber } from '../utils';
 
 import Input from '../components/Input';
 
-const SIGN_IN = "signIn";
-const SING_UP = "signUp";
-
-
 import { Feather } from '@expo/vector-icons';
 
-const Login = ({  }) => {
+import { useDispatch } from '../Store/Y-state';
+
+import InputNumber from "../components/InputNumber";
+
+import client from '../client';
+import useFetch from '../Providers/useFetch';
+
+
+const { SIGN_IN , SING_UP } = client.static;
+
+const VerifyInput = ({ value , changeHandler }) => {
+    const appendStyle = useStyle(verifyInputStyle);
+
+    return (
+        <View style={appendStyle.container} > 
+            <TextInput
+                style={appendStyle.input}
+
+                value={value}
+                onChangeText={changeHandler}
+            />
+        </View>
+    )
+}
+
+const verifyInputStyle = ({ primary , baseBorderRadius }) => StyleSheet.create({
+    container : {
+        borderColor : primary,
+        borderWidth : 2,
+        borderRadius : baseBorderRadius,
+        justifyContent : 'center',
+        padding : 12
+    },
+    input : {
+        fontFamily : "bold",
+        fontSize : 22
+    }
+})
+
+
+
+const PhoneInput = ({ value , changeHandler }) => {
+    const appendStyle = useStyle(phoneInputStyle);
+    return (
+        <View style={appendStyle.container}>
+            <TextInput
+                keyboardType="number-pad"
+                style={appendStyle.input}
+                placeholder="شماره همراه"
+                value={toFarsiNumber(value || "")}
+                onChangeText={changeHandler}
+            />
+        </View>
+    )
+}
+
+const phoneInputStyle = ({ primary , baseBorderRadius }) => StyleSheet.create({
+    container : {
+        borderWidth : 2,
+        borderColor : generateColor(primary , 5),
+        borderRadius : baseBorderRadius,
+        marginVertical : 10
+    },
+    
+    input : {
+        fontSize : 22,
+        fontFamily : "bold",
+        padding: 15,
+        textAlign : 'center'
+    }
+})
+
+const Login = () => {
     const appendStyle = useStyle(style);
     const [authMode, setAuthMode] = useState(null);
     const [inputValue, setInputValue] = useState({});
-    const { primary } = useStyle()
+    const [error, setError] = useState(null);
+    const [phoneKey, setPhoneKey] = useState(null);
 
+
+    const fetcher = useFetch(true);
+
+
+    const { primary } = useStyle()
 
     const signInHandler = () => {
 
@@ -25,12 +99,26 @@ const Login = ({  }) => {
 
 
     const singUpHandler = () => {
-
+        
+        // if(!inputValue?.userName) {
+        //     return setError("نام کاربری خود را وارد نمایید")
+        // }
+        // if(inputValue?.password !== inputValue?.passwordConfirm) {
+        //     return setError("رمز عبور با تکرار آن همخوانی ندارد . لطفا مجددا تلاش نمایید ");
+        // }
+        // else {
+        //     const endObject = encrypt.encrypt({
+        //         UserName : inputValue.userName,
+        //         Password : inputValue.password,
+        //     })
+            
+        // }
     }
 
 
 
     const changeHandler = (key , value) => {
+        setError(null);
         setInputValue(prev => ({
             ...prev,
             [key] : value
@@ -38,11 +126,24 @@ const Login = ({  }) => {
     }
 
 
-    useEffect(() => {
-        console.log(inputValue);
-    } , [inputValue])
+
+    const phoneVerificationHandler = () => {
+        fetcher
+            .then(api => {
+                api.post("/VerifyNumber" , {
+                    mobile : inputValue?.phone
+                })
+                .then(data => {
+                    console.log(data);
+                })
+            }).catch(err => {
+                
+            })
+    }
+
 
     const renderChecker = () => {
+        // FIRST STEP FOR WAIT FOR USER EVENT
         if(!authMode) return (
             <>
             <View>
@@ -81,7 +182,7 @@ const Login = ({  }) => {
                     </View>
                 </View>
                 <View style={{ marginTop : 20 }}>
-                    <Input 
+                    <Input
                         align="right"
                         placeholder="نام کاربری"
                         value={inputValue?.userName}
@@ -111,7 +212,17 @@ const Login = ({  }) => {
                 </View>
             </View>
             <View>
-                <Input
+                <PhoneInput
+                    value={inputValue?.phone}
+                    changeHandler={value => changeHandler("phone" , value)}
+                />
+                
+                {/* <VerifyInput 
+                    value={inputValue?.phone}
+                    changeHandler={value => changeHandler("phone" , value)}
+                /> */}
+                
+                {/* <Input
                     value={inputValue?.userName}
                     placeholder="نام کاربری"
                     changeHandler={value => changeHandler('userName' , value)}
@@ -127,9 +238,15 @@ const Login = ({  }) => {
                     placeholder="تکرار رمز عبور"
                     value={inputValue?.passwordConfirm}
                     changeHandler={value => changeHandler("passwordConfirm" , value)}
-                />
+                /> */}
             </View>
-            <TouchableOpacity onPress={signInHandler} style={appendStyle.endCta}>
+            {
+                error ?
+                <View style={appendStyle.error}>
+                    <Para color={'red'}>{error}</Para>
+                </View> : null
+            }
+            <TouchableOpacity onPress={phoneVerificationHandler} style={appendStyle.endCta}>
                         <Feather style={{ marginRight : 10 }} name="arrow-left" size={24} color="black" />
                         <Para weight="bold" size={18}>ثبت نام</Para>
             </TouchableOpacity>
@@ -172,6 +289,9 @@ const style = ({ primary , baseBorderRadius }) => StyleSheet.create({
     },
     descContainer : {
         marginVertical : 20,
+    },
+    error : {
+        marginBottom : 10
     },  
     ctaContainer : {
         
@@ -184,12 +304,6 @@ const style = ({ primary , baseBorderRadius }) => StyleSheet.create({
         width: "100%",
         textAlign : 'center',
         borderRadius : baseBorderRadius
-    },
-    headText : {
-
-    },
-    descText : {
-
     },
     authModeContainer : {
         flex: 1,
