@@ -14,11 +14,12 @@ const useFetch = (path, config) => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 
+
   const enhancedApi = (() => {
-    return api.post(`/baseApi/getServerTime`)
+    return api.post(`${appConfig.serverPath}/baseApi/getServerTime`)
                 .then(({ data }) => {
                     let serverTime = +data.split(" ")[1].split(':')[1];
-                        return api.post("/baseApi/getAppToken" , {
+                    return api.post(`${appConfig.serverPath}/baseApi/getAppToken` , {
                             Key : encrypt.encrypt({
                                 UserName : appConfig.adminUserName,
                                 Password : appConfig.adminPassword
@@ -26,7 +27,25 @@ const useFetch = (path, config) => {
                             })
                             .then(({ data }) => {
                               if(data === clientConfig.static.ACCESS_DENIED) throw new Error(data)
-                              else return api
+                              
+                              // const baseHeaders = {
+                              //   headers : {
+                              //     appToken : data,
+                              //     packageName : appConfig.packageName
+                              //   }
+                              // }
+                              
+                              // return {
+                              //   get(url) {
+                              //     api.get(url, baseHeaders.headers )
+                              //   },
+                              //   post(url , data) {
+                              //     return api.post(url , data , baseHeaders.headers)
+                              //   }
+                              // }
+                              return {
+                                api , appToken : data
+                              }
                             }).catch(err => {
                                 throw new Error(err.message)
                             })
@@ -70,3 +89,25 @@ const useFetch = (path, config) => {
 };
 
 export default useFetch;
+
+
+
+
+
+
+
+// const baseHeaders = {
+//   headers : {
+//     appToken : data,
+//     packageName : appConfig.packageName
+//   }
+// }
+
+// return {
+//   get(url) {
+//     api.get(url, baseHeaders.headers )
+//   },
+//   post(url , data) {
+//     return api.post(url , data , baseHeaders.headers)
+//   }
+// }

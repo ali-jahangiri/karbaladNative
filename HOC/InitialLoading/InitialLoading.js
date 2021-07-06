@@ -17,13 +17,21 @@ import ErrorPage from '../../screens/ErrorPage';
 import encrypt from '../../utils/encrypt';
 import client from '../../client';
 import config from '../../config';
+import { persister } from '../../utils';
+import AuthProvider from '../../Providers/Auth/AuthProvider';
 
 
 const InitialLoading = ({ children }) => {
     const [somethingWentWrong, setSomethingWentWrong] = useState(false);
     const [forceToReRender, setForceToReRender] = useState(0);
+    const [loading, setLoading] = useState(true);
 
-    const [loaded , err ] = useFonts({
+
+
+    const [isAuth, setIsAuth] = useState(false);
+
+
+    const [fontLoaded , err ] = useFonts({
         light : require("../../assets/fonts/Vazir-Light.ttf"),
         regular : require('../../assets/fonts/Vazir-Regular.ttf'),
         bold : require('../../assets/fonts/Vazir-Bold.ttf'),
@@ -41,12 +49,12 @@ const InitialLoading = ({ children }) => {
         setForceToReRender(false);
     }
 
+    
     useEffect(() => {
-        
-        fetcher.post(`/baseApi/getServerTime`)
+        fetcher.post(`${config.serverPath}/baseApi/getServerTime`)
                 .then(({ data }) => {
                     let serverTime = +data.split(" ")[1].split(':')[1];
-                    fetcher.post("/baseApi/getAppToken" , {
+                    fetcher.post(`${config.serverPath}/baseApi/getAppToken` , {
                         Key : encrypt.encrypt({
                             UserName : config.adminUserName,
                             Password : config.adminPassword
@@ -55,7 +63,23 @@ const InitialLoading = ({ children }) => {
                     }).then(({ data }) => {
                         if(data === client.static.ACCESS_DENIED) throw new Error(data);
                         setSomethingWentWrong(null);
-                    }).catch(err => {
+                    })
+                    .then(_ => {
+                        return persister.get('userPrivateKey')
+                            .then(data => {
+                                console.log(data , "*");
+                                if(data) {
+                                    console.log(data , "isAuthhhhhh");
+                                    setIsAuth(true);
+                                }
+                            }).catch(err => {
+                                throw new Error(err);
+                            }).finally(() => {
+                                console.log(data);
+                                setLoading(false);
+                            })
+                    })
+                    .catch(err => {
                         setSomethingWentWrong(err.message)
                     })
                 })
@@ -76,7 +100,13 @@ const InitialLoading = ({ children }) => {
                     resetHandler={resetHandler} />
     }
 
-    return  loaded ? <Login /> : <LoadingScreen />
+
+    const authRenderChecker = () => {
+        if(isAuth) return children;
+        return <Login />
+    }
+
+    return  fontLoaded && !loading ? authRenderChecker() : <LoadingScreen />
 }
 
 

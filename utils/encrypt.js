@@ -9,7 +9,7 @@ const encrypt = (() => {
         const char = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
         const currentDeviceMin = new Date().getMinutes()
         const timeDiff = currentDeviceMin - serverTime;
-        const randomCharForInsert =  new Array(currentDeviceMin - timeDiff)
+        const randomCharForInsert =  new Array(serverTime)
         .fill("")
         .map(_ => {
             const  randomNumber = Math.floor(Math.random() * char.length);

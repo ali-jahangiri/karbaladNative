@@ -6,7 +6,8 @@ import debounce from './debounce'
 import persianDate from "./Date";
 import numberSeparator from "./numberSeparator";
 import toFarsiNumber from "./toPersianNumber";
-
+import persister from "./persister";
+import encrypt from "./encrypt";
 
 export {
     generateColor,
@@ -16,5 +17,8 @@ export {
     debounce,
     persianDate,
     numberSeparator,
-    toFarsiNumber
+    toFarsiNumber,
+    persister,
+    encrypt,
+    
 }

@@ -3,14 +3,14 @@ import  { StyleSheet, TextInput, View } from "react-native"
 import { useStyle } from '../Hooks/useStyle';
 import { generateColor } from '../utils';
 
-const Input = ({ value , changeHandler , placeholder , isPassword , align }) => {
-    const appendStyle = useStyle(style , align);
+const Input = ({ value , changeHandler , placeholder , isPassword , align , extendInputStyle }) => {
+    const appendStyle = useStyle(style , align );
 
     return (
         <View style={appendStyle.container}>
             <TextInput
                 secureTextEntry={isPassword}
-                style={appendStyle.input}
+                style={[appendStyle.input , extendInputStyle]}
                 value={value}
                 placeholder={placeholder}
                 onChangeText={changeHandler} />
@@ -28,7 +28,7 @@ const style = ({ primary , baseBorderRadius } , align) => StyleSheet.create({
     input : {
         padding: 15,
         fontFamily : "bold",
-        textAlign : align
+        textAlign : align,
     }
 })
 

@@ -1,12 +1,13 @@
 import { useScrollToTop } from '@react-navigation/native';
 import React, { useEffect } from 'react';
 import { useRef } from 'react';
-import { Image, ScrollView, StyleSheet, View } from 'react-native';
+import { Image, ScrollView, StyleSheet, View , Button } from 'react-native';
 import Para from '../components/Para';
 import ScreenHeader from '../components/ScreenHeader';
 
 import { useStyle } from '../Hooks/useStyle';
 import { useSelector } from '../Store/Y-state';
+import { persister } from '../utils';
 
 const Profile = () => {
     const appendStyle = useStyle(style)
@@ -20,6 +21,14 @@ const Profile = () => {
         console.log(state , 's');
     } , )
 
+
+    const logoutHandler = () => {
+        persister.remove('userPrivateKey')
+            .then(data => {
+                // TODO redirect to login screen
+            })
+    }
+
     return (
         <ScrollView ref={container}>
             <ScreenHeader extendStyle={{}} title="پروفایل" />
@@ -30,6 +39,7 @@ const Profile = () => {
                 <Para weight="bold" color="#050513" size={22}>علی جهانگیری</Para>
                 <Para color="#536162">jahangiri.dev@gmail.com</Para>
             </View>
+            <Button onPress={logoutHandler} title="logout" />
             </ScrollView>
     )
 }

@@ -21,7 +21,7 @@ export default function App() {
     <View style={generalStyle.appContainer}>
       <ErrorBoundary>
         <StoreProvider store={myStore}>
-          <FetchProvider packageName={config.packageName} baseURL={config.serverPath}>
+          <FetchProvider packageName={config.packageName} baseURL={`${config.serverPath}/MobileApi/`}>
             <StyleProvider>
               <InitialLoading>
                 <Router />
