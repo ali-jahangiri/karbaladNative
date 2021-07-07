@@ -11,7 +11,7 @@ const persister = (() => {
     
     const get = async key => {
         const res = await SecureStore.getItemAsync(key);
-        if(res) console.warn(`'${key}' don't set in Store ; Make sure you pass current key.`);
+        // if(res) console.warn(`'${key}' don't set in Store ; Make sure you pass current key.`);
         return res
     }
     

@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { StatusBar, StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
+import React, { useRef, useState } from 'react';
+import { Keyboard, StatusBar, StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
 import Para from '../components/Para';
 import { useStyle } from '../Hooks/useStyle';
 import { generateColor, toFarsiNumber } from '../utils';
@@ -16,16 +16,19 @@ import config from '../config';
 // TODO remove and combine this fixNumber for have only one import from utils
 import { fixNumbers } from '../utils/Date';
 import { persister } from '../utils';
+import { useDispatch } from '../Store/Y-state';
+import { setAppKey, setSeeWelcomeScreen } from '../Store/Slices/authSlice';
 
 
 const { REGISTER, LOGIN } = client.static;
 
 
-const PasswordInput = ({ value , changeHandler , placeholder }) => {
+const PasswordInput = ({ value , changeHandler , placeholder , autoFocus = false }) => {
     const appendStyle = useStyle(passwordInputStyle)
     return (
         <View style={appendStyle.container}>
             <TextInput
+                autoFocus={autoFocus}
                 style={appendStyle.input}
                 placeholder={placeholder}
                 secureTextEntry
@@ -56,6 +59,8 @@ const VerifyInput = ({ value , changeHandler }) => {
     return (
         <View style={appendStyle.container} > 
             <TextInput
+                autoFocus
+                maxLength={4}
                 keyboardType="number-pad"
                 placeholder="کد تایید"
                 style={[appendStyle.input , { letterSpacing : value ? 10 : 0 }]}
@@ -96,6 +101,7 @@ const PhoneInput = ({ value , changeHandler }) => {
     return (
         <View style={appendStyle.container}>
             <TextInput
+                autoFocus
                 keyboardType="number-pad"
                 style={appendStyle.input}
                 placeholder="شماره همراه"
@@ -127,14 +133,16 @@ const Login = () => {
     const [inputValue, setInputValue] = useState({});
     const [error, setError] = useState(null);
     const [stage, setStage] = useState(1);
-
+    const [loadingCta, setLoadingCta] = useState(false);
 
     const fetcher = useFetch(true);
-
+    const storeDispatcher = useDispatch();
 
     const { primary } = useStyle()
 
 
+
+    console.log(inputValue , "INPUTVALUE");
 
     const inputChangeHandler = (key , value) => {
         setError(null);
@@ -165,9 +173,11 @@ const Login = () => {
                         changeHandler={value => inputChangeHandler("phone" , fixNumbers(value))} />
                 )
             },
+
             ctaHandler() {
                 // TODO preventing sending req when phone number
                 if(validate('phone' , "شماره تماس ضروری میباشد")) {
+                setLoadingCta("صبر کنید")
                    fetcher
                     .then(({ api , appToken }) => {
                         return api.post("VerifyNumber" , {
@@ -184,7 +194,9 @@ const Login = () => {
                         })
                     }).catch(err => {
                         setError(err.message);
-                    }) 
+                    }).finally(() => {
+                        setLoadingCta(false);
+                    })
                 }  
             },
             backHandler() {
@@ -215,16 +227,20 @@ const Login = () => {
             
             backHandler() {
                 setStage(prev => prev -2);
-                inputChangeHandler("verifyCode" , "")
+                ["verifyCode" , "password" , 'passwordConfirm']
+                    .map(el => inputChangeHandler(el , "")) 
+                setError(null);
+                setLoadingCta(false);
             },
             body() {
                 return (
                     <>
-                        <PasswordInput 
+                        <PasswordInput
+                            autoFocus
                             value={inputValue?.password} 
                             placeholder="رمز عبور" 
                             changeHandler={value => inputChangeHandler('password' , value)} />
-                        <PasswordInput 
+                        <PasswordInput
                             value={inputValue?.passwordConfirm} 
                             placeholder="تکرار رمز عبور" 
                             changeHandler={value => inputChangeHandler('passwordConfirm' , value)} />
@@ -236,7 +252,7 @@ const Login = () => {
                     setError('رمز عبور و تکرار آن مطابقت ندارد . مجددا برسی نمایید')
                 }else {
                     const { phone , password , verifyCode } = inputValue;
-
+                    setLoadingCta("در حال ثبت نام");
                     fetcher
                         .then(({ api , appToken }) => {
                             api.post("GetUserData" , {
@@ -249,7 +265,18 @@ const Login = () => {
                                     appToken
                                 }
                             }).then(({ data }) => {
-                                persister.set('userPrivateKey' , data.privatekey)
+                                if(data.id < 0) {
+                                    setError(data.fullName);
+                                    setLoadingCta(false);
+                                }else {
+                                    const key = data.privatekey;
+                                    persister.set('userPrivateKey' , key)
+                                        .then(_ => {
+                                            storeDispatcher(() => setSeeWelcomeScreen(false))
+                                            storeDispatcher(() => setAppKey(key));
+                                            Keyboard.dismiss();
+                                        })
+                                }
                             })
                         })
                 }
@@ -282,14 +309,40 @@ const Login = () => {
                 )
             },
             ctaHandler() {
-                fetcher
-                    .then(({ api , appToken }) => {
-                        
-                    })
+                if(inputValue?.userName && inputValue?.password) {
+                    fetcher
+                        .then(({ api , appToken }) => {
+                            api.post("GetUserData" , {
+                                phone : inputValue?.userName,
+                                pass : inputValue?.password,
+                                newPass : "",
+                                name : ""
+                            }, { headers : {
+                                appToken
+                            } })
+                                .then(({ data }) => {
+                                    const { id , fullName ,  } = data;
+                                    console.log(data);
+                                    if(id < 0) {
+                                        setError(fullName);
+                                    }
+                                }).catch(err => {
+                                    setError(err)
+                                })
+                        })
+                }else {
+                    if(!inputValue?.userName) {
+                        setError("نام کاربری  را وارد کنید");
+                    }else {
+                        setError("رمز عبور را وارد کنید");
+                    }
+                }
             },
             backHandler() {
                 setStage(1);
-                setAuthMode(null)
+                setAuthMode(null);
+                setError(null);
+                setInputValue({});
             }
         }
     }
@@ -302,12 +355,10 @@ const Login = () => {
 
 
 
-    console.log(inputValue);
-
     const verificationCodeChangeHandler = value => {
         inputChangeHandler("verifyCode" , value);
-        setError(null)
-        if(value.length === 4) {
+        setError(null);
+        if(value.length >= 4) {
             setStage(prev => prev + 1)
         }
     }
@@ -339,45 +390,45 @@ const Login = () => {
             </View>
             </>
         );
-    else if(authMode === LOGIN) {
-        return (
-            <View style={appendStyle.authModeContainer}>
-                <View style={appendStyle.modeHeader}>
-                    <TouchableOpacity onPress={() => stages[authMode][stage]?.backHandler()}>
-                        <Para  style={{ paddingHorizontal : 25 , paddingVertical : 10 , paddingLeft : 0 }} color="grey" weight="bold">بازگشت</Para>
-                    </TouchableOpacity>
-                    <View style={{ flexDirection : 'row' , alignItems : 'center' }}>
-                        <Para style={appendStyle.modeTitle}>ورود</Para>
-                        <View style={appendStyle.bullet} />
-                    </View>
-                </View>
-                <View style={{ marginTop : 20 }}>
-                    {
-                        stages[authMode][stage]
-                            ?.body()
-                    }
-                </View>
-                {
-                error ?
-                <View style={appendStyle.error}>
-                    <Para color={'red'}>{error}</Para>
-                </View> : null
-            }
-            <TouchableOpacity disabled={error} onPress={stages[authMode][stage].ctaHandler} style={[appendStyle.endCta , error ? appendStyle.disabledCta : {}]}>
-                        <Feather style={{ marginRight : 10 }} name="arrow-left" size={24} color="black" />
-                        <Para weight="bold" size={18}>
-                            {
-                                (() => {
-                                    return stages
-                                        [authMode]
-                                        [stage]?.ctaText
-                                })()
-                            }
-                        </Para>
-            </TouchableOpacity>
-            </View>
-        )
-    }
+    // else if(authMode === LOGIN) {
+    //     return (
+    //         <View style={appendStyle.authModeContainer}>
+    //             <View style={appendStyle.modeHeader}>
+    //                 <TouchableOpacity onPress={() => stages[authMode][stage]?.backHandler()}>
+    //                     <Para  style={{ paddingHorizontal : 25 , paddingVertical : 10 , paddingLeft : 0 }} color="grey" weight="bold">بازگشت</Para>
+    //                 </TouchableOpacity>
+    //                 <View style={{ flexDirection : 'row' , alignItems : 'center' }}>
+    //                     <Para style={appendStyle.modeTitle}>ورود</Para>
+    //                     <View style={appendStyle.bullet} />
+    //                 </View>
+    //             </View>
+    //             <View style={{ marginTop : 20 }}>
+    //                 {
+    //                     stages[authMode][stage]
+    //                         ?.body()
+    //                 }
+    //             </View>
+    //             {
+    //             error ?
+    //             <View style={appendStyle.error}>
+    //                 <Para color={'red'}>{error}</Para>
+    //             </View> : null
+    //         }
+    //         <TouchableOpacity disabled={error} onPress={stages[authMode][stage].ctaHandler} style={[appendStyle.endCta , error ? appendStyle.disabledCta : {}]}>
+    //                     <Feather style={{ marginRight : 10 }} name="arrow-left" size={24} color="black" />
+    //                     <Para weight="bold" size={18}>
+    //                         {
+    //                             (() => {
+    //                                 return stages
+    //                                     [authMode]
+    //                                     [stage]?.ctaText
+    //                             })()
+    //                         }
+    //                     </Para>
+    //         </TouchableOpacity>
+    //         </View>
+    //     )
+    // }
     else return (
         <View style={appendStyle.authModeContainer}>
             <View style={appendStyle.modeHeader}>
@@ -401,14 +452,12 @@ const Login = () => {
                     <Para color={'red'}>{error}</Para>
                 </View> : null
             }
-            <TouchableOpacity disabled={error} onPress={stages[authMode][stage].ctaHandler} style={[appendStyle.endCta , error ? appendStyle.disabledCta : {}]}>
-                        <Feather style={{ marginRight : 10 }} name="arrow-left" size={24} color="black" />
+            <TouchableOpacity disabled={error || loadingCta} onPress={stages[authMode][stage].ctaHandler} style={[appendStyle.endCta , error || loadingCta ? appendStyle.disabledCta : {}]}>
+                        <Feather style={{ marginRight : 10 }} name={`${loadingCta ? "loader" : "arrow-left"}`} size={24} color="black" />
                         <Para weight="bold" size={18}>
                             {
                                 (() => {
-                                    return stages
-                                        [authMode]
-                                        [stage]?.ctaText
+                                    return loadingCta || stages[authMode][stage]?.ctaText
                                 })()
                             }
                         </Para>

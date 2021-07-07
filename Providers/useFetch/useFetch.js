@@ -47,10 +47,10 @@ const useFetch = (path, config) => {
                                 api , appToken : data
                               }
                             }).catch(err => {
-                                throw new Error(err.message)
+                                throw new Error(`YOU GET STUCK WITH INITIAL REQ WITH THIS ERROR ${err}`)
                             })
                 }).catch(err => {
-                  throw new Error(err);
+                  throw new Error(`YOU GET STUCK WITH INITIAL REQ WITH THIS ERROR ${err}`);
                 });
   })()
 

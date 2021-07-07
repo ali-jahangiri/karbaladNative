@@ -4,7 +4,6 @@ import { Store } from "./StoreProvider";
 
 const useSelector = (targetSlice = () => {}) => {
     const { store } = useContext(Store);
-    console.log(store);
     return targetSlice({...store});
 }
 

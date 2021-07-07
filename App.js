@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View } from 'react-native';
 
@@ -16,7 +16,6 @@ import config from './config';
 
 
 export default function App() {
-  
   return (
     <View style={generalStyle.appContainer}>
       <ErrorBoundary>

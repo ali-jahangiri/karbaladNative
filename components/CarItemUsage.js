@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
 
-import { View , TouchableOpacity } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 import { useStyle } from '../Hooks/useStyle';
 import { generateColor } from '../utils';
 import Para from './Para';

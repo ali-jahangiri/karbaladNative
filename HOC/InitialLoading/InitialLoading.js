@@ -18,18 +18,19 @@ import encrypt from '../../utils/encrypt';
 import client from '../../client';
 import config from '../../config';
 import { persister } from '../../utils';
-import AuthProvider from '../../Providers/Auth/AuthProvider';
+
+import { useDispatch, useSelector } from '../../Store/Y-state';
+import { setAppKey, setSeeWelcomeScreen } from '../../Store/Slices/authSlice';
+import { Welcome } from '../../screens';
 
 
 const InitialLoading = ({ children }) => {
     const [somethingWentWrong, setSomethingWentWrong] = useState(false);
     const [forceToReRender, setForceToReRender] = useState(0);
     const [loading, setLoading] = useState(true);
+    const storeDispatcher = useDispatch();
 
-
-
-    const [isAuth, setIsAuth] = useState(false);
-
+    const {appKey :  isAuth , seeWelcome} = useSelector(state => state.auth);
 
     const [fontLoaded , err ] = useFonts({
         light : require("../../assets/fonts/Vazir-Light.ttf"),
@@ -41,15 +42,26 @@ const InitialLoading = ({ children }) => {
 
 
     const { setter } = useUserDetails()
-    const dispatcher = useStyleDispatcher()
-    const fetcher = useFetch()
+    const styleDispatcher = useStyleDispatcher();
+
+    const fetcher = useFetch();
 
 
-    const resetHandler = () => {
-        setForceToReRender(false);
+    const resetHandler = () => setForceToReRender(false);
+
+
+    useEffect(() => {
+        console.log('EFFECT DEPEND OF ISAUTH' , !!isAuth);
+        resetHandler();
+    } , [isAuth])
+
+
+
+    const continueHandler = () => {
+        storeDispatcher(() => setSeeWelcomeScreen(true))
     }
 
-    
+
     useEffect(() => {
         fetcher.post(`${config.serverPath}/baseApi/getServerTime`)
                 .then(({ data }) => {
@@ -67,15 +79,13 @@ const InitialLoading = ({ children }) => {
                     .then(_ => {
                         return persister.get('userPrivateKey')
                             .then(data => {
-                                console.log(data , "*");
                                 if(data) {
-                                    console.log(data , "isAuthhhhhh");
-                                    setIsAuth(true);
+                                    storeDispatcher(() => setSeeWelcomeScreen(true));
+                                    storeDispatcher(() => setAppKey(data));
                                 }
                             }).catch(err => {
                                 throw new Error(err);
                             }).finally(() => {
-                                console.log(data);
                                 setLoading(false);
                             })
                     })
@@ -90,19 +100,23 @@ const InitialLoading = ({ children }) => {
             primary : '#04009A',
             secondary : '#dbe6fd',
         }
-        dispatcher({ globalStyle });
+        styleDispatcher({ globalStyle });
 
     } , [forceToReRender]);
 
     if(somethingWentWrong) {
-        return <ErrorPage 
+        return <ErrorPage
                     errMessage={somethingWentWrong} 
                     resetHandler={resetHandler} />
     }
 
 
     const authRenderChecker = () => {
-        if(isAuth) return children;
+        if(isAuth) {
+            if(!seeWelcome) {
+                return <Welcome continueHandler={continueHandler} />
+            }else return children
+        };
         return <Login />
     }
 
