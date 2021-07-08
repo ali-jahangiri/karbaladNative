@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View , ActivityIndicator } from 'react-native';
+import { AppRegistry, StyleSheet, View  } from 'react-native';
 import InsuranceStepperIntro from '../components/InsuranceStepperIntro';
 import InsStage from '../components/InsStage';
 
-import api from "../api";
+import useFetch from "../Providers/useFetch"
 
 import { useStyle } from '../Hooks/useStyle';
 import { carCaseChecker } from '../utils';
@@ -17,6 +17,10 @@ const InsuranceStepper = ({ id , name }) => {
     const [insuranceData, setInsuranceData] = useState(null);
     const [loading, setLoading] = useState(true);
 
+
+    const fetcher = useFetch(true);
+
+
     const [valueStore, setValueStore] = useState({});
 
     
@@ -25,11 +29,17 @@ const InsuranceStepper = ({ id , name }) => {
     
     useEffect(() => {
         setLoading(true)
-        api.post("GetInsuranceForm" , { categoryId : id })
-        .then(({ data }) => {
-            setInsuranceData(data)
-            setLoading(false)
-            });
+        fetcher
+            .then(({ api , appToken }) => {
+                
+                api.post('GetInsuranceForm'  , { categoryId : id } , { headers : {
+                    appToken
+                } })
+                    .then(({data}) => {
+                        setInsuranceData(data)
+                        setLoading(false)
+                    })
+            })
     } , [])
 
 

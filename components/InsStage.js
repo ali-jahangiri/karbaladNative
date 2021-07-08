@@ -74,7 +74,6 @@ const InsStage = (props) => {
                                  <Para>مرحله آخر</Para> : 
                                  <Para> مرحله {toFarsiNumber(stageNumber.currentStage)} از {toFarsiNumber(stageNumber.length)}</Para>
                         }
-                        
                     </View>
                     <Para weight="bold" size={20}>{categoryName}</Para>
                 </View>

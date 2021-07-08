@@ -3,8 +3,6 @@ import { useFonts } from 'expo-font';
 
 import LoadingScreen from "./LoadingScreen";
 
-import useUserDetails, { UserDetailsProvider } from '../UserDetailsProvider'
-
 import { useStyleDispatcher } from "../../Hooks/useStyle"
 
 import userDataMock from "../../utils/userDetails.mock";
@@ -22,6 +20,7 @@ import { persister } from '../../utils';
 import { useDispatch, useSelector } from '../../Store/Y-state';
 import { setAppKey, setSeeWelcomeScreen } from '../../Store/Slices/authSlice';
 import { Welcome } from '../../screens';
+import { setInsCat } from '../../Store/Slices/initialSlice';
 
 
 const InitialLoading = ({ children }) => {
@@ -41,7 +40,7 @@ const InitialLoading = ({ children }) => {
 
 
 
-    const { setter } = useUserDetails()
+    
     const styleDispatcher = useStyleDispatcher();
 
     const fetcher = useFetch();
@@ -50,10 +49,7 @@ const InitialLoading = ({ children }) => {
     const resetHandler = () => setForceToReRender(false);
 
 
-    useEffect(() => {
-        console.log('EFFECT DEPEND OF ISAUTH' , !!isAuth);
-        resetHandler();
-    } , [isAuth])
+    useEffect(() => resetHandler() , [isAuth])
 
 
 
@@ -72,16 +68,24 @@ const InitialLoading = ({ children }) => {
                             Password : config.adminPassword
                         }, serverTime)
 
-                    }).then(({ data }) => {
-                        if(data === client.static.ACCESS_DENIED) throw new Error(data);
+                    }).then(({ data : appToken }) => {
+                        if(data === client.static.ACCESS_DENIED) throw new Error(appToken);
                         setSomethingWentWrong(null);
+                        return appToken
                     })
-                    .then(_ => {
+                    .then(appToken => {
                         return persister.get('userPrivateKey')
                             .then(data => {
                                 if(data) {
                                     storeDispatcher(() => setSeeWelcomeScreen(true));
                                     storeDispatcher(() => setAppKey(data));
+                                    return fetcher
+                                            .post(`${config.serverPath}/MobileApi/getCategories` , {} , {
+                                                headers : {
+                                                    appToken,
+                                                }}).then(({data}) => {
+                                                    storeDispatcher(() => setInsCat(data.cat));
+                                            })
                                 }
                             }).catch(err => {
                                 throw new Error(err);
@@ -94,7 +98,6 @@ const InitialLoading = ({ children }) => {
                     })
                 })
 
-        setter(userDataMock)
         const globalStyle = {
             baseBorderRadius : 15,
             primary : '#04009A',
@@ -124,14 +127,4 @@ const InitialLoading = ({ children }) => {
 }
 
 
-
-const EnhancedWith = (props) => {
-    return (
-        <UserDetailsProvider>
-            <InitialLoading {...props} />
-        </UserDetailsProvider>
-    )
-}
-
-
-export default EnhancedWith;
+export default InitialLoading;

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Image, RecyclerViewBackedScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useStyle } from '../Hooks/useStyle';
 import { generateColor, imageFinder, toFarsiNumber } from '../utils';
 import Para from './Para';
@@ -16,8 +16,10 @@ const InsuranceResultPreviewItem = ({ insName , factorItems , insIconUrl , formu
     const { primary } = useStyle();
     const navigation = useNavigation();
     
+
     const orderHandler = () => {
-        navigation.push('insuranceConfirm' , { factorItems , insModel : { name : insName , icon : insIconUrl , category: catFullName , price : showValue ,  } , haveInstallment : installmentList.find(el => el === formulId) , reqId , installment_Value } )
+        
+        navigation.push('insuranceConfirm' , { formulId , factorItems , insModel : { name : insName , icon : insIconUrl , category: catFullName , price : showValue ,  } , haveInstallment : installmentList.find(el => el === formulId) , reqId , installment_Value } )
     }
 
     return (

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, PermissionsAndroid, ScrollView, StatusBar, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Image, ScrollView, StatusBar, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useStyle } from '../Hooks/useStyle';
 import { generateColor, imageFinder, toFarsiNumber } from '../utils';
 import InsConfirmItem from './InsConfirmItem';
@@ -10,7 +10,7 @@ import NextStepBtn from "./NextStepBtn";
 import ScreenWrapper from "./ScreenWrapper";
 
 
-const InsuranceConfirm = ({ route : { params : { factorItems , insModel , haveInstallment , reqId , installment_Value } } , navigation }) => {
+const InsuranceConfirm = ({ route : { params : { factorItems , insModel , haveInstallment , reqId , installment_Value , formulId } } , navigation }) => {
     const appendStyle = useStyle(style);
     const { secondary , primary } = useStyle();
     
@@ -18,8 +18,9 @@ const InsuranceConfirm = ({ route : { params : { factorItems , insModel , haveIn
         navigation.push("insuranceInstallment" , { factorId : haveInstallment , reqId , installment_Value })
     }
 
+    
     const goDirectlyToRequirement = () => {
-        navigation.push("insuranceRequirements" , { factorId : haveInstallment , reqId })
+        navigation.push("insuranceRequirements" , { factorId : formulId , reqId , installmentId : null })
     }
 
     return (

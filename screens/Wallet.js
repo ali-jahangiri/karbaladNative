@@ -1,18 +1,19 @@
 import React from 'react';
-import { ScrollView, Text, View } from 'react-native';
+import { ScrollView } from 'react-native';
 import ScreenHeader from '../components/ScreenHeader';
 import ScreenWrapper from '../components/ScreenWrapper';
 import WalletCart from '../components/WalletCard';
 import WalletTransaction from '../components/WalletTransaction';
-import useUserDetails from '../HOC/UserDetailsProvider';
+import { useSelector } from '../Store/Y-state';
 
 const Wallet = () => {
-    const { data : { walletData } } = useUserDetails()
+    const walletData = useSelector(state => state.initial.userData.walletData);
     
+
     return (
         <ScreenWrapper>
             <ScreenHeader title="کیف پول" />
-            <WalletCart 
+            {/* <WalletCart 
                 finalResult={walletData.finalResult} />
             
                 <ScrollView>
@@ -21,7 +22,7 @@ const Wallet = () => {
                             <WalletTransaction index={i + 1} key={i} {...el} />
                         ))
                     }
-                </ScrollView>
+                </ScrollView> */}
         </ScreenWrapper>
     )
 }

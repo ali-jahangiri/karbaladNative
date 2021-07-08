@@ -19,7 +19,7 @@ const Installment = ({ route : { params : { factorId , reqId , installment_Value
     const { primary } = useStyle();
 
     useEffect(() => {
-        api.post("getInsstallments" , { formulaId : factorId , requestId : 22671 })
+        api.post("getInsstallments" , { formulaId : factorId , requestId : reqId })
             .then(({ data }) => {
                 setInstallment(data);
                 setLoading(true);
@@ -28,7 +28,7 @@ const Installment = ({ route : { params : { factorId , reqId , installment_Value
 
 
     const navigateToRequirementHandler = (id) => {
-        navigation.push("insuranceRequirements" , { factorId , reqId })
+        navigation.push("insuranceRequirements" , { factorId , reqId , installmentId: id })
     }
 
     return (

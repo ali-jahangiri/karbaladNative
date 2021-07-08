@@ -1,6 +1,6 @@
 import { Feather } from '@expo/vector-icons';
 import { useScrollToTop } from '@react-navigation/native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRef } from 'react';
 import { Image, ScrollView, StyleSheet, View , TouchableOpacity } from 'react-native';
 import client from '../client';
@@ -11,11 +11,12 @@ import ScreenHeader from '../components/ScreenHeader';
 
 import { useStyle } from '../Hooks/useStyle';
 import { setAppKey } from '../Store/Slices/authSlice';
-import { useDispatch } from '../Store/Y-state';
+import { useDispatch, useSelector } from '../Store/Y-state';
 import { generateColor, persister } from '../utils';
 
 import * as ImagePicker from  "expo-image-picker";
 import ProfileEditableInput from '../components/ProfileEditableInput';
+import useFetch from '../Providers/useFetch';
 
 
 const Profile = () => {
@@ -26,7 +27,23 @@ const Profile = () => {
     const [inputValue, setInputValue] = useState({});
     const [loading, setLoading] = useState(false);
 
+    // const fetcher = useFetch(true);
 
+    // const privateKey = useSelector(state => state.auth.appKey);
+
+    // useEffect(() => {
+        // fetcher
+        //     .then(({ api , appToken }) => {
+        //         api.post("userProfile" , {} , {
+        //            headers : {
+        //             appToken,
+        //             ticket : privateKey
+        //            }
+        //         }).then(e => {
+        //             console.log(e);
+        //         })
+        //     })
+    // } , [])
 
     const changeHandler = (key , value) => {
         setInputValue(prev => ({

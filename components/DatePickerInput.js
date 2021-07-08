@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';  
+import React, { useEffect, useRef, useState } from 'react';  
 import { StyleSheet, TextInput, View } from 'react-native';
 import { useStyle } from '../Hooks/useStyle';
 
@@ -6,7 +6,7 @@ import { persianDate, toFarsiNumber } from "../utils";
 import { fixNumbers } from '../utils/Date';
 import Para from './Para';
 
-const DatePickerInput = ({ onChange , value = persianDate.now}) => {
+const DatePickerInput = ({ onChange , value = persianDate.now , hitStoreAtInitial = false}) => {
     const appendStyle = useStyle(style);
     
     const yearRef = useRef()
@@ -39,7 +39,12 @@ const DatePickerInput = ({ onChange , value = persianDate.now}) => {
         }
     }
 
-    
+    useEffect(() => {
+        if(hitStoreAtInitial) {
+            onChange(value)
+        }
+    } , [])
+
     return (
         <View style={appendStyle.container}>
             <View style={appendStyle.column}>

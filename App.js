@@ -16,10 +16,12 @@ import config from './config';
 
 
 export default function App() {
+
+  
   return (
     <View style={generalStyle.appContainer}>
       <ErrorBoundary>
-        <StoreProvider store={myStore}>
+        <StoreProvider logger store={myStore}>
           <FetchProvider packageName={config.packageName} baseURL={`${config.serverPath}/MobileApi/`}>
             <StyleProvider>
               <InitialLoading>

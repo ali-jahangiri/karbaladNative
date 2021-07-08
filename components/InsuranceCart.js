@@ -1,13 +1,13 @@
 import React from 'react';
-import { StyleSheet, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
+import { Image, StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 
 import Para from './Para';
 import { useStyle } from '../Hooks/useStyle';
-import { generateColor } from '../utils';
+import { generateColor, imageFinder } from '../utils';
 
 
-const InsuranceCart = ({ icon , name , onItemPress , cat , id }) => {
+const InsuranceCart = ({ name , onItemPress , cat , id , webIcon }) => {
     const appendStyle = useStyle(style);
 
     return (
@@ -15,7 +15,16 @@ const InsuranceCart = ({ icon , name , onItemPress , cat , id }) => {
             <View style={appendStyle.container}>
                 <Para size={18}>{name}</Para>
                 {/* TODO later add webIcon image component with this mock image */}
-                <Feather name="arrow-down-left" size={24} color="black" />
+                <View style={{ flexDirection : "row" , justifyContent : 'space-between', alignItems : 'center' , }}>
+                    <Feather name="arrow-down-left" size={24} color="black" />
+                    {
+                        webIcon ? <Image style={{ marginBottom : 10 }} source={{
+                            uri : imageFinder(webIcon),
+                            width: 50,
+                            height : 50
+                        }} /> : null
+                    }
+                </View>
             </View>
         </TouchableWithoutFeedback>
     )

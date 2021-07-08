@@ -4,7 +4,6 @@ import { ScrollView, StatusBar, StyleSheet, View } from 'react-native';
 import Para from "./Para";
 import InsuranceResultPreviewItem from './InsuranceResultPreviewItem';
 
-import api from "../api";
 import {useStyle} from "../Hooks/useStyle"
 
 import { Feather } from '@expo/vector-icons';
@@ -13,22 +12,31 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import Loading from './Loading';
 import EmptyState from './EmptyState';
+import useFetch from '../Providers/useFetch';
 
 const InsuranceResultPreview = ({ route : { params : { id , valueStore , flattedStage : selectedInsData , carCategory } } , navigation }) => {
     const [initialLoading, setInitialLoading] = useState(true);
     const [responseValues, setResponseValues] = useState({});
     const appendStyle = useStyle(style);
 
+    const [reqId, setReqId] = useState('');
+
+    const fetcher = useFetch(true);
+
     useEffect(() => {
-        api.post('GetInsuranceQuoteId' , { formData : JSON.stringify({ ...valueStore , Id : id }) })
-            .then(({ data }) =>  data)
-            .then(id => {
-                api.post('GetInsuranceQuotes' , { formulaId : id})
-                    .then(({ data }) => {
-                        setResponseValues(data);
-                        setInitialLoading(false);
-                    })
-            });
+        fetcher
+            .then(({ api , appToken }) => {
+                api.post('GetInsuranceQuoteId' , { formData : JSON.stringify({ ...valueStore , Id : id }) } , { headers : {appToken} })
+                    .then(({ data }) =>  data)
+                    .then(receivedId => {
+                        api.post('GetInsuranceQuotes' , { formulaId : receivedId} , { headers : {appToken}})
+                            .then(({ data }) => {
+                                setResponseValues(data);
+                                setReqId(receivedId);
+                                setInitialLoading(false);
+                            })
+                    });
+            })
         return () => {
             // with this state change , we force entire component get re render and all new params and send new request
             setInitialLoading(true);
@@ -56,7 +64,7 @@ const InsuranceResultPreview = ({ route : { params : { id , valueStore , flatted
                 {
                     responseValues?.insuranceQuotes?.addInsCoAmountV2?.map((el , i) => (
                         <InsuranceResultPreviewItem
-                                reqId={id}
+                                reqId={reqId}
                                 installmentList={responseValues.installmetFormouls}
                                 factorItems={responseValues.insuranceQuotes.factorItems} 
                                 {...el}

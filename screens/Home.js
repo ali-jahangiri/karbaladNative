@@ -1,11 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import ScreenHeader from '../components/ScreenHeader';
 import InsuranceDirectory from '../components/InsuranceDirectory';
 
-// TODO remove mock data
-
-import mock from "../utils/mockIns" 
 
 import TabScreenHeader from '../components/TabScreenHeader';
 import HomeInsRouter from '../Router/HomeInsRouter';
@@ -18,15 +15,41 @@ import Installment from './Installment';
 import InsuranceRequirements from '../components/InsuranceRequirements';
 import InsurancePay from '../components/InsurancePay';
 import MoreDetailsPay from '../components/MoreDetailsPay';
+import { useDispatch, useSelector } from '../Store/Y-state';
+import useFetch from '../Providers/useFetch';
+import { setUserData, setWasCompletelyLoaded } from '../Store/Slices/initialSlice';
+
 
 const InsIndexScreen = ({ navigation }) => {
+    const catItems = useSelector(state => state.initial.insCat);
+    const fetcher = useFetch(true);
+    const ticket = useSelector(state => state.auth.appKey);
+    const storeDispatcher = useDispatch();
+
+    useEffect(() => {
+        fetcher
+            .then(({ api , appToken }) => {
+                api.post("userProfile" , {} , {
+                    headers : {
+                        ticket,
+                        appToken
+                    }
+                }).then(({data}) => {
+                    console.log(data);
+                    storeDispatcher(() => setUserData(data))
+                    storeDispatcher(() => setWasCompletelyLoaded())
+                })
+            })        
+    } , [])
+
+
     const routeChangeHandler = routeParameters => 
         navigation.push('stepScreen' , routeParameters);
 
     return (
         <ScreenWrapper>
             <ScreenHeader title="خانه" />
-            <InsuranceDirectory handler={routeChangeHandler} items={mock} />
+            <InsuranceDirectory handler={routeChangeHandler} items={catItems} />
         </ScreenWrapper>
     )
 }

@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ScreenWrapper from './ScreenWrapper';
 
 import TabScreenHeader from "./TabScreenHeader";
 
-import mock from "../utils/mock.fuck";
-import { Appearance, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import RequirementDocument from './RequirementDocument';
 import FurtherInfo from './FurtherInfo';
 import InsurerDetails from './InsurerDetails';
@@ -13,52 +12,97 @@ import Para from './Para';
 import { useStyle } from '../Hooks/useStyle';
 import { generateColor } from '../utils';
 
-import api from "../api";
+import useFetch from '../Providers/useFetch';
+
+import config from '../config';
+
+import { useSelector } from "../Store/Y-state";
 
 const InsuranceRequirements = ({ route : { params } , navigation }) => {
+    const [loading, setLoading] = useState(true);
 
     const [staticStore, setStaticStore] = useState({});
     const [dynamicStore, setDynamicStore] = useState({});
+    const [docItems, setDocItems] = useState({});
+
+    const privateKey = useSelector(state => state.auth.appKey);
+
+
+    const fetcher = useFetch(true);
+
+    // const privateKey = useSelector(state => state.auth.appKey)
+    
+
+    useEffect(() => {
+        fetcher
+            .then(({ api , appToken }) => {
+                return api.post(`AddFactor` , {
+                        InstallmentId : params.installmentId , 
+                        formulaId : params.factorId, 
+                        requestId : params.reqId
+                    } , { headers : {appToken , ticket : privateKey , packageName : config.packageName} })
+                    .then(({data}) => {
+                        setDocItems(data);
+                        setLoading(false)
+                    }).catch(err => {
+                        console.log(err);
+                    })
+            }).catch(err => {
+                console.log(err)
+            })
+    } , [])
+
 
     const appendStyle = useStyle(style)
     
     const goToPaymentHandler = () => {
-        // api.post("" , {
+        console.log(staticStore , "-*");
+        fetcher
+            .then(({ api , appToken }) => {
+                api.post("GetRequirements" , { ...staticStore , factorId : params.factorId , request : JSON.stringify(dynamicStore) } ,{ headers : { appToken, ticket: privateKey }})
+                        .then(data => {
+                        console.log(data , "DONR");
+                })
+            })
+        // api.post("InsurancePay" , {
         //     ...staticStore,
         //     request : JSON.stringify(dynamicStore),
         //     factorId : params.factorId
         // })
         // .then(({ data : { data : { id } } }) => {
         // })
-        let mockId = params.factorId
-        navigation.navigate('insurancePayment' , { mockId });
+        // let mockId = params.factorId
+        // navigation.navigate('insurancePayment' , { mockId });
     }
 
-    return (
-        <ScreenWrapper>
-            <TabScreenHeader navigation={navigation} title="تکمیل مشخصات" extendStyle={{  }} />
-                <ScrollView contentContainerStyle={{ paddingBottom : 20 }}>
-                    <RequirementDocument 
-                        onChange={setDynamicStore} 
-                        items={mock.requierds.filter(el => el.typeImage)} />
-                    <FurtherInfo
-                        valueStore={dynamicStore}
-                        onChange={setDynamicStore}
-                        items={mock.requierds.filter(el => !el.typeImage)} />
-                    <InsurerDetails
-                        store={staticStore}
-                        onChange={setStaticStore}
-                    />
-                    <InsTransferee
-                        onChange={setStaticStore}
-                        store={staticStore}
-                    />
-                </ScrollView>
-                <TouchableOpacity onPress={goToPaymentHandler} style={appendStyle.ctaContainer}>
-                    <Para weight="bold" align="center">ثبت اطلاعات و پرداخت</Para>
-                </TouchableOpacity>
-        </ScreenWrapper>
-    )
+    useEffect(() => {
+        console.log('!!!!!!!!!!!!!', staticStore);
+    } , [staticStore])
+
+
+    return loading ? <Para>loadimng</Para> : <ScreenWrapper>
+    <TabScreenHeader navigation={navigation} title="تکمیل مشخصات" extendStyle={{  }} />
+        <ScrollView contentContainerStyle={{ paddingBottom : 20 }}>
+            <RequirementDocument 
+                onChange={setDynamicStore} 
+                items={docItems.requierds.filter(el => el.typeImage)} />
+            <FurtherInfo
+                valueStore={dynamicStore}
+                onChange={setDynamicStore}
+                items={docItems.requierds.filter(el => !el.typeImage)} />
+            <InsurerDetails
+                store={staticStore}
+                onChange={setStaticStore}
+            />
+            <InsTransferee
+                onChange={setStaticStore}
+                store={staticStore}
+            />
+        </ScrollView>
+        <TouchableOpacity onPress={goToPaymentHandler} style={appendStyle.ctaContainer}>
+            <Para weight="bold" align="center">ثبت اطلاعات و پرداخت</Para>
+        </TouchableOpacity>
+</ScreenWrapper>
 }
 
 

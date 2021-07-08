@@ -1,15 +1,48 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StatusBar, StyleSheet, TouchableOpacity, View } from 'react-native';
 import Para from '../components/Para';
 
 import ScreenWrapper from '../components/ScreenWrapper';
 import { useStyle } from '../Hooks/useStyle';
-import { useDispatch } from '../Store/Y-state';
+import { useDispatch, useSelector } from '../Store/Y-state';
 import { generateColor } from '../utils';
 import { Feather } from '@expo/vector-icons';
+import useFetch from '../Providers/useFetch';
+import { setInsCat, setUserData, setWasCompletelyLoaded } from '../Store/Slices/initialSlice';
 
 const Welcome = ({ continueHandler ,  }) => {
     const appendStyle = useStyle(style);
+    const ticket = useSelector(state => state.auth.appKey)
+    const storeDispatcher = useDispatch();
+
+    const fetcher = useFetch(true);
+
+    useEffect(() => {
+        fetcher
+            .then(({ api , appToken }) => {
+                return api.post('userProfile' , {} ,{
+                    headers : {
+                        ticket,
+                        appToken
+                    }
+                }).then(({ data }) => {
+                    storeDispatcher(() => setUserData(data))
+                    return data
+                }).then(_ => {
+                    api.post("getCategories" , {} , {
+                        headers : {
+                            appToken
+                        }
+                    }).then(({data}) => {
+                        storeDispatcher(() => setInsCat(data.cat));
+                        storeDispatcher(() => setWasCompletelyLoaded())
+                    })
+                })
+                
+            })
+    } , []);
+
+
 
     return (
         <ScreenWrapper >

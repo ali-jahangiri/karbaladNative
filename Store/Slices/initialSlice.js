@@ -3,17 +3,31 @@ import { createSlice } from "../Y-state";
 const initialSlice = createSlice({
     name : "initial",
     initialState : {
-        insuranceItems : [],
-        insuranceHistoryItems : [],
-        wallet : {},
-        profile : {}
+        userData : {},
+        insCat : [],
+        completelyLoaded : false
     },
     reducers : {
-        setInitial(state , payload) {
-
-        }
+       setUserData(state , payload) {
+           return {
+               ...state,
+               userData : payload
+           }
+       },
+       setInsCat(state , payload) {
+           return {
+               ...state,
+               insCat : payload
+           }
+       },
+       setWasCompletelyLoaded(state){
+           return {
+               ...state,
+               completelyLoaded : true
+           }
+       }
     }
 })
 
-export const { setInitial } = initialSlice.actions;
+export const {  setUserData , setInsCat , setWasCompletelyLoaded } = initialSlice.actions;
 export default initialSlice.reducer;
