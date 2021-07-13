@@ -3,7 +3,7 @@ import { Image, StyleSheet, View } from 'react-native';
 import { useStyle } from '../Hooks/useStyle';
 
 
-import { generateColor , statusChecker} from '../utils';
+import { generateColor , imageFinder, statusChecker} from '../utils';
 
 import Para from './Para';
 
@@ -12,7 +12,7 @@ import { useNavigation } from '@react-navigation/core';
 
 
 const InsuranceHistoryItem = props => {
-    const { categorysFullName , createTime ,  insuranceCoName , factorModeId} = props;
+    const { categorysFullName , createTime ,  insuranceCoName , factorModeId , iconUrl} = props;
 
     const appendStyle = useStyle(style);
     const { primary } = useStyle()
@@ -32,8 +32,8 @@ const InsuranceHistoryItem = props => {
             </View>
             
             <View style={appendStyle.icon}>
-                <Image source={{
-                    uri : "https://logosource.ir/wp-content/uploads/2019/09/bime-parsian.jpg" , 
+                <Image resizeMode="contain" source={{
+                    uri : imageFinder(iconUrl) , 
                     width: "100%",
                     height: "100%"
                 }} />

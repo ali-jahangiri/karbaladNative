@@ -2,7 +2,7 @@ import { useNavigation, useRoute } from '@react-navigation/core';
 import React from 'react';
 import { Image, ScrollView, StyleSheet, View , TouchableOpacity } from 'react-native';
 import { useStyle } from '../Hooks/useStyle';
-import { generateColor, statusChecker } from '../utils';
+import { generateColor, imageFinder, statusChecker } from '../utils';
 import Para from './Para';
 import TabScreenHeader from './TabScreenHeader';
 
@@ -57,7 +57,7 @@ const InsuranceHistoryDetails = () => {
     const pressHandler = () => {
         // user pay the cost
         if(factorModeId >= 3) navigation.navigate("insuranceHistoryImages" , {insImages , id , insuranceCoName , categorysFullName })
-        // else navigation.navigate('insuranceResult')
+        else navigation.navigate('insurancePayment' , { id })
     }
     return (
     <>
@@ -78,7 +78,7 @@ const InsuranceHistoryDetails = () => {
                 <View style={{ alignItems : 'flex-end' , flex: 1 }}>
                     <View >
                         <Image resizeMode="contain" source={{
-                            uri : 'https://lh3.googleusercontent.com/proxy/CTKJBudCzLNBSK43OfuUihItHuDge0XGSglnnDb3trTacKkSN9sEajBgdZ10RuVnO0azIn1ywhA3gEqBe_jyOmJux_XOUzW2KB1-hsDiVFlCnX5bBwySi5e6myeyNdIO1MWL9JmDiiYfMNqaZooh',
+                            uri : imageFinder(iconUrl),
                             height: 90,
                             width: 90
                             }} />

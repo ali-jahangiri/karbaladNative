@@ -21,6 +21,7 @@ import { useDispatch, useSelector } from '../../Store/Y-state';
 import { setAppKey, setSeeWelcomeScreen } from '../../Store/Slices/authSlice';
 import { Welcome } from '../../screens';
 import { setInsCat } from '../../Store/Slices/initialSlice';
+import axios from 'axios';
 
 
 const InitialLoading = ({ children }) => {
@@ -56,7 +57,6 @@ const InitialLoading = ({ children }) => {
     const continueHandler = () => {
         storeDispatcher(() => setSeeWelcomeScreen(true))
     }
-
 
     useEffect(() => {
         fetcher.post(`${config.serverPath}/baseApi/getServerTime`)

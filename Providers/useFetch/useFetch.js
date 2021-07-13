@@ -17,7 +17,7 @@ const useFetch = (path, config) => {
 
   const fetcher = (() => {
     return new Promise((resolve , _) => {
-      (reqHandler => {
+      (function test(){
         api.post(`${appConfig.serverPath}/baseApi/getServerTime`)
                   .then(({ data }) => { 
                       let serverTime = +data.split(" ")[1].split(':')[1];
@@ -28,15 +28,16 @@ const useFetch = (path, config) => {
                               }, serverTime)
                               })
                               .then(({ data }) => {
+                                
                                 if(data === clientConfig.static.ACCESS_DENIED) {
                                   console.warn('need to get again')
-                                  reqHandler()
+                                  // test()
                                 };
                                 resolve({ api , appToken : data })
                               })
                   }).catch(err => {
                     console.warn('need to get error');
-                    reqHandler()
+                    // test()
                   });
       })();
     })

@@ -35,7 +35,6 @@ const InsIndexScreen = ({ navigation }) => {
                         appToken
                     }
                 }).then(({data}) => {
-                    console.log(data);
                     storeDispatcher(() => setUserData(data))
                     storeDispatcher(() => setWasCompletelyLoaded())
                 })

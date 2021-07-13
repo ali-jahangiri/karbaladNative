@@ -35,7 +35,7 @@ const formItems = [
             return (
                 <View key="32b284c4-80d0-476d-867f" style={{ marginVertical : 10 }}>  
                     <Para color="grey" weight="bold" style={{ marginTop : 10 , marginRight : 10 }} >تاریخ تولد</Para>
-                    <DatePickerInput hitStoreAtInitial  value={value || persianDate.now} onChange={value => handler("BirthDay" , value)} />
+                    <DatePickerInput hitStoreAtInitial  value={"1400/04/09"} onChange={value => handler("BirthDay" , value)} />
                 </View>
             )
         }

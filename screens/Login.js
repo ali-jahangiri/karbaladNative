@@ -141,9 +141,6 @@ const Login = () => {
     const { primary } = useStyle()
 
 
-
-    console.log(inputValue , "INPUTVALUE");
-
     const inputChangeHandler = (key , value) => {
         setError(null);
         setInputValue(prev => ({
@@ -312,19 +309,26 @@ const Login = () => {
                 if(inputValue?.userName && inputValue?.password) {
                     fetcher
                         .then(({ api , appToken }) => {
+                            console.log(appToken);
                             api.post("GetUserData" , {
-                                phone : inputValue?.userName,
+                                mobile : inputValue?.userName,
                                 pass : inputValue?.password,
                                 newPass : "",
                                 name : ""
                             }, { headers : {
                                 appToken
                             } })
-                                .then(({ data }) => {
-                                    const { id , fullName ,  } = data;
-                                    console.log(data);
+                                .then(({ data })=> {
+                                    const { id , fullName ,  privatekey} = data;
                                     if(id < 0) {
                                         setError(fullName);
+                                    }else {
+                                        persister.set('userPrivateKey' , privatekey)
+                                        .then(_ => {
+                                            storeDispatcher(() => setSeeWelcomeScreen(false))
+                                            storeDispatcher(() => setAppKey(privatekey));
+                                            Keyboard.dismiss();
+                                        })
                                     }
                                 }).catch(err => {
                                     setError(err)

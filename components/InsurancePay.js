@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Alert, Linking, ScrollView, StatusBar, StyleSheet, TouchableOpacity, View } from 'react-native';
-import api from '../api';
+
 import { useStyle } from '../Hooks/useStyle';
 import ScreenWrapper from './ScreenWrapper';
 
@@ -13,35 +13,48 @@ import InsPayDeliveryOption from './InsPayDeliveryOption';
 import InsDetailsPay from './InsDetailsPay';
 import InsurerInfoPay from './InsurarInfoPay';
 import InsTransfereePay from './InsTransfereePay';
+import useFetch from '../Providers/useFetch';
+import { useSelector } from '../Store/Y-state';
 
-const InsurancePay = ({ route : { id }, navigation }) => {
+const InsurancePay = ({ navigation , route : { params : { id } } }) => {
     const [payResponse, setPayResponse] = useState(mock)
     const [loading, setLoading] = useState(true);
     const [additionalPrice, setAdditionalPrice] = useState(0);
     const [deliverOption, setDeliverOption] = useState(null)
+
+
+    const fetcher = useFetch(true);
+    const ticket = useSelector(state => state.auth.appKey);
+    
+
 
     const appendStyle = useStyle(style);
     const { primary } = useStyle();
 
     // TODO after adding auth system , read data from server and handle loading
     useEffect(() => {
-        // api.post('InsurancePay' , { factorId : id })
-        //     .then(({ data }) => {
-        //         setPayResponse(data)
-        //         setLoading(false)
-        //     })
-        // TODO set this value when request get completed
-        setDeliverOption(payResponse.deliveryModelsItems.find(el => el.thisDefault).id);
+        fetcher
+            .then(({ api , appToken }) => {
 
-        const unsubscribe = navigation.addListener("beforeRemove" , e => {
-            e.preventDefault();
-            navigation.push("home")
-            unsubscribe()
-            // const jumpToAction = TabActions.jumpTo('insurance', { screen : "insuranceHistoryDetails" , params : { ...payResponse } } );
-            // navigation.dispatch(jumpToAction);
-            // navigation.navigate("insurance" , { screen : "insuranceHistoryDetails" , params : { ...payResponse } })
-        });
-        return () => unsubscribe()
+                api.post('InsurancePay' , { factorId : id } , { appToken , ticket  })
+                .then(({ data }) => {
+                    setPayResponse(data);
+                    setLoading(false)
+                })
+            })
+       
+        // // TODO set this value when request get completed
+        // setDeliverOption(payResponse.deliveryModelsItems.find(el => el.thisDefault).id);
+
+        // const unsubscribe = navigation.addListener("beforeRemove" , e => {
+        //     e.preventDefault();
+        //     navigation.push("home")
+        //     unsubscribe()
+        //     // const jumpToAction = TabActions.jumpTo('insurance', { screen : "insuranceHistoryDetails" , params : { ...payResponse } } );
+        //     // navigation.dispatch(jumpToAction);
+        //     // navigation.navigate("insurance" , { screen : "insuranceHistoryDetails" , params : { ...payResponse } })
+        // });
+        // return () => unsubscribe()
     } , [])
     
 

@@ -18,6 +18,18 @@ import config from '../config';
 
 import { useSelector } from "../Store/Y-state";
 
+
+// import MM from "../utils/mockData";
+
+
+
+// console.log('====================================');
+// console.log(MM , "MM");
+// console.log('====================================');
+
+// !Important add money info section latter on
+// TODO add input validation
+
 const InsuranceRequirements = ({ route : { params } , navigation }) => {
     const [loading, setLoading] = useState(true);
 
@@ -30,19 +42,17 @@ const InsuranceRequirements = ({ route : { params } , navigation }) => {
 
     const fetcher = useFetch(true);
 
-    // const privateKey = useSelector(state => state.auth.appKey)
-    
-
     useEffect(() => {
         fetcher
-            .then(({ api , appToken }) => {
-                return api.post(`AddFactor` , {
+        .then(({ api , appToken }) => {
+            return api.post(`AddFactor` , {
                         InstallmentId : params.installmentId , 
                         formulaId : params.factorId, 
                         requestId : params.reqId
                     } , { headers : {appToken , ticket : privateKey , packageName : config.packageName} })
-                    .then(({data}) => {
+                    .then(({ data }) => {
                         setDocItems(data);
+                        console.log('received' , data);
                         setLoading(false)
                     }).catch(err => {
                         console.log(err);
@@ -56,13 +66,26 @@ const InsuranceRequirements = ({ route : { params } , navigation }) => {
     const appendStyle = useStyle(style)
     
     const goToPaymentHandler = () => {
-        console.log(staticStore , "-*");
+        const sendObject = {
+            ...staticStore ,
+            factorId : params.factorId ,
+            request : []
+        };
+        
+        console.log('endResultObject' , sendObject);
+        console.log('endResultObjectJson' , JSON.stringify(sendObject));
+        
         fetcher
             .then(({ api , appToken }) => {
-                api.post("GetRequirements" , { ...staticStore , factorId : params.factorId , request : JSON.stringify(dynamicStore) } ,{ headers : { appToken, ticket: privateKey }})
-                        .then(data => {
-                        console.log(data , "DONR");
-                })
+                api
+                    .post(`${config.serverPath}/MobileApi/GetRequirements` ,
+                            { ...sendObject } ,
+                            { headers : {appToken , ticket : privateKey , packageName : config.packageName} })
+                        .then(data => { 
+                        console.log(data , "DONR") })
+                    .catch(err => {
+                        console.log('mf err' , err);
+                    })
             })
         // api.post("InsurancePay" , {
         //     ...staticStore,
@@ -80,16 +103,20 @@ const InsuranceRequirements = ({ route : { params } , navigation }) => {
     } , [staticStore])
 
 
-    return loading ? <Para>loadimng</Para> : <ScreenWrapper>
+
+return loading ? <Para>LOADING</Para> : <ScreenWrapper>
     <TabScreenHeader navigation={navigation} title="تکمیل مشخصات" extendStyle={{  }} />
         <ScrollView contentContainerStyle={{ paddingBottom : 20 }}>
             <RequirementDocument 
                 onChange={setDynamicStore} 
-                items={docItems.requierds.filter(el => el.typeImage)} />
-            <FurtherInfo
+                items={docItems.requierds?.filter(el => el.typeImage)} />
+            {
+                docItems.requierds?.filter(el => !el.typeImage).length ? <FurtherInfo
                 valueStore={dynamicStore}
                 onChange={setDynamicStore}
-                items={docItems.requierds.filter(el => !el.typeImage)} />
+                items={docItems.requierds.filter(el => !el.typeImage)} /> : null
+            }
+            
             <InsurerDetails
                 store={staticStore}
                 onChange={setStaticStore}
@@ -102,8 +129,10 @@ const InsuranceRequirements = ({ route : { params } , navigation }) => {
         <TouchableOpacity onPress={goToPaymentHandler} style={appendStyle.ctaContainer}>
             <Para weight="bold" align="center">ثبت اطلاعات و پرداخت</Para>
         </TouchableOpacity>
-</ScreenWrapper>
+    </ScreenWrapper>
 }
+
+
 
 
 const style = ({ primary , baseBorderRadius }) => StyleSheet.create({

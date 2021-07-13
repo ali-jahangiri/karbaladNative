@@ -7,33 +7,54 @@ import Para from './Para';
 import { Feather } from '@expo/vector-icons';
 
 import InputNumber from "./InputNumber";
-import api from '../api';
 import config from '../config';
+import useFetch from '../Providers/useFetch';
+import { useSelector } from '../Store/Y-state';
 
 const WalletCart = ({ finalResult = "" }) => {
     const appendStyle = useStyle(style);
     const [chargeAmountPrice, setChargeAmountPrice] = useState(1000);
     const [chargeViewActive, setChargeViewActive] = useState(false);
+    const privateKey = useSelector(state => state.auth.appKey);
+
+    const fetcher = useFetch(true);
+
+
 
 
     const resetAmountHandler = () => {
         setChargeAmountPrice(1000);
     }
 
+
+    const wentWrongHandler = () => {
+        Alert.alert("ارتباط برقرار نشد" , "خطا در ارسال به مرورگر. مجدد تلاش نمایید" ,
+        [{
+                onPress : () => {},
+                text : "تایید"
+        }])
+    }
+
+
     const redirectToWebPay = () => {
-        api.post('UserAddWallet' , {
-            addAmount : chargeAmountPrice,
-            url : config.serverPath
-        })
-        .then(({data}) => {
-            Linking.openURL(data)
-                .catch(err => {
-                    Alert.alert("ارتباط برقرار نشد" , "خطا در ارسال به مرورگر. مجدد تلاش نمایید" , [{
-                        onPress : () => {},
-                        text : "تایید"
-                    }])
+        fetcher
+            .then(({ api , appToken }) => {
+                    api.post(`${config.serverPath}/MobileApi/UserAddWallet` ,
+                    { addAmount : chargeAmountPrice, } ,
+                    { appToken , ticket : privateKey })
+                    .then(({data}) => {
+                        console.log(data);
+                    Linking.openURL(data)
+                        .catch(err => {
+                            wentWrongHandler();
+                        })
+                }).catch(err => {
+                    console.log('innerCatch' , err);
                 })
-        })
+            }).catch(err => {
+                console.log(err , "ll");
+            })
+        
     }
 
     return (
