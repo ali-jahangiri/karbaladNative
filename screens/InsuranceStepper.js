@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { AppRegistry, StyleSheet, View  } from 'react-native';
+import { StyleSheet, View  } from 'react-native';
 import InsuranceStepperIntro from '../components/InsuranceStepperIntro';
 import InsStage from '../components/InsStage';
 
@@ -9,6 +9,7 @@ import { useStyle } from '../Hooks/useStyle';
 import { carCaseChecker } from '../utils';
 import { useNavigation } from '@react-navigation/native';
 import Loading from '../components/Loading';
+import client from '../client';
 
 const InsuranceStepper = ({ id , name }) => {
     const navigation = useNavigation();
@@ -16,22 +17,17 @@ const InsuranceStepper = ({ id , name }) => {
     const [currentStage, setCurrentStage] = useState(0);
     const [insuranceData, setInsuranceData] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [seeIntro, setSeeIntro] = useState(false);
+    const [valueStore, setValueStore] = useState({});
 
 
     const fetcher = useFetch(true);
-
-
-    const [valueStore, setValueStore] = useState({});
-
-    
     const appendStyle = useStyle(style)
-
     
     useEffect(() => {
         setLoading(true)
         fetcher
             .then(({ api , appToken }) => {
-                
                 api.post('GetInsuranceForm'  , { categoryId : id } , { headers : {
                     appToken
                 } })
@@ -43,24 +39,30 @@ const InsuranceStepper = ({ id , name }) => {
     } , [])
 
 
-
     const nextStepHandler = haveNewTempValueForSet => {
         setCurrentStage(prev => prev + 1);
         if(haveNewTempValueForSet) setValueStore(prev => ({ ...prev , ...haveNewTempValueForSet}))
     }   
 
-    const previousStepHandler = () => setCurrentStage(prev => prev - 1);
+    const previousStepHandler = () => {
+        if(!currentStage && seeIntro) {
+            setSeeIntro(false);
+        }else setCurrentStage(prev => prev - 1)
+    };
 
     const stageRenderChecker = () => {
-        if(currentStage === 0) {
+        if(!seeIntro) {
             return <InsuranceStepperIntro 
-                        nextStepHandler={nextStepHandler} 
+                        nextStepHandler={() => setSeeIntro(true)} 
                         desc={insuranceData.description} 
                         title={insuranceData.title} />
         }else {
-            const flattedStage = insuranceData.pages.map(el => el.forms).flat(1)
+            const flattedStage = insuranceData.pages
+                                    .map(el => el.forms)
+                                    .flat(1)
+                                    .filter(el => el.typesName !== client.static.INPUT_DETECTOR.INFO);
             const currentStageData = flattedStage[currentStage];
-            
+
             // if we reach to end step (stage) of insurance stepper we should navigate to result preview
             
             if(!currentStageData) {

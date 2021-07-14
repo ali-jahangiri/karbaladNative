@@ -3,12 +3,13 @@ import  { StyleSheet, TextInput, View } from "react-native"
 import { useStyle } from '../Hooks/useStyle';
 import { generateColor } from '../utils';
 
-const Input = ({ value , changeHandler , placeholder , isPassword , align , extendInputStyle , isMultiLine = false }) => {
+const Input = ({ value , changeHandler , placeholder , isPassword , align , extendInputStyle , isMultiLine = false , autoFocus = false }) => {
     const appendStyle = useStyle(style , align );
 
     return (
         <View style={appendStyle.container}>
             <TextInput
+                autoFocus={autoFocus}
                 multiline={isMultiLine}
                 secureTextEntry={isPassword}
                 style={[appendStyle.input , extendInputStyle]}

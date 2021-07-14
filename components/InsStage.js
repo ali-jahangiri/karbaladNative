@@ -49,6 +49,8 @@ const InsStage = (props) => {
     }
     
     const pushToNextStageHandler = () => {
+        // !Important this is a special case witch nested propertied is a required field
+        if(carCategory && !temporaryValue[nestedKeyName]) return setErr(true);
         
         if(isRequierd && (!temporaryValue[formName] && !temporaryValue[nestedKeyName] )) setErr(true);
         
@@ -64,15 +66,16 @@ const InsStage = (props) => {
         }
     }
 
+
     return (
         <View style={appendStyle.container}>
             <View style={appendStyle.header}>
                 <View style={{ flexDirection : 'row' , justifyContent : 'space-between' , width : "100%"}}>
                     <View style={appendStyle.stageNumber}>
                         {
-                            stageNumber.currentStage === stageNumber.length ?
+                            stageNumber.currentStage + 1 === stageNumber.length + 1 ?
                                  <Para>مرحله آخر</Para> : 
-                                 <Para> مرحله {toFarsiNumber(stageNumber.currentStage)} از {toFarsiNumber(stageNumber.length)}</Para>
+                                 <Para> مرحله {toFarsiNumber(stageNumber.currentStage + 1)} از {toFarsiNumber(stageNumber.length + 1)}</Para>
                         }
                     </View>
                     <Para weight="bold" size={20}>{categoryName}</Para>

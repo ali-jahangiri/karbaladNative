@@ -17,9 +17,14 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.karbalad.karbalad",
+      "buildNumber": "1.0.0"
     },
+    
     "android": {
+      "package": "com.karbalad.karbalad",
+      "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"

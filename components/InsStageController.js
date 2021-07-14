@@ -10,7 +10,7 @@ const conditionCase = "اتمام";
 
 const InsStageController = ({ onNext , onPrevious , backLabel , nextLabe }) => {
     
-    const appendStyle = useStyle(style , nextLabe === "اتمام" && 1.5);
+    const appendStyle = useStyle(style);
     const { primary } = useStyle();
     return (
         <View style={appendStyle.container}>

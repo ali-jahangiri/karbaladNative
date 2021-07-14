@@ -15,13 +15,16 @@ import InputNumber from '../components/InputNumber';
 import MultiSelect from '../components/MultiSelect';
 import SelectBoxOptimized from '../components/SelectBoxOptimized';
 
+import client from '../client';
 
+
+const { CHECK_FORM , DATE , DROPDOWN , FLOAT , INT , INFO , LONG , CREATE_YEAR } = client.static.INPUT_DETECTOR
 
 const InputDetector = ({typesName , isCarCase , temporary : { value , setValue } , formData , formName , formNameNested , step , maxNumber = 1000000 , minNumber = 0}) => {
+    console.log(typesName);
     switch(typesName) {
-        case "Info" :
-            break;
-            case "DropDown" : 
+        case INFO :   
+            case DROPDOWN : 
             // NOTE checking for CAR case
             if(isCarCase) {
                 return (
@@ -78,13 +81,13 @@ const InputDetector = ({typesName , isCarCase , temporary : { value , setValue }
                     </SelectBox>
                 )
             }
-        case "Date" : 
+        case DATE : 
         return (
                 <DatePicker date={value[formName]} onChange={setValue} />
             )
-        case "Long" :
-        case "Int" :
-        case "Float" :
+        case LONG :
+        case INT :
+        case FLOAT :
             return (
                 <InputNumber 
                     isNotLimited={!maxNumber} 
@@ -93,7 +96,7 @@ const InputDetector = ({typesName , isCarCase , temporary : { value , setValue }
                     value={value[formName] || 0} 
                     onChange={setValue} />
             )
-        case "CreateYear":
+        case CREATE_YEAR :
             return (
                 <React.Fragment>  
                     <SearchBox
@@ -115,12 +118,12 @@ const InputDetector = ({typesName , isCarCase , temporary : { value , setValue }
                     </SelectBox>
                 </React.Fragment>
             )
-        case "CheckedForm" :
+        case CHECK_FORM :
             return (
                 <MultiSelect onChange={setValue} items={formData} values={value[formName]} />
             )
 
-        default : return <Para>nothing find</Para>
+        default : throw new Error("something went wrong in inputDetector ! Please try again.")
     }
 }
 

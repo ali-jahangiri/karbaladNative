@@ -13,6 +13,7 @@ import Para from './Para';
 import { Feather } from '@expo/vector-icons';
 
 export const valueFinder = (store , selectedValue) =>  {
+    console.log(selectedValue , store , "-------");
     switch(store.typesName) {
         case "Info" : 
             break;
@@ -23,7 +24,7 @@ export const valueFinder = (store , selectedValue) =>  {
                 return store.formData
                         .filter(el => selectedValue.includes(el.id))
                         .map((el) => el.dataName)
-                        .toString()
+                        ?.toString()
             }
             return store.formData.find(el => el.id === selectedValue)?.dataName
         }

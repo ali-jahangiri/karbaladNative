@@ -18,9 +18,10 @@ import { fixNumbers } from '../utils/Date';
 import { persister } from '../utils';
 import { useDispatch } from '../Store/Y-state';
 import { setAppKey, setSeeWelcomeScreen } from '../Store/Slices/authSlice';
+import UserIconBox from '../components/UserIconBox';
 
 
-const { REGISTER, LOGIN } = client.static;
+const { REGISTER, LOGIN , FORGOT } = client.static;
 
 
 const PasswordInput = ({ value , changeHandler , placeholder , autoFocus = false }) => {
@@ -161,6 +162,7 @@ const Login = () => {
 
 
     const registerStage = {
+        stageLabel : "ثبت نام",
         "1" : {
             ctaText : 'دریافت کد تایید',
             body() {
@@ -284,12 +286,14 @@ const Login = () => {
 
 
     const loginStage = {
+        stageLabel : "ورود",
         "1" : {
             ctaText : 'ورود',
             body() {
                 return (
                     <>
                         <Input
+                            autoFocus
                             extendInputStyle={{ fontSize : 20 }}
                             placeholder="نام کاربری"
                             value={inputValue?.userName}
@@ -309,7 +313,6 @@ const Login = () => {
                 if(inputValue?.userName && inputValue?.password) {
                     fetcher
                         .then(({ api , appToken }) => {
-                            console.log(appToken);
                             api.post("GetUserData" , {
                                 mobile : inputValue?.userName,
                                 pass : inputValue?.password,
@@ -352,9 +355,17 @@ const Login = () => {
     }
 
 
+
+    const forgotStage = {
+        ...registerStage,
+        stageLabel : "فراموشی رمز عبور",
+    }
+
+
     const stages = {
         login : loginStage,
-        register : registerStage
+        register : registerStage,
+        forgot : forgotStage
     }
 
 
@@ -371,68 +382,28 @@ const Login = () => {
     const renderChecker = () => {
         if(!authMode) return (
             <>
-            <View>
-                <View style={appendStyle.icon}>
-                    <Feather name="user" size={30} color="black" />
-                </View>
-                <Para size={20} >کــــاربلد</Para>
+            <View style={{ alignItems : "center" }}>
+                <UserIconBox />
+                <Para size={20} >{client.static.LOGIN_APP_NAME}</Para>
             </View>
             <View style={appendStyle.descContainer}>
-                <Para>Et ad odio rerum et qui. Occaecati illum et sit architecto rerum cupiditate debitis. Omnis temporibus optio animi. Repellendus dicta aperiam dolorem dicta est voluptate magni architecto voluptatibus.
-                Et optio ea magni nulla consectetur. Nobis atque omnis quia eos itaque incidunt voluptates eum aut. Iste in eius unde. Debitis eos consequatur aut incidunt ad aliquid. Ratione inventore porro illo in laborum accusantium.
-                Culpa molestias dolorem. Veritatis qui eos vel autem mollitia in. Eveniet nihil vel ipsum est odio vel impedit.</Para>
+                <Para>{client.static.LOGIN_SCREEN_DESK}</Para>
             </View>
             <View style={appendStyle.ctaContainer}>
+                <View style={{ flexDirection : "row" , justifyContent : "space-between" }}>
                 <TouchableOpacity onPress={() => setAuthMode(LOGIN)} style={appendStyle.cta}>
                     <Para size={16} weight="bold" align="center">ورود</Para>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => setAuthMode(REGISTER)} style={{ backgroundColor  : "transparent" , flexDirection : "row" , justifyContent : 'center' , marginTop : 20}}>
-                    <Para> کنید </Para>
-                    <Para weight="bold" color={primary}>ثبت نام</Para>
-                    <Para align="center">حساب کاربری ندارید ؟ </Para>
+                <TouchableOpacity onPress={() => setAuthMode(REGISTER)} style={appendStyle.cta}>
+                    <Para size={16} weight="bold" align="center">ثبت نام</Para>
+                </TouchableOpacity>
+                </View>
+                <TouchableOpacity onPress={() => setAuthMode(FORGOT)} style={{ backgroundColor  : "transparent" , flexDirection : "row" , justifyContent : 'center' , marginTop : 20}}>
+                    <Para>رمز عبور خود را فراموش کرده اید ؟ </Para>
                 </TouchableOpacity>
             </View>
             </>
         );
-    // else if(authMode === LOGIN) {
-    //     return (
-    //         <View style={appendStyle.authModeContainer}>
-    //             <View style={appendStyle.modeHeader}>
-    //                 <TouchableOpacity onPress={() => stages[authMode][stage]?.backHandler()}>
-    //                     <Para  style={{ paddingHorizontal : 25 , paddingVertical : 10 , paddingLeft : 0 }} color="grey" weight="bold">بازگشت</Para>
-    //                 </TouchableOpacity>
-    //                 <View style={{ flexDirection : 'row' , alignItems : 'center' }}>
-    //                     <Para style={appendStyle.modeTitle}>ورود</Para>
-    //                     <View style={appendStyle.bullet} />
-    //                 </View>
-    //             </View>
-    //             <View style={{ marginTop : 20 }}>
-    //                 {
-    //                     stages[authMode][stage]
-    //                         ?.body()
-    //                 }
-    //             </View>
-    //             {
-    //             error ?
-    //             <View style={appendStyle.error}>
-    //                 <Para color={'red'}>{error}</Para>
-    //             </View> : null
-    //         }
-    //         <TouchableOpacity disabled={error} onPress={stages[authMode][stage].ctaHandler} style={[appendStyle.endCta , error ? appendStyle.disabledCta : {}]}>
-    //                     <Feather style={{ marginRight : 10 }} name="arrow-left" size={24} color="black" />
-    //                     <Para weight="bold" size={18}>
-    //                         {
-    //                             (() => {
-    //                                 return stages
-    //                                     [authMode]
-    //                                     [stage]?.ctaText
-    //                             })()
-    //                         }
-    //                     </Para>
-    //         </TouchableOpacity>
-    //         </View>
-    //     )
-    // }
     else return (
         <View style={appendStyle.authModeContainer}>
             <View style={appendStyle.modeHeader}>
@@ -440,7 +411,7 @@ const Login = () => {
                     <Para style={{ paddingHorizontal : 25 , paddingVertical : 10 , paddingLeft : 0 }}  color="grey" weight="bold">بازگشت</Para>
                 </TouchableOpacity>
                 <View style={{ flexDirection : 'row' , alignItems : 'center' }}>
-                    <Para style={appendStyle.modeTitle}>ثبت نام</Para>
+                    <Para style={appendStyle.modeTitle}>{stages[authMode].stageLabel}</Para>
                     <View style={appendStyle.bullet} />
                 </View>
             </View>
@@ -495,14 +466,7 @@ const style = ({ primary , baseBorderRadius }) => StyleSheet.create({
         padding: 15,
         borderRadius : baseBorderRadius
     },
-    icon : {
-        justifyContent : 'center',
-        backgroundColor : generateColor(primary , 5),
-        width: 70,
-        height: 70,
-        alignItems : 'center',
-        borderRadius : baseBorderRadius
-    },
+
     descContainer : {
         marginVertical : 20,
     },
@@ -520,7 +484,7 @@ const style = ({ primary , baseBorderRadius }) => StyleSheet.create({
     cta : {
         padding: 15,
         backgroundColor : generateColor(primary , 5),
-        width: "100%",
+        width: "49%",
         textAlign : 'center',
         borderRadius : baseBorderRadius
     },

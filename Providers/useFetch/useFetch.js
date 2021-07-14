@@ -31,13 +31,13 @@ const useFetch = (path, config) => {
                                 
                                 if(data === clientConfig.static.ACCESS_DENIED) {
                                   console.warn('need to get again')
-                                  // test()
+                                  test()
                                 };
                                 resolve({ api , appToken : data })
                               })
                   }).catch(err => {
                     console.warn('need to get error');
-                    // test()
+                    test()
                   });
       })();
     })

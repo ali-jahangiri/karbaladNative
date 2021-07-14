@@ -13,6 +13,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import Loading from './Loading';
 import EmptyState from './EmptyState';
 import useFetch from '../Providers/useFetch';
+import ScreenWrapper from './ScreenWrapper';
 
 const InsuranceResultPreview = ({ route : { params : { id , valueStore , flattedStage : selectedInsData , carCategory } } , navigation }) => {
     const [initialLoading, setInitialLoading] = useState(true);
@@ -48,15 +49,28 @@ const InsuranceResultPreview = ({ route : { params : { id , valueStore , flatted
         navigation.push('insuranceQuickEdit' ,{ server :  responseValues.insuranceQuotes.factorItems , valueStore , selectedInsData , id , carCategory })
     }
 
-    return initialLoading ? <Loading /> : (
-        <View style={appendStyle.container}>
+    const goHomeHandler = () => {
+        navigation.push('home')
+    }
+
+    if(initialLoading) return <Loading />
+    else {
+        const catFullName = responseValues?.insuranceQuotes?.addInsCoAmountV2[0]?.catFullName;
+        
+        return (
+            <ScreenWrapper>
             <View style={appendStyle.header}>
                 <TouchableOpacity onPress={quickEditHandler} style={appendStyle.editContainer}>
                     <Feather name="edit-2" size={30} color="white" />   
                 </TouchableOpacity>
-                <View>
-                        <Para>نتایج جستجو در : </Para>
-                        <Para weight="bold" size={20}>{responseValues?.insuranceQuotes?.addInsCoAmountV2[0].catFullName}</Para>
+                <View style={{ flex : 1 }}>
+                    {
+                        catFullName ? <>
+                            <Para>نتایج جستجو در : </Para>
+                            <Para weight="bold" size={20}>{catFullName}</Para>
+                        </>
+                        : <Para size={20} weight="bold">نتایج جستجو : </Para>
+                    }
                 </View>
             </View>
             {
@@ -64,6 +78,8 @@ const InsuranceResultPreview = ({ route : { params : { id , valueStore , flatted
                 {
                     responseValues?.insuranceQuotes?.addInsCoAmountV2?.map((el , i) => (
                         <InsuranceResultPreviewItem
+                                haveInstallment={responseValues?.installmetFormouls?.includes(el.formulId)}
+                                visualAlert={el.visualAlert}
                                 reqId={reqId}
                                 installmentList={responseValues.installmetFormouls}
                                 factorItems={responseValues.insuranceQuotes.factorItems} 
@@ -71,22 +87,24 @@ const InsuranceResultPreview = ({ route : { params : { id , valueStore , flatted
                                 key={i} />
                     ))
                 }
+                <TouchableOpacity style={appendStyle.goHome} onPress={goHomeHandler}>
+                    <Para color="lightgrey" align="center">بازگشت به خانه</Para>
+                    <Feather style={{ marginLeft : 10 }} name="arrow-right" size={24} color="lightgrey" />
+                </TouchableOpacity>
                 </ScrollView> ) : <EmptyState
-                    actionHandler={() => navigation.push('home')}
-                    title="نتیجه ای یافت نشد:(" 
-                    desc="نتیجه ای برای این استعلام حاصل نشد . مجددا تلاش نمایید." 
-                    ctaText="بازگشت"/>
+                                        actionHandler={goHomeHandler}
+                                        title="نتیجه ای یافت نشد:(" 
+                                        desc="نتیجه ای برای این استعلام حاصل نشد . مجددا تلاش نمایید." 
+                                        ctaText="بازگشت"/>
             } 
                 
            
-        </View>
-    )
+        </ScreenWrapper>
+        )
+    }
 }
 
 const style = ({ primary , baseBorderRadius }) => StyleSheet.create({
-    container : {
-        flex: 1
-    },
     header : {
         backgroundColor : generateColor(primary , 8),
         paddingTop : StatusBar.currentHeight * 2,
@@ -100,6 +118,13 @@ const style = ({ primary , baseBorderRadius }) => StyleSheet.create({
         borderRadius : baseBorderRadius,
         backgroundColor : '#fff2',
         padding: 12
+    },
+    goHome : {
+        flexDirection : 'row',
+        alignItems : 'center',
+        justifyContent : 'center',
+        flex : 1,
+        padding: 15,
     }
 })
 

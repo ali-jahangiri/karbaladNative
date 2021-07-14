@@ -1,7 +1,10 @@
+import axios from 'axios';
 import React from 'react';
 
 import api from '../../api';
 import client from '../../client';
+import config from '../../config';
+import { persister } from '../../utils';
 
 import FallbackScreen from './FallbackScreen';
 
@@ -20,12 +23,30 @@ class ErrorBoundary extends React.Component {
 
     componentDidCatch(error , info) {
         // connect to error monitoring service
+
+        const caller = axios.create({
+            url : `${config.serverPath}/MobileApi/saveException`,
+            method : "POST"
+        });
         
-        // api.post("saveException" , {
-        //     Message : `error message => ${error} --- component stack trace => ${info}`,
-        //     version: client.version,
-        //     reload: true
-        // })
+        persister.get("userPrivateKey")
+            .then(data => {
+                caller({
+                    Message : `error message => ${error} --- component stack trace => ${info}`,
+                    version: client.version,
+                    isLogin : data || false,
+                    reload: true
+                })
+               
+            }).catch(err => {
+                caller({
+                    Message : `error message => ${error} --- component stack trace => ${info}`,
+                    version: client.version,
+                    isLogin : null,
+                    cannotReachTOSecureStore : err,
+                    reload: true
+                })
+            })
     }
 
     resetHandler() {

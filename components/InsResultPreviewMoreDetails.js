@@ -3,6 +3,7 @@ import React from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useStyle } from '../Hooks/useStyle';
 import { generateColor, toFarsiNumber } from '../utils';
+import InsPreviewItemMoreDetailsRow from './InsPreviewItemMoreDetailsRow';
 import Para from './Para';
 
 
@@ -11,7 +12,7 @@ const isDescCase = string => {
     return false
 }
 
-const InsResultMoreDetails = ({ visible , setVisibility, data }) => {
+const InsResultMoreDetails = ({ visible , setVisibility, data , mainMoreDerails }) => {
     const appendStyle =  useStyle(style)
     return (
         <React.Fragment>
@@ -21,12 +22,21 @@ const InsResultMoreDetails = ({ visible , setVisibility, data }) => {
             </TouchableOpacity>
             {
                 visible && <View>
+                    {   
+                        mainMoreDerails.map((el , i) => (
+                                <InsPreviewItemMoreDetailsRow {...el} key={i} />
+                            ))
+                        
+                    }
                 {
                     data?.map((el , i) => {
                         if(isDescCase(el.name)) {
                             return (
-                                <View key={i}>
-                                    <Para>{el.name.slice(1)}</Para>
+                                <View style={{ flexDirection : 'row' , alignItems : "center" , justifyContent : 'flex-end' , marginVertical : 10  , flexShrink : 1 , }} key={i}>
+                                    <View style={{ flex : 1 }}>
+                                        <Para >{el.name.slice(1)}</Para>
+                                    </View>
+                                    <View style={appendStyle.moreDetailsBulletItem} />
                                 </View>
                             )
                         } else return (

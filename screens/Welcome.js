@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { StatusBar, StyleSheet, TouchableOpacity, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Keyboard, StatusBar, StyleSheet, TouchableOpacity, View } from 'react-native';
 import Para from '../components/Para';
 
 import ScreenWrapper from '../components/ScreenWrapper';
@@ -9,15 +9,20 @@ import { generateColor } from '../utils';
 import { Feather } from '@expo/vector-icons';
 import useFetch from '../Providers/useFetch';
 import { setInsCat, setUserData, setWasCompletelyLoaded } from '../Store/Slices/initialSlice';
+import client from '../client';
 
 const Welcome = ({ continueHandler ,  }) => {
     const appendStyle = useStyle(style);
     const ticket = useSelector(state => state.auth.appKey)
     const storeDispatcher = useDispatch();
+    const [loading, setLoading] = useState(true);
 
+    
     const fetcher = useFetch(true);
 
     useEffect(() => {
+        setLoading(true);
+        Keyboard.dismiss();
         fetcher
             .then(({ api , appToken }) => {
                 return api.post('userProfile' , {} ,{
@@ -35,7 +40,8 @@ const Welcome = ({ continueHandler ,  }) => {
                         }
                     }).then(({data}) => {
                         storeDispatcher(() => setInsCat(data.cat));
-                        storeDispatcher(() => setWasCompletelyLoaded())
+                        storeDispatcher(() => setWasCompletelyLoaded());
+                        setLoading(false);
                     })
                 })
                 
@@ -48,9 +54,12 @@ const Welcome = ({ continueHandler ,  }) => {
         <ScreenWrapper >
             <View style={appendStyle.container} >
                 <Para weight="bold" size={22}>خوش آمدید</Para>
-                <TouchableOpacity style={appendStyle.cta} onPress={continueHandler}>
-                    <Feather style={{ marginRight : 10 }} name="arrow-left" size={24} color="black" />
-                    <Para weight="bold" size={16} align="center">ادامه</Para>
+                <View style={appendStyle.deskContainer}>
+                    <Para>{client.static.WELCOME_DESK}</Para>
+                </View>
+                <TouchableOpacity style={[appendStyle.cta , loading ? appendStyle.ctaInLoading : {}]} disabled={loading} onPress={continueHandler}>
+                    <Feather style={{ marginRight : 10 }} name={loading ? "loader" : "arrow-left"} size={24} color="black" />
+                    <Para weight="bold" size={16} align="center">{loading ? "در حال دریافت اطلاعات اولیه" : "ادامه"}</Para>
                 </TouchableOpacity>
             </View>
         </ScreenWrapper>
@@ -70,6 +79,12 @@ const style = ({ primary , baseBorderRadius }) => StyleSheet.create({
         flexDirection : "row",
         alignItems : 'center',
         justifyContent : 'center'
+    },
+    deskContainer : {
+        marginVertical : 10
+    },
+    ctaInLoading : {
+        opacity: .5
     }
 })
 

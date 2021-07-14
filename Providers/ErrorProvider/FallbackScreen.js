@@ -1,16 +1,16 @@
 import React from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import client from '../../client';
 import Para from '../../components/Para';
+
 
 const FallbackScreen = ({ resetter }) => {
     
     return (
         <View style={style.container}>
-            <Para>
-                مشکلی در پردازش رخ داده است ، مجددا تلاش نمایید
-            </Para>
+            <Para>{client.static.ERROR_BOUNDARY_MAIN_MESSAGE}</Para>
             <TouchableOpacity style={style.resetCta} onPress={resetter}>
-                <Para align="center">تلاش مجدد</Para>
+                <Para align="center">{client.static.ERROR_BOUNDARY_ACTION_MESSAGE}</Para>
             </TouchableOpacity>
         </View>
     )
