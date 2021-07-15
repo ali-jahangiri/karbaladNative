@@ -112,8 +112,8 @@ const InsStage = (props) => {
                     ])
             }
             <InsStageController 
-                nextLabe={stageNumber.currentStage === stageNumber.length && "اتمام"} 
-                backLabel={stageNumber.currentStage === 1 && "بازگشت"} 
+                nextLabe={stageNumber.currentStage + 1 === stageNumber.length + 1 && "اتمام"} 
+                backLabel={stageNumber.currentStage + 1 === 1 && "بازگشت"} 
                 onNext={pushToNextStageHandler} 
                 onPrevious={prevStageHandler} />
         </View>

@@ -1,3 +1,6 @@
+import Persian from "persian-date";
+
+
 
 var
 persianNumbers = [/۰/g, /۱/g, /۲/g, /۳/g, /۴/g, /۵/g, /۶/g, /۷/g, /۸/g, /۹/g],
@@ -40,13 +43,15 @@ const persianDate = (() => {
     const month = [...Array(13).keys()];
     const day = [...Array(32).keys()];
 
+    const trustedDate = new Persian();
+
     return {
         year,
         month , 
         day , 
         currentYears,
         now,
-        dateInstance : `${currentYears}/1/1`,
+        dateInstance : `${fixNumbers(trustedDate.format("YYYY"))}/1/1`,
         stringDateToObject,
         objectDateToString
     }

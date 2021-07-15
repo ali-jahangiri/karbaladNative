@@ -50,7 +50,7 @@ const InsuranceResultPreview = ({ route : { params : { id , valueStore , flatted
     }
 
     const goHomeHandler = () => {
-        navigation.push('home')
+        navigation.navigate('home')
     }
 
     if(initialLoading) return <Loading />

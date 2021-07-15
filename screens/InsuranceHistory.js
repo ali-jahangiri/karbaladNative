@@ -6,7 +6,6 @@ import InsuranceHistoryDirectory from '../components/InsuranceHistoryDirectory';
 import ScreenWrapper from "../components/ScreenWrapper";
 
 
-import { historyList } from "../utils/mockHis";
 import InsuranceHistoryDetails from '../components/InsuranceHistoryDetails';
 import InsuranceHistoryImages from './InsuranceHistoryImages';
 import { useSelector } from '../Store/Y-state';

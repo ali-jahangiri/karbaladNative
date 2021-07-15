@@ -2,8 +2,8 @@ import React from 'react';
 import { View } from 'react-native';
 
 
-const ScreenWrapper = ({ children }) => (
-    <View style={{ flex: 1 }}>
+const ScreenWrapper = ({ children , extentStyle}) => (
+    <View style={[{ flex: 1 } , extentStyle || {}]}>
         {children}
     </View>
 )

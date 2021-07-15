@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import { StyleSheet , ScrollView , View , Image } from 'react-native';
+import { StyleSheet , ScrollView , View , Image , TouchableOpacity} from 'react-native';
+import { Feather } from '@expo/vector-icons';
+
 import Para from './Para';
+import StepperLabel from './StepperLabel';
 
 import { imageFinder } from '../utils';
 import { useStyle } from '../Hooks/useStyle';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 
-import { Feather } from '@expo/vector-icons';
-import StepperLabel from './StepperLabel';
 
 const CarCategory = ({ list , value : { CarCategoryId , searchFilterBase}, setValue}) => {
     const appendStyle = useStyle(style)

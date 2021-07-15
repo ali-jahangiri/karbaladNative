@@ -139,9 +139,6 @@ const Login = () => {
     const fetcher = useFetch(true);
     const storeDispatcher = useDispatch();
 
-    const { primary } = useStyle()
-
-
     const inputChangeHandler = (key , value) => {
         setError(null);
         setInputValue(prev => ({
@@ -328,9 +325,9 @@ const Login = () => {
                                     }else {
                                         persister.set('userPrivateKey' , privatekey)
                                         .then(_ => {
-                                            storeDispatcher(() => setSeeWelcomeScreen(false))
                                             storeDispatcher(() => setAppKey(privatekey));
                                             Keyboard.dismiss();
+                                            storeDispatcher(() => setSeeWelcomeScreen(false))
                                         })
                                     }
                                 }).catch(err => {
@@ -517,4 +514,4 @@ const style = ({ primary , baseBorderRadius }) => StyleSheet.create({
     }
 })
 
-export default Login
+export default Login;

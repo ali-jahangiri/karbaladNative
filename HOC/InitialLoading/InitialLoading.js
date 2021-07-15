@@ -5,7 +5,6 @@ import LoadingScreen from "./LoadingScreen";
 
 import { useStyleDispatcher } from "../../Hooks/useStyle"
 
-import userDataMock from "../../utils/userDetails.mock";
 import Login from '../../screens/Login';
 
 import useFetch from "../../Providers/useFetch"
@@ -18,10 +17,11 @@ import config from '../../config';
 import { persister } from '../../utils';
 
 import { useDispatch, useSelector } from '../../Store/Y-state';
-import { setAppKey, setSeeWelcomeScreen } from '../../Store/Slices/authSlice';
+import { setAppKey, setSeeWelcomeScreen, setSystemTime } from '../../Store/Slices/authSlice';
 import { Welcome } from '../../screens';
 import { setInsCat } from '../../Store/Slices/initialSlice';
-import axios from 'axios';
+
+import api from '../../api';
 
 
 const InitialLoading = ({ children }) => {
@@ -44,13 +44,12 @@ const InitialLoading = ({ children }) => {
     
     const styleDispatcher = useStyleDispatcher();
 
-    const fetcher = useFetch();
+    const resetHandler = () => setForceToReRender(prev => !prev);
 
 
-    const resetHandler = () => setForceToReRender(false);
-
-
-    useEffect(() => resetHandler() , [isAuth])
+    // useEffect(() => {
+    //     resetHandler()
+    // } , [isAuth]);
 
 
 
@@ -59,15 +58,16 @@ const InitialLoading = ({ children }) => {
     }
 
     useEffect(() => {
-        fetcher.post(`${config.serverPath}/baseApi/getServerTime`)
+    api.post(`${config.serverPath}/baseApi/getServerTime`)
                 .then(({ data }) => {
                     let serverTime = +data.split(" ")[1].split(':')[1];
-                    fetcher.post(`${config.serverPath}/baseApi/getAppToken` , {
+                    const deviceTime = new Date().getMinutes();
+                    storeDispatcher(() => setSystemTime(deviceTime - serverTime));
+                    api.post(`${config.serverPath}/baseApi/getAppToken` , {
                         Key : encrypt.encrypt({
                             UserName : config.adminUserName,
-                            Password : config.adminPassword
-                        }, serverTime)
-
+                            Password : config.adminPassword,
+                        }, serverTime),
                     }).then(({ data : appToken }) => {
                         if(data === client.static.ACCESS_DENIED) throw new Error(appToken);
                         setSomethingWentWrong(null);
@@ -79,7 +79,7 @@ const InitialLoading = ({ children }) => {
                                 if(data) {
                                     storeDispatcher(() => setSeeWelcomeScreen(true));
                                     storeDispatcher(() => setAppKey(data));
-                                    return fetcher
+                                    return api
                                             .post(`${config.serverPath}/MobileApi/getCategories` , {} , {
                                                 headers : {
                                                     appToken,

@@ -6,13 +6,13 @@ import Para from './Para';
 
 import InsResultMoreDetails from './InsResultPreviewMoreDetails';
 import { useNavigation } from '@react-navigation/native';
-import InsPreviewItemMoreDetailsRow from './InsPreviewItemMoreDetailsRow';
 import { Feather } from '@expo/vector-icons';
 
 
 
 const InsuranceResultPreviewItem = ({ insName , factorItems , insIconUrl , formulId , catFullName , showValue , tavangariMali , tedadeShoabKhesarat , rezayatAzMablaghPardakhti , outInsurance : moreDetailsValue ,  installmentList , reqId , installment_Value , visualAlert  , haveInstallment}) => {
     const appendStyle = useStyle(style , haveInstallment);
+    const { primary } = useStyle();
     const [moreDetailsActive, setMoreDetailsActive] = useState(false);
 
     const navigation = useNavigation();
@@ -47,8 +47,8 @@ const InsuranceResultPreviewItem = ({ insName , factorItems , insIconUrl , formu
             <View style={appendStyle.header}>
                 {
                     haveInstallment ? <View style={appendStyle.percentageContainer}>
-                        <Feather name="percent" size={20} color="black" />
-                        <Para>قسطی</Para>
+                        <Feather name="percent" size={20} color={primary} />
+                        <Para color={primary}>قسطی</Para>
                     </View> : null
                 }
                 <View style={{ flexDirection : "row" }}>
@@ -114,6 +114,9 @@ const style = ({ primary , baseBorderRadius , secondary } , haveInstallment) => 
         backgroundColor : generateColor(primary , 2),
         borderRadius : baseBorderRadius,
         padding : 10,
+    },
+    percentIcon : {
+        color: primary,
     },  
     header : {
         flexDirection : 'row',

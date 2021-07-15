@@ -1,7 +1,6 @@
 import React from 'react';
 
 import CarCategory from '../components/CarCategory';
-import Para from '../components/Para';
 
 // car section components
 import CarDirectory from "../components/CarDirectory";
@@ -21,7 +20,6 @@ import client from '../client';
 const { CHECK_FORM , DATE , DROPDOWN , FLOAT , INT , INFO , LONG , CREATE_YEAR } = client.static.INPUT_DETECTOR
 
 const InputDetector = ({typesName , isCarCase , temporary : { value , setValue } , formData , formName , formNameNested , step , maxNumber = 1000000 , minNumber = 0}) => {
-    console.log(typesName);
     switch(typesName) {
         case INFO :   
             case DROPDOWN : 

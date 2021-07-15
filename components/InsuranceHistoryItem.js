@@ -1,6 +1,7 @@
 import React from 'react';
 import { Image, StyleSheet, View } from 'react-native';
 import { useStyle } from '../Hooks/useStyle';
+import Persian from "persian-date";
 
 
 import { generateColor , imageFinder, statusChecker} from '../utils';
@@ -13,19 +14,21 @@ import { useNavigation } from '@react-navigation/core';
 
 const InsuranceHistoryItem = props => {
     const { categorysFullName , createTime ,  insuranceCoName , factorModeId , iconUrl} = props;
-
+    
     const appendStyle = useStyle(style);
-    const { primary } = useStyle()
+    const { primary } = useStyle();
     
     const navigation = useNavigation()
-
+    
+    const now = new Persian(createTime);
+    
     return (
         <View style={appendStyle.container}>
             <NextStepBtn containerBgColor={generateColor(primary , 5)} onPress={() => navigation.push('insuranceHistoryDetails' , props)} />
             <View style={{ flex: .8 }}>
                 <Para size={14} weight="bold">{categorysFullName}</Para>
                 <View style={appendStyle.detailContainer}>
-                    <Para color="grey">{new Date(createTime).toLocaleDateString('fa-IR')}</Para>
+                    <Para color="grey">{now.format("YYYY/MM/DD")}</Para>
                     <View style={appendStyle.divider} />
                     <Para>{insuranceCoName}</Para>
                 </View>

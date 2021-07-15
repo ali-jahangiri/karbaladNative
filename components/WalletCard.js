@@ -48,12 +48,8 @@ const WalletCart = ({ finalResult = "" }) => {
                         .catch(err => {
                             wentWrongHandler();
                         })
-                }).catch(err => {
-                    console.log('innerCatch' , err);
-                })
-            }).catch(err => {
-                console.log(err , "ll");
-            })
+                }).catch(err => {})
+            }).catch(err => {})
         
     }
 

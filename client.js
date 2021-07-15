@@ -1,5 +1,14 @@
 const client = {
     version : "1.0.0",
+    style : {
+        colors : {
+
+        },
+        size : {
+
+        },
+        
+    },
     static : {
         ACCESS_DENIED : "AccessDenied",
         REGISTER : "register",

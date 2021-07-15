@@ -2,9 +2,11 @@ import { useNavigation, useRoute } from '@react-navigation/core';
 import React from 'react';
 import { Image, ScrollView, StyleSheet, View , TouchableOpacity } from 'react-native';
 import { useStyle } from '../Hooks/useStyle';
-import { generateColor, imageFinder, statusChecker } from '../utils';
+import { generateColor, imageFinder, statusChecker, toFarsiNumber } from '../utils';
 import Para from './Para';
 import TabScreenHeader from './TabScreenHeader';
+import PersianDate from "persian-date";
+
 
 const ListViewRow = ({ title , value }) => {
     const style = useStyle(listViewStyle)
@@ -54,6 +56,10 @@ const InsuranceHistoryDetails = () => {
     const { color : statusColor , title : statusTitle , icon : statusIcon } = statusChecker(factorModeId);
     const appendStyle = useStyle(style , statusColor);
     
+
+    const currentCreateTime = new PersianDate(createTime).format("YYYY/MM/DD");
+
+
     const pressHandler = () => {
         // user pay the cost
         if(factorModeId >= 3) navigation.navigate("insuranceHistoryImages" , {insImages , id , insuranceCoName , categorysFullName })
@@ -93,7 +99,7 @@ const InsuranceHistoryDetails = () => {
                             </View>
                             <View style={appendStyle.column}>
                                 <Para style={appendStyle.label}>تاریخ ثبت</Para>
-                                <Para size={16}>{new Date(createTime).toLocaleDateString('fa-IR')}</Para>
+                                <Para size={16}>{currentCreateTime}</Para>
                             </View>
                             <View style={appendStyle.column}>
                                 <Para style={appendStyle.label}>شماره پیگیری</Para>
@@ -103,21 +109,21 @@ const InsuranceHistoryDetails = () => {
                     <Para style={appendStyle.label}>مشخصات تحویل گیرنده</Para>
                     <ListViewRow title="نام و نام خانوادگی" value={`${reciverName} ${reciverFamily}`} />
                     <ListViewRow title="منطقه" value={areasFullName} />
-                    <ListViewRow title="شماره تلفن" value={reciverPhone} />
-                    <ListViewRow title="شماره همراه" value={reciverMobile} />
+                    <ListViewRow title="شماره تلفن" value={toFarsiNumber(reciverPhone)} />
+                    <ListViewRow title="شماره همراه" value={toFarsiNumber(reciverMobile)} />
                     <ListViewRow title="آدرس" value={exactAddress} />
                     
                     <Para style={appendStyle.label}>مشخصات بیمه گذار</Para>
                     <ListViewRow title="نام و نام خانوادگی" value={`${name} ${reciverFamily}`} />
-                    <ListViewRow title="شماره همراه" value={mobile} />
-                    <ListViewRow title="کد ملی" value={nCode} />
-                    <ListViewRow title="تاریخ تولد" value={birthDay.split('T')[0].replace(/-/g, '/')} />
+                    <ListViewRow title="شماره همراه" value={toFarsiNumber(mobile)} />
+                    <ListViewRow title="کد ملی" value={toFarsiNumber(nCode)} />
+                    <ListViewRow title="تاریخ تولد" value={toFarsiNumber(birthDay.split('T')[0].replace(/-/g, '/'))} />
                     <ListViewRow title="جنسیت" value={genders == 1 ? ' مرد ' : ' زن' } />
                     
                     <Para style={appendStyle.label}>مشخصات بیمه نامه</Para>
                     {
                         factorItems?.map((el , i) => (
-                            <ListViewRow key={i} title={el.lable} value={el.show_Value} />
+                            <ListViewRow key={i} title={el.lable} value={toFarsiNumber(el.show_Value)} />
                         ))
                     }
             </View>
@@ -133,9 +139,6 @@ const InsuranceHistoryDetails = () => {
 }
 
 const style = ({ primary , secondary , baseBorderRadius } , statusColor) => StyleSheet.create({
-    // firstDetails : {
-    //     width: "100%",
-    // },
     statusContainer : {
         flexDirection : 'row',
         overflow: "hidden",

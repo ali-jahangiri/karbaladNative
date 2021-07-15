@@ -17,15 +17,7 @@ import useFetch from '../Providers/useFetch';
 import config from '../config';
 
 import { useSelector } from "../Store/Y-state";
-
-
-// import MM from "../utils/mockData";
-
-
-
-// console.log('====================================');
-// console.log(MM , "MM");
-// console.log('====================================');
+import Loading from './Loading';
 
 // !Important add money info section latter on
 // TODO add input validation
@@ -65,13 +57,17 @@ const InsuranceRequirements = ({ route : { params } , navigation }) => {
 
     const appendStyle = useStyle(style)
     
+    
+    
+    
     const goToPaymentHandler = () => {
         const sendObject = {
             ...staticStore ,
-            factorId : params.factorId ,
-            request : []
+            factorId : docItems.factorCode ,
+            request : JSON.stringify(dynamicStore)
         };
         
+        console.log(params.factorId , docItems.factorCode , "```````````````````");
         console.log('endResultObject' , sendObject);
         console.log('endResultObjectJson' , JSON.stringify(sendObject));
         
@@ -104,7 +100,7 @@ const InsuranceRequirements = ({ route : { params } , navigation }) => {
 
 
 
-return loading ? <Para>LOADING</Para> : <ScreenWrapper>
+return loading ? <Loading /> : <ScreenWrapper>
     <TabScreenHeader navigation={navigation} title="تکمیل مشخصات" extendStyle={{  }} />
         <ScrollView contentContainerStyle={{ paddingBottom : 20 }}>
             <RequirementDocument 

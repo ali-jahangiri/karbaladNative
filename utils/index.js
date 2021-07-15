@@ -20,5 +20,4 @@ export {
     toFarsiNumber,
     persister,
     encrypt,
-    
 }

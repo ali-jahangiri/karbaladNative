@@ -13,13 +13,11 @@ import Para from './Para';
 import { Feather } from '@expo/vector-icons';
 
 export const valueFinder = (store , selectedValue) =>  {
-    console.log(selectedValue , store , "-------");
     switch(store.typesName) {
         case "Info" : 
             break;
         case "DropDown" :
         case "CheckedForm" : {
-            // if(carCase)
             if(Array.isArray(selectedValue)) {
                 return store.formData
                         .filter(el => selectedValue.includes(el.id))

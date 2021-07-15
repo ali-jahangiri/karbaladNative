@@ -20,8 +20,6 @@ const DatePicker = ({ date = persianDate.dateInstance,  onChange}) => {
         onChange({ value : `${newDate.year}/${newDate.month}/${newDate.day}`});
     }
 
-    
-
     const yearRef = useRef()
     const monthRef = useRef()
     const dayRef = useRef()
@@ -39,7 +37,7 @@ const DatePicker = ({ date = persianDate.dateInstance,  onChange}) => {
             y : (persianDate.day.findIndex(el => el === day) - 1) * 70
         })
 
-    } , [date])
+    } , [date]);
 
     return (
         <View style={{ flex : 1 ,alignItems  : 'center' , justifyContent : 'center'}}>

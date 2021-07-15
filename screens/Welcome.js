@@ -11,9 +11,9 @@ import useFetch from '../Providers/useFetch';
 import { setInsCat, setUserData, setWasCompletelyLoaded } from '../Store/Slices/initialSlice';
 import client from '../client';
 
-const Welcome = ({ continueHandler ,  }) => {
+const Welcome = ({ continueHandler }) => {
     const appendStyle = useStyle(style);
-    const ticket = useSelector(state => state.auth.appKey)
+    const ticket = useSelector(state => state.auth.appKey);
     const storeDispatcher = useDispatch();
     const [loading, setLoading] = useState(true);
 
@@ -21,7 +21,6 @@ const Welcome = ({ continueHandler ,  }) => {
     const fetcher = useFetch(true);
 
     useEffect(() => {
-        setLoading(true);
         Keyboard.dismiss();
         fetcher
             .then(({ api , appToken }) => {
