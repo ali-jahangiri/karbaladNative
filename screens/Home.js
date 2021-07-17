@@ -18,6 +18,9 @@ import MoreDetailsPay from '../components/MoreDetailsPay';
 import { useDispatch, useSelector } from '../Store/Y-state';
 import useFetch from '../Providers/useFetch';
 import { setUserData, setWasCompletelyLoaded } from '../Store/Slices/initialSlice';
+import InsRequirementConfirm from './InsRequirmentConfirm';
+import { Button } from 'react-native';
+import { persister } from '../utils';
 
 
 const InsIndexScreen = ({ navigation }) => {
@@ -49,6 +52,7 @@ const InsIndexScreen = ({ navigation }) => {
         <ScreenWrapper>
             <ScreenHeader title="خانه" />
             <InsuranceDirectory handler={routeChangeHandler} items={catItems} />
+            <Button title="clear" onPress={() => persister.remove("userPrivateKey")} />
         </ScreenWrapper>
     )
 }
@@ -85,6 +89,7 @@ const Home = () => <HomeInsRouter
                         requirement={InsuranceRequirements}
                         payment={InsurancePay}
                         paymentMoreDetails={MoreDetailsPay}
+                        requirementConfirm={InsRequirementConfirm}
                         />
 
 export default Home;

@@ -1,12 +1,12 @@
 import { Feather } from '@expo/vector-icons';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {StyleSheet, View , TouchableOpacity, ScrollView } from 'react-native';
 
 import client from '../client';
 import { useStyle } from '../Hooks/useStyle';
-import { setAppKey } from '../Store/Slices/authSlice';
+import { setAppKey, setUserName } from '../Store/Slices/authSlice';
 import { useDispatch, useSelector } from '../Store/Y-state';
-import { generateColor, persister } from '../utils';
+import { generateColor, persister, toFarsiNumber } from '../utils';
 import useFetch from '../Providers/useFetch';
 
 
@@ -16,9 +16,11 @@ import Input from '../components/Input';
 import Para from '../components/Para';
 import ProfileRow from '../components/ProfileRow';
 import ScreenHeader from '../components/ScreenHeader';
+import Drawer from '../components/Drawer';
+import { setUserData } from '../Store/Slices/initialSlice';
 
 
-const { CHANGE_PASSWORD , CHANGE_USERNAME } = client.static
+const { CHANGE_PASSWORD , CHANGE_USERNAME , PROFILE_EDIT } = client.static
 
 const Profile = () => {
     const appendStyle = useStyle(style);
@@ -28,6 +30,9 @@ const Profile = () => {
 
     const [currentUserEditMode, setCurrentUserEditMode] = useState(null);
 
+    const [profileEditWasSuccessfully, setProfileEditWasSuccessfully] = useState(false);
+    const [phoneAsUserName, setPhoneAsUserName] = useState(null)
+
 
     const [respondErr, setRespondErr] = useState(null);
 
@@ -35,12 +40,17 @@ const Profile = () => {
     const fetcher = useFetch(true);
     const userData = useSelector(state => state.initial.userData);
     const completelyLoaded = useSelector(state => state.initial.completelyLoaded);
-    const privateKey = useSelector(state => state.auth.appKey);
-
+    
+    
     const storeDispatcher =  useDispatch();
 
+    useEffect(() => {
+        persister.get("userName")
+            .then(userName => {
+                setPhoneAsUserName(userName);
+            })
+    } , []);
 
-    
     const changeHandler = (key , value) => {
         setRespondErr(null);
         setInputValue(prev => ({
@@ -91,40 +101,102 @@ const Profile = () => {
     const logoutHandler = () => {
         persister
             .remove('userPrivateKey')
-                .then(_ => storeDispatcher(() => setAppKey('')));
+                .then(_ => {
+                    persister.remove("userName")
+                        .then(response => {
+                            storeDispatcher(() => setAppKey(''))
+                        })
+                });
+    }
+
+
+
+    const doneWithProfileEditHandler = () => {
+        setProfileEditWasSuccessfully(false);
+        setInputValue({});
+        setCurrentUserEditMode(null);
+        setRespondErr(null);
     }
 
 
     const changeUserDetailsHandler = () => {
-        let shouldContinue = true;
-        
-        const { newPassword = "" , newPasswordConfirm = "", currentPassword = "" } = inputValue;
+        const { userName = "" , password = "" , newPassword = "" , newPasswordConfirm = "" , currentPassword = "" } = inputValue;
 
-
-        if([newPassword , newPasswordConfirm , currentPassword].includes("")) {
-            setRespondErr("فرم ها را به درستی تکمیل کنید");
-            shouldContinue = false;
-        }
-        
         if(currentUserEditMode === CHANGE_PASSWORD) {
-            if(newPassword !== newPasswordConfirm) {
-                setRespondErr("رمز عبور با تکرار آن یکسان نمیباشد");
-                shouldContinue = false;
+            if([newPassword , newPasswordConfirm, currentUserEditMode].includes("")) {
+                setRespondErr(PROFILE_EDIT.TRUTHY_ERROR_MESSAGE);
+            }
+            else if(newPassword !== newPasswordConfirm) {
+                setRespondErr(PROFILE_EDIT.PASSWORD_CHANGE.CHAR_CONFLICT_MESSAGE);
+            }
+            else if(newPassword.length < 4) {
+                setRespondErr(toFarsiNumber(PROFILE_EDIT.PASSWORD_CHANGE.LENGTH_ERROR_MESSAGE))
+            }
+            else {
+                requestAction({
+                    mobile : phoneAsUserName,
+                    pass : currentPassword,
+                    newPass : newPassword,
+                    name : ""
+                }).then(returnedValue => {
+                    const key = returnedValue.privatekey;
+                    persister.set("userPrivateKey" , key)
+                        .then(_ => {
+                            storeDispatcher(() => setAppKey(key))
+                            setProfileEditWasSuccessfully(PROFILE_EDIT.PASSWORD_CHANGE.SUCCESS_PASSWORD_CHANGE);
+                        })
+                })
+            }
+        }else {
+            if([userName , password].includes("")) setRespondErr(PROFILE_EDIT.TRUTHY_ERROR_MESSAGE);
+            else {
+                requestAction({
+                    mobile : phoneAsUserName,
+                    pass : password,
+                    newPass : "",
+                    name : userName
+                }).then(data => {
+                    const key = data.privatekey;
+                    persister.set("userPrivateKey" , key)
+                        .then(_ => {
+                            storeDispatcher(() => setAppKey(key))
+                            fetcher
+                                .then(({ api , appToken }) => {
+                                    api.post("userProfile" , {} , {
+                                        headers : {
+                                            ticket : key,
+                                            appToken
+                                        }
+                                    }).then(({data}) => {
+                                        storeDispatcher(() => setUserData(data))
+                                    })
+                                })     
+                            setProfileEditWasSuccessfully(PROFILE_EDIT.USERNAME_CHANGE.SUCCESS_USERNAME_CHANGE)
+                        })
+                })
             }
         }
-        if(shouldContinue) {
-            // fetcher
-            //     .then(({ api , appToken }) => {
-            //         api.post("GetUserData" , { 
-            //             mobile : inputValue?.userName,
-            //             pass : inputValue?.password,
-            //             newPass : "",
-            //             name : ""
-            //          } , { headers : { appToken } })
-            //     })
-        }
+
     }
 
+    const requestAction = body => {
+        return fetcher
+                .then(({ api , appToken }) => {
+                    return api.post("GetUserData" , body , { headers : { appToken  } })
+                        .then(({ data }) => {
+                            if(data.id < 0) {
+                                throw new Error(data.fullName);
+                            }else {
+                                return data
+                            }
+                        }).catch(err => {
+                            setRespondErr(err.message);
+                            throw new Error(err.message);
+                        })
+                }).catch(err => {
+                    throw new Error(err)
+                })
+    }
 
 
     const switchCurrentUserDetailsChange = (newMode , clearInputStore = true) => {
@@ -133,6 +205,11 @@ const Profile = () => {
         setRespondErr(null);
     }
 
+
+
+    const drawerCloseHandler = () => {
+        doneWithProfileEditHandler()
+    }
 
 
     if(!completelyLoaded) return <Loading />;
@@ -195,7 +272,7 @@ const Profile = () => {
                             {
                                 currentUserEditMode === CHANGE_USERNAME ? <View style={appendStyle.changeableContainer}>
                                 <Input placeholder="نام کاربری جدید" changeHandler={value => changeHandler("userName" , value)} value={inputValue?.userName} />
-                                <Input placeholder="رمز عبور" changeHandler={value => changeHandler("password" , value)} value={inputValue?.password} />
+                                <Input isPassword placeholder="رمز عبور" changeHandler={value => changeHandler("password" , value)} value={inputValue?.password} />
                                 {
                                     respondErr && currentUserEditMode === CHANGE_USERNAME ? <View style={appendStyle.errorContainer}>
                                         <Para color='red' >{respondErr}</Para>
@@ -262,6 +339,18 @@ const Profile = () => {
                 </View>
             </View>
             </ScrollView>
+            {
+                profileEditWasSuccessfully ?
+                 <Drawer 
+                    onClose={drawerCloseHandler} >
+                        <View style={appendStyle.drawerContentContainer}> 
+                            <Para size={20} >{profileEditWasSuccessfully}</Para>
+                            <TouchableOpacity style={appendStyle.drawerCloseTrigger} onPress={drawerCloseHandler}>
+                                <Para weight="bold" align="center">تایید</Para>
+                            </TouchableOpacity>
+                        </View>
+                </Drawer> : null
+            }
         </>
     )
 }
@@ -332,9 +421,21 @@ const style = ({ primary , secondary , baseBorderRadius }) => StyleSheet.create(
         alignItems : 'center',
         
     },
+    drawerContentContainer : {
+        justifyContent : 'center',
+        alignItems : "center", 
+        height : "100%"
+    },  
     errorContainer : {
         marginBottom : 10
-    },  
+    },
+    drawerCloseTrigger : {
+        marginTop : 10,
+        backgroundColor : generateColor(primary , 5),
+        width : "90%",
+        padding: 15,
+        borderRadius : baseBorderRadius
+    },
     // editImageContainer : {
     //     position: 'absolute',
     //     backgroundColor : "white",

@@ -95,7 +95,7 @@ const InsuranceHistoryDetails = () => {
                     
                             <View style={appendStyle.column}>
                                         <Para style={appendStyle.label}>رشته بیمه</Para>
-                                        <Para size={16}>{categorysFullName}</Para>
+                                        <Para style={{ flex : .9}} size={16}>{categorysFullName}</Para>
                             </View>
                             <View style={appendStyle.column}>
                                 <Para style={appendStyle.label}>تاریخ ثبت</Para>

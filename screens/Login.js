@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { Keyboard, StatusBar, StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
+import { Button, Keyboard, StatusBar, StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
 import Para from '../components/Para';
 import { useStyle } from '../Hooks/useStyle';
 import { generateColor, toFarsiNumber } from '../utils';
@@ -16,7 +16,7 @@ import config from '../config';
 // TODO remove and combine this fixNumber for have only one import from utils
 import { fixNumbers } from '../utils/Date';
 import { persister } from '../utils';
-import { useDispatch } from '../Store/Y-state';
+import { useDispatch, useSelector } from '../Store/Y-state';
 import { setAppKey, setSeeWelcomeScreen } from '../Store/Slices/authSlice';
 import UserIconBox from '../components/UserIconBox';
 
@@ -138,6 +138,13 @@ const Login = () => {
 
     const fetcher = useFetch(true);
     const storeDispatcher = useDispatch();
+
+
+
+    const test = useSelector(state => state.auth.userName);
+    console.log(test , 'userName in login');
+
+
 
     const inputChangeHandler = (key , value) => {
         setError(null);
@@ -266,11 +273,14 @@ const Login = () => {
                                     setLoadingCta(false);
                                 }else {
                                     const key = data.privatekey;
-                                    persister.set('userPrivateKey' , key)
-                                        .then(_ => {
-                                            storeDispatcher(() => setSeeWelcomeScreen(false))
-                                            storeDispatcher(() => setAppKey(key));
-                                            Keyboard.dismiss();
+                                    persister.set("userName" , phone)
+                                        .then(one => {
+                                            persister.set('userPrivateKey' , key)
+                                                .then(_ => {
+                                                    storeDispatcher(() => setSeeWelcomeScreen(false));
+                                                    storeDispatcher(() => setAppKey(key));
+                                                    Keyboard.dismiss();
+                                                })
                                         })
                                 }
                             })
@@ -323,12 +333,15 @@ const Login = () => {
                                     if(id < 0) {
                                         setError(fullName);
                                     }else {
-                                        persister.set('userPrivateKey' , privatekey)
-                                        .then(_ => {
-                                            storeDispatcher(() => setAppKey(privatekey));
-                                            Keyboard.dismiss();
-                                            storeDispatcher(() => setSeeWelcomeScreen(false))
-                                        })
+                                        persister.set("userName" , inputValue.userName)
+                                            .then(one => {
+                                                persister.set('userPrivateKey' , privatekey)
+                                                .then(_ => {
+                                                    storeDispatcher(() => setAppKey(privatekey));
+                                                    Keyboard.dismiss();
+                                                    storeDispatcher(() => setSeeWelcomeScreen(false))
+                                                })
+                                            })
                                     }
                                 }).catch(err => {
                                     setError(err)
@@ -398,6 +411,7 @@ const Login = () => {
                 <TouchableOpacity onPress={() => setAuthMode(FORGOT)} style={{ backgroundColor  : "transparent" , flexDirection : "row" , justifyContent : 'center' , marginTop : 20}}>
                     <Para>رمز عبور خود را فراموش کرده اید ؟ </Para>
                 </TouchableOpacity>
+                <Button title="clear" onPress={() => persister.remove("userName")} />
             </View>
             </>
         );

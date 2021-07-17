@@ -3,7 +3,7 @@ import ScreenWrapper from './ScreenWrapper';
 
 import TabScreenHeader from "./TabScreenHeader";
 
-import { ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
+import { Alert, Keyboard, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import RequirementDocument from './RequirementDocument';
 import FurtherInfo from './FurtherInfo';
 import InsurerDetails from './InsurerDetails';
@@ -18,6 +18,7 @@ import config from '../config';
 
 import { useSelector } from "../Store/Y-state";
 import Loading from './Loading';
+import client from '../client';
 
 // !Important add money info section latter on
 // TODO add input validation
@@ -28,6 +29,14 @@ const InsuranceRequirements = ({ route : { params } , navigation }) => {
     const [staticStore, setStaticStore] = useState({});
     const [dynamicStore, setDynamicStore] = useState({});
     const [docItems, setDocItems] = useState({});
+
+    const [areas, setAreas] = useState([]);
+
+    const [inInsRecord, setInInsRecord] = useState(false);
+
+
+    const [error, setError] = useState(null);
+
 
     const privateKey = useSelector(state => state.auth.appKey);
 
@@ -44,13 +53,12 @@ const InsuranceRequirements = ({ route : { params } , navigation }) => {
                     } , { headers : {appToken , ticket : privateKey , packageName : config.packageName} })
                     .then(({ data }) => {
                         setDocItems(data);
-                        console.log('received' , data);
+                        setAreas(data.areas);
                         setLoading(false)
                     }).catch(err => {
-                        console.log(err);
+
                     })
             }).catch(err => {
-                console.log(err)
             })
     } , [])
 
@@ -59,48 +67,66 @@ const InsuranceRequirements = ({ route : { params } , navigation }) => {
     
     
     
+    const truthyValidation = () => {
+        let wasAnyError = false;
+        const singleSourceStore = {
+            ...staticStore,
+            ...dynamicStore
+        }
+
+        console.log(singleSourceStore);
+        Object.entries(singleSourceStore).map(([_ , value]) => {
+            if(!value) wasAnyError = true;
+        })
+        
+        
+        if(wasAnyError) {
+            Alert.alert(client.static.REQUIREMENT_FIELD_ERROR_MESSAGE , client.static.REQUIREMENT_FIELD_ERROR_MESSAGE_DESC , [
+                {
+                    onPress(){},
+                    text : "تایید",
+                }
+            ]);
+            return true
+        }else return false;
+    }
+
+
     
     const goToPaymentHandler = () => {
+        Keyboard.dismiss();
+        if(truthyValidation()) return;
         const sendObject = {
             ...staticStore ,
             factorId : docItems.factorCode ,
             request : JSON.stringify(dynamicStore)
         };
-        
-        console.log(params.factorId , docItems.factorCode , "```````````````````");
-        console.log('endResultObject' , sendObject);
-        console.log('endResultObjectJson' , JSON.stringify(sendObject));
-        
+        setInInsRecord(true);
         fetcher
             .then(({ api , appToken }) => {
                 api
                     .post(`${config.serverPath}/MobileApi/GetRequirements` ,
                             { ...sendObject } ,
                             { headers : {appToken , ticket : privateKey , packageName : config.packageName} })
-                        .then(data => { 
-                        console.log(data , "DONR") })
+                        .then(({ data }) => { 
+                        console.log(staticStore , dynamicStore);
+                        console.log(data , ':)');
+                        setError(null);
+                        if(!data.hasData) {
+                            navigation.navigate("insuranceRequirementConfirm" , { id : docItems.factorCode , message : data.message })
+                        }else {
+                            const { data : response , message } = data
+                            navigation.navigate('insurancePayment' , { id : response.id , loadingMessageHelper : message });
+                        }
+                    })
                     .catch(err => {
-                        console.log('mf err' , err);
+                        setError(err)
                     })
             })
-        // api.post("InsurancePay" , {
-        //     ...staticStore,
-        //     request : JSON.stringify(dynamicStore),
-        //     factorId : params.factorId
-        // })
-        // .then(({ data : { data : { id } } }) => {
-        // })
-        // let mockId = params.factorId
-        // navigation.navigate('insurancePayment' , { mockId });
     }
 
-    useEffect(() => {
-        console.log('!!!!!!!!!!!!!', staticStore);
-    } , [staticStore])
 
-
-
-return loading ? <Loading /> : <ScreenWrapper>
+    return loading ? <Loading /> : <ScreenWrapper>
     <TabScreenHeader navigation={navigation} title="تکمیل مشخصات" extendStyle={{  }} />
         <ScrollView contentContainerStyle={{ paddingBottom : 20 }}>
             <RequirementDocument 
@@ -118,12 +144,15 @@ return loading ? <Loading /> : <ScreenWrapper>
                 onChange={setStaticStore}
             />
             <InsTransferee
+                areas={areas}
                 onChange={setStaticStore}
                 store={staticStore}
             />
         </ScrollView>
-        <TouchableOpacity onPress={goToPaymentHandler} style={appendStyle.ctaContainer}>
-            <Para weight="bold" align="center">ثبت اطلاعات و پرداخت</Para>
+        <TouchableOpacity disabled={inInsRecord} onPress={goToPaymentHandler} style={[appendStyle.ctaContainer , inInsRecord ? appendStyle.inInsRecord : {}]}>
+            <Para weight="bold" align="center">{
+                !inInsRecord ? "ثبت اطلاعات و پرداخت" : "در حال ثبت بیمه..."
+            }</Para>
         </TouchableOpacity>
     </ScreenWrapper>
 }
@@ -141,6 +170,9 @@ const style = ({ primary , baseBorderRadius }) => StyleSheet.create({
         borderRadius : baseBorderRadius,
         width: "90%",
         marginHorizontal : "5%",
+    },
+    inInsRecord : {
+        opacity: .5
     }
 })
 

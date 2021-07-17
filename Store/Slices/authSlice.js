@@ -5,7 +5,7 @@ const authSlice = createSlice({
         appKey : null,
         userName : "",
         systemTime : null,
-        seeWelcome : null
+        seeWelcome : null,
     },
     reducers : {
         setAppKey : (state , payload) => {
@@ -19,6 +19,7 @@ const authSlice = createSlice({
                 ...state,
                 seeWelcome : payload
             }
+            
         },
         setUserName : (state , payload) => {
             return {

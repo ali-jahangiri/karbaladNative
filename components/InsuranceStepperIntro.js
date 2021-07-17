@@ -10,14 +10,14 @@ import { useNavigation } from '@react-navigation/native';
 
 const InsuranceStepperIntro = ({  title , desc , nextStepHandler }) => {
     const appendStyle = useStyle(style)
-    const { primary , secondary} = useStyle();
+    const { primary } = useStyle();
     
     const navigation = useNavigation()
 
     return (
         <View style={{ flex : 1 , justifyContent : 'center' }}>
             <View style={appendStyle.container}>
-                <NextStepBtn direction="right" extendStyle={appendStyle.backCta} containerBgColor={generateColor(secondary , 8)} onPress={navigation.goBack} />
+                <NextStepBtn direction="right" extendStyle={appendStyle.backCta} containerBgColor={generateColor(primary , 3)} onPress={navigation.goBack} />
                 <View style={{ flex: 1 , justifyContent : "center" }}>
                     <View style={appendStyle.icon}>
                         <Feather name="file-text" size={40} color={generateColor(primary , 6)} />

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ScrollView, StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
 import { useStyle } from '../Hooks/useStyle';
 import Para from './Para';
@@ -6,7 +6,7 @@ import Para from './Para';
 import { Feather } from '@expo/vector-icons';
 import { generateColor } from '../utils';
 
-const DropDown = ({ items , labelKey , onSelect , placeholder}) => {
+const DropDown = ({ items , labelKey , onSelect , placeholder , runOnInitial}) => {
     const appendStyle = useStyle(style);
     const [searchFilterBase, setSearchFilterBase] = useState("");
     const [canSeeItem, setCanSeeItem] = useState(false);
@@ -17,6 +17,9 @@ const DropDown = ({ items , labelKey , onSelect , placeholder}) => {
         setCanSeeItem(false);
     }
 
+    useEffect(() => {
+        if(runOnInitial) onSelect("")
+    } , [])
 
     return (
         <>

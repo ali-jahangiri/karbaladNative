@@ -17,10 +17,9 @@ const useFetch = (path, config) => {
   const timeDiff = useSelector(state => state.auth.systemTime);
 
   const fetcher = (() => {
-    let count = 1;
     return new Promise((resolve , _) => {
       (function test(){
-        if(count < 4) {
+        
           api.post(`${appConfig.serverPath}/baseApi/getAppToken` , {
             Key : encrypt.encrypt({
                 UserName : appConfig.adminUserName,
@@ -29,14 +28,23 @@ const useFetch = (path, config) => {
             })
             .then(({ data }) => {
               if(data === clientConfig.static.ACCESS_DENIED) {
-                throw new Error("")
+                api.post(`${appConfig.serverPath}/baseApi/getAppToken` , {
+                  Key : encrypt.encrypt({
+                      UserName : appConfig.adminUserName,
+                      Password : appConfig.adminPassword
+                  }, new Date().getMinutes() - (timeDiff))
+                  }).then(({ data }) => {
+                    if(data === clientConfig.static.ACCESS_DENIED) {
+                      throw new Error('');
+                    }else {
+                    resolve({ api , appToken : data })
+                    }
+                  })
               };
               resolve({ api , appToken : data })
             }).catch(err => {
-              count++;
               test()
             })
-        }
       })();
     })
   })();

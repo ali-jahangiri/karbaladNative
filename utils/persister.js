@@ -23,6 +23,11 @@ const persister = (() => {
     }
     
     
+    // const getList = async keys => {
+    //     for
+    // }
+
+
     return {
         set,
         get,

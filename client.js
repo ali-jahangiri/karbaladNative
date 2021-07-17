@@ -33,6 +33,19 @@ const client = {
             FLOAT : "Float",
             CREATE_YEAR : "CreateYear",
             CHECK_FORM : "CheckedForm"
+        },
+        REQUIREMENT_FIELD_ERROR_MESSAGE : "تمامی فیلد ها ضروری میباشد",
+        REQUIREMENT_FIELD_ERROR_MESSAGE_DESC : "فیلد های ورودی برای ثبت بیمه ضروری میباشد . لطفا فیلد ها را به درستی تکمیل نمایید",
+        PROFILE_EDIT : {
+            TRUTHY_ERROR_MESSAGE : "فرم ها را به درستی تکمیل کنید",
+            USERNAME_CHANGE : {
+                SUCCESS_USERNAME_CHANGE : "نام کاربری با موفقیت تغییر یافت"
+            },
+            PASSWORD_CHANGE : {
+                LENGTH_ERROR_MESSAGE : "حداقل تعداد ارقام رمز عبور جدید 4 عدد میباشد .",
+                CHAR_CONFLICT_MESSAGE : "رمز عبور با تکرار آن یکسان نمیباشد",
+                SUCCESS_PASSWORD_CHANGE : "رمز عبور با موفقیت تغییر یافت",
+            }
         }
     }
 }

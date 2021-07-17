@@ -5,7 +5,7 @@ import { generateColor } from '../utils';
 import Para from './Para';
 
 
-const Loading = () => {
+const Loading = ({ loadingDesc }) => {
     const appendStyle = useStyle(style);
     return (
         <View style={appendStyle.container}>

@@ -9,7 +9,7 @@ import RequirementInput from './RequirementInput';
 import mock from "../utils/mock.fuck"
 import DropDown from './DropDown';
 
-const InsTransferee = ({ onChange , store }) => {
+const InsTransferee = ({ onChange , store , areas }) => {
     const [shouldGetInsurerData, setShouldGetInsurerData] = useState(false);
     const [showMore, setShowMore] = useState(true);
     const [currentActiveInput, setCurrentActiveInput] = useState(null)
@@ -48,19 +48,20 @@ const InsTransferee = ({ onChange , store }) => {
             type : "phone-pad",
         },
         {
-            key : "ExactAddress",
-            label : "آدرس دقیق",
-            inherentValueKey : "InsAddress"
-        },
-        {
             key : "AreaId",
             label : "منطقه",
             component : () => <DropDown
+                                runOnInitial
                                 key={"25e_69_983"}
                                 onSelect={id => changeHandler('AreaId' , id)}
                                 placeholder="لطفا منطقه سکونت خود را انتخاب کنید" 
-                                items={mock.areas} 
+                                items={areas} 
                                 labelKey="fullName" />
+        },
+        {
+            key : "ExactAddress",
+            label : "آدرس دقیق",
+            inherentValueKey : "InsAddress"
         },
         
     ]
