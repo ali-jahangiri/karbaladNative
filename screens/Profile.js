@@ -4,7 +4,7 @@ import {StyleSheet, View , TouchableOpacity, ScrollView } from 'react-native';
 
 import client from '../client';
 import { useStyle } from '../Hooks/useStyle';
-import { setAppKey, setUserName } from '../Store/Slices/authSlice';
+import { setAppKey } from '../Store/Slices/authSlice';
 import { useDispatch, useSelector } from '../Store/Y-state';
 import { generateColor, persister, toFarsiNumber } from '../utils';
 import useFetch from '../Providers/useFetch';
@@ -25,18 +25,12 @@ const { CHANGE_PASSWORD , CHANGE_USERNAME , PROFILE_EDIT } = client.static
 const Profile = () => {
     const appendStyle = useStyle(style);
     
-    
     const [inputValue, setInputValue] = useState({});
-
     const [currentUserEditMode, setCurrentUserEditMode] = useState(null);
-
     const [profileEditWasSuccessfully, setProfileEditWasSuccessfully] = useState(false);
     const [phoneAsUserName, setPhoneAsUserName] = useState(null)
-
-
     const [respondErr, setRespondErr] = useState(null);
-
-
+    
     const fetcher = useFetch(true);
     const userData = useSelector(state => state.initial.userData);
     const completelyLoaded = useSelector(state => state.initial.completelyLoaded);

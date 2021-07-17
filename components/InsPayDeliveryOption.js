@@ -9,6 +9,8 @@ import { Feather } from '@expo/vector-icons';
 const InsPayDeliveryOption = ({ setOption , currentOption , items , setPrice }) => {
     const appendStyle = useStyle(style);
 
+    console.log(currentOption);
+
     const selectHandler = (id , price) => {
         setPrice(price);
         setOption(id);
@@ -48,9 +50,6 @@ const InsPayDeliveryOption = ({ setOption , currentOption , items , setPrice }) 
 
 
 const style = ({ primary , baseBorderRadius }) => StyleSheet.create({
-    container : {
-
-    },
     item : {
         flexDirection : 'row',
         justifyContent : 'space-between',

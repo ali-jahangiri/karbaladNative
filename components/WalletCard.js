@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Alert, Linking, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useStyle } from '../Hooks/useStyle';
 import { generateColor, numberSeparator, toFarsiNumber } from '../utils';
@@ -16,6 +16,9 @@ const WalletCart = ({ finalResult = "" }) => {
     const [chargeAmountPrice, setChargeAmountPrice] = useState(1000);
     const [chargeViewActive, setChargeViewActive] = useState(false);
     const privateKey = useSelector(state => state.auth.appKey);
+
+    const [inRedirection, setInRedirection] = useState(false);
+
 
     const fetcher = useFetch(true);
 
@@ -36,18 +39,31 @@ const WalletCart = ({ finalResult = "" }) => {
     }
 
 
+    useEffect(() => {
+        
+    })
+
     const redirectToWebPay = () => {
+        setInRedirection(true);
         fetcher
             .then(({ api , appToken }) => {
                     api.post(`${config.serverPath}/MobileApi/UserAddWallet` ,
                     { addAmount : chargeAmountPrice, } ,
-                    { appToken , ticket : privateKey })
+                    { headers : {
+                        appToken , ticket : privateKey
+                    } })
                     .then(({data}) => {
-                        console.log(data);
-                    Linking.openURL(data)
-                        .catch(err => {
-                            wentWrongHandler();
+                        Linking.addEventListener("url" , event => {
+                            console.log(event, 'er');
                         })
+                        Linking.openURL(data.url)
+                            .then(data => {
+                                console.log(data , "then in opne");
+                                setInRedirection(false);
+                            })
+                            .catch(err => {
+                                wentWrongHandler(err);
+                            })
                 }).catch(err => {})
             }).catch(err => {})
         
@@ -90,7 +106,9 @@ const WalletCart = ({ finalResult = "" }) => {
                     </View>
                     <TouchableOpacity style={appendStyle.payCta} onPress={redirectToWebPay}>
                         <Feather style={{ marginRight : 10 }} name="check" size={24} color="black" />
-                        <Para size={16} weight="bold">پرداخت</Para>
+                        <Para size={16} weight="bold">{
+                            inRedirection ? "در حال انتقال به درگاه" : "پرداخت"
+                        }</Para>
                     </TouchableOpacity>
                 </View>
             }

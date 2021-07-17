@@ -27,30 +27,26 @@ const InsurancePay = ({ navigation , route : { params : { id , loadingMessageHel
     const fetcher = useFetch(true);
     const ticket = useSelector(state => state.auth.appKey);
     
-
-
+    
     const appendStyle = useStyle(style);
     const { primary } = useStyle();
-
-    console.log(id);
 
     useEffect(() => {
         fetcher
             .then(({ api , appToken }) => {
-                console.log(appToken);
                 api.post('InsurancePay' , { factorId : id } , { headers : {
                     appToken ,
                      ticket
                 }  })
-                .then(res => {
-                    // setPadyResponse(data);
-                    console.log('currentData' , res);
+                .then(({ data }) => {
+                    setPayResponse(data);
+                    console.log(data);
                     setLoading(false)
                 })
             })
        
-        // // TODO set this value when request get completed
-        // setDeliverOption(payResponse.deliveryModelsItems.find(el => el.thisDefault).id);
+        
+        setDeliverOption(payResponse.deliveryModelsItems.find(el => el.thisDefault).id);
 
         // const unsubscribe = navigation.addListener("beforeRemove" , e => {
         //     e.preventDefault();
@@ -80,7 +76,46 @@ const InsurancePay = ({ navigation , route : { params : { id , loadingMessageHel
             })
     }
 
-    return loading ? <Loading /> : (<Para>after load</Para>)
+    return loading ? <Loading /> : (<ScreenWrapper>
+        <View style={appendStyle.container}>
+            <View style={appendStyle.header}>
+                <TouchableOpacity style={appendStyle.moreNavigator} onPress={goToMoreDetailsScreenHandler}>
+                    <Feather name="chevron-left" size={24} color={primary} />
+                    <Para size={16} color={primary}>جزئیات بیمه نامه</Para>
+                </TouchableOpacity>
+                <Para size={18} weight="bold">تایید و پرداخت نهایی</Para>
+            </View>
+                <ScrollView>
+                    <InsPayDeliveryOption
+                        setPrice={setAdditionalPrice}
+                        setOption={setDeliverOption}
+                        currentOption={deliverOption}
+                        items={payResponse.deliveryModelsItems} />
+                    <InsDetailsPay {...payResponse} />
+                    <InsurerInfoPay {...payResponse} />
+                    <InsTransfereePay {...payResponse} />
+                </ScrollView>
+            <View style={appendStyle.price}>
+                <View style={{ flexDirection : "row" , alignItems : "center" }}>
+                    <Para style={{ marginRight : 5 }} color="grey">تومان</Para>
+                    <Para weight="bold" size={18}>{numberSeparator(toFarsiNumber(payResponse.amount + additionalPrice))}</Para>
+                </View>
+                <Para size={16}>مبلغ قابل پرداخت</Para>
+            </View>
+            <View style={appendStyle.ctaContainer}>
+                <TouchableOpacity onPress={onlineOrder} style={appendStyle.cta }>
+                    <Para color={primary} align="center" weight="bold">
+                        پرداخت آنلاین
+                    </Para>
+                </TouchableOpacity>
+                <TouchableOpacity style={[appendStyle.cta , { backgroundColor : generateColor(primary , 3) }]}>
+                    <Para color={primary} align="center" weight="bold">
+                        پرداخت از کیف پول
+                    </Para>
+                </TouchableOpacity>
+            </View>
+        </View>
+        </ScreenWrapper>)
 }
 
 
@@ -124,47 +159,3 @@ const style = ({ primary , baseBorderRadius }) => StyleSheet.create({
 })
 
 export default InsurancePay;
-
-
-
-
-{/* <ScreenWrapper>
-            <View style={appendStyle.container}>
-                <View style={appendStyle.header}>
-                    <TouchableOpacity style={appendStyle.moreNavigator} onPress={goToMoreDetailsScreenHandler}>
-                        <Feather name="chevron-left" size={24} color={primary} />
-                        <Para size={16} color={primary}>جزئیات بیمه نامه</Para>
-                    </TouchableOpacity>
-                    <Para size={18} weight="bold">تایید و پرداخت نهایی</Para>
-                </View>
-                    <ScrollView>
-                        <InsPayDeliveryOption
-                            setPrice={setAdditionalPrice}
-                            setOption={setDeliverOption}
-                            currentOption={deliverOption}
-                            items={payResponse.deliveryModelsItems} />
-                        <InsDetailsPay {...payResponse} />
-                        <InsurerInfoPay {...payResponse} />
-                        <InsTransfereePay {...payResponse} />
-                    </ScrollView>
-                <View style={appendStyle.price}>
-                    <View style={{ flexDirection : "row" , alignItems : "center" }}>
-                        <Para style={{ marginRight : 5 }} color="grey">تومان</Para>
-                        <Para weight="bold" size={18}>{numberSeparator(toFarsiNumber(payResponse.amount + additionalPrice))}</Para>
-                    </View>
-                    <Para size={16}>مبلغ قابل پرداخت</Para>
-                </View>
-                <View style={appendStyle.ctaContainer}>
-                    <TouchableOpacity onPress={onlineOrder} style={appendStyle.cta }>
-                        <Para color={primary} align="center" weight="bold">
-                            پرداخت آنلاین
-                        </Para>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={[appendStyle.cta , { backgroundColor : generateColor(primary , 3) }]}>
-                        <Para color={primary} align="center" weight="bold">
-                            پرداخت از کیف پول
-                        </Para>
-                    </TouchableOpacity>
-                </View>
-            </View>
-            </ScreenWrapper> */}

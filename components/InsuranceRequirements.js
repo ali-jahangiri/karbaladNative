@@ -74,7 +74,6 @@ const InsuranceRequirements = ({ route : { params } , navigation }) => {
             ...dynamicStore
         }
 
-        console.log(singleSourceStore);
         Object.entries(singleSourceStore).map(([_ , value]) => {
             if(!value) wasAnyError = true;
         })
@@ -109,8 +108,6 @@ const InsuranceRequirements = ({ route : { params } , navigation }) => {
                             { ...sendObject } ,
                             { headers : {appToken , ticket : privateKey , packageName : config.packageName} })
                         .then(({ data }) => { 
-                        console.log(staticStore , dynamicStore);
-                        console.log(data , ':)');
                         setError(null);
                         if(!data.hasData) {
                             navigation.navigate("insuranceRequirementConfirm" , { id : docItems.factorCode , message : data.message })
