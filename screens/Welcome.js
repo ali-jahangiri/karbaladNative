@@ -39,7 +39,7 @@ const Welcome = ({ continueHandler }) => {
                         }
                     }).then(({data}) => {
                         storeDispatcher(() => setInsCat(data.cat));
-                        storeDispatcher(() => setWasCompletelyLoaded());
+                        storeDispatcher(() => setWasCompletelyLoaded(true));
                         setLoading(false);
                     })
                 })

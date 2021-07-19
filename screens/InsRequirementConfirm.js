@@ -7,8 +7,7 @@ import { useStyle } from '../Hooks/useStyle';
 
 const InsRequirementConfirm = ({ route : { params } , navigation }) => {
     const appendStyle = useStyle(style);
-    console.log(params , "params");
-
+    
     return (
         <ScreenWrapper>
             <Para></Para>

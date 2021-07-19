@@ -24,6 +24,7 @@ const InsurancePay = ({ navigation , route : { params : { id , loadingMessageHel
     const [additionalPrice, setAdditionalPrice] = useState(0);
     const [deliverOption, setDeliverOption] = useState(null)
 
+    const [isInsidePaymentProcess, setIsInsidePaymentProcess] = useState(false);
 
     const fetcher = useFetch(true);
     const ticket = useSelector(state => state.auth.appKey);
@@ -32,7 +33,11 @@ const InsurancePay = ({ navigation , route : { params : { id , loadingMessageHel
     const appendStyle = useStyle(style);
     const { primary } = useStyle();
 
+
+    const navHash = useSelector(state => state.navigation.navigationHash);
+
     useEffect(() => {
+        setLoading(true)
         fetcher
             .then(({ api , appToken }) => {
                 api.post('InsurancePay' , { factorId : id } , { headers : {
@@ -41,8 +46,9 @@ const InsurancePay = ({ navigation , route : { params : { id , loadingMessageHel
                 }  })
                 .then(({ data }) => {
                     setPayResponse(data);
-                    setDeliverOption(data.deliveryModelsItems.find(el => el.thisDefault).id);
-                    console.log(data);
+                    if(data.deliveryModelsItems) {
+                        setDeliverOption(data.deliveryModelsItems?.find(el => el.thisDefault).id);
+                    }
                     setLoading(false)
                 })
             })
@@ -58,7 +64,7 @@ const InsurancePay = ({ navigation , route : { params : { id , loadingMessageHel
         //     // navigation.navigate("insurance" , { screen : "insuranceHistoryDetails" , params : { ...payResponse } })
         // });
         // return () => unsubscribe()
-    } , [])
+    } , [id , navHash])
     
 
     const goToMoreDetailsScreenHandler = () => {
@@ -66,6 +72,7 @@ const InsurancePay = ({ navigation , route : { params : { id , loadingMessageHel
     }
 
     const onlineOrder = () => {
+        setIsInsidePaymentProcess(true);
         fetcher
             .then(({ api , appToken }) => {
                 api.post("InsuranceDirectPay" , { factorId : id , money : payResponse.amount + additionalPrice , deliveryMethod : deliverOption } , {
@@ -76,7 +83,12 @@ const InsurancePay = ({ navigation , route : { params : { id , loadingMessageHel
                 }).then(({ data }) => {
                     if(data.allDone && data.url) {
                         Linking.openURL(data.url)
+                        .then(_ => {
+                            setIsInsidePaymentProcess(false);
+                            navigation.navigate("insurance" , { comeFromPayment : true })
+                        })
                         .catch(_ => {
+                            setIsInsidePaymentProcess(false);
                             Alert.alert("", "امکان ورود به مرورگر وجود ندارد.مجددا تلاش کنید" , [
                                 {
                                     text : "تایید",
@@ -116,12 +128,12 @@ const InsurancePay = ({ navigation , route : { params : { id , loadingMessageHel
                 <Para size={16}>مبلغ قابل پرداخت</Para>
             </View>
             <View style={appendStyle.ctaContainer}>
-                <TouchableOpacity onPress={onlineOrder} style={appendStyle.cta }>
+                <TouchableOpacity disabled={isInsidePaymentProcess} onPress={onlineOrder} style={[appendStyle.cta , isInsidePaymentProcess ? appendStyle.ctaDisabled : {}]}>
                     <Para color={primary} align="center" weight="bold">
                         {client.static.PAYMENT.ONLINE_ORDER}
                     </Para>
                 </TouchableOpacity>
-                <TouchableOpacity style={[appendStyle.cta , { backgroundColor : generateColor(primary , 3) }]}>
+                <TouchableOpacity disabled={isInsidePaymentProcess} style={[appendStyle.cta , { backgroundColor : generateColor(primary , 3) } , isInsidePaymentProcess ? appendStyle.ctaDisabled : {}]}>
                     <Para color={primary} align="center" weight="bold">
                     {client.static.PAYMENT.WALLET_ORDER}
                     </Para>
@@ -172,6 +184,9 @@ const style = ({ primary , baseBorderRadius }) => StyleSheet.create({
         alignItems : 'center',
         justifyContent : 'space-between',
         paddingVertical : 20
+    },
+    ctaDisabled : {
+        opacity: .5
     }
 })
 

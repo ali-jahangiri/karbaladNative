@@ -16,7 +16,7 @@ import config from '../config';
 // TODO remove and combine this fixNumber for have only one import from utils
 import { fixNumbers } from '../utils/Date';
 import { persister } from '../utils';
-import { useDispatch, useSelector } from '../Store/Y-state';
+import { useDispatch } from '../Store/Y-state';
 import { setAppKey, setSeeWelcomeScreen } from '../Store/Slices/authSlice';
 import UserIconBox from '../components/UserIconBox';
 
@@ -404,7 +404,6 @@ const Login = () => {
                 <TouchableOpacity onPress={() => setAuthMode(FORGOT)} style={{ backgroundColor  : "transparent" , flexDirection : "row" , justifyContent : 'center' , marginTop : 20}}>
                     <Para>رمز عبور خود را فراموش کرده اید ؟ </Para>
                 </TouchableOpacity>
-                <Button title="clear" onPress={() => persister.remove("userName")} />
             </View>
             </>
         );

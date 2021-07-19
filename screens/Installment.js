@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ScrollView, StatusBar, StyleSheet, View } from 'react-native';
+import { ScrollView, } from 'react-native';
 
 import InstallmentItem from '../components/InstallmentItem';
 
@@ -10,15 +10,18 @@ import { useStyle } from '../Hooks/useStyle';
 import { generateColor } from '../utils';
 import useFetch from '../Providers/useFetch';
 import Loading from '../components/Loading';
+import { useSelector } from '../Store/Y-state';
 
 const Installment = ({ route : { params : { factorId , reqId , installment_Value} } , navigation }) => {
     const [installment, setInstallment] = useState({});
     const [loading, setLoading] = useState(true);
     
-    const appendStyle = useStyle(style);
     const { primary } = useStyle();
 
     const fetcher = useFetch(true);
+
+    const navHash = useSelector(state => state.navigation.navigationHash);
+
 
     useEffect(() => {
         fetcher
@@ -27,12 +30,11 @@ const Installment = ({ route : { params : { factorId , reqId , installment_Value
                     appToken
                 }  })
                     .then(({ data }) => {
-                        console.log(data , "instalment");
                         setInstallment(data);
                         setLoading(false);
                     })
             }) 
-    } , []);
+    } , [navHash]);
 
 
     const navigateToRequirementHandler = (id) => {
@@ -64,15 +66,6 @@ const Installment = ({ route : { params : { factorId , reqId , installment_Value
     )
 }
 
-
-const style = () => StyleSheet.create({
-    container : {
-
-    },
-    header : {
-        marginTop : StatusBar.currentHeight + 10 
-    }
-})
 
 
 export default Installment;

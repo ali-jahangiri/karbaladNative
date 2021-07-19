@@ -21,7 +21,6 @@ import Loading from './Loading';
 import client from '../client';
 
 // !Important add money info section latter on
-// TODO add input validation
 
 const InsuranceRequirements = ({ route : { params } , navigation }) => {
     const [loading, setLoading] = useState(true);

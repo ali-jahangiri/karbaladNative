@@ -1,11 +1,14 @@
 import { useNavigation, useRoute } from '@react-navigation/core';
-import React from 'react';
-import { Image, ScrollView, StyleSheet, View , TouchableOpacity } from 'react-native';
+import React, { useEffect, useRef } from 'react';
+import { Image, ScrollView, StyleSheet, View , TouchableOpacity, AppState } from 'react-native';
 import { useStyle } from '../Hooks/useStyle';
 import { generateColor, imageFinder, statusChecker, toFarsiNumber } from '../utils';
 import Para from './Para';
 import TabScreenHeader from './TabScreenHeader';
 import PersianDate from "persian-date";
+
+import { useNavigationState } from '@react-navigation/native';
+import client from '../client';
 
 
 const ListViewRow = ({ title , value }) => {
@@ -55,14 +58,13 @@ const InsuranceHistoryDetails = () => {
     
     const { color : statusColor , title : statusTitle , icon : statusIcon } = statusChecker(factorModeId);
     const appendStyle = useStyle(style , statusColor);
-    
 
     const currentCreateTime = new PersianDate(createTime).format("YYYY/MM/DD");
 
 
     const pressHandler = () => {
         // user pay the cost
-        if(factorModeId >= 3) navigation.navigate("insuranceHistoryImages" , {insImages , id , insuranceCoName , categorysFullName })
+        if(factorModeId >= 3) navigation.navigate("insuranceHistoryImages" , { insImages , id , insuranceCoName , categorysFullName })
         else navigation.navigate('insurancePayment' , { id })
     }
     return (

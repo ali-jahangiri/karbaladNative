@@ -19,6 +19,7 @@ import { useDispatch, useSelector } from '../Store/Y-state';
 import useFetch from '../Providers/useFetch';
 import { setUserData, setWasCompletelyLoaded } from '../Store/Slices/initialSlice';
 import InsRequirementConfirm from './InsRequirementConfirm';
+import CommutingProvider from '../Providers/CommutingProvider';
 
 
 const InsIndexScreen = ({ navigation }) => {
@@ -27,8 +28,11 @@ const InsIndexScreen = ({ navigation }) => {
     const ticket = useSelector(state => state.auth.appKey);
     const storeDispatcher = useDispatch();
 
+    const commutingHash = useSelector(state => state.navigation.navigationHash);
+
 
     useEffect(() => {
+        storeDispatcher(() => setWasCompletelyLoaded(false));
         fetcher
             .then(({ api , appToken }) => {
                 api.post("userProfile" , {} , {
@@ -38,10 +42,10 @@ const InsIndexScreen = ({ navigation }) => {
                     }
                 }).then(({data}) => {
                     storeDispatcher(() => setUserData(data))
-                    storeDispatcher(() => setWasCompletelyLoaded());
+                    storeDispatcher(() => setWasCompletelyLoaded(true));
                 })
             })        
-    } , [])
+    } , [commutingHash])
 
 
     const routeChangeHandler = routeParameters => 
@@ -77,7 +81,10 @@ const NestedInsStepScreen = ({ route : { params : { cat , name , id } }, navigat
     return renderChecker()
 }
 
-const Home = () => <HomeInsRouter
+const Home = () => {
+    return (
+        <CommutingProvider>
+            <HomeInsRouter
                         indexScreen={InsIndexScreen} 
                         nestedScreen={NestedInsStepScreen}
                         resultPreview={InsuranceResultPreview}
@@ -89,5 +96,8 @@ const Home = () => <HomeInsRouter
                         paymentMoreDetails={MoreDetailsPay}
                         requirementConfirm={InsRequirementConfirm}
                         />
+        </CommutingProvider>
+    )
+}
 
 export default Home;

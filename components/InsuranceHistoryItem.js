@@ -46,7 +46,7 @@ const InsuranceHistoryItem = props => {
     )
 }
 
-const style = ({ primary , baseBorderRadius }) => StyleSheet.create({
+const style = ({ primary }) => StyleSheet.create({
     container : {
         flexDirection : "row",
         alignItems : 'center',

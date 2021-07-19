@@ -17,7 +17,7 @@ const Stack = createStackNavigator();
 const Home = () => {
     const completelyLoaded = useSelector(state => state.initial.completelyLoaded);
     const insHistoryList = useSelector(state => state.initial?.userData?.insuranceCart?.customModel);
-
+    
     if(!completelyLoaded) return <Loading />
     else return (
         <>

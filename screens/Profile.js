@@ -35,7 +35,11 @@ const Profile = () => {
     const userData = useSelector(state => state.initial.userData);
     const completelyLoaded = useSelector(state => state.initial.completelyLoaded);
     
-    
+    const [insideSomeAsyncProcess, setInsideSomeAsyncProcess] = useState(false);
+
+    const [tempUserName, setTempUserName] = useState('');
+
+
     const storeDispatcher =  useDispatch();
 
     useEffect(() => {
@@ -88,7 +92,6 @@ const Profile = () => {
     // }
 
 
-    // TODO handle this feature
     const feedBackHandler = () => {}
 
 
@@ -127,6 +130,7 @@ const Profile = () => {
                 setRespondErr(toFarsiNumber(PROFILE_EDIT.PASSWORD_CHANGE.LENGTH_ERROR_MESSAGE))
             }
             else {
+                setInsideSomeAsyncProcess(true)
                 requestAction({
                     mobile : phoneAsUserName,
                     pass : currentPassword,
@@ -138,12 +142,14 @@ const Profile = () => {
                         .then(_ => {
                             storeDispatcher(() => setAppKey(key))
                             setProfileEditWasSuccessfully(PROFILE_EDIT.PASSWORD_CHANGE.SUCCESS_PASSWORD_CHANGE);
+                            setInsideSomeAsyncProcess(false)
                         })
-                })
+                }).catch(err => {})
             }
         }else {
             if([userName , password].includes("")) setRespondErr(PROFILE_EDIT.TRUTHY_ERROR_MESSAGE);
             else {
+                setInsideSomeAsyncProcess(true);
                 requestAction({
                     mobile : phoneAsUserName,
                     pass : password,
@@ -154,20 +160,11 @@ const Profile = () => {
                     persister.set("userPrivateKey" , key)
                         .then(_ => {
                             storeDispatcher(() => setAppKey(key))
-                            fetcher
-                                .then(({ api , appToken }) => {
-                                    api.post("userProfile" , {} , {
-                                        headers : {
-                                            ticket : key,
-                                            appToken
-                                        }
-                                    }).then(({data}) => {
-                                        storeDispatcher(() => setUserData(data))
-                                    })
-                                })     
+                            setTempUserName(userName)
                             setProfileEditWasSuccessfully(PROFILE_EDIT.USERNAME_CHANGE.SUCCESS_USERNAME_CHANGE)
+                            setInsideSomeAsyncProcess(false) 
                         })
-                })
+                }).catch(err => {})
             }
         }
 
@@ -185,6 +182,7 @@ const Profile = () => {
                             }
                         }).catch(err => {
                             setRespondErr(err.message);
+                            setInsideSomeAsyncProcess(false)
                             throw new Error(err.message);
                         })
                 }).catch(err => {
@@ -225,7 +223,7 @@ const Profile = () => {
                     {/* </View> */}
                     {/* <View style={appendStyle.imageDivider} /> */}
                     <Para weight="bold" color="#050513" size={22}>
-                        {userData.userData?.fullName || userData.userData.mobile_UserName}
+                        {tempUserName || userData.userData?.fullName || userData.userData.mobile_UserName}
                     </Para>
                     {
                         userData.userData?.fullName ? <Para color="#536162">{userData.userData.mobile_UserName}</Para> :null
@@ -272,8 +270,10 @@ const Profile = () => {
                                         <Para color='red' >{respondErr}</Para>
                                     </View> : null
                                 }
-                                <TouchableOpacity style={[appendStyle.userDetailsChangeCta , respondErr ? appendStyle.disabledCta : {}]} onPress={changeUserDetailsHandler}>
-                                    <Para weight="bold">ویرایش نام کاربری</Para>
+                                <TouchableOpacity disabled={respondErr || insideSomeAsyncProcess} style={[appendStyle.userDetailsChangeCta , respondErr || insideSomeAsyncProcess ? appendStyle.disabledCta : {}]} onPress={changeUserDetailsHandler}>
+                                    <Para weight="bold">{
+                                        insideSomeAsyncProcess ? "درحال ویرایش نام کاربری..." : "ویرایش نام کاربری"
+                                    }</Para>
                                 </TouchableOpacity>
                             </View> : null
                             }
@@ -298,15 +298,19 @@ const Profile = () => {
                                     <Para color='red' >{respondErr}</Para>
                                 </View> : null
                             }
-                                <TouchableOpacity disabled={respondErr} style={[appendStyle.userDetailsChangeCta , respondErr ? appendStyle.disabledCta : {}]} onPress={changeUserDetailsHandler}>
-                                    <Para weight="bold">تغییر رمز عبور</Para>
+                                <TouchableOpacity disabled={respondErr || insideSomeAsyncProcess} style={[appendStyle.userDetailsChangeCta , respondErr || insideSomeAsyncProcess ? appendStyle.disabledCta : {}]} onPress={changeUserDetailsHandler}>
+                                    <Para weight="bold">
+                                        {
+                                            insideSomeAsyncProcess ? "در حال تغییر رمز عبور...." : "تغییر رمز عبور"
+                                        }
+                                    </Para>
                                 </TouchableOpacity>
                             </View> : null
                             }
                         </View>
                     </ProfileRow>
                     {/* TODO code instead of flag */}
-                    <ProfileRow label="بازخورد"icon="flag" >
+                    {/* <ProfileRow label="بازخورد"icon="flag" >
                         {setIsCollapse => (
                                 <>
                                     <Input isMultiLine placeholder="نظر و بازخورد خود را وارد نمایید" />
@@ -319,7 +323,7 @@ const Profile = () => {
                                     </TouchableOpacity>
                                 </>
                         )}
-                    </ProfileRow>
+                    </ProfileRow> */}
                 </View>
                 <View>
                     <TouchableOpacity style={appendStyle.logout} onPress={logoutHandler}>

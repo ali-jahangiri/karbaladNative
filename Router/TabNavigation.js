@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { createBottomTabNavigator  } from "@react-navigation/bottom-tabs";
 import { Feather } from '@expo/vector-icons';
 
@@ -11,7 +11,7 @@ const Tab = createBottomTabNavigator();
 
 const TabNavigation = () => {
     const { primary } = useStyle();
-    
+
     return (
         <Tab.Navigator tabBarOptions={{ showLabel : false , activeTintColor : primary , style : { borderWidth : 0 , borderTopColor : "transparent" , height: 70 , elevation : 0  , flexDirection : "row" , justifyContent : 'space-between' } , tabStyle : {backgroundColor : 'transparent' ,elevation : 0 }}}>
             <Tab.Screen 

@@ -53,7 +53,8 @@ const client = {
                 FAIL : "nok",
 
             },
-            SPECIFIC_KEY_FOR_OBSERVER_CONDITION : "wallet"
+            SPECIFIC_KEY_FOR_OBSERVER_CONDITION : "wallet",
+            SPECIFIC_KEY_FOR_OBSERVER_CONDITION_MY_INSURANCE : "insuranceHistoryDetails",
         },
         PAYMENT : {
             ONLINE_ORDER : "پرداخت آنلاین",

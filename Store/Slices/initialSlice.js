@@ -20,10 +20,10 @@ const initialSlice = createSlice({
                insCat : payload
            }
        },
-       setWasCompletelyLoaded(state){
+       setWasCompletelyLoaded(state , payload){
            return {
                ...state,
-               completelyLoaded : true
+               completelyLoaded : payload
            }
        }
     }

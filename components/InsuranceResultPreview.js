@@ -14,17 +14,22 @@ import Loading from './Loading';
 import EmptyState from './EmptyState';
 import useFetch from '../Providers/useFetch';
 import ScreenWrapper from './ScreenWrapper';
+import { useSelector } from '../Store/Y-state';
 
 const InsuranceResultPreview = ({ route : { params : { id , valueStore , flattedStage : selectedInsData , carCategory } } , navigation }) => {
-    const [initialLoading, setInitialLoading] = useState(true);
+    const [initialLoading, setInitialLoading] = useState(false);
     const [responseValues, setResponseValues] = useState({});
     const appendStyle = useStyle(style);
 
     const [reqId, setReqId] = useState('');
-
+    
+    const navHash = useSelector(state => state.navigation.navigationHash);
+    
     const fetcher = useFetch(true);
 
+
     useEffect(() => {
+        setInitialLoading(true);
         fetcher
             .then(({ api , appToken }) => {
                 api.post('GetInsuranceQuoteId' , { formData : JSON.stringify({ ...valueStore , Id : id }) } , { headers : {appToken} })
@@ -42,7 +47,7 @@ const InsuranceResultPreview = ({ route : { params : { id , valueStore , flatted
             // with this state change , we force entire component get re render and all new params and send new request
             setInitialLoading(true);
         }
-    } , [valueStore]);
+    } , [valueStore , navHash]);
     
     
     const quickEditHandler = () => {
