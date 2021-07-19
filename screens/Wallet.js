@@ -44,6 +44,7 @@ const Wallet = () => {
         setTransactionStatus(null)
     }
 
+    
     if(!completelyLoaded) return <Loading />
     else return (
         <>
@@ -54,7 +55,7 @@ const Wallet = () => {
                 isInPaymentProcess={isInPaymentProcess}
                 finalResult={walletData.finalResult} />
             {
-                walletData.finalResult.length ? <>
+                walletData.walletItems.length ? <>
                     <ScrollView>
                         {
                             walletData.walletItems.map((el , i) => (

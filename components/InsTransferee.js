@@ -6,7 +6,6 @@ import { generateColor } from '../utils';
 import Para from './Para';
 import RequirementInput from './RequirementInput';
 
-import mock from "../utils/mock.fuck"
 import DropDown from './DropDown';
 
 const InsTransferee = ({ onChange , store , areas }) => {

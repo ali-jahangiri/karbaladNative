@@ -18,7 +18,6 @@ import MoreDetailsPay from '../components/MoreDetailsPay';
 import { useDispatch, useSelector } from '../Store/Y-state';
 import useFetch from '../Providers/useFetch';
 import { setUserData, setWasCompletelyLoaded } from '../Store/Slices/initialSlice';
-import InsRequirementConfirm from './InsRequirementConfirm';
 import CommutingProvider from '../Providers/CommutingProvider';
 
 
@@ -94,7 +93,6 @@ const Home = () => {
                         requirement={InsuranceRequirements}
                         payment={InsurancePay}
                         paymentMoreDetails={MoreDetailsPay}
-                        requirementConfirm={InsRequirementConfirm}
                         />
         </CommutingProvider>
     )

@@ -4,6 +4,7 @@ import { StyleSheet, View } from 'react-native';
 
 import Router from './Router/Router';
 
+// Providers
 import InitialLoading from './HOC/InitialLoading/InitialLoading';
 import StyleProvider from './HOC/StyleProvider/StyleProvider';
 import StoreProvider from './Store/Y-state';
@@ -21,7 +22,7 @@ export default function App() {
   return (
     <View style={generalStyle.appContainer}>
       <ErrorBoundary>
-        <StoreProvider logger store={myStore}>
+        <StoreProvider store={myStore}>
           <FetchProvider packageName={config.packageName} baseURL={`${config.serverPath}/MobileApi/`}>
             <StyleProvider>
               <InitialLoading>

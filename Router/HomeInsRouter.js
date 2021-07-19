@@ -17,8 +17,6 @@ const HomeInsRouter = ({ indexScreen , nestedScreen , resultPreview , resultConf
                 <Stack.Screen name="insuranceRequirements" component={requirement} />
                 <Stack.Screen name="insurancePayment" component={payment} />
                 <Stack.Screen name="insurancePaymentMoreDetails" component={paymentMoreDetails} />
-                <Stack.Screen name="insuranceRequirementConfirm" component={requirementConfirm} />
-                {/* <Stack.Screen name="insurancePayResult" component={} /> */}
             </Stack.Navigator>
         </React.Fragment>
     )

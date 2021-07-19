@@ -1,14 +1,11 @@
+import React from 'react';
 import { useNavigation, useRoute } from '@react-navigation/core';
-import React, { useEffect, useRef } from 'react';
-import { Image, ScrollView, StyleSheet, View , TouchableOpacity, AppState } from 'react-native';
+import { Image, ScrollView, StyleSheet, View , TouchableOpacity } from 'react-native';
 import { useStyle } from '../Hooks/useStyle';
 import { generateColor, imageFinder, statusChecker, toFarsiNumber } from '../utils';
 import Para from './Para';
 import TabScreenHeader from './TabScreenHeader';
 import PersianDate from "persian-date";
-
-import { useNavigationState } from '@react-navigation/native';
-import client from '../client';
 
 
 const ListViewRow = ({ title , value }) => {
@@ -63,7 +60,6 @@ const InsuranceHistoryDetails = () => {
 
 
     const pressHandler = () => {
-        // user pay the cost
         if(factorModeId >= 3) navigation.navigate("insuranceHistoryImages" , { insImages , id , insuranceCoName , categorysFullName })
         else navigation.navigate('insurancePayment' , { id })
     }
@@ -133,7 +129,7 @@ const InsuranceHistoryDetails = () => {
     </ScrollView>
     {
         showCta ? <TouchableOpacity onPress={pressHandler} style={appendStyle.cta}>
-            <Para align="center" style={appendStyle.ctaText} weight="bold">{factorModeId >= 3 ? "مشاهده تصاویر بیمه نامه" : 'پرداخت'}</Para>
+            <Para align="center" size={16} style={appendStyle.ctaText} weight="bold">{factorModeId >= 3 ? "مشاهده تصاویر بیمه نامه" : 'پرداخت'}{` - ${toFarsiNumber(params?.stringAmunt)}`+' تومان '}</Para>
         </TouchableOpacity> : null
     }
     </>

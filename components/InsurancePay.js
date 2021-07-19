@@ -17,14 +17,18 @@ import useFetch from '../Providers/useFetch';
 import { useSelector } from '../Store/Y-state';
 import Loading from './Loading';
 import client from '../client';
+import Drawer from './Drawer';
 
-const InsurancePay = ({ navigation , route : { params : { id , loadingMessageHelper = "" } } }) => {
+const InsurancePay = ({ navigation , route : { params : { id } } }) => {
     const [payResponse, setPayResponse] = useState(null);
     const [loading, setLoading] = useState(true);
     const [additionalPrice, setAdditionalPrice] = useState(0);
     const [deliverOption, setDeliverOption] = useState(null)
 
     const [isInsidePaymentProcess, setIsInsidePaymentProcess] = useState(false);
+
+
+    const [walletChargeLessThen, setWalletChargeLessThen] = useState(false);
 
     const fetcher = useFetch(true);
     const ticket = useSelector(state => state.auth.appKey);
@@ -71,8 +75,25 @@ const InsurancePay = ({ navigation , route : { params : { id , loadingMessageHel
         navigation.push('insurancePaymentMoreDetails' , { items : payResponse.factorItems })
     }
 
+
+    const orderFromWallet = () => {
+        setIsInsidePaymentProcess(true)
+        setIsInsidePaymentProcess("wallet");
+        fetcher
+            .then(({ api , appToken }) => {
+                api.post("InsurancePayWallet" , {factorId : id , deliveryMethod : deliverOption} , { headers : {appToken , ticket} })
+                    .then(({ data }) => {
+                        if(data === client.static.TRANSACTION.FAIL) {
+                            setWalletChargeLessThen(true)
+                            setIsInsidePaymentProcess(false);
+                        }
+                    })
+            })
+    }
+
+
     const onlineOrder = () => {
-        setIsInsidePaymentProcess(true);
+        setIsInsidePaymentProcess('online');
         fetcher
             .then(({ api , appToken }) => {
                 api.post("InsuranceDirectPay" , { factorId : id , money : payResponse.amount + additionalPrice , deliveryMethod : deliverOption } , {
@@ -85,7 +106,7 @@ const InsurancePay = ({ navigation , route : { params : { id , loadingMessageHel
                         Linking.openURL(data.url)
                         .then(_ => {
                             setIsInsidePaymentProcess(false);
-                            navigation.navigate("insurance" , { comeFromPayment : true })
+                            navigation.replace("insurance" , { comeFromPayment : true })
                         })
                         .catch(_ => {
                             setIsInsidePaymentProcess(false);
@@ -101,7 +122,7 @@ const InsurancePay = ({ navigation , route : { params : { id , loadingMessageHel
             })
     }
 
-    return loading ? <Loading /> : (<ScreenWrapper>
+    return loading ? <Loading /> : (<><ScreenWrapper>
         <View style={appendStyle.container}>
             <View style={appendStyle.header}>
                 <TouchableOpacity style={appendStyle.moreNavigator} onPress={goToMoreDetailsScreenHandler}>
@@ -130,17 +151,32 @@ const InsurancePay = ({ navigation , route : { params : { id , loadingMessageHel
             <View style={appendStyle.ctaContainer}>
                 <TouchableOpacity disabled={isInsidePaymentProcess} onPress={onlineOrder} style={[appendStyle.cta , isInsidePaymentProcess ? appendStyle.ctaDisabled : {}]}>
                     <Para color={primary} align="center" weight="bold">
-                        {client.static.PAYMENT.ONLINE_ORDER}
+                        {
+                            isInsidePaymentProcess && isInsidePaymentProcess === "online" ? "در حال انتقال..." : client.static.PAYMENT.ONLINE_ORDER
+                        }
                     </Para>
                 </TouchableOpacity>
-                <TouchableOpacity disabled={isInsidePaymentProcess} style={[appendStyle.cta , { backgroundColor : generateColor(primary , 3) } , isInsidePaymentProcess ? appendStyle.ctaDisabled : {}]}>
+                <TouchableOpacity onPress={orderFromWallet} disabled={isInsidePaymentProcess} style={[appendStyle.cta , { backgroundColor : generateColor(primary , 3) } , isInsidePaymentProcess ? appendStyle.ctaDisabled : {}]}>
                     <Para color={primary} align="center" weight="bold">
-                    {client.static.PAYMENT.WALLET_ORDER}
+                    {
+                        isInsidePaymentProcess && isInsidePaymentProcess === "wallet" ? "در حال انتقال..." : client.static.PAYMENT.WALLET_ORDER
+                    }
                     </Para>
                 </TouchableOpacity>
             </View>
         </View>
-        </ScreenWrapper>)
+        </ScreenWrapper>
+                    {
+                        walletChargeLessThen ? <Drawer onClose={() => setWalletChargeLessThen(false)}>
+                            <View style={appendStyle.walletAmountInvalid}>
+                                <Para size={16}>اعتبار کیف پول کمتر از مبلغ بیمه نامه میباشد</Para>
+                                <TouchableOpacity style={appendStyle.walletAmountInvalidCta} onPress={() => setWalletChargeLessThen(false)}>
+                                    <Para width="bold" size={16} align="center">تایید</Para>
+                                </TouchableOpacity>
+                            </View>
+                        </Drawer> : null
+                    }
+        </>)
 }
 
 // const redirectToMobileAppAction = () => {
@@ -187,6 +223,18 @@ const style = ({ primary , baseBorderRadius }) => StyleSheet.create({
     },
     ctaDisabled : {
         opacity: .5
+    },
+    walletAmountInvalid : {
+        height: "100%",
+        justifyContent : "center",
+        alignItems : "center"
+    },
+    walletAmountInvalidCta : {
+        backgroundColor : generateColor(primary , 5),
+        borderRadius : baseBorderRadius,
+        padding: 15,
+        width : "90%",
+        marginTop : 10
     }
 })
 

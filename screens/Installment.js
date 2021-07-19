@@ -57,7 +57,7 @@ const Installment = ({ route : { params : { factorId , reqId , installment_Value
                                             isLastItem={i === installment?.installmentData.length - 1}
                                             key={i} 
                                             details={el.details} 
-                                            title={el.title} 
+                                            title={el.title}
                                             insuranceInstallmentPrice={installment_Value}
                                             {...el} />)
                     }

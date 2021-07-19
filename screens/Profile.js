@@ -17,7 +17,6 @@ import Para from '../components/Para';
 import ProfileRow from '../components/ProfileRow';
 import ScreenHeader from '../components/ScreenHeader';
 import Drawer from '../components/Drawer';
-import { setUserData } from '../Store/Slices/initialSlice';
 
 
 const { CHANGE_PASSWORD , CHANGE_USERNAME , PROFILE_EDIT } = client.static
