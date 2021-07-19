@@ -51,6 +51,7 @@ const InsuranceStepper = ({ id , name }) => {
     };
 
     const stageRenderChecker = () => {
+        
         if(!seeIntro) {
             return <InsuranceStepperIntro 
                         nextStepHandler={() => setSeeIntro(true)} 

@@ -46,6 +46,25 @@ const client = {
                 CHAR_CONFLICT_MESSAGE : "رمز عبور با تکرار آن یکسان نمیباشد",
                 SUCCESS_PASSWORD_CHANGE : "رمز عبور با موفقیت تغییر یافت",
             }
+        },
+        SYSTEM_KEY : {
+            AFTER_PAYMENT : {
+                OK: "ok",
+                FAIL : "nok",
+
+            },
+            SPECIFIC_KEY_FOR_OBSERVER_CONDITION : "wallet"
+        },
+        PAYMENT : {
+            ONLINE_ORDER : "پرداخت آنلاین",
+            WALLET_ORDER : "پرداخت از کیف پول"
+        },
+        TRANSACTION : {
+            DONE : "ok",
+            CLEAN : "nopay",
+            FAIL : "nok",
+            FA_DONE : "پرداخت موفقیت آمیز بود",
+            FA_FAIL : "پراخت ناموفق بود"
         }
     }
 }

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Alert, Linking, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Alert, Linking, StyleSheet, TouchableOpacity, View  } from 'react-native';
 import { useStyle } from '../Hooks/useStyle';
 import { generateColor, numberSeparator, toFarsiNumber } from '../utils';
 import Para from './Para';
@@ -11,18 +11,15 @@ import config from '../config';
 import useFetch from '../Providers/useFetch';
 import { useSelector } from '../Store/Y-state';
 
-const WalletCart = ({ finalResult = "" }) => {
+const WalletCart = ({ finalResult = "" , paymentProcessHandler , isInPaymentProcess }) => {
     const appendStyle = useStyle(style);
     const [chargeAmountPrice, setChargeAmountPrice] = useState(1000);
     const [chargeViewActive, setChargeViewActive] = useState(false);
+
     const privateKey = useSelector(state => state.auth.appKey);
-
-    const [inRedirection, setInRedirection] = useState(false);
-
-
+    
+    
     const fetcher = useFetch(true);
-
-
 
 
     const resetAmountHandler = () => {
@@ -39,12 +36,9 @@ const WalletCart = ({ finalResult = "" }) => {
     }
 
 
-    useEffect(() => {
-        
-    })
 
     const redirectToWebPay = () => {
-        setInRedirection(true);
+        paymentProcessHandler(true);
         fetcher
             .then(({ api , appToken }) => {
                     api.post(`${config.serverPath}/MobileApi/UserAddWallet` ,
@@ -52,15 +46,8 @@ const WalletCart = ({ finalResult = "" }) => {
                     { headers : {
                         appToken , ticket : privateKey
                     } })
-                    .then(({data}) => {
-                        Linking.addEventListener("url" , event => {
-                            console.log(event, 'er');
-                        })
+                    .then(({ data }) => {
                         Linking.openURL(data.url)
-                            .then(data => {
-                                console.log(data , "then in opne");
-                                setInRedirection(false);
-                            })
                             .catch(err => {
                                 wentWrongHandler(err);
                             })
@@ -104,10 +91,10 @@ const WalletCart = ({ finalResult = "" }) => {
                                     value={chargeAmountPrice}
                                     />
                     </View>
-                    <TouchableOpacity style={appendStyle.payCta} onPress={redirectToWebPay}>
+                    <TouchableOpacity disabled={isInPaymentProcess} style={[appendStyle.payCta , isInPaymentProcess ? appendStyle.disabledCta : {}]} onPress={redirectToWebPay}>
                         <Feather style={{ marginRight : 10 }} name="check" size={24} color="black" />
                         <Para size={16} weight="bold">{
-                            inRedirection ? "در حال انتقال به درگاه" : "پرداخت"
+                            isInPaymentProcess ? "در حال انتقال به درگاه" : "پرداخت"
                         }</Para>
                     </TouchableOpacity>
                 </View>
@@ -137,6 +124,9 @@ const style = ({ primary , baseBorderRadius }) => StyleSheet.create({
     amount : {
         flexDirection  :'row',
         alignItems : "center"
+    },
+    disabledCta : {
+        opacity: .5
     },
     chargeCta : {
         padding : 15,

@@ -139,13 +139,6 @@ const Login = () => {
     const fetcher = useFetch(true);
     const storeDispatcher = useDispatch();
 
-
-
-    const test = useSelector(state => state.auth.userName);
-    console.log(test , 'userName in login');
-
-
-
     const inputChangeHandler = (key , value) => {
         setError(null);
         setInputValue(prev => ({

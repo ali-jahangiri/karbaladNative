@@ -16,6 +16,7 @@ import InsTransfereePay from './InsTransfereePay';
 import useFetch from '../Providers/useFetch';
 import { useSelector } from '../Store/Y-state';
 import Loading from './Loading';
+import client from '../client';
 
 const InsurancePay = ({ navigation , route : { params : { id , loadingMessageHelper = "" } } }) => {
     const [payResponse, setPayResponse] = useState(null);
@@ -40,13 +41,13 @@ const InsurancePay = ({ navigation , route : { params : { id , loadingMessageHel
                 }  })
                 .then(({ data }) => {
                     setPayResponse(data);
+                    setDeliverOption(data.deliveryModelsItems.find(el => el.thisDefault).id);
                     console.log(data);
                     setLoading(false)
                 })
             })
        
         
-        setDeliverOption(payResponse.deliveryModelsItems.find(el => el.thisDefault).id);
 
         // const unsubscribe = navigation.addListener("beforeRemove" , e => {
         //     e.preventDefault();
@@ -65,14 +66,26 @@ const InsurancePay = ({ navigation , route : { params : { id , loadingMessageHel
     }
 
     const onlineOrder = () => {
-        Linking.openURL("https://stackoverflow.com/questions/43804032/open-url-in-default-web-browser")
-            .catch(err => {
-                Alert.alert("", "امکان ورود به مرورگر وجود ندارد.مجددا تلاش کنید" , [
-                    {
-                        text : "تایید",
-                        onPress : () => {}
+        fetcher
+            .then(({ api , appToken }) => {
+                api.post("InsuranceDirectPay" , { factorId : id , money : payResponse.amount + additionalPrice , deliveryMethod : deliverOption } , {
+                    headers : {
+                        appToken , 
+                        ticket 
                     }
-                ])
+                }).then(({ data }) => {
+                    if(data.allDone && data.url) {
+                        Linking.openURL(data.url)
+                        .catch(_ => {
+                            Alert.alert("", "امکان ورود به مرورگر وجود ندارد.مجددا تلاش کنید" , [
+                                {
+                                    text : "تایید",
+                                    onPress : () => {}
+                                }
+                            ])
+                        })
+                    }
+                }) 
             })
     }
 
@@ -105,12 +118,12 @@ const InsurancePay = ({ navigation , route : { params : { id , loadingMessageHel
             <View style={appendStyle.ctaContainer}>
                 <TouchableOpacity onPress={onlineOrder} style={appendStyle.cta }>
                     <Para color={primary} align="center" weight="bold">
-                        پرداخت آنلاین
+                        {client.static.PAYMENT.ONLINE_ORDER}
                     </Para>
                 </TouchableOpacity>
                 <TouchableOpacity style={[appendStyle.cta , { backgroundColor : generateColor(primary , 3) }]}>
                     <Para color={primary} align="center" weight="bold">
-                        پرداخت از کیف پول
+                    {client.static.PAYMENT.WALLET_ORDER}
                     </Para>
                 </TouchableOpacity>
             </View>
@@ -118,6 +131,10 @@ const InsurancePay = ({ navigation , route : { params : { id , loadingMessageHel
         </ScreenWrapper>)
 }
 
+// const redirectToMobileAppAction = () => {
+    // const url = 'intent://APP_HOST/#Intent;scheme=KarbaladNative;package=com.karbalad.karbalad;end';
+    // window.location.replace(url);
+// }
 
 const style = ({ primary , baseBorderRadius }) => StyleSheet.create({
     container : {

@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { ScrollView, StatusBar, StyleSheet, View } from 'react-native';
 
-import api from '../api';
 import InstallmentItem from '../components/InstallmentItem';
-import Para from '../components/Para';
 
 import TabScreenHeader from '../components/TabScreenHeader';
 
 import ScreenWrapper from "../components/ScreenWrapper";
 import { useStyle } from '../Hooks/useStyle';
 import { generateColor } from '../utils';
+import useFetch from '../Providers/useFetch';
+import Loading from '../components/Loading';
 
 const Installment = ({ route : { params : { factorId , reqId , installment_Value} } , navigation }) => {
     const [installment, setInstallment] = useState({});
@@ -18,12 +18,20 @@ const Installment = ({ route : { params : { factorId , reqId , installment_Value
     const appendStyle = useStyle(style);
     const { primary } = useStyle();
 
+    const fetcher = useFetch(true);
+
     useEffect(() => {
-        api.post("getInsstallments" , { formulaId : factorId , requestId : reqId })
-            .then(({ data }) => {
-                setInstallment(data);
-                setLoading(true);
-            })
+        fetcher
+            .then(({ api , appToken }) => {
+                api.post("getInsstallments" , { formulaId : factorId , requestId : reqId } , { headers : {
+                    appToken
+                }  })
+                    .then(({ data }) => {
+                        console.log(data , "instalment");
+                        setInstallment(data);
+                        setLoading(false);
+                    })
+            }) 
     } , []);
 
 
@@ -31,14 +39,13 @@ const Installment = ({ route : { params : { factorId , reqId , installment_Value
         navigation.push("insuranceRequirements" , { factorId , reqId , installmentId: id })
     }
 
-    return (
+    return loading ? <Loading /> : (
         <ScreenWrapper>
             <TabScreenHeader 
                 navigation={navigation} 
                 title="انتخاب طرح قسطی" 
                 extendStyle={{ backgroundColor : generateColor(primary , 6) , marginBottom : 20 }} />
-            {
-                loading ? 
+            
                 <ScrollView>
                     {
                         installment
@@ -53,8 +60,6 @@ const Installment = ({ route : { params : { factorId , reqId , installment_Value
                                             {...el} />)
                     }
                 </ScrollView>
-                : <Para>loading</Para>
-            }
         </ScreenWrapper>
     )
 }

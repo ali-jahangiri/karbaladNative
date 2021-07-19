@@ -18,8 +18,7 @@ import MoreDetailsPay from '../components/MoreDetailsPay';
 import { useDispatch, useSelector } from '../Store/Y-state';
 import useFetch from '../Providers/useFetch';
 import { setUserData, setWasCompletelyLoaded } from '../Store/Slices/initialSlice';
-import InsRequirementConfirm from './InsRequirmentConfirm';
-import { Button } from 'react-native';
+import InsRequirementConfirm from './InsRequirementConfirm';
 
 
 const InsIndexScreen = ({ navigation }) => {
@@ -27,6 +26,7 @@ const InsIndexScreen = ({ navigation }) => {
     const fetcher = useFetch(true);
     const ticket = useSelector(state => state.auth.appKey);
     const storeDispatcher = useDispatch();
+
 
     useEffect(() => {
         fetcher
@@ -38,7 +38,7 @@ const InsIndexScreen = ({ navigation }) => {
                     }
                 }).then(({data}) => {
                     storeDispatcher(() => setUserData(data))
-                    storeDispatcher(() => setWasCompletelyLoaded())
+                    storeDispatcher(() => setWasCompletelyLoaded());
                 })
             })        
     } , [])
@@ -51,7 +51,6 @@ const InsIndexScreen = ({ navigation }) => {
         <ScreenWrapper>
             <ScreenHeader title="خانه" />
             <InsuranceDirectory handler={routeChangeHandler} items={catItems} />
-            <Button title='go' onPress={() => navigation.navigate("insurancePayment" , { id : 10944 })} />
         </ScreenWrapper>
     )
 }
