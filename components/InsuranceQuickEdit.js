@@ -22,7 +22,6 @@ export const valueFinder = (store , selectedValue) =>  {
                 return store.formData
                         .filter(el => selectedValue.includes(el.id))
                         .map((el) => el.dataName)
-                        ?.toString()
             }
             return store.formData.find(el => el.id === selectedValue)?.dataName
         }
@@ -52,6 +51,9 @@ const InsuranceQuickEdit = ({ navigation , route : { params } }) => {
     const [currentFormName, setCurrentFormName] = useState("");
     const [currentTypeName, setCurrentTypeName] = useState("");
     const [tempState, setTempState] = useState({});
+
+
+    console.log(params , "quickEdit");
 
 
     // this value define current selected option for changing and

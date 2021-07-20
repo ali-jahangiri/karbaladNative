@@ -170,7 +170,7 @@ const Profile = () => {
     }
 
     const requestAction = body => {
-        return fetcher
+        return fetcher()
                 .then(({ api , appToken }) => {
                     return api.post("GetUserData" , body , { headers : { appToken  } })
                         .then(({ data }) => {

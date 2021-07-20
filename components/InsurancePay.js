@@ -42,7 +42,7 @@ const InsurancePay = ({ navigation , route : { params : { id } } }) => {
 
     useEffect(() => {
         setLoading(true)
-        fetcher
+        fetcher()
             .then(({ api , appToken }) => {
                 api.post('InsurancePay' , { factorId : id } , { headers : {
                     appToken ,
@@ -79,7 +79,7 @@ const InsurancePay = ({ navigation , route : { params : { id } } }) => {
     const orderFromWallet = () => {
         setIsInsidePaymentProcess(true)
         setIsInsidePaymentProcess("wallet");
-        fetcher
+        fetcher()
             .then(({ api , appToken }) => {
                 api.post("InsurancePayWallet" , {factorId : id , deliveryMethod : deliverOption} , { headers : {appToken , ticket} })
                     .then(({ data }) => {
@@ -94,7 +94,7 @@ const InsurancePay = ({ navigation , route : { params : { id } } }) => {
 
     const onlineOrder = () => {
         setIsInsidePaymentProcess('online');
-        fetcher
+        fetcher()
             .then(({ api , appToken }) => {
                 api.post("InsuranceDirectPay" , { factorId : id , money : payResponse.amount + additionalPrice , deliveryMethod : deliverOption } , {
                     headers : {
@@ -106,7 +106,7 @@ const InsurancePay = ({ navigation , route : { params : { id } } }) => {
                         Linking.openURL(data.url)
                         .then(_ => {
                             setIsInsidePaymentProcess(false);
-                            navigation.replace("insurance" , { comeFromPayment : true })
+                            navigation.navigate("insurance" , { comeFromPayment : true })
                         })
                         .catch(_ => {
                             setIsInsidePaymentProcess(false);

@@ -43,7 +43,7 @@ const InsuranceRequirements = ({ route : { params } , navigation }) => {
     const fetcher = useFetch(true);
 
     useEffect(() => {
-        fetcher
+        fetcher()
         .then(({ api , appToken }) => {
             return api.post(`AddFactor` , {
                         InstallmentId : params.installmentId , 

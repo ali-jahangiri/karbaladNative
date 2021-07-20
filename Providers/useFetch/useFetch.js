@@ -16,38 +16,44 @@ const useFetch = (path, config) => {
 
   const timeDiff = useSelector(state => state.auth.systemTime);
 
-  const fetcher = (() => {
+  const fetcher = () => {
     return new Promise((resolve , _) => {
-      (function test(){
-        
-          api.post(`${appConfig.serverPath}/baseApi/getAppToken` , {
-            Key : encrypt.encrypt({
-                UserName : appConfig.adminUserName,
-                Password : appConfig.adminPassword
-            }, new Date().getMinutes() - (timeDiff))
-            })
-            .then(({ data }) => {
-              if(data === clientConfig.static.ACCESS_DENIED) {
-                api.post(`${appConfig.serverPath}/baseApi/getAppToken` , {
-                  Key : encrypt.encrypt({
-                      UserName : appConfig.adminUserName,
-                      Password : appConfig.adminPassword
-                  }, new Date().getMinutes() - (timeDiff))
-                  }).then(({ data }) => {
-                    if(data === clientConfig.static.ACCESS_DENIED) {
-                      throw new Error('');
-                    }else {
-                    resolve({ api , appToken : data })
-                    }
-                  })
-              };
-              resolve({ api , appToken : data })
-            }).catch(err => {
-              test()
-            })
-      })();
+        api.post(`${appConfig.serverPath}/baseApi/getServerTime`)
+          .then(({data}) => {
+            console.log('FETCH START');
+            let serverTime = +data.split(" ")[1].split(':')[1];
+            api.post(`${appConfig.serverPath}/baseApi/getAppToken` , {
+              Key : encrypt.encrypt({
+                  UserName : appConfig.adminUserName,
+                  Password : appConfig.adminPassword
+              }, serverTime)
+              })
+              .then(({ data }) => {
+                console.log('fetcher' , data);
+                // if(data === clientConfig.static.ACCESS_DENIED) {
+                //   api.post(`${appConfig.serverPath}/baseApi/getAppToken` , {
+                //     Key : encrypt.encrypt({
+                //         UserName : appConfig.adminUserName,
+                //         Password : appConfig.adminPassword
+                //     }, serverTime)
+                //     }).then(({ data }) => {
+                //       console.log('again' , data);
+                //       if(data === clientConfig.static.ACCESS_DENIED) {
+                //         throw new Error('');
+                //       }else {
+                //         resolve({ api , appToken : data })
+                //       }
+                //     })
+                // };
+                resolve({ api , appToken : data })
+              }).catch(err => {
+                console.log('!!!!!!!!!catch' , err);
+                fetcher()
+              })
+          })
+
     })
-  })();
+  }
 
   if(path === true) return fetcher
 

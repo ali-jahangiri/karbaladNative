@@ -14,6 +14,24 @@ const InsuranceQuickEditItem = ({ label , onEdit , value , index  , store , temp
     const wasChange = !!tempStore[currentPartOfStore.formName] || false;
     const appendStyle = useStyle(style , wasChange);
     const { primary } = useStyle();
+
+
+    const mainValue = valueFinder(store.find(el => el.formName === currentPartOfStore.formName) , tempStore[currentPartOfStore.formName]) || value
+    
+    const multiItemRender = () => {
+        if(Array.isArray(mainValue)) {
+            return mainValue.map((el , i) => <Para align='right' color={wasChange ? primary : "grey"} weight="bold" key={i}>{el}</Para>)
+        }else return (
+            <Para 
+                        style={{ marginHorizontal : 10 }} 
+                        weight="bold" 
+                        align="right" 
+                        color={wasChange ? primary : "grey"} >
+                                {toFarsiNumber(valueFinder(store.find(el => el.formName === currentPartOfStore.formName) , tempStore[currentPartOfStore.formName]) || value || "")}
+            </Para>
+        );
+    }
+
     return (
         <View style={appendStyle.container}>
             <View style={appendStyle.labelContainer}>
@@ -34,16 +52,21 @@ const InsuranceQuickEditItem = ({ label , onEdit , value , index  , store , temp
                 </View>
             </View>
             <View style={appendStyle.valueContainer}>
-                {
+                <View style={{ marginHorizontal : 10 , flexDirection : "row" , flexWrap : 'wrap-reverse' , justifyContent : "flex-end" }}>
+                    {
+                        multiItemRender()
+                    }
+                </View>
+                {/* {
                     Array.isArray(value) ? value?.map((el , i) =>  <Para key={i} style={{ marginHorizontal : 10 }} weight="bold" align="right" color={wasChange ? primary : "grey"} >{i + 1} . {el}</Para>)
                     : <Para 
                         style={{ marginHorizontal : 10 }} 
                         weight="bold" 
                         align="right" 
                         color={wasChange ? primary : "grey"} >
-                                {toFarsiNumber(valueFinder(store.find(el => el.formName === currentPartOfStore.formName) , tempStore[currentPartOfStore.formName]) || value)}
+                                {toFarsiNumber(valueFinder(store.find(el => el.formName === currentPartOfStore.formName) , tempStore[currentPartOfStore.formName]) || value || "")}
                     </Para>
-                }
+                } */}
                 <View style={appendStyle.valueBullet} />
             </View>
         </View>
@@ -86,7 +109,7 @@ const style = ({ baseBorderRadius , primary } , wasChange ) => StyleSheet.create
     valueContainer : {
         flexDirection : 'row',
         justifyContent : 'flex-end',
-        alignItems : "center"
+        alignItems : "center",
     },  
     valueBullet : {
         width: wasChange ? 55 :  36,

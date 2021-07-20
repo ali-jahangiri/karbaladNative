@@ -26,24 +26,46 @@ const InsuranceStepper = ({ id , name }) => {
     
     useEffect(() => {
         setLoading(true)
-        fetcher
-            .then(({ api , appToken }) => {
-                api.post('GetInsuranceForm'  , { categoryId : id } , { headers : {
-                    appToken
-                } })
-                    .then(({data}) => {
-                        setInsuranceData(data)
-                        setLoading(false)
-                    })
+        fetcher()
+        .then(({ api , appToken }) => {
+            api.post('GetInsuranceForm'  , { categoryId : id } , { headers : {
+                appToken
+            } })
+            .then(({data}) => {
+                setInsuranceData(data)
+                setLoading(false)
             })
-    } , [])
+        }).catch(err => {
+            throw new Error(err)
+        })
+    } , [id])
+    
+
+
+    useEffect(() => {
+        console.log('stepperStore' , valueStore);
+    } , [valueStore])
+
+    const redirectionHandler = activeStage => {
+        const flattedStage = insuranceData.pages
+                                    .map(el => el.forms)
+                                    .flat(1)
+                                    .filter(el => el.typesName !== client.static.INPUT_DETECTOR.INFO);
+            const currentStageData = flattedStage[activeStage];
+            if(!currentStageData) {
+                navigation.replace("insuranceResultPreview" , { id , valueStore , flattedStage , carCategory : insuranceData?.carGroup});
+            }
+    }
+    
+
 
 
     const nextStepHandler = haveNewTempValueForSet => {
-        setCurrentStage(prev => prev + 1);
-        if(haveNewTempValueForSet) setValueStore(prev => ({ ...prev , ...haveNewTempValueForSet}))
+        setCurrentStage(prev =>  prev + 1);
+        if(haveNewTempValueForSet) setValueStore(prev => ({ ...prev , ...haveNewTempValueForSet}));
+        redirectionHandler(currentStage  + 1)
     }   
-
+    
     const previousStepHandler = () => {
         if(!currentStage && seeIntro) {
             setSeeIntro(false);
@@ -51,7 +73,6 @@ const InsuranceStepper = ({ id , name }) => {
     };
 
     const stageRenderChecker = () => {
-        
         if(!seeIntro) {
             return <InsuranceStepperIntro 
                         nextStepHandler={() => setSeeIntro(true)} 
@@ -64,16 +85,9 @@ const InsuranceStepper = ({ id , name }) => {
                                     .filter(el => el.typesName !== client.static.INPUT_DETECTOR.INFO);
             const currentStageData = flattedStage[currentStage];
 
+            if(!currentStageData) return null
             // if we reach to end step (stage) of insurance stepper we should navigate to result preview
-            
-            if(!currentStageData) {
-                navigation.navigate("insuranceResultPreview" , { id , valueStore , flattedStage , carCategory : insuranceData?.carGroup});
-                return null
-            }
-            
-            
-            else {
-                return <InsStage
+            return <InsStage
                             nextStageHandler={nextStepHandler}
                             prevStageHandler={previousStepHandler}
                             carCategory={carCaseChecker(currentStageData.formData ,insuranceData.carGroup )}
@@ -82,7 +96,7 @@ const InsuranceStepper = ({ id , name }) => {
                             title={insuranceData.pages[currentStage]?.title}  
                             categoryName={name}
                             {...currentStageData} />
-            }
+            // }
         }
     }
 

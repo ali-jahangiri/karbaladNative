@@ -22,7 +22,7 @@ const Welcome = ({ continueHandler }) => {
 
     useEffect(() => {
         Keyboard.dismiss();
-        fetcher
+        fetcher()
             .then(({ api , appToken }) => {
                 return api.post('userProfile' , {} ,{
                     headers : {

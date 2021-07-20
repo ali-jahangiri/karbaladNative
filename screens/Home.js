@@ -32,7 +32,7 @@ const InsIndexScreen = ({ navigation }) => {
 
     useEffect(() => {
         storeDispatcher(() => setWasCompletelyLoaded(false));
-        fetcher
+        fetcher()
             .then(({ api , appToken }) => {
                 api.post("userProfile" , {} , {
                     headers : {

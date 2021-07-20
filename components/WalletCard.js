@@ -39,7 +39,7 @@ const WalletCart = ({ finalResult = "" , paymentProcessHandler , isInPaymentProc
 
     const redirectToWebPay = () => {
         paymentProcessHandler(true);
-        fetcher
+        fetcher()
             .then(({ api , appToken }) => {
                     api.post(`${config.serverPath}/MobileApi/UserAddWallet` ,
                     { addAmount : chargeAmountPrice, } ,

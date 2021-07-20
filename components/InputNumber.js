@@ -27,6 +27,7 @@ const InputNumber = ({ onChange , stepForEachOperation = 10000, value = String(s
     
     const changeHandler = value => {
         let newValue = fixNumbers(value);
+        console.log(makePureNumber(newValue));
         if(makePureNumber(newValue) < max || isNotLimited ) {
             
             onChange({ value : makePureNumber(newValue) })

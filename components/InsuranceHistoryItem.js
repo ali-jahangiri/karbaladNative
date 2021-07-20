@@ -22,9 +22,13 @@ const InsuranceHistoryItem = props => {
     
     const now = new Persian(createTime);
     
+    const pressHandler = () => {
+        navigation.navigate('insuranceHistoryDetails' , { ...props })
+    }
+
     return (
         <View style={appendStyle.container}>
-            <NextStepBtn containerBgColor={generateColor(primary , 5)} onPress={() => navigation.push('insuranceHistoryDetails' , props)} />
+            <NextStepBtn containerBgColor={generateColor(primary , 5)} onPress={pressHandler} />
             <View style={{ flex: .8 }}>
                 <Para size={14} weight="bold">{categorysFullName}</Para>
                 <View style={appendStyle.detailContainer}>

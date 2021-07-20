@@ -26,28 +26,29 @@ const InsuranceResultPreview = ({ route : { params : { id , valueStore , flatted
     const navHash = useSelector(state => state.navigation.navigationHash);
     
     const fetcher = useFetch(true);
-
-
     useEffect(() => {
         setInitialLoading(true);
-        fetcher
+        fetcher()
             .then(({ api , appToken }) => {
-                api.post('GetInsuranceQuoteId' , { formData : JSON.stringify({ ...valueStore , Id : id }) } , { headers : {appToken} })
+                return api.post('GetInsuranceQuoteId' , { formData : JSON.stringify({ ...valueStore , Id : String(id) }) } , { headers : {appToken} })
                     .then(({ data }) =>  data)
                     .then(receivedId => {
-                        api.post('GetInsuranceQuotes' , { formulaId : receivedId} , { headers : {appToken}})
-                            .then(({ data }) => {
-                                setResponseValues(data);
-                                setReqId(receivedId);
-                                setInitialLoading(false);
-                            })
+                                api.post('GetInsuranceQuotes' , { formulaId : receivedId} , { headers : {appToken}})
+                                    .then(({ data }) => {
+                                        console.log(data);
+                                        setResponseValues(data);
+                                        setReqId(receivedId);
+                                        setInitialLoading(false);
+                                    })
                     });
+            }).catch(err => {
+                console.log(err , 'get thus');
             })
         return () => {
             // with this state change , we force entire component get re render and all new params and send new request
             setInitialLoading(true);
         }
-    } , [valueStore , navHash]);
+    } , [navHash , valueStore]);
     
     
     const quickEditHandler = () => {
@@ -60,6 +61,7 @@ const InsuranceResultPreview = ({ route : { params : { id , valueStore , flatted
         navigation.navigate('home')
     }
 
+    
     if(initialLoading) return <Loading />
     else {
         const catFullName = responseValues?.insuranceQuotes?.addInsCoAmountV2[0]?.catFullName;

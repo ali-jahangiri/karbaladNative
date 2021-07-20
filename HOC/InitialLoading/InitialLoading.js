@@ -85,12 +85,13 @@ const InitialLoading = ({ children }) => {
                                                     appToken,
                                                 }}).then(({data}) => {
                                                     storeDispatcher(() => setInsCat(data.cat));
-                                            })
+                                                    setLoading(false);
+                                                }).catch(err => {
+                                                    throw new Error(err)
+                                                })
                                 }
                             }).catch(err => {
                                 throw new Error(err);
-                            }).finally(() => {
-                                setLoading(false);
                             })
                     })
                     .catch(err => {

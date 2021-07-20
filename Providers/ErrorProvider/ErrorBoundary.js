@@ -12,7 +12,7 @@ class ErrorBoundary extends React.Component {
     
     constructor(props) {
         super(props);
-        this.state = { hasError : false }
+        this.state = { hasError : false , message : "" , trace : ""}
     }
 
     static getDerivedStateFromError(error) {
@@ -22,8 +22,9 @@ class ErrorBoundary extends React.Component {
     }
 
     componentDidCatch(error , info) {
+        console.log(error.message , info);
         // connect to error monitoring service
-
+        this.setState({ message: error.message , trace : info.componentStack });
         const caller = axios.create({
             url : `${config.serverPath}/MobileApi/saveException`,
             method : "POST"
@@ -50,13 +51,13 @@ class ErrorBoundary extends React.Component {
     }
 
     resetHandler() {
-        this.setState({ hasError: false });
+        this.setState({ hasError: false , message : "" });
     }
 
     render() {
         if(this.state.hasError) {
             return (
-                <FallbackScreen resetter={() => this.resetHandler()} />
+                <FallbackScreen trace={this.state.trace} errMessage={this.state.message} resetter={() => this.resetHandler()} />
             )
         }else return this.props.children
     }

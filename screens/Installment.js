@@ -24,7 +24,7 @@ const Installment = ({ route : { params : { factorId , reqId , installment_Value
 
 
     useEffect(() => {
-        fetcher
+        fetcher()
             .then(({ api , appToken }) => {
                 api.post("getInsstallments" , { formulaId : factorId , requestId : reqId } , { headers : {
                     appToken

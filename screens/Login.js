@@ -174,7 +174,7 @@ const Login = () => {
                 // TODO preventing sending req when phone number
                 if(validate('phone' , "شماره تماس ضروری میباشد")) {
                 setLoadingCta("صبر کنید")
-                   fetcher
+                   fetcher()
                     .then(({ api , appToken }) => {
                         return api.post("VerifyNumber" , {
                             mobile : fixNumbers(inputValue?.phone)
@@ -249,7 +249,7 @@ const Login = () => {
                 }else {
                     const { phone , password , verifyCode } = inputValue;
                     setLoadingCta("در حال ثبت نام");
-                    fetcher
+                    fetcher()
                         .then(({ api , appToken }) => {
                             api.post("GetUserData" , {
                                 mobile : phone,
@@ -311,7 +311,7 @@ const Login = () => {
             },
             ctaHandler() {
                 if(inputValue?.userName && inputValue?.password) {
-                    fetcher
+                    fetcher()
                         .then(({ api , appToken }) => {
                             api.post("GetUserData" , {
                                 mobile : inputValue?.userName,

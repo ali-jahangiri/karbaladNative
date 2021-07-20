@@ -66,7 +66,6 @@ const InsStage = (props) => {
         }
     }
 
-
     return (
         <View style={appendStyle.container}>
             <View style={appendStyle.header}>

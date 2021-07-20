@@ -58,7 +58,6 @@ const InsuranceHistoryDetails = () => {
 
     const currentCreateTime = new PersianDate(createTime).format("YYYY/MM/DD");
 
-
     const pressHandler = () => {
         if(factorModeId >= 3) navigation.navigate("insuranceHistoryImages" , { insImages , id , insuranceCoName , categorysFullName })
         else navigation.navigate('insurancePayment' , { id })
