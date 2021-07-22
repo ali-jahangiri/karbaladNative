@@ -7,8 +7,6 @@ import { useStyleDispatcher } from "../../Hooks/useStyle"
 
 import Login from '../../screens/Login';
 
-import useFetch from "../../Providers/useFetch"
-
 import ErrorPage from '../../screens/ErrorPage';
 
 import encrypt from '../../utils/encrypt';
@@ -34,7 +32,7 @@ const InitialLoading = ({ children }) => {
 
     const [fontLoaded , err ] = useFonts({
         light : require("../../assets/fonts/Vazir-Light.ttf"),
-        regular : require('../../assets/fonts/Vazir-Regular.ttf'),
+        normalFont : require('../../assets/fonts/Vazir-Regular.ttf'),
         bold : require('../../assets/fonts/Vazir-Bold.ttf'),
         black : require('../../assets/fonts/Vazir-Black.ttf'),
     });
@@ -45,12 +43,6 @@ const InitialLoading = ({ children }) => {
     const styleDispatcher = useStyleDispatcher();
 
     const resetHandler = () => setForceToReRender(prev => !prev);
-
-
-    // useEffect(() => {
-    //     resetHandler()
-    // } , [isAuth]);
-
 
 
     const continueHandler = () => {

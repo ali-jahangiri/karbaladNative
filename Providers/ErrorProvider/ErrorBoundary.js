@@ -22,7 +22,6 @@ class ErrorBoundary extends React.Component {
     }
 
     componentDidCatch(error , info) {
-        console.log(error.message , info);
         // connect to error monitoring service
         this.setState({ message: error.message , trace : info.componentStack });
         const caller = axios.create({

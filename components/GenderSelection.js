@@ -14,17 +14,17 @@ const GenderSelector = ({ selectHandler }) => {
 
     return (
         <View style={appendStyle.container}>
-            <TouchableOpacity style={[appendStyle.item , currentSelected === 0 ? appendStyle.selectedItem :  {}]} onPress={() => {
+            <TouchableOpacity style={[appendStyle.item , currentSelected === 1 ? appendStyle.selectedItem :  {}]} onPress={() => {
                 selectHandler('Genders' , `1`);
                 setCurrentSelected(1)
             }}>
-                <Para color={currentSelected === 0 ? primary : "grey" } weight="bold" align="center">مرد</Para>
+                <Para color={currentSelected === 1 ? primary : "grey" } weight="bold" align="center">مرد</Para>
             </TouchableOpacity>
-            <TouchableOpacity style={[appendStyle.item , currentSelected === 1 ? appendStyle.selectedItem :  {}]} onPress={() => {
+            <TouchableOpacity style={[appendStyle.item , currentSelected === 2 ? appendStyle.selectedItem :  {}]} onPress={() => {
                 selectHandler("Genders" , `2`);
                 setCurrentSelected(2);
             }}>
-                <Para color={currentSelected === 1 ? primary : "grey"} weight="bold" align="center">زن</Para>
+                <Para color={currentSelected === 2 ? primary : "grey"} weight="bold" align="center">زن</Para>
             </TouchableOpacity>
         </View>
     )

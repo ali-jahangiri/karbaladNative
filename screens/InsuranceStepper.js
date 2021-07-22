@@ -46,14 +46,18 @@ const InsuranceStepper = ({ id , name }) => {
         console.log('stepperStore' , valueStore);
     } , [valueStore])
 
-    const redirectionHandler = activeStage => {
+    const redirectionHandler = (activeStage , syncedStore) => {
+
         const flattedStage = insuranceData.pages
                                     .map(el => el.forms)
                                     .flat(1)
                                     .filter(el => el.typesName !== client.static.INPUT_DETECTOR.INFO);
             const currentStageData = flattedStage[activeStage];
             if(!currentStageData) {
-                navigation.replace("insuranceResultPreview" , { id , valueStore , flattedStage , carCategory : insuranceData?.carGroup});
+                const clonedStore = JSON.stringify({
+                    id , valueStore : syncedStore , flattedStage , carCategory : insuranceData?.carGroup
+                })
+                navigation.replace("insuranceResultPreview" , { ...JSON.parse(clonedStore) });
             }
     }
     
@@ -63,7 +67,7 @@ const InsuranceStepper = ({ id , name }) => {
     const nextStepHandler = haveNewTempValueForSet => {
         setCurrentStage(prev =>  prev + 1);
         if(haveNewTempValueForSet) setValueStore(prev => ({ ...prev , ...haveNewTempValueForSet}));
-        redirectionHandler(currentStage  + 1)
+        redirectionHandler(currentStage  + 1 , { ...valueStore , ...haveNewTempValueForSet})
     }   
     
     const previousStepHandler = () => {

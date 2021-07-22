@@ -25,9 +25,9 @@ fixNumbers = function (str)
 const InputNumber = ({ onChange , stepForEachOperation = 10000, value = String(stepForEachOperation) , length : { max , min } , isNotLimited}) => {
     const appendStyle = useStyle(style);
     
+    
     const changeHandler = value => {
         let newValue = fixNumbers(value);
-        console.log(makePureNumber(newValue));
         if(makePureNumber(newValue) < max || isNotLimited ) {
             
             onChange({ value : makePureNumber(newValue) })

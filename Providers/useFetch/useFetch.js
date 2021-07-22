@@ -4,8 +4,8 @@ import { FetchContext } from "./FetchProvider";
 
 import appConfig from "../../config";
 
-import clientConfig from "../../client";
 import { useSelector } from "../../Store/Y-state";
+import axios from "axios";
 
 const useFetch = (path, config) => {
   const { api } = useContext(FetchContext);
@@ -16,7 +16,9 @@ const useFetch = (path, config) => {
 
   const timeDiff = useSelector(state => state.auth.systemTime);
 
-  const fetcher = () => {
+  const ticket = useSelector(state => state.auth.appKey)
+
+  const fetcher = (path , config) => {
     return new Promise((resolve , _) => {
         api.post(`${appConfig.serverPath}/baseApi/getServerTime`)
           .then(({data}) => {
@@ -30,21 +32,19 @@ const useFetch = (path, config) => {
               })
               .then(({ data }) => {
                 console.log('fetcher' , data);
-                // if(data === clientConfig.static.ACCESS_DENIED) {
-                //   api.post(`${appConfig.serverPath}/baseApi/getAppToken` , {
-                //     Key : encrypt.encrypt({
-                //         UserName : appConfig.adminUserName,
-                //         Password : appConfig.adminPassword
-                //     }, serverTime)
-                //     }).then(({ data }) => {
-                //       console.log('again' , data);
-                //       if(data === clientConfig.static.ACCESS_DENIED) {
-                //         throw new Error('');
-                //       }else {
-                //         resolve({ api , appToken : data })
-                //       }
-                //     })
-                // };
+
+                const instance = axios.create({
+                  baseURL : appConfig.serverPath,
+                  method : "POST",
+                  headers : {
+                    packageName : appConfig.packageName,
+                    appToken : data,
+                    ticket
+                  },
+                  timeout : 5000,
+                });
+
+                // resolve(instance(path , config))
                 resolve({ api , appToken : data })
               }).catch(err => {
                 console.log('!!!!!!!!!catch' , err);
@@ -56,59 +56,7 @@ const useFetch = (path, config) => {
   }
 
   if(path === true) return fetcher
-
-  useEffect(() => {
-    // we use useEffect to force our parent component that already use this hoo to re render with this new state
-    if (path) {
-      if (typeof config === "object") {
-        api
-          .post(path, config)
-          .then(({ data }) => {
-            setResponse(data);
-            setLoading(false);
-          })
-          .catch((err) => {
-            setError(err);
-            setLoading(false);
-          });
-      } else {
-        api
-          .get(path)
-          .then(({ data }) => {
-            setResponse(data);
-            setLoading(false);
-          })
-          .catch((err) => {
-            setError(err);
-            setLoading(false);
-          });
-      }
-    }
-  }, [path , api]);
-
   return path ? { response, loading, error } : api;
 };
 
 export default useFetch;
-
-
-
-
-
-
-
-// const baseHeaders = {
-//   headers : {
-//     appToken : data,
-//     packageName : appConfig.packageName
-//   }
-// }
-
-// return {
-//   get(url) {
-//     api.get(url, baseHeaders.headers )
-//   },
-//   post(url , data) {
-//     return api.post(url , data , baseHeaders.headers)
-//   }
-// }

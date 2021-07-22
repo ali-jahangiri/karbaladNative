@@ -37,7 +37,7 @@ const InsuranceRequirements = ({ route : { params } , navigation }) => {
     const [error, setError] = useState(null);
 
 
-    const privateKey = useSelector(state => state.auth.appKey);
+    const ticket = useSelector(state => state.auth.appKey);
 
 
     const fetcher = useFetch(true);
@@ -49,13 +49,14 @@ const InsuranceRequirements = ({ route : { params } , navigation }) => {
                         InstallmentId : params.installmentId , 
                         formulaId : params.factorId, 
                         requestId : params.reqId
-                    } , { headers : {appToken , ticket : privateKey , packageName : config.packageName} })
+                    } , { headers : {appToken , ticket } })
                     .then(({ data }) => {
+                        console.log(data);
                         setDocItems(data);
                         setAreas(data.areas);
                         setLoading(false)
                     }).catch(err => {
-
+                        console.log(err , 'err');
                     })
             }).catch(err => {
             })
@@ -100,21 +101,20 @@ const InsuranceRequirements = ({ route : { params } , navigation }) => {
             request : JSON.stringify(dynamicStore)
         };
         setInInsRecord(true);
-        fetcher
+            fetcher()
             .then(({ api , appToken }) => {
-                api
-                    .post(`${config.serverPath}/MobileApi/GetRequirements` ,
-                            { ...sendObject } ,
-                            { headers : {appToken , ticket : privateKey , packageName : config.packageName} })
-                        .then(({ data }) => { 
+                api.post("GetRequirements" , { ...sendObject } ,{ headers : {appToken , ticket  } })
+                    .then(({ data }) => { 
                         setError(null);
                         if(!data.hasData) {
-                            navigation.navigate("insuranceRequirementConfirm" , { id : docItems.factorCode , message : data.message })
+                            // TODO handle this case , for now i throw a err
+                            throw new Error("مشکلی رخ داده است ، مجددا تلاش نمایید")
+                            // navigation.navigate("insuranceRequirementConfirm" , { id : docItems.factorCode , message : data.message })
                         }else {
                             const { data : response , message } = data
                             navigation.navigate('insurancePayment' , { id : response.id , loadingMessageHelper : message });
                         }
-                    })
+                        })
                     .catch(err => {
                         setError(err)
                     })
@@ -125,9 +125,13 @@ const InsuranceRequirements = ({ route : { params } , navigation }) => {
     return loading ? <Loading /> : <ScreenWrapper>
     <TabScreenHeader navigation={navigation} title="تکمیل مشخصات" extendStyle={{  }} />
         <ScrollView contentContainerStyle={{ paddingBottom : 20 }}>
-            <RequirementDocument 
-                onChange={setDynamicStore} 
-                items={docItems.requierds?.filter(el => el.typeImage)} />
+            {
+                docItems.requierds?.filter(el => el.typeImage).length ? 
+                <RequirementDocument 
+                    onChange={setDynamicStore} 
+                    items={docItems.requierds?.filter(el => el.typeImage)} /> : null    
+
+            }
             {
                 docItems.requierds?.filter(el => !el.typeImage).length ? <FurtherInfo
                 valueStore={dynamicStore}
@@ -146,7 +150,7 @@ const InsuranceRequirements = ({ route : { params } , navigation }) => {
             />
         </ScrollView>
         <TouchableOpacity disabled={inInsRecord} onPress={goToPaymentHandler} style={[appendStyle.ctaContainer , inInsRecord ? appendStyle.inInsRecord : {}]}>
-            <Para weight="bold" align="center">{
+            <Para size={16} weight="bold" align="center">{
                 !inInsRecord ? "ثبت اطلاعات و پرداخت" : "در حال ثبت بیمه..."
             }</Para>
         </TouchableOpacity>

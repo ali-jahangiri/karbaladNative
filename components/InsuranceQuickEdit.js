@@ -52,10 +52,6 @@ const InsuranceQuickEdit = ({ navigation , route : { params } }) => {
     const [currentTypeName, setCurrentTypeName] = useState("");
     const [tempState, setTempState] = useState({});
 
-
-    console.log(params , "quickEdit");
-
-
     // this value define current selected option for changing and
     const currentForm = params.selectedInsData.find(el => el.lbLName === currentSetting);
 

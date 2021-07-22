@@ -47,8 +47,8 @@ const InsuranceResultPreviewItem = ({ insName , factorItems , insIconUrl , formu
             <View style={appendStyle.header}>
                 {
                     haveInstallment ? <View style={appendStyle.percentageContainer}>
-                        <Feather name="percent" size={20} color={primary} />
-                        <Para color={primary}>قسطی</Para>
+                        <Feather name="percent" size={16} color={primary} />
+                        <Para size={12} color={primary}>قسطی</Para>
                     </View> : null
                 }
                 <View style={{ flexDirection : "row" }}>
@@ -111,7 +111,7 @@ const style = ({ primary , baseBorderRadius , secondary } , haveInstallment) => 
     },
     percentageContainer : {
         alignItems : 'center',
-        backgroundColor : generateColor(primary , 2),
+        backgroundColor : generateColor(primary , 1),
         borderRadius : baseBorderRadius,
         padding : 10,
     },

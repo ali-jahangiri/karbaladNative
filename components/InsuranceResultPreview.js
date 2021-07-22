@@ -1,31 +1,28 @@
 import React, { useEffect, useState } from 'react';
-import { ScrollView, StatusBar, StyleSheet, View } from 'react-native';
+import { ScrollView, StatusBar, StyleSheet, View , TouchableOpacity } from 'react-native';
+import { Feather } from '@expo/vector-icons';
+
+import {useStyle} from "../Hooks/useStyle"
+import { generateColor } from '../utils';
+import useFetch from '../Providers/useFetch';
+import { useSelector } from '../Store/Y-state';
 
 import Para from "./Para";
 import InsuranceResultPreviewItem from './InsuranceResultPreviewItem';
-
-import {useStyle} from "../Hooks/useStyle"
-
-import { Feather } from '@expo/vector-icons';
-import { generateColor } from '../utils';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-
 import Loading from './Loading';
 import EmptyState from './EmptyState';
-import useFetch from '../Providers/useFetch';
 import ScreenWrapper from './ScreenWrapper';
-import { useSelector } from '../Store/Y-state';
 
 const InsuranceResultPreview = ({ route : { params : { id , valueStore , flattedStage : selectedInsData , carCategory } } , navigation }) => {
     const [initialLoading, setInitialLoading] = useState(false);
     const [responseValues, setResponseValues] = useState({});
     const appendStyle = useStyle(style);
-
     const [reqId, setReqId] = useState('');
+
     
     const navHash = useSelector(state => state.navigation.navigationHash);
-    
     const fetcher = useFetch(true);
+    
     useEffect(() => {
         setInitialLoading(true);
         fetcher()
@@ -33,16 +30,15 @@ const InsuranceResultPreview = ({ route : { params : { id , valueStore , flatted
                 return api.post('GetInsuranceQuoteId' , { formData : JSON.stringify({ ...valueStore , Id : String(id) }) } , { headers : {appToken} })
                     .then(({ data }) =>  data)
                     .then(receivedId => {
-                                api.post('GetInsuranceQuotes' , { formulaId : receivedId} , { headers : {appToken}})
-                                    .then(({ data }) => {
-                                        console.log(data);
-                                        setResponseValues(data);
-                                        setReqId(receivedId);
-                                        setInitialLoading(false);
-                                    })
+                        return api.post('GetInsuranceQuotes' , { formulaId : receivedId} , { headers : {appToken}})
+                                .then(({ data }) => {
+                                    setResponseValues(data);
+                                    setReqId(receivedId);
+                                    setInitialLoading(false);
+                                });
                     });
             }).catch(err => {
-                console.log(err , 'get thus');
+                throw new Error(err)
             })
         return () => {
             // with this state change , we force entire component get re render and all new params and send new request
@@ -57,9 +53,7 @@ const InsuranceResultPreview = ({ route : { params : { id , valueStore , flatted
         }
     }
 
-    const goHomeHandler = () => {
-        navigation.navigate('home')
-    }
+    const goHomeHandler = () => navigation.navigate('home')
 
     
     if(initialLoading) return <Loading />

@@ -12,10 +12,10 @@ import ScreenWrapper from "./ScreenWrapper";
 
 const InsuranceConfirm = ({ route : { params : { factorItems , insModel , haveInstallment , reqId , installment_Value , formulId } } , navigation }) => {
     const appendStyle = useStyle(style);
-    const { secondary , primary } = useStyle();
+    const { primary } = useStyle();
     
-    const installmentHandler = () => {
 
+    const installmentHandler = () => {
         navigation.push("insuranceInstallment" , { factorId : haveInstallment , reqId , installment_Value })
     }
 
@@ -30,7 +30,7 @@ const InsuranceConfirm = ({ route : { params : { factorItems , insModel , haveIn
                 <NextStepBtn
                     direction="right"
                     extendStyle={{ alignSelf : "flex-end", marginRight : 20 }}
-                    containerBgColor={generateColor(secondary , 9)}
+                    containerBgColor={generateColor(primary , 3)}
                     onPress={navigation.goBack} />
                 <Image 
                     resizeMode="center" 
