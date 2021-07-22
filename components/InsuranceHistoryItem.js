@@ -22,6 +22,8 @@ const InsuranceHistoryItem = props => {
     
     const now = new Persian(createTime);
     
+    console.log({...props} , "sgit");
+
     const pressHandler = () => {
         navigation.navigate('insuranceHistoryDetails' , { ...props })
     }

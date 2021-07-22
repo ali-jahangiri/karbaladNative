@@ -33,16 +33,16 @@ const useFetch = (path, config) => {
               .then(({ data }) => {
                 console.log('fetcher' , data);
 
-                const instance = axios.create({
-                  baseURL : appConfig.serverPath,
-                  method : "POST",
-                  headers : {
-                    packageName : appConfig.packageName,
-                    appToken : data,
-                    ticket
-                  },
-                  timeout : 5000,
-                });
+                // const instance = axios.create({
+                //   baseURL : appConfig.serverPath,
+                //   method : "POST",
+                //   headers : {
+                //     packageName : appConfig.packageName,
+                //     appToken : data,
+                //     ticket
+                //   },
+                //   timeout : 5000,
+                // });
 
                 // resolve(instance(path , config))
                 resolve({ api , appToken : data })
