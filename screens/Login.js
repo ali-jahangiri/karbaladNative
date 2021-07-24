@@ -1,135 +1,25 @@
-import React, { useRef, useState } from 'react';
-import { Button, Keyboard, StatusBar, StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
-import Para from '../components/Para';
-import { useStyle } from '../Hooks/useStyle';
-import { generateColor, toFarsiNumber } from '../utils';
+import React, { useState } from 'react';
+import { Keyboard, StyleSheet , View } from 'react-native';
 
 import Input from '../components/Input';
-
-import { Feather } from '@expo/vector-icons';
-
 
 import client from '../client';
 import useFetch from '../Providers/useFetch';
 import config from '../config';
 
-// TODO remove and combine this fixNumber for have only one import from utils
+
 import { fixNumbers } from '../utils/Date';
 import { persister } from '../utils';
 import { useDispatch } from '../Store/Y-state';
 import { setAppKey, setSeeWelcomeScreen } from '../Store/Slices/authSlice';
-import UserIconBox from '../components/UserIconBox';
+
+import { VerifyInput , PhoneInput, PasswordInput, AuthLanding, AuthModePlayground } from '../components/Login';
 
 
-const { REGISTER, LOGIN , FORGOT } = client.static;
+const { LOGIN } = client.static;
 
-
-const PasswordInput = ({ value , changeHandler , placeholder , autoFocus = false }) => {
-    const appendStyle = useStyle(passwordInputStyle)
-    return (
-        <View style={appendStyle.container}>
-            <TextInput
-                autoFocus={autoFocus}
-                style={appendStyle.input}
-                placeholder={placeholder}
-                secureTextEntry
-                value={value}
-                onChangeText={changeHandler}
-            />
-        </View>
-    )
-}
-
-const passwordInputStyle = ({ primary , baseBorderRadius }) => StyleSheet.create({
-    container : {
-        borderColor : generateColor(primary , 5) , 
-        borderWidth : 2,
-        borderRadius : baseBorderRadius,
-        marginVertical : 10
-    },
-    input : {
-        fontSize : 20,
-        padding: 15,
-        fontFamily : "bold"
-    }
-})
-
-const VerifyInput = ({ value , changeHandler }) => {
-    const appendStyle = useStyle(verifyInputStyle);
-
-    return (
-        <View style={appendStyle.container} > 
-            <TextInput
-                autoFocus
-                maxLength={4}
-                keyboardType="number-pad"
-                placeholder="کد تایید"
-                style={[appendStyle.input , { letterSpacing : value ? 10 : 0 }]}
-                value={value}
-                onChangeText={changeHandler}
-            />
-        </View>
-    )
-}
-
-
-
-const verifyInputStyle = ({ primary , baseBorderRadius }) => StyleSheet.create({
-    container : {
-        borderColor : generateColor(primary , 5),
-        borderWidth : 2,
-        marginVertical : 10,
-        borderRadius : baseBorderRadius,
-        justifyContent : 'center',
-        alignItems : 'center',
-        height: 70
-    },
-    input : {
-        fontFamily : "bold",
-        fontSize : 25,
-        padding : 15,
-        textAlign : 'center',
-        letterSpacing : 10,
-        width : "100%",
-        height : 70,
-    }
-})
-
-
-    
-const PhoneInput = ({ value , changeHandler }) => {
-    const appendStyle = useStyle(phoneInputStyle);
-    return (
-        <View style={appendStyle.container}>
-            <TextInput
-                autoFocus
-                keyboardType="number-pad"
-                style={appendStyle.input}
-                placeholder="شماره همراه"
-                value={toFarsiNumber(value || "")}
-                onChangeText={changeHandler}
-            />
-        </View>
-    )
-}
-
-const phoneInputStyle = ({ primary , baseBorderRadius }) => StyleSheet.create({
-    container : {
-        borderWidth : 2,
-        borderColor : generateColor(primary , 5),
-        borderRadius : baseBorderRadius,
-        marginVertical : 10
-    },
-    input : {
-        fontSize : 22,
-        fontFamily : "bold",
-        padding: 15,
-        textAlign : 'center'
-    }
-})
 
 const Login = () => {
-    const appendStyle = useStyle(style);
     const [authMode, setAuthMode] = useState(null);
     const [inputValue, setInputValue] = useState({});
     const [error, setError] = useState(null);
@@ -147,16 +37,52 @@ const Login = () => {
         }))
     }
 
-
-    const validate = (partOfState , errMessage) => {
-        if(!inputValue?.[partOfState]) {
-            setError(errMessage)
+    const passRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
+    const passwordValidation = (pass = "", passConfirm = "") => {
+        if([pass , passConfirm].includes("")) {
+            setError(LOGIN.AUTH_ERRORS.EMPTY_PASSWORD)
             return false
-        }else {
-            return true
+        }else if(pass !== passConfirm) {
+            setError(LOGIN.AUTH_ERRORS.DIFFERENCE_PASSWORD);
+            return false
+        }else if(!passRegex.test(pass)) {
+            setError(LOGIN.AUTH_ERRORS.INVALID_PASSWORD)
+            return false
+        }else return true
+    }
+
+    const verificationCodeChangeHandler = value => {
+        inputChangeHandler("verifyCode" , value);
+        setError(null);
+        if(value.length >= 4) {
+            setStage(prev => prev + 1)
         }
     }
 
+    const getUserDataRequest = body => {
+        return fetcher()
+        .then(({ api , appToken }) => {
+                api.post("GetUserData" , {...body} , { headers : { appToken }})
+                .then(({ data }) => {
+                    const { id , fullName ,  privatekey} = data;
+                    if(id < 0) {
+                        setError(fullName)
+                        setLoadingCta(false);
+                    }else {
+                        console.log('phone' , body.mobile , "privateKey" , privatekey);
+                        persister.set("userName" , body.mobile)
+                            .then(_unusable => {
+                                persister.set('userPrivateKey' , privatekey)
+                                    .then(_ => {
+                                        Keyboard.dismiss();
+                                        storeDispatcher(() => setSeeWelcomeScreen(false));
+                                        storeDispatcher(() => setAppKey(privatekey));
+                                    })
+                            })
+                    }
+                })
+            })
+    }
 
     const registerStage = {
         stageLabel : "ثبت نام",
@@ -171,29 +97,26 @@ const Login = () => {
             },
 
             ctaHandler() {
-                // TODO preventing sending req when phone number
-                if(validate('phone' , "شماره تماس ضروری میباشد")) {
+                const { phone = "" } = inputValue;
+
+                if(phone && phone.length >= 11) {
                 setLoadingCta("صبر کنید")
                    fetcher()
                     .then(({ api , appToken }) => {
-                        return api.post("VerifyNumber" , {
-                            mobile : fixNumbers(inputValue?.phone)
-                            } , {
-                            headers : {
-                                appToken,
-                                packageName : config.packageName
-                            }
-                        })
+                        return api.post("VerifyNumber" , { mobile : fixNumbers(inputValue?.phone) } , { headers : { appToken }})
                         .then(({data}) => {
                             if(data.typeId < 0) throw new Error(data.message)
                             setStage(prev => prev + 1)
                         })
-                    }).catch(err => {
-                        setError(err.message);
-                    }).finally(() => {
-                        setLoadingCta(false);
-                    })
-                }  
+                        }).catch(err => {
+                            setError(err.message);
+                        }).finally(() => {
+                            setLoadingCta(false);
+                        })
+                }else {
+                    if(!phone) return setError(LOGIN.AUTH_ERRORS.EMPTY_PHONE)
+                    else setError(LOGIN.AUTH_ERRORS.INVALID_PHONE_NUMBER_LENGTH)
+                }
             },
             backHandler() {
                 setAuthMode(null);
@@ -219,8 +142,7 @@ const Login = () => {
 
         },
         "3" : {
-            "ctaText" : "تایید و ثبت نام",
-            
+            ctaText : "تایید و ثبت نام",
             backHandler() {
                 setStage(prev => prev -2);
                 ["verifyCode" , "password" , 'passwordConfirm']
@@ -244,40 +166,10 @@ const Login = () => {
                 )
             },
             ctaHandler() {
-                if(inputValue?.password !== inputValue?.passwordConfirm) {
-                    setError('رمز عبور و تکرار آن مطابقت ندارد . مجددا برسی نمایید')
-                }else {
+                if(passwordValidation(inputValue?.password , inputValue?.passwordConfirm)) {
                     const { phone , password , verifyCode } = inputValue;
-                    setLoadingCta("در حال ثبت نام");
-                    fetcher()
-                        .then(({ api , appToken }) => {
-                            api.post("GetUserData" , {
-                                mobile : phone,
-                                pass : verifyCode,
-                                newPass : password ,
-                                name : "",
-                            }, {
-                                headers : {
-                                    appToken
-                                }
-                            }).then(({ data }) => {
-                                if(data.id < 0) {
-                                    setError(data.fullName);
-                                    setLoadingCta(false);
-                                }else {
-                                    const key = data.privatekey;
-                                    persister.set("userName" , phone)
-                                        .then(one => {
-                                            persister.set('userPrivateKey' , key)
-                                                .then(_ => {
-                                                    storeDispatcher(() => setSeeWelcomeScreen(false));
-                                                    storeDispatcher(() => setAppKey(key));
-                                                    Keyboard.dismiss();
-                                                })
-                                        })
-                                }
-                            })
-                        })
+                    setLoadingCta(LOGIN.PENDING_MESSAGE.PEND_IN_REGISTER);
+                    getUserDataRequest({ mobile : phone, pass : verifyCode, newPass : password , name : "" });
                 }
             }
         }
@@ -299,47 +191,18 @@ const Login = () => {
                             value={inputValue?.userName}
                             changeHandler={value => inputChangeHandler("userName", value)}
                         />
-                        <Input 
-                            value={inputValue?.password}
-                            isPassword
-                            extendInputStyle={{ fontSize : 20 }}
-                            changeHandler={value => inputChangeHandler('password', value)}
-                            placeholder="رمز عبور"
-                        />
+                        <PasswordInput 
+                            placeholder="رمز عبور" 
+                            value={inputValue?.password} 
+                            eyeEnable 
+                            changeHandler={value => inputChangeHandler('password' , value)} />
                     </>
                 )
             },
             ctaHandler() {
                 if(inputValue?.userName && inputValue?.password) {
-                    fetcher()
-                        .then(({ api , appToken }) => {
-                            api.post("GetUserData" , {
-                                mobile : inputValue?.userName,
-                                pass : inputValue?.password,
-                                newPass : "",
-                                name : ""
-                            }, { headers : {
-                                appToken
-                            } })
-                                .then(({ data })=> {
-                                    const { id , fullName ,  privatekey} = data;
-                                    if(id < 0) {
-                                        setError(fullName);
-                                    }else {
-                                        persister.set("userName" , inputValue.userName)
-                                            .then(one => {
-                                                persister.set('userPrivateKey' , privatekey)
-                                                .then(_ => {
-                                                    storeDispatcher(() => setAppKey(privatekey));
-                                                    Keyboard.dismiss();
-                                                    storeDispatcher(() => setSeeWelcomeScreen(false))
-                                                })
-                                            })
-                                    }
-                                }).catch(err => {
-                                    setError(err)
-                                })
-                        })
+                    setLoadingCta(LOGIN.PENDING_MESSAGE.PEND_IN_LOGIN);
+                    getUserDataRequest({mobile : inputValue.userName, pass : inputValue.password, newPass : "", name : ""})
                 }else {
                     if(!inputValue?.userName) {
                         setError("نام کاربری  را وارد کنید");
@@ -358,102 +221,31 @@ const Login = () => {
     }
 
 
-
-    const forgotStage = {
-        ...registerStage,
-        stageLabel : "فراموشی رمز عبور",
-    }
-
-
     const stages = {
         login : loginStage,
         register : registerStage,
-        forgot : forgotStage
+        forgot : { ...registerStage, stageLabel : "فراموشی رمز عبور" }
     }
 
-
-
-    const verificationCodeChangeHandler = value => {
-        inputChangeHandler("verifyCode" , value);
-        setError(null);
-        if(value.length >= 4) {
-            setStage(prev => prev + 1)
-        }
-    }
-
+    const currentStage = stages?.[authMode]?.[stage]
 
     const renderChecker = () => {
-        if(!authMode) return (
-            <>
-            <View style={{ alignItems : "center" }}>
-                <UserIconBox />
-                <Para size={20} >{client.static.LOGIN_APP_NAME}</Para>
-            </View>
-            <View style={appendStyle.descContainer}>
-                <Para>{client.static.LOGIN_SCREEN_DESK}</Para>
-            </View>
-            <View style={appendStyle.ctaContainer}>
-                <View style={{ flexDirection : "row" , justifyContent : "space-between" }}>
-                <TouchableOpacity onPress={() => setAuthMode(LOGIN)} style={appendStyle.cta}>
-                    <Para size={16} weight="bold" align="center">ورود</Para>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => setAuthMode(REGISTER)} style={appendStyle.cta}>
-                    <Para size={16} weight="bold" align="center">ثبت نام</Para>
-                </TouchableOpacity>
-                </View>
-                <TouchableOpacity onPress={() => setAuthMode(FORGOT)} style={{ backgroundColor  : "transparent" , flexDirection : "row" , justifyContent : 'center' , marginTop : 20}}>
-                    <Para>رمز عبور خود را فراموش کرده اید ؟ </Para>
-                </TouchableOpacity>
-            </View>
-            </>
-        );
-    else return (
-        <View style={appendStyle.authModeContainer}>
-            <View style={appendStyle.modeHeader}>
-                <TouchableOpacity onPress={() => stages[authMode][stage]?.backHandler()}>
-                    <Para style={{ paddingHorizontal : 25 , paddingVertical : 10 , paddingLeft : 0 }}  color="grey" weight="bold">بازگشت</Para>
-                </TouchableOpacity>
-                <View style={{ flexDirection : 'row' , alignItems : 'center' }}>
-                    <Para style={appendStyle.modeTitle}>{stages[authMode].stageLabel}</Para>
-                    <View style={appendStyle.bullet} />
-                </View>
-            </View>
-            <View>
-                {
-                    stages[authMode][stage]
-                        ?.body()
-                }
-            </View>
-            {
-                error ?
-                <View style={appendStyle.error}>
-                    <Para color={'red'}>{error}</Para>
-                </View> : null
-            }
-            <TouchableOpacity disabled={error || loadingCta} onPress={stages[authMode][stage].ctaHandler} style={[appendStyle.endCta , error || loadingCta ? appendStyle.disabledCta : {}]}>
-                        <Feather style={{ marginRight : 10 }} name={`${loadingCta ? "loader" : "arrow-left"}`} size={24} color="black" />
-                        <Para weight="bold" size={18}>
-                            {
-                                (() => {
-                                    return loadingCta || stages[authMode][stage]?.ctaText
-                                })()
-                            }
-                        </Para>
-            </TouchableOpacity>
-        </View>
-    )
+        if(!authMode) return <AuthLanding setAuthMode={setAuthMode} />
+        else return <AuthModePlayground
+                        currentStage={currentStage} 
+                        error={error} 
+                        loadingCta={loadingCta}
+                        currentStageTitle={stages[authMode].stageLabel} />
     }
 
     return (
-        <View style={appendStyle.container}>
-            {
-                renderChecker()
-            }
+        <View style={style.container}>
+            {renderChecker()}
         </View>
     )
 }
 
-const style = ({ primary , baseBorderRadius }) => StyleSheet.create({
+const style = StyleSheet.create({
     container : {
         flex: 1,
         alignItems : 'center',
@@ -461,63 +253,6 @@ const style = ({ primary , baseBorderRadius }) => StyleSheet.create({
         width : "90%",
         margin: "5%"
     },
-    endCta : {
-        flexDirection : "row",
-        justifyContent : 'center',
-        alignItems : 'center',
-        backgroundColor : generateColor(primary , 8),
-        padding: 15,
-        borderRadius : baseBorderRadius
-    },
-
-    descContainer : {
-        marginVertical : 20,
-    },
-    error : {
-        marginBottom : 10
-    },  
-    ctaContainer : {
-        
-        justifyContent : 'space-evenly',
-        width : "100%"
-    },
-    disabledCta : {
-        opacity: .3
-    },  
-    cta : {
-        padding: 15,
-        backgroundColor : generateColor(primary , 5),
-        width: "49%",
-        textAlign : 'center',
-        borderRadius : baseBorderRadius
-    },
-    authModeContainer : {
-        flex: 1,
-        width: "90%",
-        marginHorizontal : "5%",
-        justifyContent : 'center'
-    },
-    bullet : {
-        width : 30,
-        height : 30,
-        backgroundColor : generateColor(primary , 6),
-        borderRadius : baseBorderRadius - 5,
-        marginLeft : 10
-    },
-    modeTitle : {
-        fontSize : 26,
-        fontFamily : "bold",
-        color: "grey",
-
-    },
-    modeHeader : {
-        marginTop : StatusBar.currentHeight + 10,
-        flexDirection : "row",
-        alignItems : 'center',
-        justifyContent : 'space-between',
-        width : "100%",
-        
-    }
 })
 
 export default Login;

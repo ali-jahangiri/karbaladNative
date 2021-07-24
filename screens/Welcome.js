@@ -17,6 +17,7 @@ const Welcome = ({ continueHandler }) => {
     const storeDispatcher = useDispatch();
     const [loading, setLoading] = useState(true);
 
+
     
     const fetcher = useFetch(true);
 

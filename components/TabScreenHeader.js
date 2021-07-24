@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { StatusBar, StyleSheet, View } from 'react-native';
 
@@ -6,9 +7,10 @@ import NextStepBtn from './NextStepBtn';
 
 import Para from './Para';
 
-const TabScreenHeader = ({ navigation , title = "string" , extendStyle }) => {
+const TabScreenHeader = ({ title = "string" , extendStyle }) => {
     const appendStyle = useStyle(style , extendStyle)
-    
+    const navigation = useNavigation()
+
     return (
         <View style={appendStyle.container}>
             <NextStepBtn onPress={navigation.goBack} />
@@ -26,7 +28,7 @@ const style = ({ primary } , extendStyle) => StyleSheet.create({
         justifyContent : 'space-between',
         paddingHorizontal : "5%",
         paddingTop : StatusBar.currentHeight,
-        ...extendStyle
+        ...extendStyle,
     },
     
 })

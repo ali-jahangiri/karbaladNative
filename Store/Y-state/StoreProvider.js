@@ -14,7 +14,7 @@ const StoreProvider = ({ children , store , logger = false }) => {
             ...prev,
             [sliceName] : valueMaker(prev[sliceName] , payload)
         }));
-
+        console.log('STORE' , {..._store, [sliceName] : valueMaker(_store[sliceName] , payload)});
         // console.log(`Action => ${other.type} - inside ' ${sliceName} ' slice` , _store);
         // console.groupCollapsed('Dispatching')
         // console.log(`Action => ${other.type} - inside ' ${sliceName} ' slice`);

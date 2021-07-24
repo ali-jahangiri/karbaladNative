@@ -238,7 +238,7 @@ const InitialLoading = ({ children }) => {
 
         const globalStyle = {
             baseBorderRadius : 15,
-            primary : '#04009A',
+            primary : '#B05B3B',
             secondary : '#dbe6fd',
         }
         styleDispatcher({ globalStyle });

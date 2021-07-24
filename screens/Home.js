@@ -19,6 +19,8 @@ import { useDispatch, useSelector } from '../Store/Y-state';
 import useFetch from '../Providers/useFetch';
 import { setUserData, setWasCompletelyLoaded } from '../Store/Slices/initialSlice';
 import CommutingProvider from '../Providers/CommutingProvider';
+import { Button } from 'react-native';
+import { persister } from '../utils';
 
 
 const InsIndexScreen = ({ navigation }) => {
@@ -34,7 +36,8 @@ const InsIndexScreen = ({ navigation }) => {
         storeDispatcher(() => setWasCompletelyLoaded(false));
         fetcher()
             .then(({ api , appToken }) => {
-                api.post("userProfile" , {} , {
+                console.log(appToken , "home");
+                return api.post("userProfile" , {} , {
                     headers : {
                         ticket,
                         appToken
@@ -42,6 +45,8 @@ const InsIndexScreen = ({ navigation }) => {
                 }).then(({data}) => {
                     storeDispatcher(() => setUserData(data))
                     storeDispatcher(() => setWasCompletelyLoaded(true));
+                }).catch(err => {
+                    console.log(err  , 'shit');
                 })
             })        
     } , [commutingHash])
@@ -54,6 +59,7 @@ const InsIndexScreen = ({ navigation }) => {
         <ScreenWrapper>
             <ScreenHeader title="خانه" />
             <InsuranceDirectory handler={routeChangeHandler} items={catItems} />
+            <Button title="clear" onPress={() => persister.remove("userPrivateKey")} />
         </ScreenWrapper>
     )
 }
