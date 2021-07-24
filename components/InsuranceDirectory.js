@@ -1,7 +1,7 @@
-import { useScrollToTop } from '@react-navigation/native';
-import React from 'react';
-import { useRef } from 'react';
+import React , { useRef } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
+import { useScrollToTop } from '@react-navigation/native';
+
 import InsuranceCart from './InsuranceCart';
 
 const InsuranceDirectory = ({ items = [] , handler}) => {

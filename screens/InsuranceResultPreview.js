@@ -7,11 +7,11 @@ import { generateColor } from '../utils';
 import useFetch from '../Providers/useFetch';
 import { useSelector } from '../Store/Y-state';
 
-import Para from "./Para";
-import InsuranceResultPreviewItem from './InsuranceResultPreviewItem';
-import Loading from './Loading';
-import EmptyState from './EmptyState';
-import ScreenWrapper from './ScreenWrapper';
+import Para from "../components/Para";
+import InsuranceResultPreviewItem from '../components/InsuranceResultPreviewItem';
+import Loading from '../components/Loading';
+import EmptyState from '../components/EmptyState';
+import ScreenWrapper from '../components/ScreenWrapper';
 
 const InsuranceResultPreview = ({ route : { params : { id , valueStore , flattedStage : selectedInsData , carCategory } } , navigation }) => {
     const [initialLoading, setInitialLoading] = useState(false);

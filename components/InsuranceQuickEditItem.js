@@ -5,7 +5,7 @@ import Para from './Para';
 import { Feather } from '@expo/vector-icons';
 import { generateColor, toFarsiNumber } from '../utils';
 
-import { valueFinder } from "./InsuranceQuickEdit";
+import { valueFinder } from '../screens/InsuranceQuickEdit'; 
 
 const InsuranceQuickEditItem = ({ label , onEdit , value , index  , store , tempStore  }) => {
     

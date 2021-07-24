@@ -2,12 +2,12 @@ import React from 'react';
 import { Image, ScrollView, StatusBar, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useStyle } from '../Hooks/useStyle';
 import { generateColor, imageFinder, toFarsiNumber } from '../utils';
-import InsConfirmItem from './InsConfirmItem';
+import InsConfirmItem from '../components/InsConfirmItem';
 
-import Para from './Para';
-import NextStepBtn from "./NextStepBtn";
+import Para from '../components/Para';
+import NextStepBtn from "../components/NextStepBtn";
 
-import ScreenWrapper from "./ScreenWrapper";
+import ScreenWrapper from "../components/ScreenWrapper";
 
 
 const InsuranceConfirm = ({ route : { params : { factorItems , insModel , haveInstallment , reqId , installment_Value , formulId } } , navigation }) => {

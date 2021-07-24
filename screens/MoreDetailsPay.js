@@ -2,9 +2,9 @@ import React from 'react';
 import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useStyle } from '../Hooks/useStyle';
 import { generateColor, toFarsiNumber } from '../utils';
-import Para from './Para';
-import ScreenWrapper from './ScreenWrapper';
-import TabScreenHeader from './TabScreenHeader';
+import Para from '../components/Para';
+import ScreenWrapper from '../components/ScreenWrapper';
+import TabScreenHeader from '../components/TabScreenHeader';
 
 const MoreDetailsPay = ({ navigation , route : { params : { items } } }) => {
     const appendStyle =  useStyle(style);

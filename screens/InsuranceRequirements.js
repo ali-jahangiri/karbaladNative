@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import ScreenWrapper from './ScreenWrapper';
+import ScreenWrapper from '../components/ScreenWrapper';
 
-import TabScreenHeader from "./TabScreenHeader";
+import TabScreenHeader from "../components/TabScreenHeader";
 
 import { Alert, Keyboard, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
-import RequirementDocument from './RequirementDocument';
-import FurtherInfo from './FurtherInfo';
-import InsurerDetails from './InsurerDetails';
-import InsTransferee from './InsTransferee';
-import Para from './Para';
+import RequirementDocument from '../components/RequirementDocument';
+import FurtherInfo from '../components/FurtherInfo';
+import InsurerDetails from '../components/InsurerDetails';
+import InsTransferee from '../components/InsTransferee';
+import Para from '../components/Para';
 import { useStyle } from '../Hooks/useStyle';
 import { generateColor } from '../utils';
 
@@ -17,7 +17,7 @@ import useFetch from '../Providers/useFetch';
 import config from '../config';
 
 import { useSelector } from "../Store/Y-state";
-import Loading from './Loading';
+import Loading from '../components/Loading';
 import client from '../client';
 
 // !Important add money info section latter on

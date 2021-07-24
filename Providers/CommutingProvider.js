@@ -1,10 +1,11 @@
 import React, { useEffect } from 'react';
 import { AppState } from 'react-native';
-import { setNavigationNewHash } from '../Store/Slices/navigationSlice';
+
 import { useDispatch } from '../Store/Y-state';
+import { setNavigationNewHash } from '../Store/Slices/navigationSlice';
 
 
-const CommutingProvider = ({ children  }) => {
+const CommutingProvider = () => {
     const dispatcher = useDispatch();
 
     useEffect(() => {
@@ -15,9 +16,8 @@ const CommutingProvider = ({ children  }) => {
         })
         return () => AppState.removeEventListener("change" , () => {})
     } , [])
-
-
-    return children
+    
+    return null;
 }
 
 

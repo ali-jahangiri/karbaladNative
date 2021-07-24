@@ -55,6 +55,33 @@ const useFetch = (path, config) => {
     })
   }
 
+  const fetcher2 = (path , config) => {
+    return new Promise((resolve , _) => {
+        api.post(`${appConfig.serverPath}/baseApi/getServerTime`)
+          .then(({data}) => {
+            console.log('FETCH START');
+            let serverTime = +data.split(" ")[1].split(':')[1];
+            api.post(`${appConfig.serverPath}/baseApi/getAppToken` , {
+              Key : encrypt.encrypt({
+                  UserName : appConfig.adminUserName,
+                  Password : appConfig.adminPassword
+              }, serverTime)
+              })
+              .then(({ data }) => {
+                resolve(api.post(path , config , {
+                  headers : { appToken : data, ticket },
+                  timeout : 5000
+                }))
+              }).catch(err => {
+                console.log('!!!!!!!!!catch' , err);
+                fetcher()
+              })
+          })
+
+    })
+  }
+  if(path === false) return fetcher2
+
   if(path === true) return fetcher
   return path ? { response, loading, error } : api;
 };

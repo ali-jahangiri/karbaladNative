@@ -6,7 +6,8 @@ import { useStyle } from '../Hooks/useStyle';
 import { generateColor } from "../utils";
 
 import Para from './Para';
-const ScreenHeader = ({ title}) => {
+
+const TabHeaderBadge = ({ title}) => {
     const appendStyle =  useStyle(style)
     return (
         <View style={appendStyle.container}>
@@ -42,4 +43,4 @@ const style = ({ primary , baseBorderRadius }) => {
     })
 }
 
-export default ScreenHeader;
+export default TabHeaderBadge;

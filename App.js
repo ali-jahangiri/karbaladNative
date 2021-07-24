@@ -10,6 +10,7 @@ import StyleProvider from './HOC/StyleProvider/StyleProvider';
 import StoreProvider from './Store/Y-state';
 import { ErrorBoundary } from "./Providers"
 import FetchProvider from './Providers/useFetch/FetchProvider';
+import CommutingProvider from './Providers/CommutingProvider';
 
 
 
@@ -21,6 +22,7 @@ import config from './config';
 export default function App() {
   return (
     <View style={generalStyle.appContainer}>
+      <CommutingProvider />
       <ErrorBoundary>
         <StoreProvider store={myStore}>
           <FetchProvider packageName={config.packageName} baseURL={`${config.serverPath}/MobileApi/`}>

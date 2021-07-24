@@ -5,8 +5,6 @@ import Input from '../components/Input';
 
 import client from '../client';
 import useFetch from '../Providers/useFetch';
-import config from '../config';
-
 
 import { fixNumbers } from '../utils/Date';
 import { persister } from '../utils';
@@ -26,7 +24,7 @@ const Login = () => {
     const [stage, setStage] = useState(1);
     const [loadingCta, setLoadingCta] = useState(false);
 
-    const fetcher = useFetch(true);
+    const fetcher = useFetch(false);
     const storeDispatcher = useDispatch();
 
     const inputChangeHandler = (key , value) => {
@@ -60,16 +58,13 @@ const Login = () => {
     }
 
     const getUserDataRequest = body => {
-        return fetcher()
-        .then(({ api , appToken }) => {
-                api.post("GetUserData" , {...body} , { headers : { appToken }})
+        return fetcher('GetUserData' , {...body} )
                 .then(({ data }) => {
                     const { id , fullName ,  privatekey} = data;
                     if(id < 0) {
                         setError(fullName)
                         setLoadingCta(false);
                     }else {
-                        console.log('phone' , body.mobile , "privateKey" , privatekey);
                         persister.set("userName" , body.mobile)
                             .then(_unusable => {
                                 persister.set('userPrivateKey' , privatekey)
@@ -81,7 +76,6 @@ const Login = () => {
                             })
                     }
                 })
-            })
     }
 
     const registerStage = {
@@ -100,19 +94,17 @@ const Login = () => {
                 const { phone = "" } = inputValue;
 
                 if(phone && phone.length >= 11) {
-                setLoadingCta("صبر کنید")
-                   fetcher()
-                    .then(({ api , appToken }) => {
-                        return api.post("VerifyNumber" , { mobile : fixNumbers(inputValue?.phone) } , { headers : { appToken }})
-                        .then(({data}) => {
-                            if(data.typeId < 0) throw new Error(data.message)
-                            setStage(prev => prev + 1)
-                        })
-                        }).catch(err => {
-                            setError(err.message);
-                        }).finally(() => {
-                            setLoadingCta(false);
-                        })
+                    setLoadingCta("صبر کنید");
+                    
+                    fetcher('VerifyNumber' , { mobile : fixNumbers(inputValue?.phone) })
+                    .then(({ data }) => {
+                         if(data.typeId < 0) throw new Error(data.message)
+                         setStage(prev => prev + 1)
+                    }).catch(err => {
+                        setError(err.message);
+                    }).finally(() => {
+                           setLoadingCta(false);
+                    })
                 }else {
                     if(!phone) return setError(LOGIN.AUTH_ERRORS.EMPTY_PHONE)
                     else setError(LOGIN.AUTH_ERRORS.INVALID_PHONE_NUMBER_LENGTH)

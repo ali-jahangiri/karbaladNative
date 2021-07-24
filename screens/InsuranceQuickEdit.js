@@ -5,10 +5,10 @@ import { useStyle } from '../Hooks/useStyle';
 import { generateColor, numberSeparator } from '../utils';
 import InputDetector from '../utils/inputDetector';
 
-import Drawer from './Drawer';
-import InsuranceQuickEditItem from './InsuranceQuickEditItem';
-import NextStepBtn from './NextStepBtn';
-import Para from './Para';
+import Drawer from '../components/Drawer';
+import InsuranceQuickEditItem from '../components/InsuranceQuickEditItem';
+import NextStepBtn from '../components/NextStepBtn';
+import Para from '../components/Para';
 
 import { Feather } from '@expo/vector-icons';
 

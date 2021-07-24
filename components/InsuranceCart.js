@@ -14,11 +14,10 @@ const InsuranceCart = ({ name , onItemPress , cat , id , webIcon }) => {
         <TouchableWithoutFeedback style={{ flex : 1 }} onPress={() => onItemPress({cat , name , id})}>
             <View style={appendStyle.container}>
                 <Para size={18}>{name}</Para>
-                {/* TODO later add webIcon image component with this mock image */}
-                <View style={{ flexDirection : "row" , justifyContent : 'space-between', alignItems : 'center' , }}>
+                <View style={appendStyle.bottomContainer}>
                     <Feather name="arrow-down-left" size={24} color="black" />
                     {
-                        webIcon ? <Image style={{ marginBottom : 10 }} source={{
+                        webIcon ? <Image style={{ marginBottom : 10 , opacity : .5 }} source={{
                             uri : imageFinder(webIcon),
                             width: 50,
                             height : 50
@@ -34,11 +33,16 @@ const style = ({ baseBorderRadius , primary }) => StyleSheet.create({
     container : {
         width: "47%",
         marginVertical : "3%",
-        backgroundColor : generateColor(primary , 5),
-        height: 200,
+        backgroundColor : generateColor(primary , 9),
+        height: 230,
         justifyContent : 'space-between',
         padding: 10,
         borderRadius : baseBorderRadius,
+    },
+    bottomContainer : {
+        flexDirection : "row" , 
+        justifyContent : 'space-between', 
+        alignItems : 'center' 
     }
 })
 

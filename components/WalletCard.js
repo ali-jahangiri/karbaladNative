@@ -7,26 +7,24 @@ import Para from './Para';
 import { Feather } from '@expo/vector-icons';
 
 import InputNumber from "./InputNumber";
-import config from '../config';
 import useFetch from '../Providers/useFetch';
-import { useSelector } from '../Store/Y-state';
 
 const WalletCart = ({ finalResult = "" , paymentProcessHandler , isInPaymentProcess }) => {
     const appendStyle = useStyle(style);
     const [chargeAmountPrice, setChargeAmountPrice] = useState(1000);
     const [chargeViewActive, setChargeViewActive] = useState(false);
 
-    const privateKey = useSelector(state => state.auth.appKey);
     
-    
-    const fetcher = useFetch(true);
+    const fetcher = useFetch(false);
 
 
-    const resetAmountHandler = () => {
+    const resetHandler = () => {
         setChargeAmountPrice(1000);
+        setChargeViewActive(false);
+        paymentProcessHandler(false);
     }
 
-
+    
     const wentWrongHandler = () => {
         Alert.alert("ارتباط برقرار نشد" , "خطا در ارسال به مرورگر. مجدد تلاش نمایید" ,
         [{
@@ -39,21 +37,14 @@ const WalletCart = ({ finalResult = "" , paymentProcessHandler , isInPaymentProc
 
     const redirectToWebPay = () => {
         paymentProcessHandler(true);
-        fetcher()
-            .then(({ api , appToken }) => {
-                    api.post(`${config.serverPath}/MobileApi/UserAddWallet` ,
-                    { addAmount : chargeAmountPrice, } ,
-                    { headers : {
-                        appToken , ticket : privateKey
-                    } })
-                    .then(({ data }) => {
-                        Linking.openURL(data.url)
-                            .catch(err => {
-                                wentWrongHandler(err);
-                            })
-                }).catch(err => {})
-            }).catch(err => {})
-        
+        fetcher('UserAddWallet' , { addAmount : chargeAmountPrice })
+            .then(({ data }) => {
+                Linking.openURL(data.url)
+                    .then(_ => resetHandler())
+                    .catch(err => {
+                        wentWrongHandler(err);
+                    }) 
+            })
     }
 
     return (
@@ -65,8 +56,8 @@ const WalletCart = ({ finalResult = "" , paymentProcessHandler , isInPaymentProc
                         <Feather style={{ marginRight : 5 }} name="plus" size={24} color="black" />
                         <Para weight='bold'>افزایش اعتبار</Para>
                     </TouchableOpacity>
-                    <View style={appendStyle.creditIcon}>
-                        <Feather name="credit-card" size={24} color="black" />
+                    <View style={appendStyle.creditIconContainer}>
+                        <Feather name="credit-card" size={24} style={appendStyle.creditIcon} />
                     </View>
                 </View>
                 <View style={appendStyle.lastTransaction}>
@@ -77,10 +68,7 @@ const WalletCart = ({ finalResult = "" , paymentProcessHandler , isInPaymentProc
                     <Para size={18} weight="bold">موجودی :</Para>
                 </View>
                 </> : <View style={appendStyle.chargeView}>
-                    <TouchableOpacity style={[appendStyle.chargeCta , { alignSelf : "flex-start", marginLeft : 20 , marginTop : 10 }]} onPress={() => {
-                        setChargeViewActive(prev => !prev)
-                        resetAmountHandler()
-                    }}>
+                    <TouchableOpacity style={[appendStyle.chargeCta , { alignSelf : "flex-start", marginLeft : 20 , marginTop : 10 }]} onPress={resetHandler}>
                         <Feather style={{ marginRight : 5 }} name="arrow-left" size={24} color="black" />
                         <Para  weight="bold">بازگشت</Para>
                     </TouchableOpacity>
@@ -140,15 +128,15 @@ const style = ({ primary , baseBorderRadius }) => StyleSheet.create({
         justifyContent : "space-between",
         padding: 20
     },
-    chargeIcon : {
-        color: generateColor(primary , 9),
-    },
-    creditIcon : {
+    creditIconContainer : {
         backgroundColor : "#fff5",
         padding: 15,
         justifyContent : 'center',
         alignItems : 'center',
         borderRadius : baseBorderRadius
+    },
+    creditIcon : {
+        color: primary
     },
     payCta : {
         flexDirection : "row",

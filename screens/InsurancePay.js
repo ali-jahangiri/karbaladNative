@@ -2,22 +2,22 @@ import React, { useEffect, useState } from 'react';
 import { Alert, Linking, ScrollView, StatusBar, StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import { useStyle } from '../Hooks/useStyle';
-import ScreenWrapper from './ScreenWrapper';
+import ScreenWrapper from '../components/ScreenWrapper';
 
 import { Feather } from '@expo/vector-icons';
 
 
-import Para from './Para';
+import Para from '../components/Para';
 import { generateColor, numberSeparator, toFarsiNumber } from '../utils';
-import InsPayDeliveryOption from './InsPayDeliveryOption';
-import InsDetailsPay from './InsDetailsPay';
-import InsurerInfoPay from './InsurarInfoPay';
-import InsTransfereePay from './InsTransfereePay';
+import InsPayDeliveryOption from '../components/InsPayDeliveryOption';
+import InsDetailsPay from '../components/InsDetailsPay';
+import InsurerInfoPay from '../components/InsurarInfoPay';
+import InsTransfereePay from '../components/InsTransfereePay';
 import useFetch from '../Providers/useFetch';
 import { useSelector } from '../Store/Y-state';
-import Loading from './Loading';
+import Loading from '../components/Loading';
 import client from '../client';
-import Drawer from './Drawer';
+import Drawer from '../components/Drawer';
 
 const InsurancePay = ({ navigation , route : { params : { id } } }) => {
     const [payResponse, setPayResponse] = useState(null);
