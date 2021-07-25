@@ -5,7 +5,9 @@ const client = {
 
         },
         size : {
-
+            spacing : {
+                screenHeaderAndDirectoryGap : 15
+            }
         },
         
     },

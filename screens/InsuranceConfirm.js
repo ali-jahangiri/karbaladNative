@@ -5,7 +5,7 @@ import { generateColor, imageFinder, toFarsiNumber } from '../utils';
 import InsConfirmItem from '../components/InsConfirmItem';
 
 import Para from '../components/Para';
-import NextStepBtn from "../components/NextStepBtn";
+import DirectionCta from "../components/NextStepBtn";
 
 import ScreenWrapper from "../components/ScreenWrapper";
 
@@ -27,7 +27,7 @@ const InsuranceConfirm = ({ route : { params : { factorItems , insModel , haveIn
     return (
         <ScreenWrapper>
             <View style={appendStyle.header}>
-                <NextStepBtn
+                <DirectionCta
                     direction="right"
                     extendStyle={{ alignSelf : "flex-end", marginRight : 20 }}
                     containerBgColor={generateColor(primary , 3)}

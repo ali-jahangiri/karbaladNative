@@ -23,24 +23,22 @@ const TabHeaderBadge = ({ title}) => {
     )
 }
 
-const style = ({ primary , baseBorderRadius }) => {
-    return StyleSheet.create({
-        container : {
-            marginTop : StatusBar.currentHeight + 20 ,
-            minWidth: "40%",
-            height: 60,
-            alignItems : 'center',
-            justifyContent : 'center',
-            backgroundColor : generateColor(primary , 1),
-            borderRadius : baseBorderRadius,
-            paddingHorizontal : 20,
-            marginHorizontal : "55%",
-            marginBottom: 10
-        },
-        text : {
-            color:primary
-        }
-    })
-}
+const style = ({ primary , baseBorderRadius }) =>  StyleSheet.create({
+    container : {
+        marginTop : StatusBar.currentHeight + 20 ,
+        minWidth: "40%",
+        height: 60,
+        alignItems : 'center',
+        justifyContent : 'center',
+        backgroundColor : generateColor(primary , 1),
+        borderRadius : baseBorderRadius,
+        paddingHorizontal : 20,
+        marginHorizontal : "55%",
+        marginBottom: 10
+    },
+    text : {
+        color:primary
+    }
+})
 
 export default TabHeaderBadge;

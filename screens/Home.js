@@ -39,7 +39,7 @@ const InsIndexScreen = ({ navigation }) => {
         <ScreenWrapper>
             <TabHeaderBadge title="خانه" />
             <InsuranceDirectory handler={routeChangeHandler} items={catItems} />
-            <Button title="clear" onPress={() => persister.remove("userPrivateKey")} />
+            {/* <Button title="clear" onPress={() => persister.remove("userPrivateKey")} /> */}
         </ScreenWrapper>
     )
 }
@@ -56,7 +56,7 @@ const NestedInsStepScreen = ({ route : { params : { cat , name , id } }, navigat
         if(!cat.length) return <InsuranceStepper name={name} id={id} />
         else return (
             <ScreenWrapper>
-                <TabScreenHeader title={name} navigation={navigation} />
+                <TabScreenHeader title={name} />
                 {
                     <InsuranceDirectory handler={routeChangeHandler} items={cat} />
                 }

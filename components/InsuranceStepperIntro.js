@@ -5,7 +5,7 @@ import Para from './Para';
 
 import { Feather } from '@expo/vector-icons';
 import { generateColor } from '../utils';
-import NextStepBtn from './NextStepBtn';
+import DirectionCta from './NextStepBtn';
 import { useNavigation } from '@react-navigation/native';
 
 const InsuranceStepperIntro = ({  title , desc , nextStepHandler }) => {
@@ -17,7 +17,7 @@ const InsuranceStepperIntro = ({  title , desc , nextStepHandler }) => {
     return (
         <View style={{ flex : 1 , justifyContent : 'center' }}>
             <View style={appendStyle.container}>
-                <NextStepBtn direction="right" extendStyle={appendStyle.backCta} containerBgColor={generateColor(primary , 3)} onPress={navigation.goBack} />
+                <DirectionCta direction="right" extendStyle={appendStyle.backCta} containerBgColor={generateColor(primary , 3)} onPress={navigation.goBack} />
                 <View style={{ flex: 1 , justifyContent : "center" }}>
                     <View style={appendStyle.icon}>
                         <Feather name="file-text" size={40} color={generateColor(primary , 6)} />

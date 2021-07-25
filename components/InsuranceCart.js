@@ -32,7 +32,7 @@ const InsuranceCart = ({ name , onItemPress , cat , id , webIcon }) => {
 const style = ({ baseBorderRadius , primary }) => StyleSheet.create({
     container : {
         width: "47%",
-        marginVertical : "3%",
+        marginBottom : "6%",
         backgroundColor : generateColor(primary , 9),
         height: 230,
         justifyContent : 'space-between',

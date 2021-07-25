@@ -7,7 +7,7 @@ import InputDetector from '../utils/inputDetector';
 
 import Drawer from '../components/Drawer';
 import InsuranceQuickEditItem from '../components/InsuranceQuickEditItem';
-import NextStepBtn from '../components/NextStepBtn';
+import DirectionCta from '../components/NextStepBtn';
 import Para from '../components/Para';
 
 import { Feather } from '@expo/vector-icons';
@@ -109,7 +109,7 @@ const InsuranceQuickEdit = ({ navigation , route : { params } }) => {
     return (
         <View style={appendStyle.container}>
             <View style={appendStyle.header}>
-                <NextStepBtn onPress={givUpHandler} />
+                <DirectionCta onPress={givUpHandler} />
                 <Para size={18} weight="bold" >ایجاد تغییر در بیمه</Para>
             </View>
 

@@ -3,6 +3,7 @@ import { ScrollView, StyleSheet, View } from 'react-native';
 import { useScrollToTop } from '@react-navigation/native';
 
 import InsuranceCart from './InsuranceCart';
+import client from '../client';
 
 const InsuranceDirectory = ({ items = [] , handler}) => {
     const container = useRef();
@@ -25,6 +26,8 @@ const InsuranceDirectory = ({ items = [] , handler}) => {
 
 const style = StyleSheet.create({
     container : {
+
+        marginTop : client.style.size.spacing.screenHeaderAndDirectoryGap,
         flexDirection : 'row',
         flexWrap : 'wrap',
         width: '90%',
