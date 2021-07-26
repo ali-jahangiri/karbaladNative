@@ -9,6 +9,7 @@ import InputDetector from '../utils/inputDetector';
 
 import InsStageController from './InsStageController';
 import Para from './Para';
+import StepTimeline from './StepTimeline';
 
 
 const InsStage = (props) => {
@@ -17,6 +18,7 @@ const InsStage = (props) => {
     const nestedKeyName = `Nested_${formName}`;
     
     const appendStyle = useStyle(style);
+    
     const [err, setErr] = useState(false)
     const [temporaryValue, setTemporaryValue] = useState({ 
         searchFilterBase : "" , 
@@ -69,6 +71,11 @@ const InsStage = (props) => {
     return (
         <View style={appendStyle.container}>
             <View style={appendStyle.header}>
+                <StepTimeline 
+                        eachItemWithStepper={100 / stageNumber.length}
+                        itemsLength={stageNumber.length} 
+                        currentStage={stageNumber.currentStage} />
+                        
                 <View style={{ flexDirection : 'row' , justifyContent : 'space-between' , width : "100%"}}>
                     <View style={appendStyle.stageNumber}>
                         {
@@ -95,6 +102,7 @@ const InsStage = (props) => {
                 <View style={appendStyle.stagePlayground}>
                     {
                         <InputDetector
+                            pushToNextStageHandler={pushToNextStageHandler}
                             formNameNested={`Nested_${formName}`}
                             formName={formName}
                             isCarCase={carCategory}

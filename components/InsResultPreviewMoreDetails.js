@@ -7,6 +7,11 @@ import InsPreviewItemMoreDetailsRow from './InsPreviewItemMoreDetailsRow';
 import Para from './Para';
 
 
+import client from '../client';
+
+
+const {  MORE_DETAILS : { LESS_DETAILS , MORE_DETAILS } } = client.static.INS_PREVIEW_ITEM
+
 const isDescCase = string => {
     if(string[0] === "&") return true
     return false
@@ -18,7 +23,7 @@ const InsResultMoreDetails = ({ visible , setVisibility, data , mainMoreDerails 
         <React.Fragment>
             <TouchableOpacity onPress={() => setVisibility(prev => !prev)} style={appendStyle.moreDetailsCta}>
                 <Feather name={visible ? "chevron-up" : "chevron-down"} size={20} color="grey" />
-                <Para color="grey" style={{ marginLeft : 5 }}>{visible ? "جزئیات کمتر" : "جزئیات بیشتر"}</Para>
+                <Para color="grey" style={{ marginLeft : 5 }}>{visible ? LESS_DETAILS : MORE_DETAILS}</Para>
             </TouchableOpacity>
             {
                 visible && <View>
@@ -41,15 +46,15 @@ const InsResultMoreDetails = ({ visible , setVisibility, data , mainMoreDerails 
                             )
                         } else return (
                             <View style={appendStyle.moreDetailsItem} key={i}>
-                            <View style={{ flexDirection : 'row' , alignItems : 'center' }}>
-                                <Para color="grey" size={10} style={{ marginRight : 5 }}>تومان</Para>
-                                <Para>{toFarsiNumber(el.showValue)}</Para>
+                                <View style={{ flexDirection : 'row' , alignItems : 'center' }}>
+                                    <Para color="grey" size={10} style={{ marginRight : 5 }}>تومان</Para>
+                                    <Para>{toFarsiNumber(el.showValue)}</Para>
+                                </View>
+                                <View style={{ flexDirection : 'row' , alignItems : 'center' }}>
+                                    <Para>{el.name}</Para>
+                                    <View style={appendStyle.moreDetailsBulletItem} />
+                                </View>
                             </View>
-                            <View style={{ flexDirection : 'row' , alignItems : 'center' }}>
-                                <Para>{el.name}</Para>
-                                <View style={appendStyle.moreDetailsBulletItem} />
-                            </View>
-                        </View>
                         )
                         
                     })
@@ -72,7 +77,8 @@ const style = ({ primary , baseBorderRadius }) => StyleSheet.create({
         flexDirection : 'row',
         alignItems : 'center',
         justifyContent : 'center',
-        marginVertical : 25,
+        marginTop : 30,
+        marginBottom : 10
     },
     moreDetailsBulletItem : {
         backgroundColor : generateColor(primary ,5),

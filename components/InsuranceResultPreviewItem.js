@@ -74,22 +74,23 @@ const InsuranceResultPreviewItem = ({ insName , factorItems , insIconUrl , formu
                     <Para align="center" weight="bold">سفارش</Para>
                 </TouchableOpacity>
             </View>
-            
-                <InsResultMoreDetails
+            <InsResultMoreDetails
                     mainMoreDerails={moreDetailList.filter(el => el.value)}
                     visible={moreDetailsActive} 
                     setVisibility={setMoreDetailsActive}
                     data={moreDetailsValue} />
-            <View style={appendStyle.divider} />
         </View>
     )
 }
 
-const style = ({ primary , baseBorderRadius , secondary } , haveInstallment) => StyleSheet.create({
+const style = ({ primary , baseBorderRadius } , haveInstallment) => StyleSheet.create({
     container : {
         width: "90%",
         marginHorizontal : '5%',
-        marginTop : 10
+        marginTop : "5%",
+        backgroundColor : generateColor(primary , 1),
+        padding: 20,
+        borderRadius : baseBorderRadius
     },
     ctaContainer : {
         flexDirection : 'row',
@@ -115,22 +116,12 @@ const style = ({ primary , baseBorderRadius , secondary } , haveInstallment) => 
         borderRadius : baseBorderRadius,
         padding : 10,
     },
-    percentIcon : {
-        color: primary,
-    },  
+    percentIcon : { color: primary, },  
     header : {
         flexDirection : 'row',
         alignItems : "center",
         justifyContent : haveInstallment ? "space-between" : "flex-end",
     },
-    divider : {
-        backgroundColor : generateColor(secondary , 6) ,
-        width: "98%",
-        height: 2,
-        marginHorizontal : "1%",
-        marginBottom : 10,
-        borderRadius : baseBorderRadius
-    }
 })
 
 export default InsuranceResultPreviewItem;

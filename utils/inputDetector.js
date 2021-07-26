@@ -19,7 +19,7 @@ import client from '../client';
 
 const { CHECK_FORM , DATE , DROPDOWN , FLOAT , INT , INFO , LONG , CREATE_YEAR } = client.static.INPUT_DETECTOR
 
-const InputDetector = ({typesName , isCarCase , temporary : { value , setValue } , formData , formName , formNameNested , step , maxNumber = 1000000 , minNumber = 0}) => {
+const InputDetector = ({typesName , isCarCase , temporary : { value , setValue } , pushToNextStageHandler , formData , formName , formNameNested , step , maxNumber = 1000000 , minNumber = 0}) => {
     switch(typesName) {
         case INFO :   
             case DROPDOWN : 
@@ -42,6 +42,7 @@ const InputDetector = ({typesName , isCarCase , temporary : { value , setValue }
                             isSearchFilterApplied={!!value.searchFilterBase}
                             currentAvailableItems={formData.filter(el => el.carGroupId === value?.CarCategoryId || value.searchFilterBase && el.dataName.includes(value.searchFilterBase))} />
                         <CarUsageDirectory 
+                            pushToNextStageHandler={pushToNextStageHandler}
                             selectHandler={setValue} 
                             currentSelectedUsage={value[formNameNested]} 
                             items={value?.usageItems} />
@@ -106,6 +107,7 @@ const InputDetector = ({typesName , isCarCase , temporary : { value , setValue }
                             selectedIndex={formData?.findIndex(el => el.id === value[formName])}>
                             {formData
                                 ?.filter(el => value?.searchFilterBase ? el.dataName.includes(value?.searchFilterBase) || `${Number(el.dataName) + 621}`.includes(value?.searchFilterBase): el)
+                                ?.reverse()
                                 ?.map((el , i) => <SelectBoxItem 
                                                     selectedInStore={value[formName] === el.id} 
                                                     value={el.id} 

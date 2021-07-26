@@ -2,7 +2,7 @@ const client = {
     version : "1.0.0",
     style : {
         colors : {
-
+            insStageBackStepBgColor :  "#EEEEEE"
         },
         size : {
             spacing : {
@@ -62,13 +62,18 @@ const client = {
                 SUCCESS_PASSWORD_CHANGE : "رمز عبور با موفقیت تغییر یافت",
             }
         },
-       
+        INS_PREVIEW_ITEM : {
+            MORE_DETAILS : {
+                LESS_DETAILS : "جزئیات کمتر",
+                MORE_DETAILS : "جزئیات بیشتر"
+            },
+        },
         SYSTEM_KEY : {
             AFTER_PAYMENT : {
                 OK: "ok",
                 FAIL : "nok",
-
             },
+            CONDITION_CASE_FOR_INS_CONTROLLER : "اتمام",
             SPECIFIC_KEY_FOR_OBSERVER_CONDITION : "wallet",
             SPECIFIC_KEY_FOR_OBSERVER_CONDITION_MY_INSURANCE : "insuranceHistoryDetails",
         },

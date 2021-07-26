@@ -9,7 +9,7 @@ const VerifyInput = ({  changeHandler }) => {
     const refs = useRef(new Array(4).fill("").map((_ , i) => React.createRef()));
     const [force, setForce] = useState(null);
 
-    console.log(value);
+    // console.log(value);
 
     const onChange = (newValue , index) => {
         if(newValue) {

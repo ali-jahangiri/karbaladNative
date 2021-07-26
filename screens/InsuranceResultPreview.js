@@ -14,7 +14,7 @@ import EmptyState from '../components/EmptyState';
 import ScreenWrapper from '../components/ScreenWrapper';
 
 const InsuranceResultPreview = ({ route : { params : { id , valueStore , flattedStage : selectedInsData , carCategory } } , navigation }) => {
-    const [initialLoading, setInitialLoading] = useState(false);
+    const [initialLoading, setInitialLoading] = useState(true);
     const [responseValues, setResponseValues] = useState({});
     const appendStyle = useStyle(style);
     const [reqId, setReqId] = useState('');
@@ -46,7 +46,7 @@ const InsuranceResultPreview = ({ route : { params : { id , valueStore , flatted
         }
     } , [navHash , valueStore]);
     
-    
+
     const quickEditHandler = () => {
         if(responseValues?.insuranceQuotes?.factorItems) {
             navigation.push('insuranceQuickEdit' ,{ server :  responseValues.insuranceQuotes.factorItems , valueStore , selectedInsData , id , carCategory })
@@ -128,6 +128,7 @@ const style = ({ primary , baseBorderRadius }) => StyleSheet.create({
         justifyContent : 'center',
         flex : 1,
         padding: 15,
+        marginTop : 10
     }
 })
 

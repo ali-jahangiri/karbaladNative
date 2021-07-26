@@ -3,7 +3,7 @@ import React from 'react';
 import { StatusBar, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useStyle } from '../../Hooks/useStyle';
 import { generateColor } from '../../utils';
-import NextStepBtn from '../NextStepBtn';
+import DirectionCta from '../DirectionCta';
 import Para from '../Para';
 
 
@@ -14,7 +14,7 @@ const AuthModePlayground = ({ currentStage , error , loadingCta , currentStageTi
 
     return (
         <View style={appendStyle.authModeContainer}>
-            <NextStepBtn onPress={() => currentStage?.backHandler()} extendStyle={{ alignSelf : "flex-end" }} direction="right" iconColor={generateColor(primary , 9)} containerBgColor={generateColor(primary , 5)} />
+            <DirectionCta onPress={() => currentStage?.backHandler()} extendStyle={{ alignSelf : "flex-end" }} direction="right" iconColor={generateColor(primary , 9)} containerBgColor={generateColor(primary , 5)} />
             <View>
                 <View style={appendStyle.modeHeader}>
                     <View style={{ flexDirection : 'row' , alignItems : 'center' }}>

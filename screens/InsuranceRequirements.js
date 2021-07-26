@@ -51,7 +51,6 @@ const InsuranceRequirements = ({ route : { params } , navigation }) => {
                         requestId : params.reqId
                     } , { headers : {appToken , ticket } })
                     .then(({ data }) => {
-                        console.log(data);
                         setDocItems(data);
                         setAreas(data.areas);
                         setLoading(false)

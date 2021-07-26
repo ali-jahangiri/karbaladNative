@@ -1,10 +1,20 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import CarItemUsage from './CarItemUsage';
 import StepperLabel from './StepperLabel';
 
 
-const CarUsageDirectory = ({ items , selectHandler , currentSelectedUsage }) => {
+const CarUsageDirectory = ({ items , selectHandler , currentSelectedUsage , pushToNextStageHandler }) => {
+    const [wasCarUsageSelected, setWasCarUsageSelected] = useState(false);
+
+    const onSelectHandler = value => {
+        selectHandler(value);
+        setWasCarUsageSelected(true);
+    }
+
+    useEffect(() => {
+        if(wasCarUsageSelected) pushToNextStageHandler();
+    } , [currentSelectedUsage]);
     
     if(items?.length) return (
         <>
@@ -13,10 +23,10 @@ const CarUsageDirectory = ({ items , selectHandler , currentSelectedUsage }) => 
             {
                 items?.map((el , i) => (
                     <CarItemUsage
-                    currentSelected={currentSelectedUsage} 
-                    selectHandler={selectHandler}
-                    key={i} 
-                    {...el} />
+                        currentSelected={currentSelectedUsage} 
+                        selectHandler={onSelectHandler}
+                        key={i} 
+                        {...el} />
                 ))
             }
         </View>

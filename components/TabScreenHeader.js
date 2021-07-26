@@ -3,7 +3,7 @@ import React from 'react';
 import { StatusBar, StyleSheet, View } from 'react-native';
 
 import { useStyle } from '../Hooks/useStyle';
-import DirectionCta from './NextStepBtn';
+import DirectionCta from './DirectionCta';
 
 import Para from './Para';
 

@@ -7,7 +7,7 @@ import InputDetector from '../utils/inputDetector';
 
 import Drawer from '../components/Drawer';
 import InsuranceQuickEditItem from '../components/InsuranceQuickEditItem';
-import DirectionCta from '../components/NextStepBtn';
+import DirectionCta from '../components/DirectionCta';
 import Para from '../components/Para';
 
 import { Feather } from '@expo/vector-icons';
@@ -110,7 +110,7 @@ const InsuranceQuickEdit = ({ navigation , route : { params } }) => {
         <View style={appendStyle.container}>
             <View style={appendStyle.header}>
                 <DirectionCta onPress={givUpHandler} />
-                <Para size={18} weight="bold" >ایجاد تغییر در بیمه</Para>
+                <Para color="white" size={18} weight="bold" >ایجاد تغییر در بیمه</Para>
             </View>
 
             <ScrollView style={appendStyle.itemsDirectory}>
@@ -171,7 +171,7 @@ const style = ({ primary , baseBorderRadius }) => StyleSheet.create({
     header : {
         paddingTop : StatusBar.currentHeight + 20,
         paddingBottom : StatusBar.currentHeight + 10,
-        backgroundColor : generateColor(primary , 8),
+        backgroundColor : primary,
         paddingHorizontal : "10%",
         flexDirection : "row",
         justifyContent : 'space-between',

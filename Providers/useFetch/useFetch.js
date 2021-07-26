@@ -22,7 +22,7 @@ const useFetch = (path, config) => {
     return new Promise((resolve , _) => {
         api.post(`${appConfig.serverPath}/baseApi/getServerTime`)
           .then(({data}) => {
-            console.log('FETCH START');
+            // console.log('FETCH START');
             let serverTime = +data.split(" ")[1].split(':')[1];
             api.post(`${appConfig.serverPath}/baseApi/getAppToken` , {
               Key : encrypt.encrypt({
@@ -31,7 +31,7 @@ const useFetch = (path, config) => {
               }, serverTime)
               })
               .then(({ data }) => {
-                console.log('fetcher' , data);
+                // console.log('fetcher' , data);
 
                 // const instance = axios.create({
                 //   baseURL : appConfig.serverPath,

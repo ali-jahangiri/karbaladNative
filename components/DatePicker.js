@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useStyle } from '../Hooks/useStyle';
 import { generateColor, toFarsiNumber } from '../utils';
@@ -10,10 +10,13 @@ import { persianDate } from '../utils';
 const DatePicker = ({ date = persianDate.dateInstance,  onChange}) => {
     
     const appendStyle = useStyle(style);
+    const { primary } = useStyle();
+
     useEffect(() => {
         const initialDate = persianDate.stringDateToObject(date);
         onChange({ value : `${initialDate.year}/${initialDate.month}/${initialDate.day}`});
-    } , [])
+    } , []);
+
     const internalStateHandler = ({ key , value }) => {
         const oldDate = persianDate.stringDateToObject(date);
         const newDate = {...oldDate , [key] : value};
@@ -23,10 +26,9 @@ const DatePicker = ({ date = persianDate.dateInstance,  onChange}) => {
     const yearRef = useRef()
     const monthRef = useRef()
     const dayRef = useRef()
-
+    
+    const { year , month , day } = persianDate.stringDateToObject(date);
     useEffect(() => {
-        const { year , month , day } = persianDate.stringDateToObject(date);
-        
         yearRef.current.scrollTo({
             y : persianDate.year.findIndex(el => el === year) * 70
         })
@@ -39,6 +41,8 @@ const DatePicker = ({ date = persianDate.dateInstance,  onChange}) => {
 
     } , [date]);
 
+
+
     return (
         <View style={{ flex : 1 ,alignItems  : 'center' , justifyContent : 'center'}}>
         <View style={appendStyle.container}>
@@ -46,8 +50,8 @@ const DatePicker = ({ date = persianDate.dateInstance,  onChange}) => {
                 {
                         persianDate.year.map((el , i) => (
                             <TouchableOpacity style={{ height : 70 }} onPress={() => internalStateHandler({ key :  'year' , value : el})} key={i}>
-                                <View style={[persianDate.stringDateToObject(date).year === el && appendStyle.selectedItem , appendStyle.item ]}>
-                                    <Para align="center" weight="bold" size={20} color="grey" >{toFarsiNumber(el)}</Para>
+                                <View style={[year === el && appendStyle.selectedItem , appendStyle.item ]}>
+                                    <Para align="center" weight="bold" size={20} color={year === el ? primary : "grey"} >{toFarsiNumber(el)}</Para>
                                 </View>
                             </TouchableOpacity>
                         ))
@@ -57,19 +61,18 @@ const DatePicker = ({ date = persianDate.dateInstance,  onChange}) => {
                 {
                     persianDate.month.slice(1).map((el , i) => (
                         <TouchableOpacity style={{ height : 70 }} onPress={() => internalStateHandler({ key :  'month' , value : el})} key={i}>
-                            <View style={[persianDate.stringDateToObject(date).month === el && appendStyle.selectedItem , appendStyle.item]}>
-                                <Para align="center" weight="bold" size={20} color="grey" >{toFarsiNumber(el)}</Para>
+                            <View style={[month === el && appendStyle.selectedItem , appendStyle.item]}>
+                                <Para align="center" weight="bold" size={20} color={month === el ? primary : "grey"} >{toFarsiNumber(el)}</Para>
                             </View>
                         </TouchableOpacity>
                     ))
                 }
             </ScrollView>
             <ScrollView  ref={dayRef} style={appendStyle.column}>
-                {
-                    persianDate.day.slice(1).map((el , i) => (
+                {persianDate.day.slice(1).map((el , i) => (
                         <TouchableOpacity style={{ height : 70 }}  onPress={() => internalStateHandler({ key :  'day' , value : el})} key={i}>
-                            <View  style={[persianDate.stringDateToObject(date).day === el && appendStyle.selectedItem , appendStyle.item]}>
-                                <Para align="center" weight="bold" size={20} color="grey" >{toFarsiNumber(el)}</Para>
+                            <View  style={[day === el && appendStyle.selectedItem , appendStyle.item]}>
+                                <Para align="center" weight="bold" size={20} color={day === el ? primary : "grey"} >{toFarsiNumber(el)}</Para>
                             </View>
                         </TouchableOpacity>
                     ))
@@ -87,9 +90,6 @@ const style = ({ baseBorderRadius , primary }) => StyleSheet.create({
         height: 220,
         flexDirection : "row",
     },
-    yearContainer : {
-
-    },
     middleColumn : {
         borderColor : generateColor(primary , 1),
         borderLeftWidth : 2,
@@ -97,7 +97,6 @@ const style = ({ baseBorderRadius , primary }) => StyleSheet.create({
     },
     selectedItem : {
         backgroundColor : generateColor(primary , 3),
-        // width: "70%",
         marginHorizontal : '15%',
         borderRadius : baseBorderRadius,
     },

@@ -43,7 +43,7 @@ const InsuranceStepper = ({ id , name }) => {
 
 
     useEffect(() => {
-        console.log('stepperStore' , valueStore);
+        // console.log('stepperStore' , valueStore);
     } , [valueStore])
 
     const redirectionHandler = (activeStage , syncedStore) => {

@@ -8,22 +8,20 @@ import Para from './Para';
 
 const CarItemUsage = ({ dataName , id , selectHandler , currentSelected }) => {
     const appendStyle = useStyle(style);
-    const onSelect = () => {
-        selectHandler({ value : id , isNested : true })
-    }
-
     return (
-        <TouchableOpacity style={[appendStyle.container , currentSelected === id ? appendStyle.selectedItem : null]} onPress={onSelect}>
+        <TouchableOpacity 
+            style={[appendStyle.container , currentSelected === id ? appendStyle.selectedItem : null]} 
+            onPress={() => selectHandler({ value : id , isNested : true })}>
             <Para align="center">{dataName}</Para>
         </TouchableOpacity>
     )
 }
 
-const style = ({ primary , secondary , baseBorderRadius }) => StyleSheet.create({
+const style = ({ primary ,  baseBorderRadius }) => StyleSheet.create({
     container : {
         width: "48%",
         borderWidth : 2,
-        borderColor : secondary,
+        borderColor : generateColor(primary , 3),
         borderRadius : baseBorderRadius,
         paddingVertical : 20,
         marginVertical : "2%",
@@ -33,7 +31,8 @@ const style = ({ primary , secondary , baseBorderRadius }) => StyleSheet.create(
         maxHeight : 200,
     },
     selectedItem : {
-        borderColor : generateColor(primary , 5),
+        backgroundColor : generateColor(primary , 5),
+        borderColor : generateColor(primary , 5)
     }
 
 })

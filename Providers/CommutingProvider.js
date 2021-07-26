@@ -11,6 +11,7 @@ const CommutingProvider = () => {
     useEffect(() => {
         AppState.addEventListener("change" , e => {
             if(e === "active") {
+                console.log(':_____');
                 dispatcher(() => setNavigationNewHash())
             }
         })

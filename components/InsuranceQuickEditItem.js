@@ -20,14 +20,22 @@ const InsuranceQuickEditItem = ({ label , onEdit , value , index  , store , temp
     
     const multiItemRender = () => {
         if(Array.isArray(mainValue)) {
-            return mainValue.map((el , i) => <Para align='right' color={wasChange ? primary : "grey"} weight="bold" key={i}>{el}</Para>)
+            return mainValue
+                    .map((el , i) => <Para 
+                                        size={16} 
+                                        align='right' 
+                                        color={wasChange ? primary : "grey"} 
+                                        weight="bold" 
+                                        key={i}>
+                                            {el}
+                                        </Para>)
         }else return (
-            <Para 
-                        style={{ marginHorizontal : 10 }} 
-                        weight="bold" 
-                        align="right" 
-                        color={wasChange ? primary : "grey"} >
-                                {toFarsiNumber(valueFinder(store.find(el => el.formName === currentPartOfStore.formName) , tempStore[currentPartOfStore.formName]) || value || "")}
+            <Para style={{ marginHorizontal : 10 }} 
+                  weight="bold" 
+                  align="right"
+                  size={16}
+                  color={wasChange ? primary : "grey"} >
+                  {toFarsiNumber(valueFinder(store.find(el => el.formName === currentPartOfStore.formName) , tempStore[currentPartOfStore.formName]) || value || "")}
             </Para>
         );
     }
@@ -53,20 +61,8 @@ const InsuranceQuickEditItem = ({ label , onEdit , value , index  , store , temp
             </View>
             <View style={appendStyle.valueContainer}>
                 <View style={{ marginHorizontal : 10 , flexDirection : "row" , flexWrap : 'wrap-reverse' , justifyContent : "flex-end" }}>
-                    {
-                        multiItemRender()
-                    }
+                    {multiItemRender()}
                 </View>
-                {/* {
-                    Array.isArray(value) ? value?.map((el , i) =>  <Para key={i} style={{ marginHorizontal : 10 }} weight="bold" align="right" color={wasChange ? primary : "grey"} >{i + 1} . {el}</Para>)
-                    : <Para 
-                        style={{ marginHorizontal : 10 }} 
-                        weight="bold" 
-                        align="right" 
-                        color={wasChange ? primary : "grey"} >
-                                {toFarsiNumber(valueFinder(store.find(el => el.formName === currentPartOfStore.formName) , tempStore[currentPartOfStore.formName]) || value || "")}
-                    </Para>
-                } */}
                 <View style={appendStyle.valueBullet} />
             </View>
         </View>

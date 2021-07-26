@@ -5,7 +5,7 @@ import { generateColor, imageFinder, toFarsiNumber } from '../utils';
 import InsConfirmItem from '../components/InsConfirmItem';
 
 import Para from '../components/Para';
-import DirectionCta from "../components/NextStepBtn";
+import DirectionCta from "../components/DirectionCta";
 
 import ScreenWrapper from "../components/ScreenWrapper";
 

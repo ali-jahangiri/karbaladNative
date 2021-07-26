@@ -8,7 +8,7 @@ import { generateColor , imageFinder, statusChecker} from '../utils';
 
 import Para from './Para';
 
-import NextStepBtn from './NextStepBtn';
+import DirectionCta from './DirectionCta';
 import { useNavigation } from '@react-navigation/core';
 
 
@@ -30,7 +30,7 @@ const InsuranceHistoryItem = props => {
 
     return (
         <View style={appendStyle.container}>
-            <NextStepBtn containerBgColor={generateColor(primary , 5)} onPress={pressHandler} />
+            <DirectionCta containerBgColor={generateColor(primary , 5)} onPress={pressHandler} />
             <View style={{ flex: .8 }}>
                 <Para size={14} weight="bold">{categorysFullName}</Para>
                 <View style={appendStyle.detailContainer}>

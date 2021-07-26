@@ -22,9 +22,9 @@ import config from './config';
 export default function App() {
   return (
     <View style={generalStyle.appContainer}>
-      <CommutingProvider />
       <ErrorBoundary>
         <StoreProvider store={myStore}>
+          <CommutingProvider />
           <FetchProvider packageName={config.packageName} baseURL={`${config.serverPath}/MobileApi/`}>
             <StyleProvider>
               <InitialLoading>

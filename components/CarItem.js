@@ -26,25 +26,22 @@ const CarItem = ({ dataName , hasNestedData , nestedData , id , selectHandler , 
 }
 
 
-const style = ({ primary , secondary , baseBorderRadius }) => StyleSheet.create({
+const style = ({ primary , baseBorderRadius }) => StyleSheet.create({
     container : {
         paddingHorizontal : 10,
         paddingVertical : 15,
         borderWidth : 2,
         borderRadius : baseBorderRadius,
-        borderColor : secondary,
+        borderColor : generateColor(primary , 3),
         marginVertical : 10,
         alignItems : 'flex-end',
         justifyContent : 'center',
         height: 100,
         maxHeight : 200
     },
-    itemSelected : {
-        borderColor : generateColor(primary , 9),
-        alignSelf : 'flex-end'
-    },
     selectedItem : {
-        borderColor : generateColor(primary , 5)
+        backgroundColor : generateColor(primary , 5),
+        borderColor : generateColor(primary , 5),
     }
 })
 
