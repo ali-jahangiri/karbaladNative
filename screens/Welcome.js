@@ -19,7 +19,7 @@ const Welcome = ({ continueHandler }) => {
     const storeDispatcher = useDispatch();
     const [loading, setLoading] = useState(true);
 
-    const fetcher = useFetch(false);
+    const fetcher = useFetch();
 
     useEffect(() => {
         fetcher("getCategories")

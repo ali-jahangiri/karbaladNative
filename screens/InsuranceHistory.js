@@ -21,7 +21,7 @@ const Home = () => {
 
     const navHash = useSelector(state => state.navigation.navigationHash)
 
-    const fetcher = useFetch(false)
+    const fetcher = useFetch()
     
     useEffect(() => {
         setLoading(true);

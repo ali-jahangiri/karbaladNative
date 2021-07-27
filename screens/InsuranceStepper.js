@@ -21,7 +21,7 @@ const InsuranceStepper = ({ id , name }) => {
     const [valueStore, setValueStore] = useState({});
 
 
-    const fetcher = useFetch(false);
+    const fetcher = useFetch();
     const appendStyle = useStyle(style)
     
     useEffect(() => {

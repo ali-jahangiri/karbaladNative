@@ -30,7 +30,7 @@ const InsurancePay = ({ navigation , route : { params : { id } } }) => {
 
     const [walletChargeLessThen, setWalletChargeLessThen] = useState(false);
 
-    const fetcher = useFetch(false);
+    const fetcher = useFetch();
     
     const appendStyle = useStyle(style);
     const { primary } = useStyle();

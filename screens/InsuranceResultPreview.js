@@ -22,7 +22,7 @@ const InsuranceResultPreview = ({ route : { params : { id , valueStore , flatted
 
     
     const navHash = useSelector(state => state.navigation.navigationHash);
-    const fetcher = useFetch(false);
+    const fetcher = useFetch();
 
     useEffect(() => {
         setInitialLoading(true);

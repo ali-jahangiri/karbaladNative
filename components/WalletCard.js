@@ -20,7 +20,7 @@ const WalletCart = ({ finalResult = "" , paymentProcessHandler , isInPaymentProc
     const [chargeViewActive, setChargeViewActive] = useState(false);
 
     
-    const fetcher = useFetch(false);
+    const fetcher = useFetch();
 
 
     const resetHandler = () => {

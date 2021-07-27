@@ -30,7 +30,7 @@ const Profile = () => {
     const [phoneAsUserName, setPhoneAsUserName] = useState(null)
     const [respondErr, setRespondErr] = useState(null);
     
-    const fetcher = useFetch(false);
+    const fetcher = useFetch();
 
     const [userData, setUserData] = useState(null);
     const [loading, setLoading] = useState(true);

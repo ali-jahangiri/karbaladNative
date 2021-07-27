@@ -23,7 +23,7 @@ const Login = () => {
     const [stage, setStage] = useState(1);
     const [loadingCta, setLoadingCta] = useState(false);
 
-    const fetcher = useFetch(false);
+    const fetcher = useFetch();
     const storeDispatcher = useDispatch();
 
     const inputChangeHandler = (key , value) => {

@@ -26,7 +26,7 @@ const Wallet = () => {
     const [transactionStatus, setTransactionStatus] = useState(false);
     const [loading, setLoading] = useState(true);
 
-    const fetcher = useFetch(false);
+    const fetcher = useFetch();
 
     const transactionContainerRef = useRef();
     

@@ -18,7 +18,7 @@ const Installment = ({ route : { params : { factorId , reqId , installment_Value
     
     const { primary  } = useStyle();
 
-    const fetcher = useFetch(false);
+    const fetcher = useFetch();
 
     const navHash = useSelector(state => state.navigation.navigationHash);
 
