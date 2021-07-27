@@ -1,13 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Alert, Linking, StyleSheet, TouchableOpacity, View  } from 'react-native';
 import { useStyle } from '../Hooks/useStyle';
-import { generateColor, numberSeparator, toFarsiNumber } from '../utils';
+import {  numberSeparator, toFarsiNumber } from '../utils';
 import Para from './Para';
 
 import { Feather } from '@expo/vector-icons';
 
 import InputNumber from "./InputNumber";
 import useFetch from '../Providers/useFetch';
+import client from '../client';
+
+
+const { ORDER_TEXT , IN_REDIRECTION , REMAIN_TEXT  , ADD_TO_WALLET_TEXT} = client.static.WALLET_CARD;
 
 const WalletCart = ({ finalResult = "" , paymentProcessHandler , isInPaymentProcess }) => {
     const appendStyle = useStyle(style);
@@ -54,7 +58,7 @@ const WalletCart = ({ finalResult = "" , paymentProcessHandler , isInPaymentProc
                     <View style={appendStyle.firstPart}>
                     <TouchableOpacity onPress={() => setChargeViewActive(prev => !prev)} style={appendStyle.chargeCta}>
                         <Feather style={{ marginRight : 5 }} name="plus" size={24} color="black" />
-                        <Para weight='bold'>افزایش اعتبار</Para>
+                        <Para weight='bold'>{ADD_TO_WALLET_TEXT}</Para>
                     </TouchableOpacity>
                     <View style={appendStyle.creditIconContainer}>
                         <Feather name="credit-card" size={24} style={appendStyle.creditIcon} />
@@ -65,7 +69,7 @@ const WalletCart = ({ finalResult = "" , paymentProcessHandler , isInPaymentProc
                         <Para style={{ marginRight : 5 }}>تومان</Para>
                         <Para size={22} weight="bold">{numberSeparator(toFarsiNumber(finalResult))}</Para>
                     </View>
-                    <Para size={18} weight="bold">موجودی :</Para>
+                    <Para size={18} weight="bold">{REMAIN_TEXT}</Para>
                 </View>
                 </> : <View style={appendStyle.chargeView}>
                     <TouchableOpacity style={[appendStyle.chargeCta , { alignSelf : "flex-start", marginLeft : 20 , marginTop : 10 }]} onPress={resetHandler}>
@@ -82,7 +86,7 @@ const WalletCart = ({ finalResult = "" , paymentProcessHandler , isInPaymentProc
                     <TouchableOpacity disabled={isInPaymentProcess} style={[appendStyle.payCta , isInPaymentProcess ? appendStyle.disabledCta : {}]} onPress={redirectToWebPay}>
                         <Feather style={{ marginRight : 10 }} name="check" size={24} color="black" />
                         <Para size={16} weight="bold">{
-                            isInPaymentProcess ? "در حال انتقال به درگاه" : "پرداخت"
+                            isInPaymentProcess ? IN_REDIRECTION : ORDER_TEXT
                         }</Para>
                     </TouchableOpacity>
                 </View>

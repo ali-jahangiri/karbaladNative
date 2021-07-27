@@ -18,7 +18,6 @@ import myStore from './Store/myStore';
 import config from './config';
 
 
-
 export default function App() {
   return (
     <View style={generalStyle.appContainer}>

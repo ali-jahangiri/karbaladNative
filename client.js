@@ -15,7 +15,6 @@ const client = {
         ACCESS_DENIED : "AccessDenied",
         CHANGE_USERNAME : "userName",
         CHANGE_PASSWORD : "password",
-        WELCOME_DESK : "Voluptatum debitis esse reiciendis optio explicabo. Provident et quisquam aliquam non quos deleniti dolor et cum. Voluptatem non dolores quisquam nulla eos nihil. Perferendis animi sapiente. Totam omnis quia cum beatae aspernatur.Ad quas voluptatem eos facere sit. Dolores minus eos aspernatur hic iusto. Consequatur nesciunt commodi aliquid. Neque atque cupiditate aut et dolorem eum modi aut.Totam ex ratione sed sequi quae reiciendis. Consequatur necessitatibus sapiente suscipit eum vel qui labore ipsa sunt. Voluptatum sint et optio. Optio qui eaque est quo quaerat quidem. Neque et voluptas culpa ipsam voluptatem repellendus sed non reprehenderit.",
         EMPTY_SCREEN_TEXT : "نتیجه ای یافت نشد",
         EMPTY_SCREEN_INSURANCE_HISTORY : "شما تا به حال بیمه نامه ای ثبت نکرده اید",
         EMPTY_SCREEN_WALLET : "شما تا به حال هیچ تراکنشی نداشته اید",
@@ -68,6 +67,12 @@ const client = {
                 MORE_DETAILS : "جزئیات بیشتر"
             },
         },
+        WALLET_CARD : {
+            ORDER_TEXT : "پرداخت",
+            IN_REDIRECTION : "در حال انتقال به درگاه",
+            REMAIN_TEXT : "موجودی :",
+            ADD_TO_WALLET_TEXT : "افزایش اعتبار"
+        },
         SYSTEM_KEY : {
             AFTER_PAYMENT : {
                 OK: "ok",
@@ -80,6 +85,11 @@ const client = {
         PAYMENT : {
             ONLINE_ORDER : "پرداخت آنلاین",
             WALLET_ORDER : "پرداخت از کیف پول"
+        },
+        WELCOME : {
+            WELCOME_DESK : "Voluptatum debitis esse reiciendis optio explicabo. Provident et quisquam aliquam non quos deleniti dolor et cum. Voluptatem non dolores quisquam nulla eos nihil. Perferendis animi sapiente. Totam omnis quia cum beatae aspernatur.Ad quas voluptatem eos facere sit. Dolores minus eos aspernatur hic iusto. Consequatur nesciunt commodi aliquid. Neque atque cupiditate aut et dolorem eum modi aut.Totam ex ratione sed sequi quae reiciendis. Consequatur necessitatibus sapiente suscipit eum vel qui labore ipsa sunt. Voluptatum sint et optio. Optio qui eaque est quo quaerat quidem. Neque et voluptas culpa ipsam voluptatem repellendus sed non reprehenderit.",
+            PEND_MESSAGE : "در حال دریافت اطلاعات اولیه",
+            CONTINUE_MESSAGE : "ادامه",
         },
         TRANSACTION : {
             DONE : "ok",

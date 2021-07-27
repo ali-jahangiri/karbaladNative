@@ -1,141 +1,3 @@
-// import React , { useEffect, useState } from 'react';
-// import { useFonts } from 'expo-font';
-
-// import LoadingScreen from "./LoadingScreen";
-
-// import { useStyleDispatcher } from "../../Hooks/useStyle"
-
-// import Login from '../../screens/Login';
-
-// import ErrorPage from '../../screens/ErrorPage';
-
-// import encrypt from '../../utils/encrypt';
-// import client from '../../client';
-// import config from '../../config';
-// import { persister } from '../../utils';
-
-// import { useDispatch, useSelector } from '../../Store/Y-state';
-// import { setAppKey, setSeeWelcomeScreen, setSystemTime } from '../../Store/Slices/authSlice';
-// import { Welcome } from '../../screens';
-// import { setInsCat } from '../../Store/Slices/initialSlice';
-
-// import api from '../../api';
-
-
-// const InitialLoading = ({ children }) => {
-//     const [somethingWentWrong, setSomethingWentWrong] = useState(false);
-//     const [forceToReRender, setForceToReRender] = useState(0);
-//     const [loading, setLoading] = useState(true);
-//     const storeDispatcher = useDispatch();
-
-//     const {appKey :  isAuth , seeWelcome} = useSelector(state => state.auth);
-
-//     const [fontLoaded , err ] = useFonts({
-//         light : require("../../assets/fonts/Vazir-Light.ttf"),
-//         regular : require('../../assets/fonts/Vazir-Regular.ttf'),
-//         bold : require('../../assets/fonts/Vazir-Bold.ttf'),
-//         black : require('../../assets/fonts/Vazir-Black.ttf'),
-//     });
-
-
-
-    
-//     const styleDispatcher = useStyleDispatcher();
-
-//     const resetHandler = () => setForceToReRender(prev => !prev);
-
-
-//     const continueHandler = () => {
-//         storeDispatcher(() => setSeeWelcomeScreen(true))
-//     }
-
-//     useEffect(() => {
-//     try {
-//         api.post(`${config.serverPath}/baseApi/getServerTime`)
-//                 .then(({ data }) => {
-//                     let serverTime = +data.split(" ")[1].split(':')[1];
-//                     const deviceTime = new Date().getMinutes();
-//                     alert("get server time" + data)
-//                     storeDispatcher(() => setSystemTime(deviceTime - serverTime));
-//                     api.post(`${config.serverPath}/baseApi/getAppToken` , {
-//                         Key : encrypt.encrypt({
-//                             UserName : config.adminUserName,
-//                             Password : config.adminPassword,
-//                         }, serverTime),
-//                     }).then(({ data : appToken }) => {
-//                         alert("get appToken" , appToken)
-//                         if(appToken === client.static.ACCESS_DENIED) throw new Error(appToken);
-//                         setSomethingWentWrong(null);
-//                         return appToken
-//                     }).then(appToken => {
-//                         return persister.get('userPrivateKey')
-//                             .then(data => {
-//                                 alert("get private key" , data)
-//                                 if(data) {
-//                                     alert("before was login , let get login")
-//                                     storeDispatcher(() => setSeeWelcomeScreen(true));
-//                                     storeDispatcher(() => setAppKey(data));
-//                                     return api
-//                                             .post(`${config.serverPath}/MobileApi/getCategories` , {} , {
-//                                                 headers : {
-//                                                     appToken,
-//                                                 }}).then(({data}) => {
-//                                                     alert("get Categoryes")
-//                                                     storeDispatcher(() => setInsCat(data.cat));
-//                                                     setLoading(false);
-//                                                 }).catch(err => {
-//                                                     alert("catch is here")
-//                                                     throw new Error(err)
-//                                                 })
-//                                 }
-//                             }).catch(err => {
-//                                 alert("older catch")
-//                                 setLoading(false)
-//                                 throw new Error(err);
-//                             })
-//                     })
-//                     .catch(err => {
-//                         setSomethingWentWrong(err.message)
-//                     })
-//                 })
-
-//         const globalStyle = {
-//             baseBorderRadius : 15,
-//             primary : '#04009A',
-//             secondary : '#dbe6fd',
-//         }
-//         styleDispatcher({ globalStyle });
-
-
-//     }
-//     catch(err) {
-//         alert('something went wronmg')
-//     }
-    
-    
-//     } , [forceToReRender]);
-
-//     if(somethingWentWrong) {
-//         return <ErrorPage
-//                     errMessage={somethingWentWrong} 
-//                     resetHandler={resetHandler} />
-//     }
-
-
-//     const authRenderChecker = () => {
-//         if(isAuth) {
-//             if(!seeWelcome) {
-//                 return <Welcome continueHandler={continueHandler} />
-//             }else return children
-//         };
-//         return <Login />
-//     }
-
-//     return  fontLoaded && !loading ? authRenderChecker() : <LoadingScreen />
-// }
-
-
-// export default InitialLoading;
 import React , { useEffect, useState } from 'react';
 import { useFonts } from 'expo-font';
 
@@ -144,8 +6,6 @@ import LoadingScreen from "./LoadingScreen";
 import { useStyleDispatcher } from "../../Hooks/useStyle"
 
 import Login from '../../screens/Login';
-
-import useFetch from "../../Providers/useFetch"
 
 import ErrorPage from '../../screens/ErrorPage';
 
@@ -178,17 +38,9 @@ const InitialLoading = ({ children }) => {
     });
 
 
-
-    
     const styleDispatcher = useStyleDispatcher();
 
     const resetHandler = () => setForceToReRender(prev => !prev);
-
-
-    // useEffect(() => {
-    //     resetHandler()
-    // } , [isAuth]);
-
 
 
     const continueHandler = () => {

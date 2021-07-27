@@ -17,13 +17,15 @@ const { DONE , FAIL , FA_DONE , FA_FAIL } = client.static.TRANSACTION;
 import Para from '../components/Para';
 import { generateColor } from '../utils';
 import { useStyle } from '../Hooks/useStyle';
+import useFetch from '../Providers/useFetch';
 
 const Wallet = () => {
-    const completelyLoaded = useSelector(state => state.initial.completelyLoaded);
-    const walletData = useSelector(state => state.initial.userData?.walletData);
-    const initialUserData = useSelector(state => state.initial.userData)
+    const [walletData, setWalletData] = useState(null)
     const [isInPaymentProcess, setIsInPaymentProcess] = useState(false);
     const [transactionStatus, setTransactionStatus] = useState(false);
+    const [loading, setLoading] = useState(true);
+
+    const fetcher = useFetch(false);
 
 
     const navHash = useSelector(state => state.navigation.navigationHash);
@@ -32,20 +34,23 @@ const Wallet = () => {
     
 
     useEffect(() => {
-        const currentStatus = initialUserData?.checkTransactionToWallet
-        if([DONE , FAIL].includes(currentStatus)) {
-            setTransactionStatus(currentStatus)
-        }
+        setLoading(true);
+        fetcher("UserWallet")
+            .then(({ data }) => {
+                setWalletData(data)
+                setLoading(false);
+                const currentStatus = data?.checkTransactionToWallet
+                if([DONE , FAIL].includes(currentStatus)) 
+                    setTransactionStatus(currentStatus)
+            })
     } , [navHash]);
 
 
 
-    const drawerCloseHandler = () => {
-        setTransactionStatus(null)
-    }
+    const drawerCloseHandler = () => setTransactionStatus(null);
 
-    
-    if(!completelyLoaded) return <Loading />
+    if(!walletData) return <Loading />
+    if(loading) return <Loading />
     else return (
         <>
         <ScreenWrapper>
@@ -53,12 +58,12 @@ const Wallet = () => {
             <WalletCart
                 paymentProcessHandler={setIsInPaymentProcess}
                 isInPaymentProcess={isInPaymentProcess}
-                finalResult={walletData.finalResult} />
+                finalResult={walletData.walletData.finalResult} />
             {
-                walletData.walletItems.length ? <>
+                walletData.walletData.walletItems.length ? <>
                     <ScrollView>
                         {
-                            walletData.walletItems.map((el , i) => (
+                            walletData.walletData.walletItems.map((el , i) => (
                                 <WalletTransaction index={i + 1} key={i} {...el} />
                             ))
                         }

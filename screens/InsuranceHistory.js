@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { createStackNavigator } from "@react-navigation/stack";
 
 import ScreenHeader from '../components/ScreenHeader';
@@ -6,23 +6,38 @@ import InsuranceHistoryDirectory from '../components/InsuranceHistoryDirectory';
 import ScreenWrapper from "../components/ScreenWrapper";
 
 
-import InsuranceHistoryDetails from '../components/InsuranceHistoryDetails';
+import InsuranceHistoryDetails from './InsuranceHistoryDetails';
 import InsuranceHistoryImages from './InsuranceHistoryImages';
 import { useSelector } from '../Store/Y-state';
 import Loading from '../components/Loading';
+import useFetch from '../Providers/useFetch';
 
 
 const Stack = createStackNavigator();
 
 const Home = () => {
-    const completelyLoaded = useSelector(state => state.initial.completelyLoaded);
-    const insHistoryList = useSelector(state => state.initial?.userData?.insuranceCart?.customModel);
+    const [loading, setLoading] = useState(true);
+    const [insItems, setInsItems] = useState([]);
+
+    const navHash = useSelector(state => state.navigation.navigationHash)
+
+    const fetcher = useFetch(false)
     
-    if(!completelyLoaded) return <Loading />
-    else return (
+    useEffect(() => {
+        setLoading(true);
+        fetcher("UserInsurance")
+            .then(({ data }) => {
+                setInsItems(data);
+                setLoading(false);
+            })
+    } , [navHash])
+
+
+    if(loading) return <Loading />
+    return (
         <>
             <ScreenHeader title="بیمه نامه " />
-            <InsuranceHistoryDirectory item={insHistoryList} />
+            <InsuranceHistoryDirectory item={insItems} />
         </>
     )
 }

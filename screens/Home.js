@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import HomeInsRouter from '../Router/HomeInsRouter';
 
@@ -8,30 +8,11 @@ import TabScreenHeader from '../components/TabScreenHeader';
 import ScreenWrapper from '../components/ScreenWrapper';
 import InsuranceStepper from './InsuranceStepper';
 
-import { useDispatch, useSelector } from '../Store/Y-state';
-import useFetch from '../Providers/useFetch';
-import { setUserData, setWasCompletelyLoaded } from '../Store/Slices/initialSlice';
-import { Button } from 'react-native';
-import { persister } from '../utils';
+import { useSelector } from '../Store/Y-state';
 
 const InsIndexScreen = ({ navigation }) => {
-    const catItems = useSelector(state => state.initial.insCat);
-    const fetcher = useFetch(false);
-    const storeDispatcher = useDispatch();
-
-    const commutingHash = useSelector(state => state.navigation.navigationHash);
-
-
-    useEffect(() => {
-        storeDispatcher(() => setWasCompletelyLoaded(false));
-        fetcher("userProfile" , {})
-            .then(({ data }) => {
-                storeDispatcher(() => setUserData(data))
-                storeDispatcher(() => setWasCompletelyLoaded(true));
-            })
-    } , [commutingHash])
-
-
+    const catItems = useSelector(state => state.initial);
+    
     const routeChangeHandler = routeParameters => 
         navigation.push('stepScreen' , routeParameters);
 
@@ -39,7 +20,6 @@ const InsIndexScreen = ({ navigation }) => {
         <ScreenWrapper>
             <TabHeaderBadge title="خانه" />
             <InsuranceDirectory handler={routeChangeHandler} items={catItems} />
-            {/* <Button title="clear" onPress={() => persister.remove("userPrivateKey")} /> */}
         </ScreenWrapper>
     )
 }

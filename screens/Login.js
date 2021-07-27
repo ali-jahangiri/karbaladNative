@@ -9,13 +9,12 @@ import useFetch from '../Providers/useFetch';
 import { fixNumbers } from '../utils/Date';
 import { persister } from '../utils';
 import { useDispatch } from '../Store/Y-state';
-import { setAppKey, setSeeWelcomeScreen } from '../Store/Slices/authSlice';
+import { setAppKey } from '../Store/Slices/authSlice';
 
 import { VerifyInput , PhoneInput, PasswordInput, AuthLanding, AuthModePlayground } from '../components/Login';
 
 
 const { LOGIN } = client.static;
-
 
 const Login = () => {
     const [authMode, setAuthMode] = useState(null);
@@ -70,7 +69,6 @@ const Login = () => {
                                 persister.set('userPrivateKey' , privatekey)
                                     .then(_ => {
                                         Keyboard.dismiss();
-                                        storeDispatcher(() => setSeeWelcomeScreen(false));
                                         storeDispatcher(() => setAppKey(privatekey));
                                     })
                             })

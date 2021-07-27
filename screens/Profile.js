@@ -4,7 +4,7 @@ import {StyleSheet, View , TouchableOpacity, ScrollView } from 'react-native';
 
 import client from '../client';
 import { useStyle } from '../Hooks/useStyle';
-import { setAppKey } from '../Store/Slices/authSlice';
+import { setAppKey, setUserName } from '../Store/Slices/authSlice';
 import { useDispatch, useSelector } from '../Store/Y-state';
 import { generateColor, persister, toFarsiNumber } from '../utils';
 import useFetch from '../Providers/useFetch';
@@ -31,22 +31,31 @@ const Profile = () => {
     const [respondErr, setRespondErr] = useState(null);
     
     const fetcher = useFetch(true);
-    const userData = useSelector(state => state.initial.userData);
-    const completelyLoaded = useSelector(state => state.initial.completelyLoaded);
-    
+    const fetcher2 = useFetch(false);
+
+    const [userData, setUserData] = useState(null);
+    const [loading, setLoading] = useState(true);
+
     const [insideSomeAsyncProcess, setInsideSomeAsyncProcess] = useState(false);
 
     const [tempUserName, setTempUserName] = useState('');
 
+    const navHash = useSelector(state => state.navigation.navigationHash);
 
     const storeDispatcher =  useDispatch();
 
     useEffect(() => {
-        persister.get("userName")
-            .then(userName => {
-                setPhoneAsUserName(userName);
+        setLoading(true);
+        fetcher2("UserProfile")
+            .then(({ data }) => {
+                setUserData(data);
+                persister.get("userName")
+                .then(userName => {
+                        setPhoneAsUserName(userName);
+                        setLoading(false);
+                    })
             })
-    } , []);
+    } , [navHash]);
 
     const changeHandler = (key , value) => {
         setRespondErr(null);
@@ -170,23 +179,17 @@ const Profile = () => {
     }
 
     const requestAction = body => {
-        return fetcher()
-                .then(({ api , appToken }) => {
-                    return api.post("GetUserData" , body , { headers : { appToken  } })
-                        .then(({ data }) => {
-                            if(data.id < 0) {
-                                throw new Error(data.fullName);
-                            }else {
-                                return data
-                            }
-                        }).catch(err => {
-                            setRespondErr(err.message);
-                            setInsideSomeAsyncProcess(false)
-                            throw new Error(err.message);
-                        })
-                }).catch(err => {
-                    throw new Error(err)
-                })
+        return fetcher2("GetUserData" , body)
+                .then(({ data }) => {
+                    if(data.id < 0) {
+                        throw new Error(data.fullName);
+                    }else {
+                        return data
+                    }
+                    }).catch(err => {
+                        setRespondErr(err.message);
+                        setInsideSomeAsyncProcess(false)
+                    })
     }
 
 
@@ -203,7 +206,7 @@ const Profile = () => {
     }
 
 
-    if(!completelyLoaded) return <Loading />;
+    if(loading) return <Loading />
     else return (
         <>
                 <ScreenHeader title="پروفایل" />
@@ -222,10 +225,10 @@ const Profile = () => {
                     {/* </View> */}
                     {/* <View style={appendStyle.imageDivider} /> */}
                     <Para weight="bold" color="#050513" size={22}>
-                        {tempUserName || userData.userData?.fullName || userData.userData.mobile_UserName}
+                        {tempUserName || userData?.fullName || userData.mobile_UserName}
                     </Para>
                     {
-                        userData.userData?.fullName ? <Para color="#536162">{userData.userData.mobile_UserName}</Para> :null
+                        userData?.fullName ? <Para color="#536162">{userData.mobile_UserName}</Para> :null
                     }
                 </View>
             </View>

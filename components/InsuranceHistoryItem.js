@@ -13,7 +13,7 @@ import { useNavigation } from '@react-navigation/core';
 
 
 const InsuranceHistoryItem = props => {
-    const { categorysFullName , createTime ,  insuranceCoName , factorModeId , iconUrl} = props;
+    const { categorysFullName , createTime ,  insuranceCoName , factorModeId , iconUrl , id} = props;
     
     const appendStyle = useStyle(style);
     const { primary } = useStyle();
@@ -22,10 +22,8 @@ const InsuranceHistoryItem = props => {
     
     const now = new Persian(createTime);
     
-    console.log({...props} , "sgit");
-
     const pressHandler = () => {
-        navigation.navigate('insuranceHistoryDetails' , { ...props })
+        navigation.navigate('insuranceHistoryDetails' , { id })
     }
 
     return (
