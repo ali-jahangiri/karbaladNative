@@ -88,6 +88,10 @@ const client = {
         INSTALLMENT : {
             ORDER_TEXT : "انتخاب طرح",
         },
+        OFFLINE : {
+            TITLE : "دستگاه آفلاین میباشد",
+            DESC : "ارتباط دستگاه با اینترنت را برسی و سپس مجددا تلاش نمایید"
+        },
         SYSTEM_KEY : {
             AFTER_PAYMENT : {
                 OK: "ok",

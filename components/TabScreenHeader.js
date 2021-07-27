@@ -3,6 +3,7 @@ import React from 'react';
 import { StatusBar, StyleSheet, View } from 'react-native';
 
 import { useStyle } from '../Hooks/useStyle';
+import { generateColor } from '../utils';
 import DirectionCta from './DirectionCta';
 
 import Para from './Para';
@@ -23,7 +24,7 @@ const TabScreenHeader = ({ title = "string" , extendStyle }) => {
 
 const style = ({ primary } , extendStyle) => StyleSheet.create({
     container : {
-        backgroundColor : primary,
+        backgroundColor : generateColor(primary , 9),
         flexDirection : 'row',
         alignItems : 'center',
         height: 130,

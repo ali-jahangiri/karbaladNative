@@ -16,22 +16,25 @@ import CommutingProvider from './Providers/CommutingProvider';
 
 import myStore from './Store/myStore';
 import config from './config';
+import OfflineProvider from './Providers/OfflineProvider/OfflineProvider';
 
 
 export default function App() {
   return (
     <View style={generalStyle.appContainer}>
       <ErrorBoundary>
-        <StoreProvider store={myStore}>
-          <CommutingProvider />
-          <FetchProvider packageName={config.packageName} baseURL={`${config.serverPath}/MobileApi/`}>
-            <StyleProvider>
-              <InitialLoading>
-                <Router />
-              </InitialLoading>
-            </StyleProvider>
-          </FetchProvider>
-        </StoreProvider>
+        <OfflineProvider>
+          <StoreProvider store={myStore}>
+            <CommutingProvider />
+            <FetchProvider packageName={config.packageName} baseURL={`${config.serverPath}/MobileApi/`}>
+              <StyleProvider>
+                <InitialLoading>
+                  <Router />
+                </InitialLoading>
+              </StyleProvider>
+            </FetchProvider>
+          </StoreProvider>
+        </OfflineProvider>
       </ErrorBoundary>
       <StatusBar style="auto" />
     </View>
