@@ -16,24 +16,20 @@ const Installment = ({ route : { params : { factorId , reqId , installment_Value
     const [installment, setInstallment] = useState({});
     const [loading, setLoading] = useState(true);
     
-    const { primary } = useStyle();
+    const { primary  } = useStyle();
 
-    const fetcher = useFetch(true);
+    const fetcher = useFetch(false);
 
     const navHash = useSelector(state => state.navigation.navigationHash);
 
 
     useEffect(() => {
-        fetcher()
-            .then(({ api , appToken }) => {
-                api.post("getInsstallments" , { formulaId : factorId , requestId : reqId } , { headers : {
-                    appToken
-                }  })
-                    .then(({ data }) => {
-                        setInstallment(data);
-                        setLoading(false);
-                    })
-            }) 
+        setLoading(true);
+        fetcher("getInsstallments" , { formulaId : factorId , requestId : reqId })
+            .then(({ data }) => {
+                setInstallment(data);
+                setLoading(false);
+            })
     } , [navHash]);
 
 

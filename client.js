@@ -64,16 +64,29 @@ const client = {
             }
         },
         INS_PREVIEW_ITEM : {
+            ORDER_TEXT : "سفارش",
             MORE_DETAILS : {
                 LESS_DETAILS : "جزئیات کمتر",
                 MORE_DETAILS : "جزئیات بیشتر"
             },
+        },
+        INS_CONFIRM : {
+            CASH : "نقدی",
+            INSTALLMENT : "قسطی",
+            DIRECT_ORDER : "سفارش"
         },
         WALLET_CARD : {
             ORDER_TEXT : "پرداخت",
             IN_REDIRECTION : "در حال انتقال به درگاه",
             REMAIN_TEXT : "موجودی :",
             ADD_TO_WALLET_TEXT : "افزایش اعتبار"
+        },
+        INS_DETAILS : {
+            ORDER_TEXT : 'پرداخت',
+            WATCH_IMAGE_TEXT : "مشاهده تصاویر بیمه نامه"
+        },
+        INSTALLMENT : {
+            ORDER_TEXT : "انتخاب طرح",
         },
         SYSTEM_KEY : {
             AFTER_PAYMENT : {
@@ -99,6 +112,9 @@ const client = {
             FAIL : "nok",
             FA_DONE : "پرداخت موفقیت آمیز بود",
             FA_FAIL : "پراخت ناموفق بود"
+        },
+        ROUTES : {
+            
         }
     }
 }

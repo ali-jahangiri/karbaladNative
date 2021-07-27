@@ -11,7 +11,7 @@ const SelectBox = ({ children , selectedIndex}) => {
                 y : selectedIndex * 70
             })
         }else if(selectedIndex < 0) {
-            ref.current.scrollTo({ y : 1 })
+            ref.current.scrollTo({ y : 0 })
         }
     } , [selectedIndex , children])
 

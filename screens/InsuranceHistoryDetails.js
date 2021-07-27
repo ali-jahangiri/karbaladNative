@@ -10,6 +10,10 @@ import { useSelector } from '../Store/Y-state';
 
 import Loading from "../components/Loading"
 import useFetch from '../Providers/useFetch';
+import Btn from '../components/Btn';
+import client from '../client';
+
+const { ORDER_TEXT , WATCH_IMAGE_TEXT } = client.static.INS_DETAILS;
 
 const ListViewRow = ({ title , value }) => {
     const style = useStyle(listViewStyle)
@@ -132,9 +136,12 @@ const InsDetailsView = ({ details }) => {
                 </View>
             </ScrollView>
             {
-                showCta ? <TouchableOpacity onPress={pressHandler} style={appendStyle.cta}>
-                    <Para align="center" size={16} style={appendStyle.ctaText} weight="bold">{factorModeId >= 3 ? "مشاهده تصاویر بیمه نامه" : 'پرداخت'}{` - ${toFarsiNumber(stringAmunt)}`+' تومان '}</Para>
-                </TouchableOpacity> : null
+                showCta ?
+                <Btn 
+                    title={factorModeId >= 3 ? WATCH_IMAGE_TEXT :  ORDER_TEXT  + ` - ${toFarsiNumber(stringAmunt)}`+' تومان '} 
+                    onPress={pressHandler}
+                    extendStyle={{ width : "90%" , marginHorizontal : "5%" }} />
+                 : null
             }
             </>
     )
@@ -215,13 +222,6 @@ const style = ({ primary , secondary , baseBorderRadius } , statusColor) => Styl
     },
     row : {
         width: "48%"
-    },
-    cta : {
-        width : "90%",
-        backgroundColor : generateColor(primary , 3),
-        paddingVertical : 15,
-        marginHorizontal : "5%",
-        borderRadius : baseBorderRadius
     },
 })
 

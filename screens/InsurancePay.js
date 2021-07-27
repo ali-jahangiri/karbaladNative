@@ -30,9 +30,7 @@ const InsurancePay = ({ navigation , route : { params : { id } } }) => {
 
     const [walletChargeLessThen, setWalletChargeLessThen] = useState(false);
 
-    const fetcher = useFetch(true);
-    const ticket = useSelector(state => state.auth.appKey);
-    
+    const fetcher = useFetch(false);
     
     const appendStyle = useStyle(style);
     const { primary } = useStyle();
@@ -42,23 +40,14 @@ const InsurancePay = ({ navigation , route : { params : { id } } }) => {
 
     useEffect(() => {
         setLoading(true)
-        fetcher()
-            .then(({ api , appToken }) => {
-                api.post('InsurancePay' , { factorId : id } , { headers : {
-                    appToken ,
-                     ticket
-                }  })
-                .then(({ data }) => {
-                    setPayResponse(data);
+        fetcher("InsurancePay" , { factorId : id })
+            .then(({ data }) => {
+                setPayResponse(data);
                     if(data.deliveryModelsItems) {
                         setDeliverOption(data.deliveryModelsItems?.find(el => el.thisDefault).id);
                     }
                     setLoading(false)
-                })
-            })
-       
-        
-
+        })
         // const unsubscribe = navigation.addListener("beforeRemove" , e => {
         //     e.preventDefault();
         //     navigation.push("home")
@@ -79,46 +68,44 @@ const InsurancePay = ({ navigation , route : { params : { id } } }) => {
     const orderFromWallet = () => {
         setIsInsidePaymentProcess(true)
         setIsInsidePaymentProcess("wallet");
-        fetcher()
-            .then(({ api , appToken }) => {
-                api.post("InsurancePayWallet" , {factorId : id , deliveryMethod : deliverOption} , { headers : {appToken , ticket} })
-                    .then(({ data }) => {
-                        if(data === client.static.TRANSACTION.FAIL) {
-                            setWalletChargeLessThen(true)
-                            setIsInsidePaymentProcess(false);
-                        }
-                    })
+
+        fetcher("InsurancePayWallet" , {factorId : id , deliveryMethod : deliverOption})
+            .then(({ data }) => {
+                if(data === client.static.TRANSACTION.FAIL) {
+                    setWalletChargeLessThen(true)
+                    setIsInsidePaymentProcess(false);
+                }
             })
     }
 
 
     const onlineOrder = () => {
         setIsInsidePaymentProcess('online');
-        fetcher()
-            .then(({ api , appToken }) => {
-                api.post("InsuranceDirectPay" , { factorId : id , money : payResponse.amount + additionalPrice , deliveryMethod : deliverOption } , {
-                    headers : {
-                        appToken , 
-                        ticket 
-                    }
-                }).then(({ data }) => {
-                    if(data.allDone && data.url) {
-                        Linking.openURL(data.url)
-                        .then(_ => {
-                            setIsInsidePaymentProcess(false);
-                            navigation.navigate("insurance" , { comeFromPayment : true })
-                        })
-                        .catch(_ => {
-                            setIsInsidePaymentProcess(false);
-                            Alert.alert("", "امکان ورود به مرورگر وجود ندارد.مجددا تلاش کنید" , [
-                                {
-                                    text : "تایید",
-                                    onPress : () => {}
-                                }
-                            ])
-                        })
-                    }
-                }) 
+
+        const reqBody = { 
+            factorId : id , 
+            money : payResponse.amount + additionalPrice , 
+            deliveryMethod : deliverOption 
+        }
+
+        fetcher("InsuranceDirectPay" , reqBody)
+            .then(({ data }) => {
+                if(data.allDone && data.url) {
+                    Linking.openURL(data.url)
+                    .then(_ => {
+                        setIsInsidePaymentProcess(false);
+                        navigation.navigate("insurance" , { comeFromPayment : true })
+                    })
+                    .catch(_ => {
+                        setIsInsidePaymentProcess(false);
+                        Alert.alert("", "امکان ورود به مرورگر وجود ندارد.مجددا تلاش کنید" , [
+                            {
+                                text : "تایید",
+                                onPress : () => {}
+                            }
+                        ])
+                    })
+                }
             })
     }
 

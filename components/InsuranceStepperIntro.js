@@ -10,7 +10,7 @@ import { useNavigation } from '@react-navigation/native';
 
 const InsuranceStepperIntro = ({  title , desc , nextStepHandler }) => {
     const appendStyle = useStyle(style)
-    const { primary } = useStyle();
+    const { primary , ctaTextColor } = useStyle();
     
     const navigation = useNavigation()
 
@@ -27,8 +27,8 @@ const InsuranceStepperIntro = ({  title , desc , nextStepHandler }) => {
                         desc && <Para style={appendStyle.desc}>{desc}</Para>
                     }
                     <TouchableOpacity onPress={nextStepHandler} style={[appendStyle.nextStep , !desc ? { marginTop : 10 } : {}]}>
-                        <Feather name="chevron-left" size={30} color="black" />
-                        <Para size={20} style={appendStyle.nextStepText} weight="bold">شروع</Para>
+                        <Feather name="chevron-left" size={30} color={ctaTextColor} />
+                        <Para size={20} color={ctaTextColor} style={appendStyle.nextStepText} weight="bold">شروع</Para>
                     </TouchableOpacity>
                 </View>
             </View>

@@ -17,6 +17,7 @@ const InsuranceResultPreview = ({ route : { params : { id , valueStore , flatted
     const [initialLoading, setInitialLoading] = useState(true);
     const [responseValues, setResponseValues] = useState({});
     const appendStyle = useStyle(style);
+    const { headerTitleColor } = useStyle()
     const [reqId, setReqId] = useState('');
 
     
@@ -62,15 +63,15 @@ const InsuranceResultPreview = ({ route : { params : { id , valueStore , flatted
             <ScreenWrapper>
             <View style={appendStyle.header}>
                 <TouchableOpacity onPress={quickEditHandler} style={appendStyle.editContainer}>
-                    <Feather name="edit-2" size={30} color="white" />   
+                    <Feather name="edit-2" size={30} color={headerTitleColor} />   
                 </TouchableOpacity>
                 <View style={{ flex : 1 }}>
                     {
                         catFullName ? <>
-                            <Para color="white">نتایج جستجو در : </Para>
-                            <Para color="white" weight="bold" size={20}>{catFullName}</Para>
+                            <Para color={headerTitleColor}>نتایج جستجو در : </Para>
+                            <Para color={headerTitleColor} weight="bold" size={20}>{catFullName}</Para>
                         </>
-                        : <Para color="white" size={20} weight="bold">نتایج جستجو : </Para>
+                        : <Para color={headerTitleColor} size={20} weight="bold">نتایج جستجو : </Para>
                     }
                 </View>
             </View>
@@ -118,7 +119,8 @@ const style = ({ primary , baseBorderRadius }) => StyleSheet.create({
     editContainer : {
         borderRadius : baseBorderRadius,
         backgroundColor : '#fff2',
-        padding: 12
+        padding: 12,
+        marginRight : 5
     },
     goHome : {
         flexDirection : 'row',

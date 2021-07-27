@@ -8,11 +8,13 @@ import Para from '../components/Para';
 import DirectionCta from "../components/DirectionCta";
 
 import ScreenWrapper from "../components/ScreenWrapper";
+import client from '../client';
 
+const { CASH , INSTALLMENT , DIRECT_ORDER } = client.static.INS_CONFIRM
 
 const InsuranceConfirm = ({ route : { params : { factorItems , insModel , haveInstallment , reqId , installment_Value , formulId } } , navigation }) => {
     const appendStyle = useStyle(style);
-    const { primary } = useStyle();
+    const { primary , ctaTextColor } = useStyle();
     
 
     const installmentHandler = () => {
@@ -64,11 +66,15 @@ const InsuranceConfirm = ({ route : { params : { factorItems , insModel , haveIn
                         </View>
                         <View style={appendStyle.actionsContainer}>
                             <TouchableOpacity onPress={goDirectlyToRequirement} style={[appendStyle.action , { backgroundColor : generateColor(primary , 5) }]}>
-                                <Para weight="bold" align="center" size={16}>سفارش</Para>
+                                <Para color={ctaTextColor} weight="bold" align="center" size={16}>
+                                    {
+                                        haveInstallment ? CASH : DIRECT_ORDER
+                                    }
+                                </Para>
                             </TouchableOpacity>
                             {
                                 haveInstallment ? <TouchableOpacity onPress={installmentHandler} style={[appendStyle.action , { backgroundColor : generateColor(primary , 3) }]}>
-                                        <Para weight="bold" align="center" size={16}>قسطی</Para>
+                                        <Para color={ctaTextColor} weight="bold" align="center" size={16}>{INSTALLMENT}</Para>
                                     </TouchableOpacity> : null
                             }
                         </View>

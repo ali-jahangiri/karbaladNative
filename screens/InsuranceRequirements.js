@@ -14,8 +14,6 @@ import { generateColor } from '../utils';
 
 import useFetch from '../Providers/useFetch';
 
-import config from '../config';
-
 import { useSelector } from "../Store/Y-state";
 import Loading from '../components/Loading';
 import client from '../client';
@@ -28,37 +26,26 @@ const InsuranceRequirements = ({ route : { params } , navigation }) => {
     const [staticStore, setStaticStore] = useState({});
     const [dynamicStore, setDynamicStore] = useState({});
     const [docItems, setDocItems] = useState({});
-
     const [areas, setAreas] = useState([]);
-
     const [inInsRecord, setInInsRecord] = useState(false);
-
-
     const [error, setError] = useState(null);
 
-
-    const ticket = useSelector(state => state.auth.appKey);
-
-
-    const fetcher = useFetch(true);
+    const fetcher = useFetch();
 
     useEffect(() => {
-        fetcher()
-        .then(({ api , appToken }) => {
-            return api.post(`AddFactor` , {
-                        InstallmentId : params.installmentId , 
-                        formulaId : params.factorId, 
-                        requestId : params.reqId
-                    } , { headers : {appToken , ticket } })
-                    .then(({ data }) => {
-                        setDocItems(data);
-                        setAreas(data.areas);
-                        setLoading(false)
-                    }).catch(err => {
-                        console.log(err , 'err');
-                    })
-            }).catch(err => {
+        const reqBody = {
+            InstallmentId : params.installmentId , 
+            formulaId : params.factorId, 
+            requestId : params.reqId
+        }
+
+        fetcher('AddFactor' , reqBody)
+            .then(({ data }) => {
+                setDocItems(data);
+                setAreas(data.areas);
+                setLoading(false)
             })
+        
     } , [])
 
 
@@ -100,11 +87,9 @@ const InsuranceRequirements = ({ route : { params } , navigation }) => {
             request : JSON.stringify(dynamicStore)
         };
         setInInsRecord(true);
-            fetcher()
-            .then(({ api , appToken }) => {
-                api.post("GetRequirements" , { ...sendObject } ,{ headers : {appToken , ticket  } })
-                    .then(({ data }) => { 
-                        setError(null);
+            fetcher("GetRequirements" , { ...sendObject })
+                .then(({ data }) => {
+                    setError(null);
                         if(!data.hasData) {
                             // TODO handle this case , for now i throw a err
                             throw new Error("مشکلی رخ داده است ، مجددا تلاش نمایید")
@@ -113,16 +98,14 @@ const InsuranceRequirements = ({ route : { params } , navigation }) => {
                             const { data : response , message } = data
                             navigation.navigate('insurancePayment' , { id : response.id , loadingMessageHelper : message });
                         }
-                        })
-                    .catch(err => {
-                        setError(err)
-                    })
-            })
+                }).catch(err => {
+                    setError(err.message)
+                })
     }
 
 
     return loading ? <Loading /> : <ScreenWrapper>
-    <TabScreenHeader navigation={navigation} title="تکمیل مشخصات" extendStyle={{  }} />
+    <TabScreenHeader navigation={navigation} title="تکمیل مشخصات" />
         <ScrollView contentContainerStyle={{ paddingBottom : 20 }}>
             {
                 docItems.requierds?.filter(el => el.typeImage).length ? 
@@ -160,9 +143,6 @@ const InsuranceRequirements = ({ route : { params } , navigation }) => {
 
 
 const style = ({ primary , baseBorderRadius }) => StyleSheet.create({
-    header : {
-
-    },
     ctaContainer  : {
         padding : 15,
         backgroundColor : generateColor(primary , 9),
@@ -170,9 +150,7 @@ const style = ({ primary , baseBorderRadius }) => StyleSheet.create({
         width: "90%",
         marginHorizontal : "5%",
     },
-    inInsRecord : {
-        opacity: .5
-    }
+    inInsRecord : { opacity: .5 }
 })
 
 export default InsuranceRequirements;

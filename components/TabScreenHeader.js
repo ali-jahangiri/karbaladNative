@@ -10,12 +10,13 @@ import Para from './Para';
 
 const TabScreenHeader = ({ title = "string" , extendStyle }) => {
     const appendStyle = useStyle(style , extendStyle)
+    const { headerTitleColor } = useStyle()
     const navigation = useNavigation()
 
     return (
         <View style={appendStyle.container}>
             <DirectionCta onPress={navigation.goBack} />
-            <Para numberOfLines={1} size={22} color="white"  weight="bold">{title}</Para>
+            <Para numberOfLines={1} size={22} color={headerTitleColor}  weight="bold">{title}</Para>
         </View>
     )
 }

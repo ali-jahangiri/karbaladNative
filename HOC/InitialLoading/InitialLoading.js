@@ -92,6 +92,8 @@ const InitialLoading = ({ children }) => {
             baseBorderRadius : 15,
             primary : '#B05B3B',
             secondary : '#dbe6fd',
+            headerTitleColor : "white",
+            ctaTextColor : "black",
         }
         styleDispatcher({ globalStyle });
 

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Image, StyleSheet, View } from 'react-native';
 import { useStyle } from '../Hooks/useStyle';
 import { generateColor, imageFinder, toFarsiNumber } from '../utils';
 import Para from './Para';
@@ -7,6 +7,8 @@ import Para from './Para';
 import InsResultMoreDetails from './InsResultPreviewMoreDetails';
 import { useNavigation } from '@react-navigation/native';
 import { Feather } from '@expo/vector-icons';
+import client from '../client';
+import Btn from './Btn';
 
 
 
@@ -70,9 +72,8 @@ const InsuranceResultPreviewItem = ({ insName , factorItems , insIconUrl , formu
                     <Para size={10} color="grey" style={{ marginRight : 5 }}>تومان</Para>
                     <Para size={18} weight="bold">{toFarsiNumber(showValue)}</Para>
                 </View>
-                <TouchableOpacity style={appendStyle.cta} onPress={orderHandler}>
-                    <Para align="center" weight="bold">سفارش</Para>
-                </TouchableOpacity>
+                <Btn onPress={orderHandler} title={client.static.INS_PREVIEW_ITEM.ORDER_TEXT} extendStyle={{ flex : 1 }} />
+
             </View>
             <InsResultMoreDetails
                     mainMoreDerails={moreDetailList.filter(el => el.value)}
@@ -97,13 +98,6 @@ const style = ({ primary , baseBorderRadius } , haveInstallment) => StyleSheet.c
         justifyContent : 'space-between',
         alignItems : 'flex-end',
         marginTop : 20
-    },
-
-    cta : {
-        backgroundColor : generateColor(primary , 8),
-        borderRadius : baseBorderRadius,
-        padding : 15,
-        flex : 1
     },
     price : {
         flexDirection : 'row',

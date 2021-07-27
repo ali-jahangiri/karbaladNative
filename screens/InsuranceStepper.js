@@ -21,31 +21,23 @@ const InsuranceStepper = ({ id , name }) => {
     const [valueStore, setValueStore] = useState({});
 
 
-    const fetcher = useFetch(true);
+    const fetcher = useFetch(false);
     const appendStyle = useStyle(style)
     
     useEffect(() => {
         setLoading(true)
-        fetcher()
-        .then(({ api , appToken }) => {
-            api.post('GetInsuranceForm'  , { categoryId : id } , { headers : {
-                appToken
-            } })
-            .then(({data}) => {
+        fetcher('GetInsuranceForm' , { categoryId : id })
+            .then(({ data }) => {
                 setInsuranceData(data)
                 setLoading(false)
+            }).catch(err => {
+                throw new Error(err.message)
             })
-        }).catch(err => {
-            throw new Error(err)
-        })
+
     } , [id])
     
 
-
-    useEffect(() => {
-        // console.log('stepperStore' , valueStore);
-    } , [valueStore])
-
+    
     const redirectionHandler = (activeStage , syncedStore) => {
 
         const flattedStage = insuranceData.pages

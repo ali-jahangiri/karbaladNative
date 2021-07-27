@@ -84,7 +84,7 @@ const InsStage = (props) => {
                                  <Para> مرحله {toFarsiNumber(stageNumber.currentStage + 1)} از {toFarsiNumber(stageNumber.length + 1)}</Para>
                         }
                     </View>
-                    <Para weight="bold" size={20}>{categoryName}</Para>
+                    <Para style={{ flex : 1 }} weight="bold" size={20}>{categoryName}</Para>
                 </View>
                 <View>
                     <View style={appendStyle.titleContainer}>

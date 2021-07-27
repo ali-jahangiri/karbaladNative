@@ -5,12 +5,17 @@ import { generateColor, numberSeparator, toFarsiNumber } from '../utils';
 import Para from './Para';
 
 import { Feather } from '@expo/vector-icons';
+import client from '../client';
+import Btn from './Btn';
+
+const { ORDER_TEXT } = client.static.INSTALLMENT
 
 const InstallmentItem = ({ title , details , insuranceInstallmentPrice , onSelect , id , pishPercent , ghestCount , stepMount , isLastItem }) => {
     const appendStyle = useStyle(style , isLastItem);
 
-    const  price = Math.ceil((insuranceInstallmentPrice - ((insuranceInstallmentPrice * pishPercent) / 100)) / ghestCount);
+    const price = Math.ceil((insuranceInstallmentPrice - ((insuranceInstallmentPrice * pishPercent) / 100)) / ghestCount);
     const prepayment = (insuranceInstallmentPrice * pishPercent) / 100;
+    
     return (
         <View style={appendStyle.container}>
             <View style={appendStyle.header}>
@@ -56,11 +61,8 @@ const InstallmentItem = ({ title , details , insuranceInstallmentPrice , onSelec
                 <Para color="grey">جزئیات</Para>
                 <Para size={15}>{details}</Para>
             </View>
-            
-            <TouchableOpacity onPress={() => onSelect(id)} style={appendStyle.ctaContainer}>
-                <Feather style={{ marginRight : 5 }} name="chevron-left" size={24} color="black" />
-                <Para weight="bold" align='center'>انتخاب طرح</Para>
-            </TouchableOpacity>
+
+            <Btn title={ORDER_TEXT} icon="chevron-left" onPress={() => onSelect(id)} />
             {
                 !isLastItem ? <View style={appendStyle.divider} /> : null
             }
@@ -72,7 +74,10 @@ const style = ({ primary , baseBorderRadius , secondary } , isLastItem) => Style
     container : {
         width: "90%",
         marginHorizontal : "5%",
-        marginBottom : isLastItem ? 10 : 0
+        marginBottom : isLastItem ? 10 : 0,
+        backgroundColor : generateColor(primary , 1),
+        padding: 20,
+        borderRadius : baseBorderRadius
     },
     header : {
         flexDirection : "row",
@@ -96,13 +101,6 @@ const style = ({ primary , baseBorderRadius , secondary } , isLastItem) => Style
     }, 
     headerIconSvg : {
         color: generateColor(primary , 5)
-    },  
-    ctaContainer : {
-        padding: 15,
-        backgroundColor : generateColor(primary , 8),
-        borderRadius : baseBorderRadius,
-        flexDirection : "row",
-        justifyContent : "center"
     },
     details : {
         marginVertical : 10
