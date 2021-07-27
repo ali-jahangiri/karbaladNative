@@ -223,9 +223,6 @@ const style = ({ primary , secondary , baseBorderRadius } , statusColor) => Styl
         marginHorizontal : "5%",
         borderRadius : baseBorderRadius
     },
-    ctaText : {
-        color:  generateColor(primary , 9)
-    }
 })
 
 export default InsuranceHistoryDetails;

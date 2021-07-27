@@ -37,7 +37,7 @@ const Home = () => {
     return (
         <>
             <ScreenHeader title="بیمه نامه " />
-            <InsuranceHistoryDirectory item={insItems} />
+            <InsuranceHistoryDirectory items={insItems} />
         </>
     )
 }

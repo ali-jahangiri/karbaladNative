@@ -4,7 +4,7 @@ import {StyleSheet, View , TouchableOpacity, ScrollView } from 'react-native';
 
 import client from '../client';
 import { useStyle } from '../Hooks/useStyle';
-import { setAppKey, setUserName } from '../Store/Slices/authSlice';
+import { setAppKey } from '../Store/Slices/authSlice';
 import { useDispatch, useSelector } from '../Store/Y-state';
 import { generateColor, persister, toFarsiNumber } from '../utils';
 import useFetch from '../Providers/useFetch';
@@ -30,8 +30,7 @@ const Profile = () => {
     const [phoneAsUserName, setPhoneAsUserName] = useState(null)
     const [respondErr, setRespondErr] = useState(null);
     
-    const fetcher = useFetch(true);
-    const fetcher2 = useFetch(false);
+    const fetcher = useFetch(false);
 
     const [userData, setUserData] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -46,7 +45,7 @@ const Profile = () => {
 
     useEffect(() => {
         setLoading(true);
-        fetcher2("UserProfile")
+        fetcher("UserProfile")
             .then(({ data }) => {
                 setUserData(data);
                 persister.get("userName")
@@ -179,7 +178,7 @@ const Profile = () => {
     }
 
     const requestAction = body => {
-        return fetcher2("GetUserData" , body)
+        return fetcher("GetUserData" , body)
                 .then(({ data }) => {
                     if(data.id < 0) {
                         throw new Error(data.fullName);

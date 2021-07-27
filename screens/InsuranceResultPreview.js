@@ -21,25 +21,23 @@ const InsuranceResultPreview = ({ route : { params : { id , valueStore , flatted
 
     
     const navHash = useSelector(state => state.navigation.navigationHash);
-    const fetcher = useFetch(true);
-    
+    const fetcher = useFetch(false);
+
     useEffect(() => {
         setInitialLoading(true);
-        fetcher()
-            .then(({ api , appToken }) => {
-                return api.post('GetInsuranceQuoteId' , { formData : JSON.stringify({ ...valueStore , Id : String(id) }) } , { headers : {appToken} })
-                    .then(({ data }) =>  data)
-                    .then(receivedId => {
-                        return api.post('GetInsuranceQuotes' , { formulaId : receivedId} , { headers : {appToken}})
-                                .then(({ data }) => {
-                                    setResponseValues(data);
-                                    setReqId(receivedId);
-                                    setInitialLoading(false);
-                                });
-                    });
-            }).catch(err => {
-                throw new Error(err)
+        fetcher('GetInsuranceQuoteId' , { formData : JSON.stringify({ ...valueStore , Id : String(id) }) })
+            .then(({ data }) => data)
+            .then(receivedId => {
+                fetcher("GetInsuranceQuotes" ,  { formulaId : receivedId})
+                    .then(({ data }) => {
+                        setResponseValues(data);
+                        setReqId(receivedId);
+                        setInitialLoading(false);
+                    }).catch(err => {
+                        throw new Error(err.message)
+                    })
             })
+
         return () => {
             // with this state change , we force entire component get re render and all new params and send new request
             setInitialLoading(true);
@@ -69,10 +67,10 @@ const InsuranceResultPreview = ({ route : { params : { id , valueStore , flatted
                 <View style={{ flex : 1 }}>
                     {
                         catFullName ? <>
-                            <Para>نتایج جستجو در : </Para>
-                            <Para weight="bold" size={20}>{catFullName}</Para>
+                            <Para color="white">نتایج جستجو در : </Para>
+                            <Para color="white" weight="bold" size={20}>{catFullName}</Para>
                         </>
-                        : <Para size={20} weight="bold">نتایج جستجو : </Para>
+                        : <Para color="white" size={20} weight="bold">نتایج جستجو : </Para>
                     }
                 </View>
             </View>

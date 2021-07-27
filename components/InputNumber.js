@@ -25,8 +25,8 @@ fixNumbers = function (str)
   return str;
 };
 
-const InputNumber = ({ onChange , stepForEachOperation = 10000, value = String(stepForEachOperation) , length : { max , min } , isNotLimited}) => {
-    const appendStyle = useStyle(style);
+const InputNumber = ({ onChange , stepForEachOperation = 10000, value = String(stepForEachOperation) , length : { max , min } , isNotLimited , triggersStyle}) => {
+    const appendStyle = useStyle(style , triggersStyle);
     const { primary } = useStyle();
     
     const changeHandler = value => {
@@ -71,7 +71,7 @@ const InputNumber = ({ onChange , stepForEachOperation = 10000, value = String(s
 }
 
 
-const style = ({ baseBorderRadius , primary }) => StyleSheet.create({
+const style = ({ baseBorderRadius , primary } , triggersStyle) => StyleSheet.create({
     container : {
         flexDirection : 'row',
         alignItems : 'center',
@@ -80,7 +80,8 @@ const style = ({ baseBorderRadius , primary }) => StyleSheet.create({
         backgroundColor : generateColor(primary , 5),
         borderRadius : baseBorderRadius,
         alignItems : 'center',
-        padding: 20
+        padding: 20,
+        ...triggersStyle
     },
     inputContainer : {
         flex: 1,

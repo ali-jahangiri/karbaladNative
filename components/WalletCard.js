@@ -10,6 +10,7 @@ import InputNumber from "./InputNumber";
 import useFetch from '../Providers/useFetch';
 import client from '../client';
 
+const { fadeBg_1 , fadeBg_2 } = client.style.colors
 
 const { ORDER_TEXT , IN_REDIRECTION , REMAIN_TEXT  , ADD_TO_WALLET_TEXT} = client.static.WALLET_CARD;
 
@@ -78,6 +79,7 @@ const WalletCart = ({ finalResult = "" , paymentProcessHandler , isInPaymentProc
                     </TouchableOpacity>
                     <View style={{ flexDirection : "row" , padding : 20 }}>
                         <InputNumber
+                                triggersStyle={{ backgroundColor : fadeBg_1 }}
                                     length={{ min : 10000 , max : 100000000 }}
                                     onChange={({ value }) => setChargeAmountPrice(value)}
                                     value={chargeAmountPrice}
@@ -107,7 +109,7 @@ const style = ({ primary , baseBorderRadius }) => StyleSheet.create({
         marginBottom : 10,
     },
     lastTransaction : {
-        backgroundColor : '#fff5',
+        backgroundColor : fadeBg_1,
         padding: 20,
         flexDirection : "row",
         justifyContent : 'space-between',
@@ -122,7 +124,7 @@ const style = ({ primary , baseBorderRadius }) => StyleSheet.create({
     },
     chargeCta : {
         padding : 15,
-        backgroundColor : "#fff5",
+        backgroundColor : fadeBg_1,
         borderRadius : baseBorderRadius,
         flexDirection : "row",
 
@@ -133,7 +135,7 @@ const style = ({ primary , baseBorderRadius }) => StyleSheet.create({
         padding: 20
     },
     creditIconContainer : {
-        backgroundColor : "#fff5",
+        backgroundColor : fadeBg_1,
         padding: 15,
         justifyContent : 'center',
         alignItems : 'center',
@@ -145,7 +147,7 @@ const style = ({ primary , baseBorderRadius }) => StyleSheet.create({
     payCta : {
         flexDirection : "row",
         justifyContent : 'center',
-        backgroundColor : "#fff8",
+        backgroundColor : fadeBg_2,
         padding : 15
     },
     chargeView : {

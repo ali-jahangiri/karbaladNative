@@ -2,7 +2,9 @@ const client = {
     version : "1.0.0",
     style : {
         colors : {
-            insStageBackStepBgColor :  "#EEEEEE"
+            insStageBackStepBgColor :  "#EEEEEE",
+            fadeBg_1 : "#fff5",
+            fadeBg_2 : "#fff8",
         },
         size : {
             spacing : {

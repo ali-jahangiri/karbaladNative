@@ -1,4 +1,4 @@
-import React, { useEffect , useState } from 'react';
+import React, { useEffect , useRef, useState } from 'react';
 import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import client from '../client';
 import Loading from '../components/Loading';
@@ -18,6 +18,7 @@ import Para from '../components/Para';
 import { generateColor } from '../utils';
 import { useStyle } from '../Hooks/useStyle';
 import useFetch from '../Providers/useFetch';
+import { useScrollToTop } from '@react-navigation/native';
 
 const Wallet = () => {
     const [walletData, setWalletData] = useState(null)
@@ -27,6 +28,9 @@ const Wallet = () => {
 
     const fetcher = useFetch(false);
 
+    const transactionContainerRef = useRef();
+    
+    useScrollToTop(transactionContainerRef);
 
     const navHash = useSelector(state => state.navigation.navigationHash);
     
@@ -61,7 +65,7 @@ const Wallet = () => {
                 finalResult={walletData.walletData.finalResult} />
             {
                 walletData.walletData.walletItems.length ? <>
-                    <ScrollView>
+                    <ScrollView ref={transactionContainerRef}>
                         {
                             walletData.walletData.walletItems.map((el , i) => (
                                 <WalletTransaction index={i + 1} key={i} {...el} />

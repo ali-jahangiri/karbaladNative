@@ -7,13 +7,12 @@ import InsuranceHistoryItem from './InsuranceHistoryItem';
 import EmptyScreen from "../screens/EmptyScreen";
 import client from '../client';
 
-const InsuranceHistoryDirectory = ({item}) => {
+const InsuranceHistoryDirectory = ({ items }) => {
     const container = useRef();
-    item.length && useScrollToTop(container);
-
-    return item.length ? (<ScrollView ref={container}>
+    useScrollToTop(container);
+    return items.length ? (<ScrollView ref={container}>
                             {
-                                item.map((el,i) => <InsuranceHistoryItem key={i} {...el} />)
+                                items.map((el,i) => <InsuranceHistoryItem key={i} {...el} />)
                             }
     </ScrollView> ) : <EmptyScreen desc={client.static.EMPTY_SCREEN_INSURANCE_HISTORY} />
 
