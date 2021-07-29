@@ -1,49 +1,49 @@
-import { Feather } from '@expo/vector-icons';
-import React, { useState } from 'react';
-import { StyleSheet, Switch, TouchableOpacity, View } from 'react-native';
+import React from 'react';
+import { StyleSheet, View } from 'react-native';
 import { useStyle } from '../Hooks/useStyle';
 import { generateColor } from '../utils';
 import Para from './Para';
 import RequirementInput from './RequirementInput';
 
 
-const FurtherInfo = ({ onChange , items , valueStore}) => {
+const FurtherInfo = ({ setValue , items , value , setIsValid }) => {
     const appendStyle = useStyle(style);
-    const [currentFocusInput, setCurrentFocusInput] = useState(null);
-    const [showMore, setShowMore] = useState(true);
-
+    
+    const validation = (newObject) => {
+        const reqListForPassing = items.map(el => el.formName);
+        reqListForPassing.forEach(el => {
+            if(!newObject?.[el]) setIsValid(false);
+            else setIsValid(true)
+        })
+    }
 
     const onInputChange = (key , value) => {
-        onChange(prev => ({
+        setValue(prev => ({
                 ...prev,
                 [key] : value
         }));
+        validation({...value , [key] : value});
     }
 
     return (
         <View style={appendStyle.container}>
-            <TouchableOpacity onPress={() => setShowMore(!showMore)} style={appendStyle.header}>
-                <View style={{ padding : 10 }} >
-                    <Feather name={`chevron-${showMore ? "up" : "down"}`} size={24} color="black" />
-                </View>
+            <View style={appendStyle.header}>
                 <View style={{ flexDirection : "row" , alignItems : "center" }}>
                     <Para weight="bold" size={18}>مدارک مورد نیاز</Para>
                     <View style={appendStyle.titleDivider} />
                 </View>
-            </TouchableOpacity>
+            </View>
             
-            <View style={{ display : showMore ? "flex" : "none" }}>
+            <View>
             {
                 items.map((el , i) => (
                     <RequirementInput
+                        defaultValue={value[el.formName]}
                         key={i}
-                        store={valueStore} 
+                        store={value} 
                         onChange={onInputChange} 
                         label={el.name} 
-                        formName={el.formName} 
-                        currentActive={currentFocusInput} 
-                        setCurrentActive={setCurrentFocusInput} 
-                        index={i}  />
+                        formName={el.formName} />
                 ))
             }
             </View>
@@ -58,7 +58,7 @@ const style = ({ primary , baseBorderRadius }) => StyleSheet.create({
     },
     header : {
         flexDirection : 'row',
-        justifyContent : "space-between",
+        justifyContent : "flex-end",
         alignItems : "center",
         marginTop : 20,
         marginBottom : 15

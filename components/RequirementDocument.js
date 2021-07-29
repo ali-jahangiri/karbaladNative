@@ -6,13 +6,19 @@ import Para from './Para';
 import * as ImagePicker from  "expo-image-picker";
 
 import { Feather } from '@expo/vector-icons';
-import { generateColor } from '../utils';
+import { generateColor, toFarsiNumber } from '../utils';
 
-const RequirementDocument = ({ onChange , items }) => {
+const RequirementDocument = ({ setValue , items , setIsValid , value }) => {
     const appendStyle = useStyle(style);
-    const [internalImageSource, setInternalImageSource] = useState({});
-    const [showMore, setShowMore] = useState(true);
+    const [internalImageUrls, setInternalImageUrls] = useState({});
 
+    const validateGetComplete = (newObject) => {
+        const reqListForPassing = items.map(el => el.formName);
+        reqListForPassing.forEach(el => {
+            if(!newObject?.[el]) setIsValid(false);
+            else setIsValid(true)
+        })
+    }
     
     const getLibraryPermission = async () => {
         const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -40,51 +46,50 @@ const RequirementDocument = ({ onChange , items }) => {
                 base64 : true
             })
             if(!result.cancelled) {
-                onChange(prev => ({
+                setInternalImageUrls(prev => ({
+                    ...prev,
+                    [key] : result.uri
+                }));
+
+                setValue(prev => ({
                     ...prev ,
                     [key] : result.base64
                 }));
 
-                setInternalImageSource(prev => ({
-                    ...prev,
-                    [key] : result.uri
-                }))
+                validateGetComplete({...value , [key] : result.uri})
             } 
         }
         
     }
-    
+
+
     return (
         <View style={appendStyle.container}>
-            <TouchableOpacity onPress={() => setShowMore(!showMore)} style={appendStyle.header}>
-                <View style={{ padding : 10 }} >
-                    <Feather name={`chevron-${showMore ? "up" : "down"}`} size={24} color="black" />
-                </View>
+            <View style={appendStyle.header}>
                 <View style={{ flexDirection : "row" , alignItems : "center" }} >
                     <Para weight="bold" size={18}>مدارک مورد نیاز</Para>
                     <View style={appendStyle.titleDivider} />
                 </View>
-            </TouchableOpacity>
-            <View style={{ display : showMore ? "flex" : "none" }}>
+            </View>
+            <View>
             {
                 items.map((el , i) => (
                     <View style={appendStyle.item} key={i}>
                         {
-                            internalImageSource[el.formName] ? <TouchableOpacity onPress={() => pickingHandler(el.formName)} style={appendStyle.selectedImage}>
-                                <Image resizeMode="stretch" source={{ uri : internalImageSource[el.formName] , width : 100 , height : 100 }} />
+                            value[el.formName] ? <TouchableOpacity onPress={() => pickingHandler(el.formName)} style={appendStyle.selectedImage}>
+                                <Image resizeMode="cover" source={{ uri : internalImageUrls[el.formName] , width : 100 , height : 100 , }} />
                                 <View style={appendStyle.editImage}>
-                                    <Feather name="edit-2" size={24} color="black" />
+                                    <Feather name="edit-2" size={24} style={appendStyle.penIcon} />
                                 </View>
                             </TouchableOpacity> : <TouchableOpacity style={appendStyle.ctaContainer} onPress={() => pickingHandler(el.formName)}>
                                 <Feather style={appendStyle.imageIcon} name="image" size={24}  />
-                                <Para>انتخاب تصویر</Para>
                             </TouchableOpacity>
                         }
-                        <View style={{ flexDirection : "row" , alignItems : "center" }}>
-                            <Para>{el.name}</Para>
+                        <View style={{ alignItems : "flex-end" , justifyContent : "space-between" }}>
                             <View style={appendStyle.index}>
-                                <Para color="grey">{i + 1}</Para>
+                                <Para color="grey">{toFarsiNumber(i + 1)}</Para>
                             </View>
+                            <Para>{el.name}</Para>
                         </View>
                     </View>
                 ))
@@ -100,15 +105,13 @@ const style = ({ primary , baseBorderRadius }) => StyleSheet.create({
     container : {
         width: "90%",
         marginHorizontal : "5%",
-
     },
     imageIcon : {
         color: generateColor(primary , 5),
-        marginRight : 10
     },  
     header : {
         flexDirection : 'row',
-        justifyContent : "space-between",
+        justifyContent : "flex-end",
         alignItems : "center",
         marginTop : 20,
         marginBottom : 15
@@ -120,6 +123,9 @@ const style = ({ primary , baseBorderRadius }) => StyleSheet.create({
         backgroundColor : generateColor(primary , 5),
         marginLeft : 10
     },
+    penIcon : {
+        color: primary
+    },
     item : {
         marginVertical : 30,
         flexDirection : "row",
@@ -127,7 +133,6 @@ const style = ({ primary , baseBorderRadius }) => StyleSheet.create({
         alignItems : 'center',
     },
     ctaContainer : {
-        // flexDirection : "row",
         alignItems : 'center',
         backgroundColor : generateColor(primary , 1),
         padding : 20,
@@ -141,16 +146,15 @@ const style = ({ primary , baseBorderRadius }) => StyleSheet.create({
         alignItems : 'center',
         justifyContent : "center",
         borderRadius : baseBorderRadius - 5,
-        position: "absolute",
-        right: 0,
-        top: -30
     },
     editImage : {
         position: "absolute",
         bottom: 0,
-        backgroundColor : "#36363990",
-        width: "100%",
+        justifyContent : 'center',
         alignItems : "center",
+        backgroundColor : generateColor(primary , 8),
+        width: "100%",
+        height : "100%",
         padding: 5
     },
     selectedImage : {

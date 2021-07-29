@@ -15,7 +15,7 @@ const InsIndexScreen = ({ navigation }) => {
     
     const routeChangeHandler = routeParameters => 
         navigation.push('stepScreen' , routeParameters);
-
+    
     return (
         <ScreenWrapper>
             <TabHeaderBadge title="خانه" />

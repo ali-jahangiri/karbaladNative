@@ -4,11 +4,11 @@ import { StyleSheet, TouchableOpacity } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { useStyle } from '../Hooks/useStyle';
 
-const DirectionCta = ({ onPress , iconColor = 'white' , containerBgColor , extendStyle= {} , direction = "left" }) => {
+const DirectionCta = ({ onPress , iconColor = 'white' , containerBgColor , extendStyle= {} , direction = "left" , icon = `arrow-${direction}` }) => {
     const appendStyle = useStyle(style , containerBgColor);
     return (
         <TouchableOpacity style={[appendStyle.btn , extendStyle]} onPress={onPress}>
-            <Feather name={`arrow-${direction}`} size={30} color={iconColor} />
+            <Feather name={icon} size={30} color={iconColor} />
         </TouchableOpacity>
     )
 }

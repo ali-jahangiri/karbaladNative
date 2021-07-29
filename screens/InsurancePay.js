@@ -48,15 +48,6 @@ const InsurancePay = ({ navigation , route : { params : { id } } }) => {
                     }
                     setLoading(false)
         })
-        // const unsubscribe = navigation.addListener("beforeRemove" , e => {
-        //     e.preventDefault();
-        //     navigation.push("home")
-        //     unsubscribe()
-        //     // const jumpToAction = TabActions.jumpTo('insurance', { screen : "insuranceHistoryDetails" , params : { ...payResponse } } );
-        //     // navigation.dispatch(jumpToAction);
-        //     // navigation.navigate("insurance" , { screen : "insuranceHistoryDetails" , params : { ...payResponse } })
-        // });
-        // return () => unsubscribe()
     } , [id , navHash])
     
 

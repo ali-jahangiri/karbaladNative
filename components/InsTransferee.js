@@ -1,4 +1,3 @@
-import { Feather } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useStyle } from '../Hooks/useStyle';
@@ -8,27 +7,35 @@ import RequirementInput from './RequirementInput';
 
 import DropDown from './DropDown';
 
-const InsTransferee = ({ onChange , store , areas }) => {
+const InsTransferee = ({ onChange , store , areas , setIsValid }) => {
     const [shouldGetInsurerData, setShouldGetInsurerData] = useState(false);
-    const [showMore, setShowMore] = useState(true);
     const [currentActiveInput, setCurrentActiveInput] = useState(null)
     
     const appendStyle = useStyle(style , shouldGetInsurerData);
     const { primary } = useStyle();
 
+    const validateGetComplete = (newObject) => {
+        const reqListForPassing = formItems.map(el => shouldGetInsurerData ? el?.inherentValueKey || el.key : el.key);
+        reqListForPassing.forEach(el => {
+            if(!newObject?.[el]) setIsValid(false);
+            else setIsValid(true)
+        })
+    }
 
     const changeHandler = (key , value) => {
         onChange(prev => ({
             ...prev,
             [key] : value
         }))
+
+        validateGetComplete({ ...store , [key] : value })
     }
 
     const formItems = [
         {
             key : "reciverName",
             label : "نام",
-            inherentValueKey : "Name"
+            inherentValueKey : "Name",
         },
         {
             key : "reciverFamily",
@@ -68,25 +75,20 @@ const InsTransferee = ({ onChange , store , areas }) => {
 
     return (
         <View style={appendStyle.container}>
-            <TouchableOpacity onPress={() => setShowMore(!showMore)} style={appendStyle.header}>
-                <View style={{ padding : 10 }} >
-                    <Feather name={`chevron-${showMore ? "up" : "down"}`} size={24} color="black" />
-                </View>
+            <View style={{ alignItems : 'flex-end' }}>
                 <View style={{ flexDirection : "row" , alignItems : "center" }}>
                     <Para weight="bold" size={18}>مشخصات تحویل گیرنده</Para>
                     <View style={appendStyle.titleDivider} />
                 </View>
-            </TouchableOpacity>
-            <View style={{ display : showMore ? "flex" : "none" }}>
+            </View>
+            <View>
 
-            <View style={appendStyle.copyContainer}>
-                <View style={appendStyle.copyBtnContainer}>
-                    <TouchableOpacity style={appendStyle.copyBtn} onPress={() => setShouldGetInsurerData(prev => !prev)}>
-                        <Para color={shouldGetInsurerData ? primary : "grey"}>{shouldGetInsurerData ? "بله" : "خیر"}</Para>
-                    </TouchableOpacity>
+            <TouchableOpacity onPress={() => setShouldGetInsurerData(prev => !prev)} style={[appendStyle.copyContainer , { backgroundColor : shouldGetInsurerData ? generateColor(primary , 8) : "grey" }]}>
+                <View style={appendStyle.yesContainer}>
+                    <Para color={shouldGetInsurerData ? primary : "black"} >{shouldGetInsurerData ? "بله" : "خیر"}</Para>
                 </View>
                 <Para style={{ flex : 1.5 }} >تحویل گیرنده بیمه گزار است؟</Para>
-            </View>
+            </TouchableOpacity>
             {
                 formItems.map((el , i) => {
                     if(el?.component) return el.component()
@@ -130,22 +132,23 @@ const style = ({ primary , baseBorderRadius } , isCopyingEnable) => StyleSheet.c
         backgroundColor : generateColor(primary , 5),
         marginLeft : 10
     },
+    yesContainer : {
+        padding: 10,
+        paddingHorizontal : 25,
+    },
     copyContainer : {
+        borderRadius : baseBorderRadius,
+        padding: 15,
         flexDirection : 'row',
         alignItems : "center",
         justifyContent : 'space-between',
-        
+        marginVertical : 5
     },
     copyBtn : {
         backgroundColor : isCopyingEnable ?  generateColor(primary , 5) : '#2e2e2e2e',
         padding: 20,
         borderRadius : baseBorderRadius
     },
-    copyBtnContainer : {
-        flexDirection : "row",
-        flex: .7,
-        justifyContent : 'space-between',
-    }
 })
 
 export default InsTransferee;

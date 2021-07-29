@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { ScrollView, StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
 import { useStyle } from '../Hooks/useStyle';
 import Para from './Para';
@@ -10,6 +10,7 @@ const DropDown = ({ items , labelKey , onSelect , placeholder , runOnInitial}) =
     const appendStyle = useStyle(style);
     const [searchFilterBase, setSearchFilterBase] = useState("");
     const [canSeeItem, setCanSeeItem] = useState(false);
+    const [inProgress, setInProgress] = useState(false);
 
     const selectHandler = (id , label) => {
         onSelect(id)
@@ -17,33 +18,49 @@ const DropDown = ({ items , labelKey , onSelect , placeholder , runOnInitial}) =
         setCanSeeItem(false);
     }
 
+
+    const availableItems = canSeeItem && items.filter(el => el?.[labelKey].includes(searchFilterBase))
+
+
     useEffect(() => {
         if(runOnInitial) onSelect("")
     } , [])
+
+
+    const changeHandler = value => {
+        // setInProgress(true)
+        setSearchFilterBase(value)
+        setCanSeeItem(true)
+    }
+    const ref = useRef();
+
+    useEffect(() => {
+        // setInProgress(false);
+        ref.current?.scrollToEnd({animated: true})
+    } , [availableItems]);
+
+
+
 
     return (
         <>
             <TouchableOpacity style={appendStyle.searchBox}>
                 <View style={appendStyle.searchIcon}>
-                    <Feather style={appendStyle.icon} name="search" size={24}  />
+                    <Feather style={appendStyle.icon} name={inProgress ? "loader" : "search"} size={24}  />
                 </View>
                 <TextInput
                             style={appendStyle.input}
                             placeholder={placeholder} 
                             value={searchFilterBase} 
-                            onChangeText={value => {
-                                setSearchFilterBase(value)
-                                setCanSeeItem(true)
-                            }} />
+                            onChangeText={changeHandler} />
             </TouchableOpacity>
             {
                 canSeeItem ? <View style={appendStyle.itemContainer}>
-                <ScrollView nestedScrollEnabled>
+                <ScrollView ref={ref} onContentSizeChange={() => ref.current.scrollToEnd({animated: true})} horizontal nestedScrollEnabled>
                     {
-                        items
-                            .filter(el => el?.[labelKey].includes(searchFilterBase))
+                        availableItems
                             .map((el , i) => (
-                            <TouchableOpacity style={appendStyle.item} key={i} onPress={() => selectHandler(el.id , el?.[labelKey])}>
+                            <TouchableOpacity style={[appendStyle.item , i + 1 === availableItems.length ? { marginRight : 0 } : null , !i ? { marginLeft : 0 } : null]} key={i} onPress={() => selectHandler(el.id , el?.[labelKey])}>
                                 <Para>{el?.[labelKey]}</Para>
                                 <View style={appendStyle.bullet} />
                             </TouchableOpacity>
@@ -58,10 +75,11 @@ const DropDown = ({ items , labelKey , onSelect , placeholder , runOnInitial}) =
 
 const style = ({ primary , baseBorderRadius }) => StyleSheet.create({
     container : {
+        height: 60
     },
     searchBox : {
         borderWidth : 2,
-        height: 50,
+        height: 65,
         borderColor : generateColor(primary , 3),
         borderRadius : baseBorderRadius,
         flexDirection : "row",
@@ -70,15 +88,12 @@ const style = ({ primary , baseBorderRadius }) => StyleSheet.create({
     },
     input : {
         height: "100%",
-        fontFamily : "bold",
         flex: .9,
-        textAlign : "right"
+        textAlign : "right",
+        fontFamily : "regular",
+        color: "black"
     },
-    itemContainer : {
-        maxHeight: 150,
-        width: "95%",
-        marginHorizontal : "2.5%"
-    },
+    itemContainer : { marginTop : 10 },
     searchIcon : {
         alignItems : "center",
         justifyContent : "center",
@@ -89,15 +104,21 @@ const style = ({ primary , baseBorderRadius }) => StyleSheet.create({
         color: primary
     },
     item : {
+        backgroundColor : generateColor(primary , 5),
+        padding: 15,
+        height: 75,
+        borderRadius : baseBorderRadius,
         flexDirection : "row",
         alignItems : 'center',
         justifyContent : 'flex-end',
-        marginVertical : 10
+        marginVertical : 10,
+        marginHorizontal : 10
     },  
     bullet : {
         width : 10,
         height : 10,
         backgroundColor : primary,
+        borderRadius : baseBorderRadius - 5,
         marginLeft : 10
     }
 })

@@ -6,11 +6,11 @@ import Para from './Para';
 
 
 
-const GenderSelector = ({ selectHandler }) => {
+const GenderSelector = ({ selectHandler , value }) => {
     const appendStyle = useStyle(style);
     const { primary } = useStyle();
 
-    const [currentSelected, setCurrentSelected] = useState(null)
+    const [currentSelected, setCurrentSelected] = useState(value)
 
     return (
         <View style={appendStyle.container}>

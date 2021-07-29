@@ -7,12 +7,12 @@ import Para from './Para';
 
 
 
-const Btn = ({ title , icon , onPress , bgAlpha = 8 , extendStyle }) => {
-    const appendStyle = useStyle(style , bgAlpha , extendStyle)
+const Btn = ({ title , icon , onPress , bgAlpha = 8 , extendStyle , disabled = false }) => {
+    const appendStyle = useStyle(style , bgAlpha)
     const { ctaTextColor } = useStyle();
 
     return (
-        <TouchableOpacity style={[appendStyle.btn , extendStyle]} onPress={onPress}>
+        <TouchableOpacity disabled={disabled} style={[appendStyle.btn , extendStyle , disabled ? appendStyle.disabled : {} ]} onPress={onPress}>
             {
                 !!icon && <Feather style={{ marginRight : 5 }} name={icon} size={24} color={ctaTextColor} />
             }
@@ -26,10 +26,13 @@ const style = ({ primary , baseBorderRadius } , bgAlpha ) => StyleSheet.create({
         flexDirection : "row",
         alignItems : "center",
         justifyContent : "center",
-        backgroundColor : generateColor(primary , bgAlpha),
+        backgroundColor : bgAlpha ?  generateColor(primary , bgAlpha) : primary,
         padding : 15,
         borderRadius : baseBorderRadius,
     },
+    disabled : {
+        opacity: 0.5
+    }
 })
 
 export default Btn;

@@ -5,6 +5,8 @@ const client = {
             insStageBackStepBgColor :  "#EEEEEE",
             fadeBg_1 : "#fff5",
             fadeBg_2 : "#fff8",
+            requirementInputBorderColorError : "#D54C4C",
+            requirementInputBorderColorErrorOnFocous : "#F54748",
         },
         size : {
             spacing : {

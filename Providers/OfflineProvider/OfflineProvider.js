@@ -6,8 +6,8 @@ import OfflineFallbackScreen from './OfflineScreenFallback';
 
 const OfflineProvider = ({ children }) => {
     const netInfo = useNetInfo();
-    if(netInfo.isInternetReachable) return children;
-    else return <OfflineFallbackScreen />
+    if(netInfo.isInternetReachable === false) return <OfflineFallbackScreen />;
+    else return children
 }
 
 

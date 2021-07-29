@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { StyleSheet , View } from 'react-native';
 import { useStyle } from '../Hooks/useStyle';
 import { generateColor, persianDate } from '../utils';
 import GenderSelector from './GenderSelection';
 import Para from './Para';
 import RequirementInput from './RequirementInput';
 
-import { Feather } from '@expo/vector-icons';
 import DatePickerInput from './DatePickerInput';
 
 const formItems = [
@@ -21,12 +20,25 @@ const formItems = [
     {
         key : "NCode",
         label : "کد ملی",
-        type : "numeric"
+        type : "numeric",
+        validation : (value) => {
+            const regex = /^[0-9]{10}$/
+            if(regex.test(Number(value))) {
+                return true
+            }else return false
+        },
+        maxLength : 10
     },
     {
         key : "Mobile",
         label : "تلفن همراه",
-        type : "phone-pad"
+        type : "phone-pad",
+        validation : (value) => {
+            if(Number.isNaN(value)) return false
+            else if(value.length > 10) return true
+            else return false
+        },
+        maxLength: 11
     },
     {
         key : "BirthDay",
@@ -43,7 +55,7 @@ const formItems = [
     {
         key : "Genders",
         label : "جنسیت",
-        component : handler => <GenderSelector key="bbf22ecc-3ff0-488d-9a75-4084d13eb208" selectHandler={handler} />
+        component : (handler , value) => <GenderSelector key="bbf22ecc-3ff0-488d-9a75-4084d13eb208" value={value} selectHandler={handler} />
     },
     {
         key : "InsAddress",
@@ -52,47 +64,62 @@ const formItems = [
 
 ]
 
-const InsurerDetails = ({ onChange , store }) => {
+const InsurerDetails = ({ onChange , store , setIsValid }) => {
     const appendStyle = useStyle(style);
-    const [currentActiveInput, setCurrentActiveInput] = useState(null)
-    const [showMore, setShowMore] = useState(true);
+    const [haveError, setHaveError] = useState('');
+
+    const validation = (newObject , key , value) => {
+        const reqListForPassing = formItems.map(el => el.key);
+        reqListForPassing.forEach(el => {
+            const currentItem = formItems.find(el => el.key === key)
+            if(Boolean(currentItem.validation)) {
+                if(!currentItem.validation(value)) {
+                    setHaveError(key);
+                    setIsValid(false);
+                }else {
+                    setHaveError('');
+                    setIsValid(true);
+                }
+            }else {
+                if(value) setIsValid(true)
+                else setIsValid(false)
+            }
+        if(!newObject?.[el]) setIsValid(false);
+        })
+    }
 
     const changeHandler = (key , value) => {
         onChange(prev => ({
             ...prev,
             [key] : value
         }))
+        validation({ ...store , [key] : value } , key , value);
     }
-
 
     return (
         <View style={appendStyle.container}>
-            <TouchableOpacity onPress={() => setShowMore(!showMore)} style={appendStyle.header}>
-                <View style={{ padding : 10 }} >
-                    <Feather name={`chevron-${showMore ? "up" : "down"}`} size={24} color="black" />
-                </View>
+            <View style={{ alignItems: "flex-end" }}>
                 <View style={{ flexDirection : "row" , alignItems : "center" }}>
                     <Para weight="bold" size={18}>مشخصات بیمه گذار</Para>
                     <View style={appendStyle.titleDivider} />
                 </View>
-            </TouchableOpacity>
-            <View style={{ display : showMore ? "flex" : "none" }}>
+            </View>
+            <View>
             {
                 formItems
                 .map((el , i) => {
                     if(el.component) return el.component(changeHandler , store?.[el.key])
                     else return (
                         <RequirementInput
+                            maxLength={el?.maxLength}
+                            haveError={haveError === el.key}
+                            defaultValue={store[el.key]}
                             keyboardType={el.type}
                             label={el.label}
                             formName={el.key}
                             store={store}
-                            index={i}
                             onChange={changeHandler}
-                            currentActive={currentActiveInput}
-                            setCurrentActive={setCurrentActiveInput}
-                            key={i}
-                    />
+                            key={i} />
                     )
                 })
             }   

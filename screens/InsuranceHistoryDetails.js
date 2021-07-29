@@ -161,7 +161,6 @@ const InsuranceHistoryDetails = () => {
         setLoading(true)
         fetcher('UserInsuranceDetail' , { Id : params.id })
             .then(({ data }) => {
-                // !Important TODO => returned data is an array , that need to be a simple object
                 setDetails(data[0])
                 setLoading(false);
             })
