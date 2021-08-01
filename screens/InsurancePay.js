@@ -28,7 +28,7 @@ const InsurancePay = ({ navigation , route : { params : { id } } }) => {
     const [isInsidePaymentProcess, setIsInsidePaymentProcess] = useState(false);
 
 
-    const [walletChargeLessThen, setWalletChargeLessThen] = useState(false);
+    const [afterPaymentMessage, setAfterPaymentMessage] = useState(false);
 
     const fetcher = useFetch();
     
@@ -63,9 +63,18 @@ const InsurancePay = ({ navigation , route : { params : { id } } }) => {
         fetcher("InsurancePayWallet" , {factorId : id , deliveryMethod : deliverOption})
             .then(({ data }) => {
                 if(data === client.static.TRANSACTION.FAIL) {
-                    setWalletChargeLessThen(true)
-                    setIsInsidePaymentProcess(false);
+                    setAfterPaymentMessage({
+                        wasOk : false,
+                        message : 'اعتبار کیف پول کمتر از مبلغ بیمه نامه میباشد'
+                    });
+                }else {
+                    setAfterPaymentMessage({
+                        wasOk : true,
+                        message : "پرداخت موفقیت آمیز بود"
+                    })
                 }
+            }).finally(() =>{ 
+                setIsInsidePaymentProcess(false);
             })
     }
 
@@ -145,11 +154,20 @@ const InsurancePay = ({ navigation , route : { params : { id } } }) => {
         </View>
         </ScreenWrapper>
                     {
-                        walletChargeLessThen ? <Drawer onClose={() => setWalletChargeLessThen(false)}>
+                        afterPaymentMessage ? <Drawer onClose={() => setAfterPaymentMessage(false)}>
                             <View style={appendStyle.walletAmountInvalid}>
-                                <Para size={16}>اعتبار کیف پول کمتر از مبلغ بیمه نامه میباشد</Para>
-                                <TouchableOpacity style={appendStyle.walletAmountInvalidCta} onPress={() => setWalletChargeLessThen(false)}>
-                                    <Para width="bold" size={16} align="center">تایید</Para>
+                                <Para size={16}>{afterPaymentMessage.message}</Para>
+                                <TouchableOpacity style={appendStyle.walletAmountInvalidCta} onPress={() => {
+                                    if(afterPaymentMessage.wasOk) {
+                                        setAfterPaymentMessage(false)
+                                        navigation.navigate("insurance");
+                                    }else {
+                                        navigation.navigate("wallet")
+                                    }
+                                }}>
+                                    <Para width="bold" size={16} align="center">{
+                                        afterPaymentMessage.wasOk ? "تایید" : "انتقال به کیف پول"
+                                    }</Para>
                                 </TouchableOpacity>
                             </View>
                         </Drawer> : null

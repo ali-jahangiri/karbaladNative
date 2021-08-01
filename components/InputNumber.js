@@ -5,9 +5,8 @@ import { Feather } from '@expo/vector-icons';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { generateColor, numberSeparator, toFarsiNumber } from '../utils';
 
-const makePureNumber = string => {
-    console.log(string , "inputString");
-    return Number(string.replaceAll(',' , ""))
+const makePureNumber = (string = '')=> {
+    return Number(String(string).replace(/\W+/g, ''))
 }
 
 var
@@ -29,16 +28,18 @@ const InputNumber = ({ onChange , stepForEachOperation = 10000, value = String(s
     const appendStyle = useStyle(style , triggersStyle);
     const { primary } = useStyle();
     
-    const changeHandler = value => {
-        // console.log(fixNumbers(value));
-        console.log(fixNumbers(value) , 'inputNumberValue');
-        onChange({ value  : fixNumbers(value)})
-        // let newValue = fixNumbers(value);
+    console.log('====================================');
+    console.log(max , "max");
+    console.log('====================================');
 
-        // if(makePureNumber(newValue) < max || isNotLimited ) {
-            
-        //     onChange({ value : makePureNumber(newValue) })
-        // }
+    const changeHandler = value => {
+        
+        let newValue = makePureNumber(fixNumbers(value))
+        onChange({ value  : newValue })
+        
+        if(newValue > max) {
+            onChange({ value : max})
+        }
     }
 
     const increaseHandler = () => 

@@ -3,12 +3,13 @@ import { Image, StyleSheet, View } from 'react-native';
 import { useStyle } from '../Hooks/useStyle';
 import { imageFinder, toFarsiNumber } from '../utils';
 import Para from './Para';
-
+import Persian from "persian-date";
 
 
 const InsDetailsPay = ({ iconUrl , id , createTime , categorysFullName , insuranceCoName }) => {
     const appendStyle = useStyle(style);
-
+    
+    const date = new Persian(createTime);
     return (
         <View style={appendStyle.container}>
             <View style={{ justifyContent : "center" , flexDirection : "row" }}>
@@ -29,7 +30,7 @@ const InsDetailsPay = ({ iconUrl , id , createTime , categorysFullName , insuran
                 </View>
                 <View>
                     <Para color="grey">تاریخ ثبت </Para>
-                    <Para size={16}>{new Date(createTime).toLocaleDateString('fa-IR')}</Para>
+                    <Para size={16}>{date.format('YYYY/MM/DD')}</Para>
                 </View>
             </View>
         </View>
@@ -43,8 +44,6 @@ const style = () => StyleSheet.create({
     row : {
         flexDirection : "row",
         justifyContent : 'space-between',
-        // width: "90%",
-        // marginHorizontal : "5%",
         marginTop : 10
     }
 })

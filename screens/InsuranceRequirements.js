@@ -51,7 +51,6 @@ const InsuranceRequirements = ({ route : { params } , navigation }) => {
 
         fetcher('AddFactor' , reqBody)
             .then(({ data }) => {
-                console.log(data , 'initial data');
                 setDocItems(data);
                 setAreas(data.areas);
                 setLoading(false)
@@ -72,7 +71,7 @@ const InsuranceRequirements = ({ route : { params } , navigation }) => {
         if(docItems) {
             if(!isFocused) {
                 dispatch(() => setTabBarState("transparent"))
-                StatusBar.setBarStyle("dark-content")
+                StatusBar.setBarStyle("dark-content");
             }else {
                 dispatch(() => setTabBarState('#171717'))
                 StatusBar.setBarStyle('light-content');
