@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Alert, Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useStyle } from '../Hooks/useStyle';
 import Para from './Para';
@@ -8,9 +8,8 @@ import * as ImagePicker from  "expo-image-picker";
 import { Feather } from '@expo/vector-icons';
 import { generateColor, toFarsiNumber } from '../utils';
 
-const RequirementDocument = ({ setValue , items , setIsValid , value }) => {
+const RequirementDocument = ({ setValue , items , setIsValid , value , setInternal , internalPath }) => {
     const appendStyle = useStyle(style);
-    const [internalImageUrls, setInternalImageUrls] = useState({});
 
     const validateGetComplete = (newObject) => {
         const reqListForPassing = items.map(el => el.formName);
@@ -46,7 +45,7 @@ const RequirementDocument = ({ setValue , items , setIsValid , value }) => {
                 base64 : true
             })
             if(!result.cancelled) {
-                setInternalImageUrls(prev => ({
+                setInternal(prev => ({
                     ...prev,
                     [key] : result.uri
                 }));
@@ -77,7 +76,7 @@ const RequirementDocument = ({ setValue , items , setIsValid , value }) => {
                     <View style={appendStyle.item} key={i}>
                         {
                             value[el.formName] ? <TouchableOpacity onPress={() => pickingHandler(el.formName)} style={appendStyle.selectedImage}>
-                                <Image resizeMode="cover" source={{ uri : internalImageUrls[el.formName] , width : 100 , height : 100 , }} />
+                                <Image resizeMode="cover" source={{ uri : internalPath[el.formName] , width : 100 , height : 100 , }} />
                                 <View style={appendStyle.editImage}>
                                     <Feather name="edit-2" size={24} style={appendStyle.penIcon} />
                                 </View>

@@ -33,6 +33,8 @@ const InsuranceRequirements = ({ route : { params } , navigation }) => {
     const [isValidToGoNextStage, setIsValidToGoNextStage] = useState(false);
     const [currentStage, setCurrentStage] = useState(0);
 
+    const [internalImagePath, setInternalImagePath] = useState({});
+
     const { primary } = useStyle();
     
     const fetcher = useFetch();
@@ -83,6 +85,8 @@ const InsuranceRequirements = ({ route : { params } , navigation }) => {
 
     const reqImage = docItems?.requierds?.filter(el => el.typeImage).length &&
         <RequirementDocument
+            setInternal={setInternalImagePath} 
+            internalPath={internalImagePath} 
             value={dynamicStore}
             setIsValid={setIsValidToGoNextStage}
             setValue={setDynamicStore} 
@@ -116,6 +120,9 @@ const InsuranceRequirements = ({ route : { params } , navigation }) => {
         }
     }
 
+
+    // console.log('static' , staticStore );
+    // console.log('dynamic' , dynamicStore);
 
     
     const comeBackHomeHandler = () => navigation.navigate("home")
@@ -161,7 +168,7 @@ const InsuranceRequirements = ({ route : { params } , navigation }) => {
                             containerBgColor={generateColor(primary , 5)} 
                             icon="home" 
                             onPress={comeBackHomeHandler} />
-                            <Para size={20} weight="bold">{docItems.moneyInfo.catName}</Para>
+                            <Para style={{ flex : 1 , marginRight : 2 }} size={20} weight="bold">{docItems.moneyInfo.catName}</Para>
                         </View>
                 }
             </View>
@@ -175,7 +182,10 @@ const InsuranceRequirements = ({ route : { params } , navigation }) => {
                 <Btn disabled={inInsRecord} bgAlpha={null} 
                     extendStyle={{ flex : .5 , marginLeft : 10 }} 
                     title="قبلی" 
-                    onPress={() => setCurrentStage(prev => prev - 1)} />
+                    onPress={() => {
+                        setIsValidToGoNextStage(true);
+                        setCurrentStage(prev => prev - 1)
+                    }} />
             }
         </View>
     </View>

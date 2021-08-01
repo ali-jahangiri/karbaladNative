@@ -43,7 +43,6 @@ const style = ({ primary , baseBorderRadius } , haveError) => StyleSheet.create(
     inputLabel : {
         position: "absolute",
         right: 10,
-        zIndex : 2,
         backgroundColor : "white" , top : -15 , 
         paddingHorizontal : 10 , 
         zIndex : 555

@@ -9,7 +9,7 @@ import useFetch from '../Providers/useFetch';
 import { fixNumbers } from '../utils/Date';
 import { persister } from '../utils';
 import { useDispatch } from '../Store/Y-state';
-import { setAppKey } from '../Store/Slices/authSlice';
+import { setAppKey, setSeeWelcomeScreen } from '../Store/Slices/authSlice';
 
 import { VerifyInput , PhoneInput, PasswordInput, AuthLanding, AuthModePlayground } from '../components/Login';
 
@@ -69,6 +69,7 @@ const Login = () => {
                                 persister.set('userPrivateKey' , privatekey)
                                     .then(_ => {
                                         Keyboard.dismiss();
+                                        storeDispatcher(() => setSeeWelcomeScreen(false))
                                         storeDispatcher(() => setAppKey(privatekey));
                                     })
                             })

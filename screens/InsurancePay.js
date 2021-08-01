@@ -160,10 +160,11 @@ const InsurancePay = ({ navigation , route : { params : { id } } }) => {
                                 <TouchableOpacity style={appendStyle.walletAmountInvalidCta} onPress={() => {
                                     if(afterPaymentMessage.wasOk) {
                                         setAfterPaymentMessage(false)
-                                        navigation.navigate("insurance");
+                                        navigation.navigate("insurance");;
                                     }else {
-                                        navigation.navigate("wallet")
+                                        navigation.navigate("wallet");
                                     }
+                                    setAfterPaymentMessage(false)
                                 }}>
                                     <Para width="bold" size={16} align="center">{
                                         afterPaymentMessage.wasOk ? "تایید" : "انتقال به کیف پول"

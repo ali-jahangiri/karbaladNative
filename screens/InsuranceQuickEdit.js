@@ -147,6 +147,7 @@ const InsuranceQuickEdit = ({ navigation , route : { params } }) => {
                     <View style={{ flex : 1 }}>
                         {
                             <InputDetector
+                                pushToNextStageHandler={() => {}}
                                 formData={currentForm.formData}
                                 typesName={currentForm.typesName}
                                 formName={currentForm.formName}

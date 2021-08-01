@@ -22,7 +22,7 @@ const FurtherInfo = ({ setValue , items , value , setIsValid }) => {
                 ...prev,
                 [key] : value
         }));
-        validation({...value , [key] : value});
+        // validation({...value , [key] : value});
     }
 
     return (
@@ -38,6 +38,7 @@ const FurtherInfo = ({ setValue , items , value , setIsValid }) => {
             {
                 items.map((el , i) => (
                     <RequirementInput
+                        setIsValid={setIsValid}
                         defaultValue={value[el.formName]}
                         key={i}
                         store={value} 

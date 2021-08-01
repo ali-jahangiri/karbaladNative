@@ -1,6 +1,6 @@
 import { Feather } from '@expo/vector-icons';
 import React, { useEffect, useState } from 'react';
-import {StyleSheet, View , TouchableOpacity, ScrollView } from 'react-native';
+import {StyleSheet, View , TouchableOpacity, ScrollView, Keyboard } from 'react-native';
 
 import client from '../client';
 import { useStyle } from '../Hooks/useStyle';
@@ -180,6 +180,7 @@ const Profile = () => {
     const requestAction = body => {
         return fetcher("GetUserData" , body)
                 .then(({ data }) => {
+                    Keyboard.dismiss();
                     if(data.id < 0) {
                         throw new Error(data.fullName);
                     }else {

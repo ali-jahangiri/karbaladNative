@@ -1,11 +1,11 @@
 const config = {
-    packageName : "insurco.ir",
-    serverPath: "https://insurco.ir",
+    packageName : "rahatbime.com",
+    serverPath: "https://rahatbime.com/",
     adminUserName : "insurcoApp",
     adminPassword : "123456789",
-    requestPath : {
-        VERIFY_NUMBER : "VerifyNumber" 
-    },
+    // requestPath : {
+    //     VERIFY_NUMBER : "VerifyNumber" 
+    // },
 }
 
 

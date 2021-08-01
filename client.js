@@ -28,7 +28,7 @@ const client = {
             LOGIN_KEY : "login",
             REGISTER_KEY : "register",
             FORGOT_key : "forgot",
-            LOGIN_SCREEN_DESK : "Voluptatum debitis esse reiciendis optio explicabo. Provident et quisquam aliquam non quos deleniti dolor et cum. Voluptatem non dolores quisquam nulla eos nihil. Perferendis animi sapiente. Totam omnis quia cum beatae aspernatur.Ad quas voluptatem eos facere sit. Dolores minus eos aspernatur hic iusto. Consequatur nesciunt commodi aliquid. Neque atque cupiditate aut et dolorem eum modi aut.Totam ex ratione sed sequi quae reiciendis. Consequatur necessitatibus sapiente suscipit eum vel qui labore ipsa sunt. Voluptatum sint et optio. Optio qui eaque est quo quaerat quidem. Neque et voluptas culpa ipsam voluptatem repellendus sed non reprehenderit.",
+            LOGIN_SCREEN_DESK : "لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان را می طلبد، تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه ای علی الخصوص طراحان خلاقی، و فرهنگ پیشرو در زبان فارسی ایجاد کرد، در این صورت می توان امید داشت که تمام و دشواری موجود در ارائه راهکارها، و شرایط سخت تایپ به پایان رسد و زمان مورد نیاز شامل حروفچینی دستاوردهای اصلی، و جوابگوی سوالات پیوسته اهل دنیای موجود طراحی اساسا مورد استفاده قرار گیرد.",
             LOGIN_APP_NAME : "کاربلد",
             AUTH_ERRORS : {
                 EMPTY_PASSWORD : "رمز عبور خود را وارد کنید",
@@ -108,7 +108,7 @@ const client = {
             WALLET_ORDER : "پرداخت از کیف پول"
         },
         WELCOME : {
-            WELCOME_DESK : "Voluptatum debitis esse reiciendis optio explicabo. Provident et quisquam aliquam non quos deleniti dolor et cum. Voluptatem non dolores quisquam nulla eos nihil. Perferendis animi sapiente. Totam omnis quia cum beatae aspernatur.Ad quas voluptatem eos facere sit. Dolores minus eos aspernatur hic iusto. Consequatur nesciunt commodi aliquid. Neque atque cupiditate aut et dolorem eum modi aut.Totam ex ratione sed sequi quae reiciendis. Consequatur necessitatibus sapiente suscipit eum vel qui labore ipsa sunt. Voluptatum sint et optio. Optio qui eaque est quo quaerat quidem. Neque et voluptas culpa ipsam voluptatem repellendus sed non reprehenderit.",
+            WELCOME_DESK : "لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان را می طلبد، تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه ای علی الخصوص طراحان خلاقی، و فرهنگ پیشرو در زبان فارسی ایجاد کرد، در این صورت می توان امید داشت که تمام و دشواری موجود در ارائه راهکارها، و شرایط سخت تایپ به پایان رسد و زمان مورد نیاز شامل حروفچینی دستاوردهای اصلی، و جوابگوی سوالات پیوسته اهل دنیای موجود طراحی اساسا مورد استفاده قرار گیرد.",
             PEND_MESSAGE : "در حال دریافت اطلاعات اولیه",
             CONTINUE_MESSAGE : "ادامه",
         },
