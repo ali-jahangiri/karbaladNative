@@ -27,11 +27,7 @@ fixNumbers = function (str)
 const InputNumber = ({ onChange , stepForEachOperation = 10000, value = String(stepForEachOperation) , length : { max , min } , isNotLimited , triggersStyle}) => {
     const appendStyle = useStyle(style , triggersStyle);
     const { primary } = useStyle();
-    
-    console.log('====================================');
-    console.log(max , "max");
-    console.log('====================================');
-
+        
     const changeHandler = value => {
         
         let newValue = makePureNumber(fixNumbers(value))
