@@ -67,7 +67,7 @@ const InsuranceRequirements = ({ route : { params } , navigation }) => {
         }
     } , [])
     
-    const isFocused = useIsFocused()
+    const isFocused = useIsFocused();
 
     useEffect(() => {
         if(docItems) {

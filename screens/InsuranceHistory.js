@@ -11,6 +11,7 @@ import InsuranceHistoryImages from './InsuranceHistoryImages';
 import { useSelector } from '../Store/Y-state';
 import Loading from '../components/Loading';
 import useFetch from '../Providers/useFetch';
+import { useIsFocused } from '@react-navigation/native';
 
 
 const Stack = createStackNavigator();
@@ -19,18 +20,25 @@ const Home = () => {
     const [loading, setLoading] = useState(true);
     const [insItems, setInsItems] = useState([]);
 
-    const navHash = useSelector(state => state.navigation.navigationHash)
 
+    const navHash = useSelector(state => state.navigation.navigationHash)
     const fetcher = useFetch()
+    const isFocused = useIsFocused()
     
+
+
     useEffect(() => {
-        setLoading(true);
-        fetcher("UserInsurance")
-            .then(({ data }) => {
-                setInsItems(data);
-                setLoading(false);
-            })
-    } , [navHash])
+        if(isFocused) {
+            setLoading(true);
+            fetcher("UserInsurance")
+                .then(({ data }) => {
+                    setInsItems(data);
+                    setLoading(false);
+                })
+        }else {
+            setLoading(true);
+        }
+    } , [navHash , isFocused])
 
 
     if(loading) return <Loading />

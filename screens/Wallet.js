@@ -18,7 +18,7 @@ import Para from '../components/Para';
 import { generateColor } from '../utils';
 import { useStyle } from '../Hooks/useStyle';
 import useFetch from '../Providers/useFetch';
-import { useScrollToTop } from '@react-navigation/native';
+import { useIsFocused, useScrollToTop } from '@react-navigation/native';
 
 const Wallet = () => {
     const [walletData, setWalletData] = useState(null)
@@ -37,21 +37,32 @@ const Wallet = () => {
     const appendStyle = useStyle(style);
     
 
+    const isFocused = useIsFocused()
+
+
     useEffect(() => {
-        setLoading(true);
-        fetcher("UserWallet")
-            .then(({ data }) => {
-                setWalletData(data)
-                setLoading(false);
-                const currentStatus = data?.checkTransactionToWallet
-                if([DONE , FAIL].includes(currentStatus)) 
-                    setTransactionStatus(currentStatus)
-            })
-    } , [navHash]);
+        if(isFocused) {
+            setLoading(true);
+            fetcher("UserWallet")
+                .then(({ data }) => {
+                    setWalletData(data)
+                    setLoading(false);
+                    const currentStatus = data?.checkTransactionToWallet
+                    if([DONE , FAIL].includes(currentStatus)) 
+                        setTransactionStatus(currentStatus)
+                })
+        }else {
+            setLoading(true);
+        }
+    } , [navHash , isFocused]);
+
+    const drawerCloseHandler = () => {
+        setTransactionStatus(null)
+        setIsInPaymentProcess(false);
+    };
 
 
-
-    const drawerCloseHandler = () => setTransactionStatus(null);
+    console.log('loading is' , loading);
 
     if(!walletData) return <Loading />
     if(loading) return <Loading />
@@ -60,6 +71,7 @@ const Wallet = () => {
         <ScreenWrapper>
             <ScreenHeader title="کیف پول" />
             <WalletCart
+                setTransactionStatus={setTransactionStatus}
                 paymentProcessHandler={setIsInPaymentProcess}
                 isInPaymentProcess={isInPaymentProcess}
                 finalResult={walletData.walletData.finalResult} />
@@ -80,7 +92,7 @@ const Wallet = () => {
             transactionStatus ? <Drawer onClose={drawerCloseHandler}>
                 <View style={appendStyle.drawerContentContainer}>
                     <Para align="center" weight="bold" size={18}>
-                        {transactionStatus === DONE ? FA_DONE : FA_FAIL}
+                        {typeof transactionStatus === "string" ?  transactionStatus === DONE ? FA_DONE : FA_FAIL : transactionStatus.message}
                     </Para>
                     <TouchableOpacity style={appendStyle.doneCta} onPress={drawerCloseHandler}>
                         <Para weight="bold" align="center">تایید</Para>

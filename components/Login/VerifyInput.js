@@ -1,4 +1,4 @@
-import React , { useEffect, useRef, useState } from 'react';
+import React , { useRef, useState } from 'react';
 import { StyleSheet, TextInput, View } from 'react-native';
 import { useStyle } from '../../Hooks/useStyle';
 import { generateColor } from '../../utils';
@@ -8,8 +8,6 @@ const VerifyInput = ({  changeHandler }) => {
     const [value, setValue] = useState(new Array(4).fill(""));
     const refs = useRef(new Array(4).fill("").map((_ , i) => React.createRef()));
     const [force, setForce] = useState(null);
-
-    // console.log(value);
 
     const onChange = (newValue , index) => {
         if(newValue) {
@@ -24,7 +22,7 @@ const VerifyInput = ({  changeHandler }) => {
         setForce(Date.now());
         changeHandler(value.join(""));
     }
-    console.log(value);
+    
     return (
         <View style={appendStyle.container} > 
             {

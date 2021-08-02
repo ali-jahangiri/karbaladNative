@@ -48,6 +48,8 @@ const InitialLoading = ({ children }) => {
     }
 
     useEffect(() => {
+
+
     api.post(`${config.serverPath}/baseApi/getServerTime`)
                 .then(({ data }) => {
                     let serverTime = +data.split(" ")[1].split(':')[1];
@@ -57,6 +59,7 @@ const InitialLoading = ({ children }) => {
                         Key : encrypt.encrypt({
                             UserName : config.adminUserName,
                             Password : config.adminPassword,
+                            PackageName : config.packageName
                         }, serverTime),
                     }).then(({ data : appToken }) => {
                         if(data === client.static.ACCESS_DENIED) throw new Error(appToken);
@@ -90,7 +93,7 @@ const InitialLoading = ({ children }) => {
 
         const globalStyle = {
             baseBorderRadius : 15,
-            primary : '#B05B3B',
+            primary : '#57837B',
             secondary : '#dbe6fd',
             headerTitleColor : "white",
             ctaTextColor : "black",

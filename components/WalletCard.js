@@ -14,7 +14,7 @@ const { fadeBg_1 , fadeBg_2 } = client.style.colors
 
 const { ORDER_TEXT , IN_REDIRECTION , REMAIN_TEXT  , ADD_TO_WALLET_TEXT} = client.static.WALLET_CARD;
 
-const WalletCart = ({ finalResult = "" , paymentProcessHandler , isInPaymentProcess }) => {
+const WalletCart = ({ finalResult = "" , paymentProcessHandler , isInPaymentProcess , setTransactionStatus }) => {
     const appendStyle = useStyle(style);
     const [chargeAmountPrice, setChargeAmountPrice] = useState(1000);
     const [chargeViewActive, setChargeViewActive] = useState(false);
@@ -44,11 +44,16 @@ const WalletCart = ({ finalResult = "" , paymentProcessHandler , isInPaymentProc
         paymentProcessHandler(true);
         fetcher('UserAddWallet' , { addAmount : chargeAmountPrice })
             .then(({ data }) => {
-                Linking.openURL(data.url)
-                    .then(_ => resetHandler())
-                    .catch(err => {
-                        wentWrongHandler(err);
-                    }) 
+                if(!data.url) {
+                    setTransactionStatus({ message : 'مشکلی از سمت درگاه پرداخت رخ داده است . مجددا تلاش نمایید'})
+                    resetHandler()
+                }else {
+                    Linking.openURL(data.url)
+                        .then(_ => resetHandler())
+                        .catch(err => {
+                            wentWrongHandler(err);
+                        }) 
+                }
             })
     }
 

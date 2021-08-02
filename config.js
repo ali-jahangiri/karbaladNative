@@ -1,12 +1,12 @@
 const config = {
     packageName : "rahatbime.com",
     serverPath: "https://rahatbime.com/",
-    adminUserName : "insurcoApp",
-    adminPassword : "123456789",
+    adminUserName : "LMKGvkA67X",
+    adminPassword : "nwGsa34Qdm",
     // requestPath : {
     //     VERIFY_NUMBER : "VerifyNumber" 
     // },
 }
 
 
-export default config;
+export default config;          

@@ -5,11 +5,11 @@ import { FetchContext } from "./FetchProvider";
 import appConfig from "../../config";
 
 import { useSelector } from "../../Store/Y-state";
+import client from "../../client";
 
 const useFetch = () => {
   const { api } = useContext(FetchContext);
-    // const timeDiff = useSelector(state => state.auth.systemTime);
-
+  
   const ticket = useSelector(state => state.auth.appKey)
 
   
@@ -22,17 +22,18 @@ const useFetch = () => {
             api.post(`${appConfig.serverPath}/baseApi/getAppToken` , {
               Key : encrypt.encrypt({
                   UserName : appConfig.adminUserName,
-                  Password : appConfig.adminPassword
+                  Password : appConfig.adminPassword,
+                  PackageName : appConfig.packageName
               }, serverTime)
               })
               .then(({ data }) => {
+                if(data === client.static.ACCESS_DENIED) throw new Error (data)
                 resolve(api.post(path , config , {
                   headers : { appToken : data, ticket },
                   timeout : 5000
                 }))
               }).catch(err => {
-                console.log('!!!!!!!!!catch' , err);
-                fetcher()
+                throw new Error(err.message)
               })
           })
 
