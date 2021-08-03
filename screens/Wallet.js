@@ -19,12 +19,16 @@ import { generateColor } from '../utils';
 import { useStyle } from '../Hooks/useStyle';
 import useFetch from '../Providers/useFetch';
 import { useIsFocused, useScrollToTop } from '@react-navigation/native';
+import RefreshAlert from '../components/RefreshAlert';
 
 const Wallet = () => {
     const [walletData, setWalletData] = useState(null)
     const [isInPaymentProcess, setIsInPaymentProcess] = useState(false);
     const [transactionStatus, setTransactionStatus] = useState(false);
     const [loading, setLoading] = useState(true);
+
+
+    const [refresh, setRefresh] = useState(false);
 
     const fetcher = useFetch();
 
@@ -37,32 +41,43 @@ const Wallet = () => {
     const appendStyle = useStyle(style);
     
 
-    const isFocused = useIsFocused()
+    const isFocused = useIsFocused();
 
 
-    useEffect(() => {
-        if(isFocused) {
-            setLoading(true);
-            fetcher("UserWallet")
+    const fetchDataHandler = () => {
+        return fetcher("UserWallet")
                 .then(({ data }) => {
                     setWalletData(data)
-                    setLoading(false);
+                    
                     const currentStatus = data?.checkTransactionToWallet
                     if([DONE , FAIL].includes(currentStatus)) 
                         setTransactionStatus(currentStatus)
                 })
+    }
+
+
+    useEffect(() => {
+        if(!loading) {
+            fetchDataHandler()
+                .then(_ => {
+                    setRefresh(true)
+                    let timer = setTimeout(() => {
+                        setRefresh(false);
+                        clearTimeout(timer);
+                    } , 2500)
+                })
         }else {
-            setLoading(true);
+            fetchDataHandler()
+                .then(_ => setLoading(false))
         }
-    } , [navHash , isFocused]);
+    } , [isFocused , navHash])
+
 
     const drawerCloseHandler = () => {
         setTransactionStatus(null)
         setIsInPaymentProcess(false);
     };
 
-
-    console.log('loading is' , loading);
 
     if(!walletData) return <Loading />
     if(loading) return <Loading />
@@ -86,7 +101,9 @@ const Wallet = () => {
                     </ScrollView>
                 </> : <EmptyScreen desc={client.static.EMPTY_SCREEN_WALLET} />
             }
-             
+             {
+                 refresh ? <RefreshAlert /> : null
+             }
         </ScreenWrapper>
         {
             transactionStatus ? <Drawer onClose={drawerCloseHandler}>

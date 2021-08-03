@@ -24,6 +24,8 @@ const client = {
         EMPTY_SCREEN_WALLET : "شما تا به حال هیچ تراکنشی نداشته اید",
         ERROR_BOUNDARY_ACTION_MESSAGE : "راه اندازی مجدد",
         ERROR_BOUNDARY_MAIN_MESSAGE : "مشکلی در پردازش رخ داده است ، مجددا تلاش نمایید",
+        REFRESH_ALERT_TEXT : "بروزرسانی اطلاعات",
+        OPTIONAL_STEP_TEXT : "مرحله اختیاری",
         LOGIN : {
             LOGIN_KEY : "login",
             REGISTER_KEY : "register",

@@ -8,6 +8,7 @@ import { generateColor } from '../utils';
 import InputDetector from '../utils/inputDetector';
 
 import InsStageController from './InsStageController';
+import InsStageOptionalBadge from './InsStageOptionalBadge';
 import Para from './Para';
 import StepTimeline from './StepTimeline';
 
@@ -93,10 +94,7 @@ const InsStage = (props) => {
                     </View>
                 </View>
                 {
-                    isRequierd === false &&
-                    <View style={appendStyle.optionalStepContainer}>
-                        <Para color="grey">مرحله اختیاری</Para>
-                    </View>
+                    isRequierd === false && <InsStageOptionalBadge />
                 }
             </View>
                 <View style={appendStyle.stagePlayground}>

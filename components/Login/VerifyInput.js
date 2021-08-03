@@ -33,10 +33,9 @@ const VerifyInput = ({  changeHandler }) => {
                         keyboardType="number-pad"
                         ref={refs.current[i]} 
                         maxLength={1} 
-                        key={i} 
+                        key={i}
                         style={[appendStyle.input , value[i] ? appendStyle.activeInput : {}]}
-                        onChangeText={value => onChange(value , i)}
-                        placeholder="x" />
+                        onChangeText={value => onChange(value , i)} />
                 ))
             }
         </View>
@@ -44,7 +43,7 @@ const VerifyInput = ({  changeHandler }) => {
 }
 
 
-const style = ({ primary }) => StyleSheet.create({
+const style = ({ primary , baseBorderRadius }) => StyleSheet.create({
     container : {
         flexDirection : 'row' , 
         justifyContent : 'space-between' , 
@@ -53,16 +52,19 @@ const style = ({ primary }) => StyleSheet.create({
         marginHorizontal : "2.5%"
     },
     input : {
-        borderBottomWidth : 2 , 
+        borderWidth : 2, 
         fontSize : 24 , 
         borderColor : generateColor(primary, 5), 
         width : "20%" ,
         textAlign : "center" , 
         fontFamily : "bold",
-        color: primary
+        color: primary,
+        borderRadius : baseBorderRadius,
+        padding: 15
     },
     activeInput : {
-        borderColor : primary
+        borderColor : primary,
+        backgroundColor : generateColor(primary , 2)
     }
 })
 

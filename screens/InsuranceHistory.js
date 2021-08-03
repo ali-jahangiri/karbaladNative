@@ -12,6 +12,7 @@ import { useSelector } from '../Store/Y-state';
 import Loading from '../components/Loading';
 import useFetch from '../Providers/useFetch';
 import { useIsFocused } from '@react-navigation/native';
+import RefreshAlert from '../components/RefreshAlert';
 
 
 const Stack = createStackNavigator();
@@ -19,6 +20,7 @@ const Stack = createStackNavigator();
 const Home = () => {
     const [loading, setLoading] = useState(true);
     const [insItems, setInsItems] = useState([]);
+    const [refresh, setRefresh] = useState(false);
 
 
     const navHash = useSelector(state => state.navigation.navigationHash)
@@ -26,17 +28,26 @@ const Home = () => {
     const isFocused = useIsFocused()
     
 
-
-    useEffect(() => {
-        if(isFocused) {
-            setLoading(true);
-            fetcher("UserInsurance")
+    const dataFetcherInstance = () => {
+        return fetcher("UserInsurance")
                 .then(({ data }) => {
                     setInsItems(data);
-                    setLoading(false);
                 })
+    }
+
+    useEffect(() => {
+        if(loading) {
+            dataFetcherInstance()
+                .then(_ => setLoading(false));
         }else {
-            setLoading(true);
+            dataFetcherInstance()
+                .then(_ => {
+                    setRefresh(true);
+                    let timer = setTimeout(() => {
+                        setRefresh(false);
+                        clearTimeout(timer)
+                    } , 2500)
+                })
         }
     } , [navHash , isFocused])
 
@@ -46,6 +57,9 @@ const Home = () => {
         <>
             <ScreenHeader title="بیمه نامه " />
             <InsuranceHistoryDirectory items={insItems} />
+            {
+                refresh ? <RefreshAlert /> : null
+            }
         </>
     )
 }
