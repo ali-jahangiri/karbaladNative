@@ -4,6 +4,8 @@ import Profile from "./Profile";
 import Wallet from "./Wallet";
 import Installment from "./Installment";
 import Welcome from "./Welcome";
+import Reminder from "./Reminder";
+import Support from "./Support";
 
 export {
     Home,
@@ -11,5 +13,7 @@ export {
     Profile,
     Wallet,
     Installment,
-    Welcome
+    Welcome,
+    Reminder,
+    Support
 }

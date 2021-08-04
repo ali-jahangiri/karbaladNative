@@ -9,10 +9,10 @@ import { generateColor } from '../utils';
 
 const { EMPTY_SCREEN_TEXT } = client.static;
 
-const EmptyScreen = ({ message = EMPTY_SCREEN_TEXT , desc = "" }) => {
+const EmptyScreen = ({ message = EMPTY_SCREEN_TEXT , desc = ""  , extendStyle}) => {
     const appendStyle = useStyle(style);
     return (
-        <View style={appendStyle.container}>
+        <View style={[appendStyle.container , extendStyle]}>
             <Feather style={appendStyle.icon} name="archive" size={40} color="black" />
             <Para size={16} color="grey" weight="bold">{message}</Para>
             <Para color="grey">{desc}</Para>

@@ -23,7 +23,7 @@ const ProfileRow = ({ icon , label , children }) => {
                 <View style={appendStyle.introBox}>
                     <Para weight="bold" size={18}>{label}</Para>
                     <View style={appendStyle.icon}>
-                        <Feather name={icon} size={30} color={generateColor(primary , 9)} />
+                        <Feather name={icon} size={24} color={primary} />
                     </View>
                 </View>
                 <TouchableOpacity onPress={() => setIsCollapse(prev => !prev)} style={appendStyle.openCtaContainer}>
@@ -66,7 +66,7 @@ const style = ({ primary , baseBorderRadius }) => StyleSheet.create({
         alignItems : 'center',
         justifyContent : 'center',
         marginLeft : 10,
-        padding : 10,
+        padding : 15,
         borderRadius : baseBorderRadius
     },
 
