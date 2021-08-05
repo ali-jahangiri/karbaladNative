@@ -5,13 +5,13 @@ import Para from '../components/Para';
 import { useStyle } from '../Hooks/useStyle';
 import useFetch from '../Providers/useFetch';
 import { generateColor, toFarsiNumber } from '../utils';
-import Persian from "persian-date";
-
 
 import { SimpleLineIcons } from '@expo/vector-icons';
 
+import dayjs from 'dayjs';
+
 import DirectionCta from "../components/DirectionCta"
-import { useIsFocused, useNavigation } from '@react-navigation/core';
+import { useNavigation } from '@react-navigation/core';
 import Loading from '../components/Loading';
 import { useSelector } from '../Store/Y-state';
 
@@ -228,13 +228,14 @@ const MessageDirectory = ({ items , focusForNewMessageInEmptyState}) => {
     
     const haveItemsForShow = !items.length;
 
+
     return (
         <View style={appendStyle.container}>
             <ScrollView contentContainerStyle={{ flex : haveItemsForShow ? 1 : 0 , paddingBottom : !haveItemsForShow ? 10 : 0 }} ref={containerRef} onContentSizeChange={() => containerRef.current.scrollToEnd({animated: true})}>
                 {
                     haveItemsForShow ? <EmptyChat focusForNewMessageInEmptyState={focusForNewMessageInEmptyState} /> : items.map((el , i) => {
-                        if(el.fromAdmin) return <UserMessage message={el.message} key={i} time={new Persian(el.createTime).format('YYYY/MM/DD')} />
-                        else return <AdminMessage key={i} message={el.message} time={new Persian(el.createTime).format("YYYY/MM/DD")} />
+                        if(el.fromAdmin) return <UserMessage message={el.message} key={i} time={dayjs(el.createTime).calendar('jalali').locale('fa').format('YYYY/MM/DD')} />
+                        else return <AdminMessage key={i} message={el.message} time={dayjs(el.createTime).calendar('jalali').locale('fa').format("YYYY/MM/DD")} />
                     })
                 }
             </ScrollView>

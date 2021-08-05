@@ -3,13 +3,15 @@ import { Image, StyleSheet, View } from 'react-native';
 import { useStyle } from '../Hooks/useStyle';
 import { imageFinder, toFarsiNumber } from '../utils';
 import Para from './Para';
-import Persian from "persian-date";
+
+import dayjs from 'dayjs';
+
 
 
 const InsDetailsPay = ({ iconUrl , id , createTime , categorysFullName , insuranceCoName }) => {
     const appendStyle = useStyle(style);
     
-    const date = new Persian(createTime);
+    const date = dayjs(createTime).calendar("jalali").locale("fa").format("YYYY/MM/DD");
     return (
         <View style={appendStyle.container}>
             <View style={{ justifyContent : "center" , flexDirection : "row" }}>

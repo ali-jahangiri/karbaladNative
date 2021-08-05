@@ -27,7 +27,7 @@ const formItems = [
                 return true
             }else return false
         },
-        maxLength : 10
+        maxLength : 11
     },
     {
         key : "Mobile",

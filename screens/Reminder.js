@@ -5,27 +5,19 @@ import useFetch from "../Providers/useFetch"
 
 import Loading from "../components/Loading";
 import { useStyle } from '../Hooks/useStyle';
-import { generateColor } from '../utils';
+import { generateColor, toFarsiNumber } from '../utils';
 import Para from '../components/Para';
-import EmptyState from "../components/EmptyState";
 import EmptyScreen from './EmptyScreen';
 import { Feather } from '@expo/vector-icons';
-import DirectionCta from '../components/DirectionCta';
-import { createAnimatedPropAdapter, onChange } from 'react-native-reanimated';
 
+import dayjs from 'dayjs';
 
 import RefreshAlert from "../components/RefreshAlert";
 
 import DatePicker from "../components/DatePicker";
 
-import { persianDate } from '../utils';
-
-import Persian from "persian-date";
-
-
 import Drawer from "../components/Drawer";
-import { createStackNavigator } from '@react-navigation/stack';
-import { useNavigation } from '@react-navigation/core';
+import DirectionCta from "../components/DirectionCta";
 
 const categoryList = [
     "بیمه ثالث",
@@ -50,14 +42,14 @@ const CategoryPicker = ({ selectedItem , selectHandler }) => {
 
     const onSelect = value => {
         const itemIndex = categoryList.findIndex(el => el === value);
-        scrollRef.current.scrollTo({x: itemIndex * 200});
+        scrollRef.current.scrollTo({x: (itemIndex * 200 )+ 5});
         selectHandler(value)
     }
 
     return (
-        <>
-            <View style={{ flexDirection : "row" , alignItems : 'center' , justifyContent : 'flex-end' }}>
-                <Para size={17} weight="bold">موضوع دسته بندی</Para>
+        <View style={{ padding : 20 }}>
+            <View style={{ flexDirection : "row" , alignItems : 'center' , justifyContent : 'flex-end' , marginTop : 10 }}>
+                <Para color="grey" size={17} weight="bold">موضوع دسته بندی</Para>
                 <View style={appendedStyle.bullet} />
             </View>
             <ScrollView ref={scrollRef} horizontal style={appendedStyle.scrollContainer}>
@@ -74,7 +66,7 @@ const CategoryPicker = ({ selectedItem , selectHandler }) => {
                     ))
                 }
             </ScrollView>
-        </>
+        </View>
     )
 }
 
@@ -87,7 +79,7 @@ const categoryStyle = ({ primary , baseBorderRadius }) => StyleSheet.create({
         width : 25,
         height:  25,
         borderRadius : baseBorderRadius - 5,
-        backgroundColor : primary,
+        backgroundColor : generateColor(primary , 5),
         marginLeft : 15
     },
     itemContainer : {
@@ -96,7 +88,9 @@ const categoryStyle = ({ primary , baseBorderRadius }) => StyleSheet.create({
         padding: 25,
         width : 200,
         justifyContent : 'center',
-        alignItems : 'center'
+        alignItems : 'center',
+        backgroundColor : generateColor(primary , 1),
+        marginRight : 5
     },
     scrollContainer : {
         borderRadius : baseBorderRadius,
@@ -108,36 +102,45 @@ const categoryStyle = ({ primary , baseBorderRadius }) => StyleSheet.create({
 const DatePickerEnhancedWithTitle = ({ value , setValue }) => {
     const appendedStyle = useStyle(datePickerStyle);
 
+
+    const targetYear = dayjs().calendar("jalali").locale("fa").year();
+    
+    console.log(value , "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+
     return (
-        <View style={appendedStyle.container}>
-            <View style={{ flexDirection : "row" , alignItems : 'center' , justifyContent : 'flex-end' }}>
-                <Para size={17} weight="bold">تاریخ یادآوری</Para>
+        <View style={[appendedStyle.container , { marginHorizontal : 20 }]}>
+            <View style={{ flexDirection : "row" , alignItems : 'center' , justifyContent : 'flex-end' , marginVertical : 15 }}>
+                <Para color="grey" size={17} weight="bold">تاریخ یادآوری</Para>
                 <View style={appendedStyle.bullet} />
             </View>
-            <DatePicker date={value} onChange={({ value }) => setValue(value)} />
+            <DatePicker
+                    absoluteValue
+                    yearList={[...Array(50).keys()].map((_ , i) => targetYear + i)} 
+                    date={value} 
+                    onChange={({ value }) => setValue(value)} />
         </View>
     )
 }
 
 const DescriptionInput = ({ value , setValue }) => {
     const appendedStyle = useStyle(datePickerStyle);
-
+    
     return (
-        <>
+        <View style={{ margin : 15 }}>
             <View style={{ flexDirection : "row" , alignItems : 'center' , justifyContent : 'flex-end' }}>
-                    <Para size={17} weight="bold">شرح مختصر</Para>
+                    <Para color="grey" size={17} weight="bold">شرح مختصر</Para>
                     <View style={appendedStyle.bullet} />
             </View>
             <View style={{ width : "100%" }}>
                 <TextInput multiline style={appendedStyle.input} placeholder="شرح مختصری از مطلبی که می خواهید به شما یادآوری شود..." value={value} onChangeText={setValue} />
             </View>
-        </>   
+        </View>   
     )
 }
 
 const datePickerStyle = ({ baseBorderRadius , primary }) => StyleSheet.create({
     container : {
-        marginTop : 25
+        marginVertical : 15,
     },
     input : {
         fontFamily : "bold",
@@ -148,7 +151,7 @@ const datePickerStyle = ({ baseBorderRadius , primary }) => StyleSheet.create({
         width : 25,
         height:  25,
         borderRadius : baseBorderRadius - 5,
-        backgroundColor : primary,
+        backgroundColor : generateColor(primary , 5),
         marginLeft : 15
     },
 })
@@ -156,26 +159,33 @@ const datePickerStyle = ({ baseBorderRadius , primary }) => StyleSheet.create({
 
 
 
-const ReminderPlayground = ({ valueStore , changeHandler , ctaHandler , ctaText , playgroundTitle }) => {
+const ReminderPlayground = ({ valueStore , changeHandler , ctaHandler , ctaText , isInSendProcess }) => {
     const appendStyle = useStyle(reminderPlaygroundStyle);
-    const { primary } = useStyle();
     
 
+    const [isValid, setIsValid] = useState(false);
+
+
+    console.log(valueStore, 'ValueStore m!!!!!!!');
+
+    useEffect(() => {
+        const filled = Object.keys(valueStore);
+        if(filled.length > 2) setIsValid(true);
+        else setIsValid(false)
+    } , [valueStore])  
+
+
     return (
-        <View style={appendStyle.createContainer}>
-                    <View style={{ flexDirection : 'row' , justifyContent : 'space-between' , alignItems : 'center' , marginTop : 20 }}>
-                        <DirectionCta onPress={() => setIsInCreateMode(false)} containerBgColor={generateColor(primary , 5)} direction="left" />
-                        <Para size={20} weight="bold">{playgroundTitle}</Para>
-                    </View>
-                    <View style={{ flex : 1 }}>
+        <View style={appendStyle.container}>
+                   <View style={{ flex : 1  }}>
                         <ScrollView>
                             <CategoryPicker selectedItem={valueStore?.category} selectHandler={selectedItem => changeHandler('category' , selectedItem)} />
                             <DatePickerEnhancedWithTitle value={valueStore?.date} setValue={date => changeHandler("date" , date)} />
-                            <DescriptionInput setValue={value => changeHandler("des" , value)} />
+                            <DescriptionInput value={valueStore?.des} setValue={value => changeHandler("des" , value)} />
                         </ScrollView>
                     </View>
-                    <TouchableOpacity style={appendStyle.createCta} onPress={ctaHandler}>
-                        <Feather style={{ marginRight : 5 }} name="chevron-left" size={24} color="black" />
+                    <TouchableOpacity disabled={isInSendProcess || !isValid} style={[appendStyle.createCta , isInSendProcess || !isValid ? appendStyle.disabledCta : {}]} onPress={ctaHandler}>
+                        <Feather style={{ marginRight : 5 }} name={isInSendProcess ? "loader" : "chevron-left"} size={24} color="black" />
                         <Para weight="bold" size={18}>{ctaText}</Para>
                     </TouchableOpacity>
         </View>
@@ -183,108 +193,159 @@ const ReminderPlayground = ({ valueStore , changeHandler , ctaHandler , ctaText 
 }
 
 
-const reminderPlaygroundStyle = () => StyleSheet.create({
-    createContainer : {
-        width : "90%",
-        marginHorizontal : "5%",
+const reminderPlaygroundStyle = ({ primary , baseBorderRadius }) => StyleSheet.create({
+    container : {
         flex: 1,
     },
+    disabledCta :{ 
+        opacity: .5
+    },
+    createCta : {
+        flexDirection : 'row',
+        alignItems : 'center',
+        backgroundColor : generateColor(primary , 5),
+        padding : 15,
+        marginHorizontal : 15,
+        borderRadius : baseBorderRadius,
+        justifyContent : 'center',
+        marginBottom : 20
+    }
 })
 
-const Calender = ({ haveItem , isInCreateMode , setIsInCreateMode }) => {
-    const appendStyle = useStyle(calenderStyle);
-    const { primary } = useStyle()
-    const [valueStore, setValueStore] = useState({});
-    const [wasSuccessfully, setWasSuccessfully] = useState(false);
-
-    const fetcher = useFetch();
-
-    const changeHandler = (key , value) => {
-        setValueStore(prev => ({
-            ...prev,
-            [key] : value
-        }));
-    }
+const Calender = ({ haveItem , isInCreateMode , setIsInCreateMode , items , valueStore , isInSendingProcess , changeHandler , createHandler}) => {
+    const appendStyle = useStyle(calenderStyle , !!haveItem);
+    const { primary , baseBorderRadius } = useStyle()
+        
     
-    
-    const createHandler = () => {
-        const filled = Object.keys(valueStore);
-        if(filled.length > 2) {
-            fetcher("ReminderAdd" , { ...valueStore })
-            .then(({ data }) => {
-                    if(data) {
-                        setWasSuccessfully(true)
-                    }
-                }) 
-        }else {
-            Alert.alert("ورودی ها را به درستی وارد کنید")
-        }
-    }
-    
-    const navigation = useNavigation();
+    const makeNumber = date => Number(dayjs(date).calendar("jalali").locale("fa").format('YYYYMMDD'))
 
-    {/* <View style={appendStyle.createContainer}>
-                        <View style={{ flexDirection : 'row' , justifyContent : 'space-between' , alignItems : 'center' , marginTop : 20 }}>
-                            <DirectionCta onPress={() => setIsInCreateMode(false)} containerBgColor={generateColor(primary , 5)} direction="left" />
-                            <Para size={20} weight="bold">ایجاد یادآور</Para>
-                        </View>
-                        <View style={{ flex : 1 }}>
-                            <ScrollView>
-                                <CategoryPicker selectedItem={valueStore?.category} selectHandler={selectedItem => changeHandler('category' , selectedItem)} />
-                                <DatePickerEnhancedWithTitle value={valueStore?.date} setValue={date => changeHandler("date" , date)} />
-                                <DescriptionInput setValue={value => changeHandler("des" , value)} />
-                            </ScrollView>
-                        </View>
-                        <TouchableOpacity style={appendStyle.createCta} onPress={createHandler}>
-                            <Feather style={{ marginRight : 5 }} name="chevron-left" size={24} color="black" />
-                            <Para weight="bold" size={18}>ثبت یادآور</Para>
-                        </TouchableOpacity>
-                    </View>  */}
-
-
-
+    const nearItem = (() => {
+        if(items.length) {
+            const today = Number(dayjs().calendar("jalali").calendar('jalali').locale('fa').format('YYYYMMDD'))
+            return items.filter(el => makeNumber(el.remindTime) > today).sort((a , b) => makeNumber(a.remindTime) - makeNumber(b.remindTime)).sort((_ , b) => makeNumber(b.remindTime) - today).map(el => ({ ...el , remindTime : dayjs(el.remindTime).calendar("jalali").locale("fa").format("YYYY/MM/DD")}))[0]
+            
+        }else return null
+    })()
 
     return (
 
         <View style={[appendStyle.container, isInCreateMode ? { flex : 1 , marginTop : StatusBar.currentHeight , backgroundColor : generateColor(primary , 2) } : {}]}>
                 <View style={[appendStyle.holder , { left : "10%" }]} />
                     <View style={[appendStyle.holder , { left : "85%" }]} />
-                <View style={appendStyle.topHeader}></View>
+                <View style={appendStyle.topHeader}>
+                    {
+                        isInCreateMode ? <View style={appendStyle.createHeader}>
+                            <DirectionCta onPress={() => setIsInCreateMode(false)} direction="left" containerBgColor={generateColor(primary , 5)} />
+                            <Para weight="bold" size={18}>ایجاد یادآور</Para>
+                        </View> : null
+                    }
+                </View>
                 {
-                    !haveItem ? <View style={appendStyle.createTrigger}>
-                        <TouchableOpacity onPress={() => navigation.navigate("reminderPlayground")} style={{ flexDirection : 'row' , alignItems : 'center'}}>
-                            <Feather style={{ marginRight : 5 }} name="plus" size={24} color="black" />
-                            <Para weight="bold" size={16} >ایجاد یادآور</Para>
-                        </TouchableOpacity>
-                    </View> : null
+                    isInCreateMode ? <ReminderPlayground
+                                        isInSendProcess={isInSendingProcess}
+                                        valueStore={valueStore}
+                                        changeHandler={changeHandler} 
+                                        ctaHandler={createHandler}
+                                        ctaText="ثبت یادآور"
+                                    /> : null
                 }
-                {/* <View style={appendStyle.contentContainer}>
-                    <Para size={18} weight="bold">تعداد کل : </Para>
-                </View> */}
+
+                {
+                    !haveItem && !isInCreateMode?  
+                                <View style={{ flex : 1 }}>
+                                        <EmptyScreen extendStyle={{ with : "100%" }} 
+                                        message="یادآوری وجود ندارد" 
+                                        desc={<View>
+                                                <Para color='grey'>شما هیچ یادآوری تنطیم نکرده اید . </Para>
+                                                <TouchableOpacity onPress={setIsInCreateMode} style={{ flexDirection : "row-reverse" , alignItems : 'center' , justifyContent : 'center' , marginTop : 10 , backgroundColor : generateColor(primary , 2) , borderRadius : baseBorderRadius , padding : 15 }}>
+                                                <Para color={primary}>یادآوری ایجاد کنید</Para>
+                                                <Feather name="plus" size={24} color={primary} />
+                                                </TouchableOpacity>
+                                            </View>} />
+                                </View>
+                             : null
+                }
+                {
+                    haveItem && !isInCreateMode ? (
+                        <>
+                            <View style={[appendStyle.calenderRow , { flexDirection : "column-reverse" , alignItems : 'flex-end' , justifyContent : 'center' }]}>
+                                <View style={{ marginTop : 10}}>
+                                    <View style={{ flexDirection : "row" }}>
+                                        <Para style={{ marginRight : 10 }}>{toFarsiNumber(nearItem.remindTime)}</Para>
+                                        <Para size={16} weight="bold">{nearItem.catName}</Para>
+                                        <View style={appendStyle.divider} />
+                                    </View>
+                                    <Para>{nearItem.description}</Para>
+                                    </View>
+                                <View style={{ flexDirection : 'row' , alignItems : 'center' }}>
+                                    <Para size={18} weight="bold">نزدیک ترین یادآور : </Para>
+                                    <View style={appendStyle.calenderRowIconContainer}>
+                                        <Feather name="chevrons-down" size={20} color="black" />
+                                    </View>
+                                </View>
+                            </View>
+                            <TouchableOpacity onPress={() => setIsInCreateMode(true)} style={appendStyle.createNewReminder}>
+                                <Feather name="plus" size={24} color={generateColor(primary , 8)} />
+                                <Para color={generateColor(primary , 8)} weight="bold">ثبت یادآور جدید</Para>
+                            </TouchableOpacity>
+                        </>
+                    ): null
+                }
         </View>
     )
 }
 
 
-const calenderStyle = ({ primary , baseBorderRadius }) => StyleSheet.create({
+const calenderStyle = ({ primary , baseBorderRadius } , haveItem) => StyleSheet.create({
     container : {
-        height: 250,
+        flex: haveItem ? 0 : 1,
         marginTop : StatusBar.currentHeight + 30 ,
-        backgroundColor : generateColor(primary , 6),
+        backgroundColor : generateColor(primary , haveItem ? 6 : 2),
         borderRadius : baseBorderRadius,
     },
-    createCta : {
-        flexDirection : 'row',
+    createNewReminder : {
+        flexDirection : 'row' , 
+        alignItems : 'center', 
+        justifyContent : 'center' , 
+        paddingVertical : 20 , 
+        borderBottomLeftRadius : baseBorderRadius ,
+        borderBottomRightRadius : baseBorderRadius
+    },
+    calenderRowIconContainer : {
+        backgroundColor : generateColor(primary , 2) , 
+        padding : 10 ,
+        borderRadius : baseBorderRadius,
+        marginLeft : 10,
         alignItems : 'center',
-        backgroundColor : generateColor(primary , 8),
+        justifyContent : 'center'
+    },
+    divider: {
+        width : 25, 
+        height : 2,
+        backgroundColor : primary,
+        alignSelf : 'center',
+        marginHorizontal : 10
+        
+    },
+    calenderRow : {
+        width : "90%",
+        marginHorizontal : "5%",
+        backgroundColor : "white",
+        flexDirection : 'row',
+        justifyContent : 'space-between',
+        alignItems : 'center',
         padding : 15,
         borderRadius : baseBorderRadius,
-        justifyContent : 'center',
-        marginBottom : 20
+        marginTop : 15
     },
-   
-    contentContainer: {
-        padding : 15
+    createHeader : {
+        marginTop : 25,
+        paddingHorizontal : 15,
+        flexDirection : "row",
+        justifyContent : 'space-between',
+        alignItems : 'center',
+        paddingVertical : 10,
+        height: 105
     },
     createTrigger : {
         flexDirection : 'row',
@@ -304,8 +365,8 @@ const calenderStyle = ({ primary , baseBorderRadius }) => StyleSheet.create({
         borderTopLeftRadius : baseBorderRadius,
         borderTopRightRadius : baseBorderRadius,
         width : "100%",
-        height : 65,
-        backgroundColor : generateColor(primary , 8)
+        minHeight : 65,
+        backgroundColor : generateColor(primary , haveItem ? 8 : 6)
     }
 })
 
@@ -313,33 +374,38 @@ const calenderStyle = ({ primary , baseBorderRadius }) => StyleSheet.create({
 const ReminderItem = ({ remindTime , description, catName , deleteHandler , editHandler , id }) => {
     const appendedStyle = useStyle(itemStyle);
     const [controllerActive, setControllerActive] = useState(false);
+    const { primary } = useStyle();
 
-
-    const date = new Persian(remindTime);
     return (
         <View style={appendedStyle.container}>
-            <View style={appendedStyle.dateContainer}>
-                <Para>{new Persian(remindTime).format('YYYY/MM/DD')}</Para> 
-                <View style={appendedStyle.timeline} /> 
+            <View style={{ flexDirection: 'row-reverse' }}>
+                <View style={appendedStyle.dateContainer}>
+                    <Para color={primary}>{toFarsiNumber(dayjs(remindTime).calendar("jalali").locale("fa").format('YYYY/MM/DD'))}</Para> 
+                </View>
+                <View style={appendedStyle.contentContainer}>
+                    <Para size={18} weight="bold">{catName}</Para>
+                    <Para>{description}</Para>
+                </View>
+                <TouchableOpacity onPress={() => setControllerActive(prev => !prev)} style={appendedStyle.controllerTrigger}>
+                    <Feather name={controllerActive ? "x" : 'more-vertical'} size={24} color="#9e9e9e" />
+                </TouchableOpacity>
             </View>
-            <View style={appendedStyle.contentContainer}>
-                <Para size={18} weight="bold">{catName}</Para>
-                <Para>{description}</Para>
-            </View>
-            <TouchableOpacity onPress={() => setControllerActive(prev => !prev)} style={appendedStyle.controllerTrigger}>
-                <Feather name="more-vertical" size={24} color="#9e9e9e" />
-            </TouchableOpacity>
             {
                 controllerActive ? <View style={appendedStyle.controller}>
-                <TouchableOpacity style={[appendedStyle.cta ,{ backgroundColor : generateColor("#CE1212" , 5) }]} onPress={() => deleteHandler(id)}>
+                <TouchableOpacity style={[appendedStyle.cta ,{ backgroundColor : generateColor("#CE1212" , 5) }]} onPress={() => {
+                    setControllerActive(false)
+                    deleteHandler(id)
+                }}>
                     <Feather name="x" size={24} color="#8C0000" />
                 </TouchableOpacity>
-                <TouchableOpacity style={[appendedStyle.cta ,{ backgroundColor : generateColor("#8E9775" , 5) }]} onPress={() => editHandler(id)}> 
+                <TouchableOpacity style={[appendedStyle.cta ,{ backgroundColor : generateColor("#8E9775" , 5) }]} onPress={() => {
+                    setControllerActive(false)
+                    editHandler(id)
+                }}> 
                     <Feather name="edit-2" size={24} color="#4A503D" />
                 </TouchableOpacity>
                 </View> : null
             }
-            
         </View>
     )
 }
@@ -347,24 +413,29 @@ const ReminderItem = ({ remindTime , description, catName , deleteHandler , edit
 
 const itemStyle = ({ primary , baseBorderRadius }) => StyleSheet.create({
     container : {
-        flexDirection : 'row-reverse',
+        // flexDirection : 'row-reverse',
         alignItems : 'center',
         justifyContent : 'space-between',
-        marginVertical : 15,
-        marginTop : 25,
-        marginBottom : 15
+        paddingVertical : 15,
     },
     controller : {
         flexDirection : "row",
-
+        justifyContent : 'space-between',
+        marginTop : 10,
+        width : '100%'
     },
     dateContainer : {
         backgroundColor : generateColor(primary , 5),
         borderRadius : baseBorderRadius,
         padding : 15,
-        flexDirection : "row"
+        alignItems :'center',
+        justifyContent : 'center',
+        flexDirection : "row",
+        height: '100%'
     },
     controllerTrigger : {
+        alignItems : 'center',
+        justifyContent : 'center',
         backgroundColor :"#eeeceb",
         padding:  15,
         borderRadius : baseBorderRadius
@@ -374,18 +445,12 @@ const itemStyle = ({ primary , baseBorderRadius }) => StyleSheet.create({
         marginRight : 10
     },
     cta : {
+        width : "49%",
+        alignItems : 'center',
         padding: 15,
         borderRadius : baseBorderRadius,
-        marginHorizontal : 5
+        // marginHorizontal : 5
     },
-    timeline : {
-        width : 5,
-        height :40,
-        backgroundColor : generateColor(primary , 5),
-        position: 'absolute',
-        left: "60%",
-        top: "-140%"
-    }
 })
 
 const Reminder = () => {
@@ -394,9 +459,13 @@ const Reminder = () => {
     const [refresh, setRefresh] = useState(false);
     const [drawerOpen, setDrawerOpen] = useState(false);
 
+    const [isInSendingProcess, setIsInSendingProcess] = useState(false);
+
+    const [wasSuccessfully, setWasSuccessfully] = useState(false);
+
     const [isInCreateMode, setIsInCreateMode] = useState(false);
 
-    const [tempEditReminder, setTempEditReminder] = useState({});
+    const [valueStore, setValueStore] = useState({});
 
     const fetcher = useFetch()
 
@@ -411,13 +480,76 @@ const Reminder = () => {
     } , [])
 
 
+    const changeHandler = (key , value) => {
+        setValueStore(prev => ({
+            ...prev,
+            [key] : value
+        }));
+    }
 
     const editHandler = id => {
-        setTempEditReminder(prev => ({
-            ...prev,
-            id
-        }))
+        const { catName : category , description : des , remindTime : date } = reminderData.find(el => el.id === id);
+        const persianDate = dayjs(date).calendar("jalali").locale("fa").format("YYYY/MM/DD")
+        setValueStore({ id , category , des , date : persianDate })
+
         setDrawerOpen(true);
+    }
+
+    const resetHandler = () => {
+        setValueStore({});
+        setIsInCreateMode(false)
+        setIsInSendingProcess(false);
+    }
+
+    const createHandler = () => {
+        const filled = Object.keys(valueStore);
+
+        if(filled.length > 2) {
+            const selectedDate = Number(valueStore.date.split("/").join(""));
+            const now = Number(dayjs().calendar("jalali").locale("fa").format("YYYYMMDD"));
+            if(selectedDate <= now) {
+                Alert.alert("تاریخ یادآور انتخاب شده صحیح نیست" , " تاریخی جلوتر از تاریخ امروز انتخاب کنید" , [
+                    {
+                        text : "تایید",
+                        onPress : () => {}
+                    }
+                ])
+            }else {
+                setIsInSendingProcess(true);
+                fetcher("ReminderAdd" , { ...valueStore })
+                .then(({ data }) => {
+                        if(data) {
+                            fetcher("ReminderGet")
+                                .then(({ data }) => {
+                                    setReminderData(data)
+                                    setWasSuccessfully(true);
+                                    resetHandler()
+                                })
+                        }
+                    }) 
+            }
+        }else {
+            Alert.alert("ورودی ها را به درستی وارد کنید")
+        }
+    }
+
+
+
+    const editReqHandler = () => {
+        fetcher("EditReminder" , valueStore)  
+            .then(() => {
+                fetcher("ReminderGet")
+                    .then(({ data }) => {
+                            setDrawerOpen(false)
+                            setValueStore({})
+                            setReminderData(data)
+                            setRefresh(true);
+                            let timer = setTimeout(() => {
+                                setRefresh(false)
+                                clearTimeout(timer);
+                            } , 1500);
+                    })
+            })
     }
 
     const deleteHandler = id => {
@@ -438,45 +570,83 @@ const Reminder = () => {
     }
 
     return loading ? <Loading /> : (
+        <>
         <View style={appendStyle.container}>
-            <Calender setIsInCreateMode={setIsInCreateMode} isInCreateMode={isInCreateMode} haveItem={reminderData.length} />
+            <Calender
+                createHandler={createHandler}
+                changeHandler={changeHandler}
+                isInSendProcess={isInSendingProcess}
+                setIsInSendingProcess={setIsInSendingProcess}
+                valueStore={valueStore} 
+                setValueStore={setValueStore} 
+                setItems={setReminderData} 
+                items={reminderData} 
+                setWasSuccessfully={setWasSuccessfully} 
+                setIsInCreateMode={setIsInCreateMode} 
+                isInCreateMode={isInCreateMode} 
+                haveItem={reminderData.length} />
             {
-                !isInCreateMode ? <ScrollView contentContainerStyle={{flex : 1 }}>
+                !isInCreateMode ? <ScrollView contentContainerStyle={{flex : 0 }}>
                 {
-                    reminderData.length ? reminderData.map((el , i) => <ReminderItem deleteHandler={deleteHandler} editHandler={editHandler} key={i} {...el}  />) : <View style={{ flex : 1}}><EmptyScreen extendStyle={{ with : "100%" }} message="یادآوری وجود ندارد" desc={<TouchableOpacity onPress={setIsInCreateMode}><Para color='grey'>شما هیچ یادآوری تنطیم نکرده اید . یادآوری ایجاد کنید</Para></TouchableOpacity>} /></View>
+                    reminderData.length ? reminderData.map((el , i) => <ReminderItem deleteHandler={deleteHandler} editHandler={editHandler} key={i} {...el}  />) : null
                 }
             </ScrollView> : null
+            }
+           
+        </View>
+            {
+                wasSuccessfully ? <Drawer onDone={() => setWasSuccessfully(false)} onClose={() => setWasSuccessfully(false)}>
+                    <View style={{ height : "100%" , alignItems : 'center' , justifyContent : 'space-between'}}>
+                        <View style={appendStyle.successBadge}>
+                            <Feather name="check" size={24} color="#4A503D" />
+                        </View>
+                        <Para size={18} align="center" weight="bold">یادآور با موفقیت ثبت شد</Para>
+                        <TouchableOpacity onPress={() => setWasSuccessfully(false)} style={appendStyle.drawerCta}>
+                            <Para align="center" size={17} weight="bold">تایید</Para>
+                        </TouchableOpacity>
+                    </View>
+                </Drawer> : null
             }
             {
                 refresh ? <RefreshAlert /> : null
             }
             {
-                drawerOpen ? <Drawer onCancel={() => setDrawerOpen(false)} title="ویرایش یادآور">
-
+                drawerOpen ? <Drawer extendStyle={{ flex : 2.5 }} onClose={() => {
+                    setDrawerOpen(false)
+                    resetHandler()
+                }} onCancel={() => {
+                    setDrawerOpen(false)
+                    resetHandler()
+                }} title="ویرایش یادآور">
+                    <ReminderPlayground valueStore={valueStore} changeHandler={changeHandler} ctaText="ویرایش یادآور" ctaHandler={editReqHandler} isInSendProcess={isInSendingProcess}  />
                 </Drawer> : null
-            }
-        </View>
+            } 
+        </>
     )
 }
 
 
-const style = () => StyleSheet.create({
+const style = ({ primary , baseBorderRadius }) => StyleSheet.create({
     container : {
         width : "90%",
         marginHorizontal : "5%",
-        flex: 1
+        flex: 1,
+    },
+    drawerCta : {
+        width : "90%",
+        marginHorizontal : "5%",
+        backgroundColor : generateColor(primary , 5),
+        borderRadius : baseBorderRadius,
+        padding : 15
+    },
+    successBadge : {
+        width : 65 , height : 65 , backgroundColor : '#B5CDA3' , alignItems : 'center' , justifyContent : 'center',
+        borderRadius : baseBorderRadius,
+        marginTop : -60
     }
 })
 
 
 
-const Stack = createStackNavigator();
 
-const ReminderNavigation = () => (
-    <Stack.Navigator screenOptions={{ headerShown : false }}>
-        <Stack.Screen name="reminderIndex" component={Reminder} />
-        <Stack.Screen name="reminderPlayground" component={ReminderPlayground} />
-    </Stack.Navigator>
-)
-
-export default ReminderNavigation;
+export default Reminder;

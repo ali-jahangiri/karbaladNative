@@ -12,7 +12,7 @@ const Drawer = ({ children , extendStyle , onCancel , onDone , title , showContr
         <View style={appendStyle.container}>
             <TouchableOpacity activeOpacity={1} onPress={onClose} style={appendStyle.overlay} />
             <View style={appendStyle.content}>
-            <Para align="center" weight="bold" size={18}>{title}</Para>
+            <Para style={{ marginTop : 20 }} align="center" weight="bold" size={18}>{title}</Para>
                 <View style={{ flex : 1 }}>
                     {children}
                 </View>

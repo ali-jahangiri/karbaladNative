@@ -1,4 +1,6 @@
-import Persian from "persian-date";
+import dayjs from "dayjs";
+import jalaliday from "jalaliday"
+dayjs.extend(jalaliday)
 
 var
 persianNumbers = [/۰/g, /۱/g, /۲/g, /۳/g, /۴/g, /۵/g, /۶/g, /۷/g, /۸/g, /۹/g],
@@ -35,9 +37,8 @@ const objectDateToString = object => {
 }
 
 const persianDate = (() => {
-  const trustedDate = new Persian();
-
-    const now = fixNumbers(trustedDate.format("YYYY/MM/DD"))
+    
+    const now = dayjs().calendar("jalali").locale("fa").format("YYYY/MM/DD")
     const currentYears = Number(now.slice(0 , now.indexOf('/')));
     const year = [...Array(50).keys()].map((_ , i) => currentYears - i) 
     const month = [...Array(13).keys()];
@@ -50,7 +51,7 @@ const persianDate = (() => {
         day , 
         currentYears,
         now,
-        dateInstance : `${fixNumbers(trustedDate.format("YYYY"))}/1/1`,
+        dateInstance : `${fixNumbers(dayjs().calendar("jalali").locale("fa").format("YYYY"))}/1/1`,
         stringDateToObject,
         objectDateToString
     }

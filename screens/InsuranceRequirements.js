@@ -110,14 +110,14 @@ const InsuranceRequirements = ({ route : { params } , navigation }) => {
 
         if(currentStage + 1 === stageList.length) return goToPaymentHandler();
 
-        if(isValidToGoNextStage) {
-            setCurrentStage(prev => prev + 1);
-            setIsValidToGoNextStage(false);
-        }else {
-            Alert.alert("مراحل را تکمیل نمایید" , null , [
-                {text : "بستن" , onPress(){}}
-            ])
-        }
+        setCurrentStage(prev => prev + 1);
+        setIsValidToGoNextStage(false);
+        // if(isValidToGoNextStage) {
+        // }else {
+        //     Alert.alert("مراحل را تکمیل نمایید" , null , [
+        //         {text : "بستن" , onPress(){}}
+        //     ])
+        // }
     }
 
 
@@ -140,6 +140,7 @@ const InsuranceRequirements = ({ route : { params } , navigation }) => {
         setInInsRecord(true);
         fetcher("GetRequirements" , sendObject)
                 .then(({ data }) => {
+                    console.log(data , '.................................................');
                     setError(null);
                         if(!data.hasData) {
                             // TODO handle this case , for now i throw a err
@@ -177,7 +178,7 @@ const InsuranceRequirements = ({ route : { params } , navigation }) => {
             </ScrollView>
         </View>
         <View style={appendStyle.ctaContainer}>
-            <Btn disabled={inInsRecord || !isValidToGoNextStage} bgAlpha={null} onPress={nextStepHandler} extendStyle={{ flex : 1  }} title={inInsRecord ? "در حال ارسال..." :  currentStage + 1 === stageList.length ? 'اتمام' : "بعدی"} />
+            <Btn bgAlpha={null} onPress={nextStepHandler} extendStyle={{ flex : 1  }} title={inInsRecord ? "در حال ارسال..." :  currentStage + 1 === stageList.length ? 'اتمام' : "بعدی"} />
             {!!currentStage && 
                 <Btn disabled={inInsRecord} bgAlpha={null} 
                     extendStyle={{ flex : .5 , marginLeft : 10 }} 

@@ -1,6 +1,8 @@
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View } from 'react-native';
+import dayjs from "dayjs";
+import jalaliday from "jalaliday";
 
 import Router from './Router/Router';
 
@@ -18,6 +20,8 @@ import myStore from './Store/myStore';
 import config from './config';
 import OfflineProvider from './Providers/OfflineProvider/OfflineProvider';
 
+
+dayjs.extend(jalaliday);
 
 export default function App() {
   return (

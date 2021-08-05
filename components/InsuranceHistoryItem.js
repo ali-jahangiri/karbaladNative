@@ -1,16 +1,16 @@
 import React from 'react';
 import { Image, StyleSheet, View } from 'react-native';
 import { useStyle } from '../Hooks/useStyle';
-import Persian from "persian-date";
 
 
-import { generateColor , imageFinder, statusChecker} from '../utils';
+import { generateColor , imageFinder, statusChecker, toFarsiNumber} from '../utils';
 
 import Para from './Para';
 
 import DirectionCta from './DirectionCta';
 import { useNavigation } from '@react-navigation/core';
 
+import dayjs from 'dayjs';
 
 const InsuranceHistoryItem = props => {
     const { categorysFullName , createTime ,  insuranceCoName , factorModeId , iconUrl , id} = props;
@@ -20,7 +20,7 @@ const InsuranceHistoryItem = props => {
     
     const navigation = useNavigation()
     
-    const now = new Persian(createTime);
+    const now = dayjs(createTime).calendar("jalali").locale("fa").format("YYYY/MM/DD")
     
     const pressHandler = () => {
         navigation.navigate('insuranceHistoryDetails' , { id })
@@ -32,7 +32,7 @@ const InsuranceHistoryItem = props => {
             <View style={{ flex: .8 }}>
                 <Para size={14} weight="bold">{categorysFullName}</Para>
                 <View style={appendStyle.detailContainer}>
-                    <Para color="grey">{now.format("YYYY/MM/DD")}</Para>
+                    <Para color="grey">{toFarsiNumber(now)}</Para>
                     <View style={appendStyle.divider} />
                     <Para>{insuranceCoName}</Para>
                 </View>

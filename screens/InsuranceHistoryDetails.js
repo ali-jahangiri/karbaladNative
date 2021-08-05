@@ -5,8 +5,9 @@ import { useStyle } from '../Hooks/useStyle';
 import { generateColor, imageFinder, statusChecker, toFarsiNumber } from '../utils';
 import Para from '../components/Para';
 import TabScreenHeader from '../components/TabScreenHeader';
-import PersianDate from "persian-date";
 import { useSelector } from '../Store/Y-state';
+
+import dayjs from 'dayjs';
 
 import Loading from "../components/Loading"
 import useFetch from '../Providers/useFetch';
@@ -61,10 +62,10 @@ const InsDetailsView = ({ details }) => {
     
     const { iconUrl  = "", createTime  = "", factorModeId  = "", categorysFullName = "" , insImages  = "", nCode = "" , reciverName  = "", reciverFamily = "" , mobile = "" ,areasFullName = "" , reciverPhone  = "", reciverMobile = "" ,factorItems = "", exactAddress = "" , genders = "" , id  = "", birthDay = "", showCta = true , name = "" , stringAmunt } = details;
     const { color : statusColor , title : statusTitle , icon : statusIcon } = statusChecker(factorModeId);
-    
+
     const appendStyle = useStyle(style , statusColor);
 
-    const currentCreateTime = new PersianDate(createTime).format("YYYY/MM/DD");
+    const currentCreateTime = dayjs(createTime).calendar("jalali").locale('fa').format("YYYY/MM/DD");
 
     const pressHandler = () => {
         if(factorModeId >= 3) navigation.navigate("insuranceHistoryImages" , { insImages , id , insuranceCoName , categorysFullName })
@@ -105,7 +106,7 @@ const InsDetailsView = ({ details }) => {
                                     </View>
                                     <View style={appendStyle.column}>
                                         <Para style={appendStyle.label}>تاریخ ثبت</Para>
-                                        <Para size={16}>{currentCreateTime}</Para>
+                                        <Para size={16}>{toFarsiNumber(currentCreateTime)}</Para>
                                     </View>
                                     <View style={appendStyle.column}>
                                         <Para style={appendStyle.label}>شماره پیگیری</Para>
