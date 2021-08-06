@@ -137,10 +137,11 @@ const InsuranceRequirements = ({ route : { params } , navigation }) => {
         };
 
 
+        console.log(sendObject , "targeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeey");
+
         setInInsRecord(true);
         fetcher("GetRequirements" , sendObject)
                 .then(({ data }) => {
-                    console.log(data , '.................................................');
                     setError(null);
                         if(!data.hasData) {
                             // TODO handle this case , for now i throw a err

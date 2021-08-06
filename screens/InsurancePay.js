@@ -96,16 +96,17 @@ const InsurancePay = ({ navigation , route : { params : { id } } }) => {
                         setIsInsidePaymentProcess(false);
                         navigation.navigate("insurance" , { comeFromPayment : true })
                     })
-                    .catch(_ => {
-                        setIsInsidePaymentProcess(false);
-                        Alert.alert("", "امکان ورود به مرورگر وجود ندارد.مجددا تلاش کنید" , [
-                            {
-                                text : "تایید",
-                                onPress : () => {}
-                            }
-                        ])
-                    })
+                }else {
+                    throw new Error('')
                 }
+            }).catch(_ => {
+                setIsInsidePaymentProcess(false);
+                Alert.alert("", "مشکلی  در پروسه انتقال به درگاه رخ داد . مجددا تلاش کنید" , [
+                    {
+                        text : "تایید",
+                        onPress : () => {}
+                    }
+                ])
             })
     }
 
@@ -114,7 +115,7 @@ const InsurancePay = ({ navigation , route : { params : { id } } }) => {
             <View style={appendStyle.header}>
                 <TouchableOpacity style={appendStyle.moreNavigator} onPress={goToMoreDetailsScreenHandler}>
                     <Feather name="chevron-left" size={24} color={primary} />
-                    <Para size={16} color={primary}>جزئیات بیمه نامه</Para>
+                    <Para size={16} color={primary}>جزئیات</Para>
                 </TouchableOpacity>
                 <Para size={18} weight="bold">تایید و پرداخت نهایی</Para>
             </View>

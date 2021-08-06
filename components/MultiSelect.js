@@ -28,7 +28,7 @@ const MultiSelect = ({ values = [], onChange , items = [] }) => {
                 
                 items.map((el , i) => (
                     <TouchableOpacity style={appendStyle.itemContainer} onPress={() => selectHandler(el)} key={i}>
-                        <View style={[appendStyle.statusBullet , { backgroundColor : values.find(item => item === el.id) ? generateColor(primary , 5) : '#D1D9D9' }]} >
+                        <View style={[appendStyle.statusBullet , { backgroundColor : values.find(item => item === el.id) ? generateColor(primary , 5) : '#efefef' }]} >
                             {
                                 values.find(item => item === el.id) && <Feather name="check" size={24} color={primary} />
                             }
@@ -52,7 +52,7 @@ const style = ({ primary , baseBorderRadius }) => StyleSheet.create({
         marginVertical : 10
     },  
     statusBullet : {
-        borderRadius : baseBorderRadius -5 ,
+        borderRadius : baseBorderRadius ,
         width: 40,
         height: 40,
         backgroundColor :  generateColor(primary , 5),

@@ -10,7 +10,9 @@ const SelectBoxItem = ({ onSelect , value , children , selectedInStore}) => {
     return (
         <TouchableOpacity style={appendStyle.container} onPress={() => onSelect(value)}>
             <Para style={appendStyle.text} size={16}>{toFarsiNumber(`${children}`.trim())}</Para>
-            <View style={appendStyle.statusBullet} />
+            <View style={appendStyle.statusBullet} >
+                <View style={appendStyle.emptySpace} />
+            </View>
         </TouchableOpacity>
     )
 }
@@ -22,18 +24,26 @@ const style = ({ primary , baseBorderRadius  } , selectedInStore) => StyleSheet.
         flexDirection : 'row',
         justifyContent : 'center',
         padding: 20,
-        height: 70
+        height: 70,
+        marginRight : -20
     },
     statusBullet : {
-        borderRadius : baseBorderRadius -5 ,
-        width: 10,
-        height: 10,
+        borderRadius : baseBorderRadius ,
+        width: 20,
+        height: 20,
         backgroundColor : selectedInStore ?  generateColor(primary , 5) : "white",
         marginLeft : 10,
-        marginBottom : -3
+        alignItems : 'center',
+        justifyContent : 'center'
     },
     text : {
         color: selectedInStore ? primary : "black",
+    },
+    emptySpace : {
+        backgroundColor : "white",
+        borderRadius : baseBorderRadius,
+        height : 6,
+        width : 6,
     }
 })
 

@@ -131,7 +131,7 @@ const InsuranceQuickEdit = ({ navigation , route : { params } }) => {
                 // if we have a change in temp value , then we gonna see controller ( confirmChange )
                 Object.values(tempState).length ? <TouchableOpacity style={appendStyle.newResultCta} onPress={getNewResultHandler}>
                             <Feather style={{ marginRight : 10 }} name="arrow-left" size={24} color="black" />
-                            <Para weight="bold" align="center">استعلام مجدد</Para>
+                            <Para size={16} weight="bold" align="center">استعلام مجدد</Para>
                         </TouchableOpacity> : null
             }
             {

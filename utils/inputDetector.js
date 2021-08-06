@@ -53,7 +53,7 @@ const InputDetector = ({typesName , isCarCase , temporary : { value , setValue }
                 if(formData.length > 50) return (
                     <React.Fragment>
                         <SearchBox
-                            placeholder="نام خودرو موردنظر را جستجو کنید" 
+                            placeholder="عبارت موردنظر را جستجو کنید" 
                             value={value.searchFilterBase} 
                             onChange={value => setValue({key : 'searchFilterBase' , value})} />
                         <SelectBoxOptimized
@@ -90,7 +90,7 @@ const InputDetector = ({typesName , isCarCase , temporary : { value , setValue }
             return (
                 <InputNumber 
                     isNotLimited={!maxNumber} 
-                    length={{ max : maxNumber || 100000000 , min : minNumber ||0 }} 
+                    length={{ max : maxNumber || 100000000 , min : minNumber || 0 }} 
                     stepForEachOperation={step || 10000} 
                     value={value[formName] || 0} 
                     onChange={setValue} />

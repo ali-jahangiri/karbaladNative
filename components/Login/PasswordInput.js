@@ -6,8 +6,8 @@ import { generateColor } from '../../utils';
 import { Feather } from '@expo/vector-icons';
 
 
-const PasswordInput = ({ value , changeHandler , placeholder , autoFocus = false , eyeEnable }) => {
-    const appendStyle = useStyle(passwordInputStyle)
+const PasswordInput = ({ value , changeHandler , placeholder , autoFocus = false , eyeEnable , fontSize }) => {
+    const appendStyle = useStyle(passwordInputStyle , fontSize);
     const [passInVisible, setPassInVisible] = useState(true);
     
     return (
@@ -31,7 +31,7 @@ const PasswordInput = ({ value , changeHandler , placeholder , autoFocus = false
     )
 }
 
-const passwordInputStyle = ({ primary , baseBorderRadius }) => StyleSheet.create({
+const passwordInputStyle = ({ primary , baseBorderRadius } , fontSize) => StyleSheet.create({
     container : {
         borderColor : generateColor(primary , 5) , 
         borderWidth : 2,
@@ -41,7 +41,7 @@ const passwordInputStyle = ({ primary , baseBorderRadius }) => StyleSheet.create
         justifyContent : 'space-between'
     },
     input : {
-        fontSize : 20,
+        fontSize : fontSize || 20,
         padding: 15,
         fontFamily : "bold",
     },

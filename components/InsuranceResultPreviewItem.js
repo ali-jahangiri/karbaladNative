@@ -100,8 +100,7 @@ const style = ({ primary , baseBorderRadius } , haveInstallment) => StyleSheet.c
         marginTop : 20
     },
     price : {
-        flexDirection : 'row',
-        alignItems : 'center',
+        alignItems : 'flex-start',
         flex: 1,
     },
     percentageContainer : {

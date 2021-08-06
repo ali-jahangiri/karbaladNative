@@ -14,23 +14,29 @@ const RefreshAlert = ({ position }) => {
     const { primary } = useStyle();
     return (
         <View style={appendStyle.container}>
-            <MaterialCommunityIcons style={{ marginRight : 10 }} name="star-four-points-outline" size={24} color={generateColor(primary , 8)} />
-            <Para color={primary}>{client.static.REFRESH_ALERT_TEXT}</Para>
+            <View style={appendStyle.innerContainer}>
+                <MaterialCommunityIcons style={{ marginRight : 10 }} name="star-four-points-outline" size={24} color={generateColor(primary , 8)} />
+                <Para color={primary}>{client.static.REFRESH_ALERT_TEXT}</Para>
+            </View>
         </View>
     )
 }
 
-const style = ({ primary , baseBorderRadius } , position) => StyleSheet.create({
+const style = ({ primary , baseBorderRadius }) => StyleSheet.create({
     container  : {
-        flexDirection : 'row',
         position: 'absolute',
         bottom: 0,
-        borderRadius : baseBorderRadius,
         left: 0,
-        width: "60%",
-        marginHorizontal : "20%",
+        width: "50%",
+        marginHorizontal : "25%",
+        backgroundColor : 'white',
+        borderRadius : baseBorderRadius,
+    },
+    innerContainer: {
+        flexDirection : 'row',
         padding: 15,
-        backgroundColor : generateColor(primary , 1),
+        borderRadius : baseBorderRadius,
+        backgroundColor : generateColor(primary , 2),
         justifyContent : 'center',
         alignItems : 'center'
     }

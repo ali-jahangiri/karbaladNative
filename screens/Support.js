@@ -187,6 +187,7 @@ const messageInputStyle = ({ primary , baseBorderRadius , ctaTextColor }) => Sty
     },
     sendTriggerContainer : {
         padding: 15,
+        height : "100%",
         backgroundColor : "#2222",
         paddingLeft : 25 ,
         flexDirection : "row",

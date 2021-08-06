@@ -32,7 +32,7 @@ const InsDetailsPay = ({ iconUrl , id , createTime , categorysFullName , insuran
                 </View>
                 <View>
                     <Para color="grey">تاریخ ثبت </Para>
-                    <Para size={16}>{date.format('YYYY/MM/DD')}</Para>
+                    <Para size={16}>{toFarsiNumber(date)}</Para>
                 </View>
             </View>
         </View>
