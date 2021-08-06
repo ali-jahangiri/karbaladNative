@@ -56,21 +56,13 @@ const InsuranceRequirements = ({ route : { params } , navigation }) => {
                 setDocItems(data);
                 setAreas(data.areas);
                 setLoading(false)
-                
             })
-    } , [])
-    
-    useEffect(() => {
-        if(docItems) {
-            dispatch(() => setTabBarState('#171717'))
-            StatusBar.setBarStyle('light-content');
-        }
     } , [])
     
     const isFocused = useIsFocused();
 
     useEffect(() => {
-        if(docItems) {
+        if(docItems && !loading) {
             if(!isFocused) {
                 dispatch(() => setTabBarState("transparent"))
                 StatusBar.setBarStyle("dark-content");
@@ -79,7 +71,7 @@ const InsuranceRequirements = ({ route : { params } , navigation }) => {
                 StatusBar.setBarStyle('light-content');
             }
         }
-    } , [isFocused])
+    } , [isFocused , loading])
 
     const intro = docItems?.moneyInfo?.installment && <RequirementInstallmentIntro setIsValid={setIsValidToGoNextStage} data={docItems.moneyInfo} />
 
@@ -121,10 +113,6 @@ const InsuranceRequirements = ({ route : { params } , navigation }) => {
     }
 
 
-    // console.log('static' , staticStore );
-    // console.log('dynamic' , dynamicStore);
-
-    
     const comeBackHomeHandler = () => navigation.navigate("home")
 
     const goToPaymentHandler = () => {
@@ -135,9 +123,6 @@ const InsuranceRequirements = ({ route : { params } , navigation }) => {
             factorId : docItems.factorCode ,
             request : JSON.stringify(dynamicStore)
         };
-
-
-        console.log(sendObject , "targeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeey");
 
         setInInsRecord(true);
         fetcher("GetRequirements" , sendObject)
@@ -155,9 +140,6 @@ const InsuranceRequirements = ({ route : { params } , navigation }) => {
                     setError(err.message);
                 })
     }
-
-
-    // navigation.reset({ index  : 0 , routes : [{ name : "home" }]  })
 
     return loading ? <Loading /> 
     : <View style={appendStyle.container}>
