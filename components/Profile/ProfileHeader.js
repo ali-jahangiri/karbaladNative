@@ -2,13 +2,19 @@ import { Feather } from '@expo/vector-icons';
 import React from 'react';
 import { Image, StatusBar, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useStyle } from '../../Hooks/useStyle';
+import { setAppKey } from '../../Store/Slices/authSlice';
+import { setTabBarState } from '../../Store/Slices/uiSlice';
+import { useDispatch } from '../../Store/Y-state';
 import { generateColor, persister } from '../../utils';
 import Para from '../Para';
 
 const ProfileHeader = ({ userData }) => {
     const appendStyle = useStyle(style);
-    
+    const storeDispatcher = useDispatch();
+
+
     const logoutHandler = () => {
+        storeDispatcher(() => setTabBarState("transparent"));
         persister
             .remove('userPrivateKey')
                 .then(_ => {

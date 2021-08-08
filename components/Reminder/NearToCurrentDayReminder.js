@@ -27,8 +27,7 @@ const NearToCurrentDayReminder = ({ items }) => {
                     <View style={{ flexDirection : "row" }}>
                         <Para style={{ marginRight : 10 }}>{toFarsiNumber(nearItem.remindTime)}</Para>
                         <Para size={16} weight="bold">{nearItem.catName}</Para>
-                        <View style={appendStyle.divider} />
-                    </View>
+                        </View>
                     <Para>{nearItem.description}</Para>
                     </View>
                 <View style={{ flexDirection : 'row' , alignItems : 'center' }}>
@@ -63,13 +62,7 @@ const style = ({ primary , baseBorderRadius }) => StyleSheet.create({
         alignItems : 'center',
         justifyContent : 'center'
     },
-    divider: {
-        width : 25, 
-        height : 2,
-        backgroundColor : primary,
-        alignSelf : 'center',
-        marginHorizontal : 10
-    },
+
 })
 
 export default NearToCurrentDayReminder;
