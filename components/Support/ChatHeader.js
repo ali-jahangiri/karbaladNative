@@ -14,7 +14,7 @@ const ChatHeader = ({ getRefreshed , haveBugBadge }) => {
 
     const iconRenderChecker = () => {
         if(haveBugBadge) return <Feather name="info" size={24} color="#5e61ce" />
-        else getRefreshed ? <MaterialCommunityIcons name="star-four-points-outline" size={25} color={'#C9D8B6'} /> : <SimpleLineIcons name="support" size={25} color={generateColor(primary , 9)} />
+        else return getRefreshed ? <MaterialCommunityIcons name="star-four-points-outline" size={25} color={'#C9D8B6'} /> : <SimpleLineIcons name="support" size={25} color={generateColor(primary , 9)} />
     }
 
     return (

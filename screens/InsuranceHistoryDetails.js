@@ -78,41 +78,35 @@ const InsDetailsView = ({ details }) => {
             <ScrollView>
                 <View>
                     <View style={appendStyle.imageContainer}>
-                        <View style={{ maxWidth : "75%" , minWidth : "50%" }}>
-                            <View style={appendStyle.statusContainer}>
-                            <Para style={appendStyle.statusText}>{statusTitle}</Para>
-                                <View style={appendStyle.statusIconContainer}>
-                                    {
-                                        statusIcon
-                                    }
-                                </View>
-                            </View>
-                        </View>
                         <View style={{ alignItems : 'flex-end' , flex: 1 }}>
-                            <View >
-                                <Image resizeMode="contain" source={{
+                            <View style={{ borderColor : statusColor , borderWidth : 2 , borderRadius : 45 , alignItems : 'center' , justifyContent : 'center' }}>
+                                <Image style={{ borderRadius : 45 , overflow : "hidden" }} resizeMode="contain" source={{
                                     uri : imageFinder(iconUrl),
                                     height: 90,
                                     width: 90
                                     }} />
                                 </View>
                         </View>
+                        <View style={appendStyle.mainDetail}>
+                            <Para align="center" style={{ marginTop : 20 , marginBottom : 10 }} weight="bold" size={18}>{categorysFullName}</Para>
+                            <View style={appendStyle.column}>
+                                <Para color="grey">تاریخ</Para>
+                                <Para size={16}>{toFarsiNumber(currentCreateTime)}</Para>
+                            </View>
+                            <View style={appendStyle.column}>
+                                <Para color="grey">شماره پیگیری</Para>
+                                <Para size={16}>{id}</Para>
+                            </View>
+                            <View style={appendStyle.column}>
+                                <Para color="grey">وضعیت</Para>
+                                <View style={appendStyle.statusContainer}>
+                                    <Para weight="bold" color={statusColor} size={14}>{statusTitle}</Para>
+                                    <View style={{ marginLeft : 5 }}>{statusIcon}</View>
+                                </View>
+                            </View>
+                        </View>
                     </View>
                         <View style={appendStyle.detailsContainer}>
-                            
-                                    <View style={appendStyle.column}>
-                                                <Para style={appendStyle.label}>رشته بیمه</Para>
-                                                <Para style={{ flex : .9}} size={16}>{categorysFullName}</Para>
-                                    </View>
-                                    <View style={appendStyle.column}>
-                                        <Para style={appendStyle.label}>تاریخ ثبت</Para>
-                                        <Para size={16}>{toFarsiNumber(currentCreateTime)}</Para>
-                                    </View>
-                                    <View style={appendStyle.column}>
-                                        <Para style={appendStyle.label}>شماره پیگیری</Para>
-                                        <Para size={16}>{id}</Para>
-                                    </View>
-                                    
                             <Para style={appendStyle.label}>مشخصات تحویل گیرنده</Para>
                             <ListViewRow title="نام و نام خانوادگی" value={`${reciverName} ${reciverFamily}`} />
                             <ListViewRow title="منطقه" value={areasFullName} />
@@ -172,11 +166,11 @@ const InsuranceHistoryDetails = () => {
 
 const style = ({ primary , secondary , baseBorderRadius } , statusColor) => StyleSheet.create({
     statusContainer : {
-        flexDirection : 'row',
-        overflow: "hidden",
-        justifyContent : 'space-between',
+        flexDirection : "row",
         alignItems : 'center',
-        borderRadius: baseBorderRadius,
+        justifyContent : 'center',
+        padding : 10,
+        borderRadius : baseBorderRadius,
         backgroundColor : statusColor
     },
     statusIconContainer : {
@@ -191,7 +185,7 @@ const style = ({ primary , secondary , baseBorderRadius } , statusColor) => Styl
         marginLeft : 20
     },
     imageContainer : {
-        flexDirection : "row",
+        // flexDirection : "row",
         alignItems : 'center',
         marginVertical : 20,
         width: "90%",
@@ -218,7 +212,11 @@ const style = ({ primary , secondary , baseBorderRadius } , statusColor) => Styl
         flexDirection : 'row-reverse',
         alignItems : 'center',
         justifyContent : 'space-between',
-
+        marginVertical : 5,
+        
+    },
+    mainDetail : {
+        width : "100%",
     },
     row : {
         width: "48%"

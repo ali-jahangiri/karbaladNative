@@ -53,9 +53,9 @@ const Support = () => {
                     .then(_ => {
                         setGetRefreshed(true)
                         let timeoutTimer = setTimeout(() => {
-                            // setGetRefreshed(false);
+                            setGetRefreshed(false);
                             clearTimeout(timeoutTimer)
-                        } , 1000)
+                        } , 3000)
                     })
             } , 60000);
         }
