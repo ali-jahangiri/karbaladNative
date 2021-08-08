@@ -21,6 +21,7 @@ import ProfileClineVersion from '../components/Profile/ProfileClientVersion';
 import RefreshAlert from '../components/RefreshAlert';
 import { useDispatch } from '../Store/Y-state';
 import { setTabBarState } from '../Store/Slices/uiSlice';
+import { SupportFeedBack } from '../components/Support';
 
 const Profile = () => {
     const [loading, setLoading] = useState(true);
@@ -62,8 +63,6 @@ const Profile = () => {
     } , [isFocused]);
 
 
-
-
     if(loading) return <Loading />
     else return (
             <View style={{ backgroundColor : generateColor(primary , 5) , flex : 1 }}>
@@ -88,14 +87,13 @@ const Profile = () => {
 
                         <ProfileSection 
                             icon={<Ionicons name="bug-outline" size={24} color={primary} />}
-                            path="support"
+                            path="feedback"
                             title="بازخورد"
-                            params={{ isFeedback : true }}
                         />
                     </View>
                     <ProfileClineVersion />
                 </View>
-                </ScrollView> 
+                </ScrollView>
                 {
                     refresh ? <RefreshAlert /> : null
                 }
@@ -156,6 +154,7 @@ const ProfileRouter = () => (
         <Stack.Screen name="profileEdit" component={ProfileEdit} />
         <Stack.Screen name="reminder" component={Reminder} />
         <Stack.Screen name="support" component={Support} />
+        <Stack.Screen name="feedback" component={SupportFeedBack} />
     </Stack.Navigator>
 )
 

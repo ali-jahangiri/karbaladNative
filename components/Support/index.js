@@ -4,6 +4,7 @@ import EmptyChat from "./EmptyChat";
 import AdminMessage from "./AdminMessage";
 import MessageInput from "./MessageInput";
 import MessageDirectory from "./MessageDirectory";
+import SupportFeedBack from "./SupportFeedBack";
 
 export {
     UserMessage,
@@ -11,5 +12,6 @@ export {
     EmptyChat,
     AdminMessage,
     MessageInput,
-    MessageDirectory
+    MessageDirectory,
+    SupportFeedBack
 }
