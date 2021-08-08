@@ -19,6 +19,8 @@ import ProfileHeader from '../components/Profile/ProfileHeader';
 import ProfileSection from '../components/Profile/ProfileSection';
 import ProfileClineVersion from '../components/Profile/ProfileClientVersion';
 import RefreshAlert from '../components/RefreshAlert';
+import { useDispatch } from '../Store/Y-state';
+import { setTabBarState } from '../Store/Slices/uiSlice';
 
 const Profile = () => {
     const [loading, setLoading] = useState(true);
@@ -31,8 +33,13 @@ const Profile = () => {
 
     const fetcher = useFetch();
     const isFocused = useIsFocused();
+    const storeDispatcher = useDispatch();
 
-
+    useEffect(() => {
+        if(!isFocused) storeDispatcher(() => setTabBarState("transparent"))
+        else storeDispatcher(() => setTabBarState(generateColor(primary , 5)));
+    } , [isFocused])
+    
     useEffect(() => {
         if(loading) {
             setLoading(true);
@@ -59,8 +66,8 @@ const Profile = () => {
 
     if(loading) return <Loading />
     else return (
-            <>
-                <ScrollView>
+            <View style={{ backgroundColor : generateColor(primary , 5) , flex : 1 }}>
+                <ScrollView contentContainerStyle={{ flex : 1 }}>
                 <ProfileHeader userData={userData} />
                 <View style={appendStyle.contentContainer}>
                     <View>
@@ -78,6 +85,13 @@ const Profile = () => {
                             icon={<Feather name="calendar" size={24} color={primary}/>} 
                             path="reminder" 
                             title="یادآور" />
+
+                        <ProfileSection 
+                            icon={<Ionicons name="bug-outline" size={24} color={primary} />}
+                            path="support"
+                            title="بازخورد"
+                            params={{ isFeedback : true }}
+                        />
                     </View>
                     <ProfileClineVersion />
                 </View>
@@ -85,7 +99,7 @@ const Profile = () => {
                 {
                     refresh ? <RefreshAlert /> : null
                 }
-            </>
+            </View>
     )
 }
 
@@ -124,6 +138,10 @@ const style = ({ primary , baseBorderRadius }) => StyleSheet.create({
     contentContainer :  { 
         justifyContent : 'space-between',
         flex: 1,
+        backgroundColor : "white",
+        width : "90%",
+        marginHorizontal : "5%",
+        borderRadius : baseBorderRadius
     }
 })
 

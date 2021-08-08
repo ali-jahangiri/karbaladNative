@@ -1,6 +1,6 @@
 import { Feather } from '@expo/vector-icons';
 import React from 'react';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Image, StatusBar, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useStyle } from '../../Hooks/useStyle';
 import { generateColor, persister } from '../../utils';
 import Para from '../Para';
@@ -25,10 +25,10 @@ const ProfileHeader = ({ userData }) => {
                 <View style={appendStyle.headerCtaContainer}>
                     <TouchableOpacity style={appendStyle.logout} onPress={logoutHandler}>
                             <Feather name="log-out" size={20} color="red" />
-                            {/* <Para weight="bold" color="red" size={14}>خروج</Para> */}
                     </TouchableOpacity>
                     </View>
                 <View style={appendStyle.avatar}>
+                    <Image style={appendStyle.avatarImage} source={{ uri : "https://i.guim.co.uk/img/media/75bd4161378dd43913815ce76caab186a9d5d287/0_10_6720_4032/master/6720.jpg?width=1200&height=1200&quality=85&auto=format&fit=crop&s=41cbc8935ae4e0f498227fa8b10953d0" , width : 100 , height : 100}} />
                     <Para weight="bold" color="#050513" size={22}>
                         {userData?.fullName || userData.mobile_UserName}
                     </Para>
@@ -41,11 +41,13 @@ const ProfileHeader = ({ userData }) => {
 }
 
 
-const style = ({ primary , baseBorderRadius }) => StyleSheet.create({
+const style = ({  baseBorderRadius }) => StyleSheet.create({
+    avatarImage : {
+        borderRadius : baseBorderRadius,
+        marginBottom : 10
+    },  
     container : {
-        backgroundColor : generateColor(primary , 5), 
-        paddingTop : 50,
-        paddingBottom : 30
+        marginTop : StatusBar.currentHeight + 5
     },
     headerCtaContainer : {
         flexDirection : "row",
@@ -66,7 +68,7 @@ const style = ({ primary , baseBorderRadius }) => StyleSheet.create({
         justifyContent : 'center',
         alignItems : 'center',        
         marginHorizontal : '10%',
-        marginTop : 30,
+        marginBottom : 15
     },
 })
 

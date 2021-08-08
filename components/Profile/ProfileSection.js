@@ -7,12 +7,12 @@ import { generateColor } from '../../utils';
 import Para from '../Para';
 
 
-const ProfileSection = ({ icon , title , path }) => {
+const ProfileSection = ({ icon , title , path , params }) => {
     const appendStyle = useStyle(style);
     const navigation = useNavigation();
 
     return (
-        <TouchableOpacity onPress={() => navigation.navigate(path)} style={appendStyle.container}>
+        <TouchableOpacity onPress={() => navigation.navigate(path , { ...params })} style={appendStyle.container}>
             <View style={appendStyle.goToRouteTrigger}>
                 <Feather name="chevron-left" size={24} color="black" />
                 </View>
