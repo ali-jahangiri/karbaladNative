@@ -14,6 +14,7 @@ const ProfileClineVersion = () => (
 
 const style = StyleSheet.create({
     container : {
+        padding : 15,
         flexDirection : 'row',
         alignItems : 'center',
         justifyContent : 'center'

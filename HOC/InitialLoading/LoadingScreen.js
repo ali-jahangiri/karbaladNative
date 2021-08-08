@@ -1,13 +1,9 @@
 import React from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 
-import Para from '../../components/Para';
-
-
 const Spinner = () => (
     <View style={style.spinner}>
-        <ActivityIndicator size={50} color="red" />
-        <Para size={16} style={style.text}>خوش آمدید</Para>
+        <ActivityIndicator size="large" color="lightgrey" />
     </View>
 )
 
@@ -17,9 +13,6 @@ const style = StyleSheet.create({
         alignItems : 'center',
         justifyContent : 'center'
     },
-    text : {
-        marginTop : 20,
-    }
 })
 
 export default Spinner;
