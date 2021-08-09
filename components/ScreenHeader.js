@@ -7,7 +7,7 @@ import { generateColor } from "../utils";
 
 import Para from './Para';
 
-const TabHeaderBadge = ({ title}) => {
+const TabHeaderBadge = ({ title }) => {
     const appendStyle =  useStyle(style)
     return (
         <View style={appendStyle.container}>

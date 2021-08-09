@@ -3,7 +3,6 @@ import { AppState } from 'react-native';
 
 import { useDispatch } from '../Store/Y-state';
 import { setNavigationNewHash } from '../Store/Slices/navigationSlice';
-import { useNavigationState } from '@react-navigation/native';
 
 
 const CommutingProvider = () => {
