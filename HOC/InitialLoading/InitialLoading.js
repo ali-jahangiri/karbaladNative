@@ -7,7 +7,7 @@ import { useStyleDispatcher } from "../../Hooks/useStyle"
 
 import Login from '../../screens/Login';
 
-import ErrorPage from '../../screens/ErrorPage';
+import InitialErrorPage from '../../screens/InitialErrorPage';
 
 import encrypt from '../../utils/encrypt';
 import client from '../../client';
@@ -40,17 +40,17 @@ const InitialLoading = ({ children }) => {
 
     const styleDispatcher = useStyleDispatcher();
 
+    useEffect(() => {
+        if(err) setSomethingWentWrong(err)
+    } , [err])
+    
     const resetHandler = () => setForceToReRender(prev => !prev);
-
-
-    const continueHandler = () => {
-        storeDispatcher(() => setSeeWelcomeScreen(true))
-    }
+    const continueHandler = () => storeDispatcher(() => setSeeWelcomeScreen(true))
 
     useEffect(() => {
-
-
-    api.post(`${config.serverPath}/baseApi/getServerTime`)
+        setLoading(true)
+        setSomethingWentWrong(false);
+        api.post(`${config.serverPath}/baseApi/getServerTime`)
                 .then(({ data }) => {
                     let serverTime = +data.split(" ")[1].split(':')[1];
                     const deviceTime = new Date().getMinutes();
@@ -89,7 +89,7 @@ const InitialLoading = ({ children }) => {
                     .catch(err => {
                         setSomethingWentWrong(err.message)
                     })
-                })
+                }).catch(err => setSomethingWentWrong(err.message))
 
         const globalStyle = {
             baseBorderRadius : 15,
@@ -103,7 +103,7 @@ const InitialLoading = ({ children }) => {
     } , [forceToReRender]);
 
     if(somethingWentWrong) {
-        return <ErrorPage
+        return <InitialErrorPage
                     errMessage={somethingWentWrong} 
                     resetHandler={resetHandler} />
     }

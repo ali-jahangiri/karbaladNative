@@ -1,5 +1,5 @@
 import React from 'react';
-import { Dimensions, StyleSheet, View } from 'react-native';
+import { Dimensions } from 'react-native';
 
 import Carousel from "pinar";
 import Slide from './Slide';

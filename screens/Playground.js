@@ -68,14 +68,14 @@ const MOCK_STYLE = {
 
 const Playground = () => {
     return (
-        <ScrollView>
+    <ScrollView>
                 <Slider style={MOCK_STYLE} data={MOCK_DATA.data} />
                 <Para>Ab facere id cupiditate. Non nesciunt quis quo veniam maxime eos ut libero. Totam molestias quos voluptatem ducimus molestiae aliquid.</Para>
                 <Para>Ab facere id cupiditate. Non nesciunt quis quo veniam maxime eos ut libero. Totam molestias quos voluptatem ducimus molestiae aliquid.</Para>
                 <Para>Ab facere id cupiditate. Non nesciunt quis quo veniam maxime eos ut libero. Totam molestias quos voluptatem ducimus molestiae aliquid.</Para>
                 <Para>Ab facere id cupiditate. Non nesciunt quis quo veniam maxime eos ut libero. Totam molestias quos voluptatem ducimus molestiae aliquid.</Para>
                 <Para>Ab facere id cupiditate. Non nesciunt quis quo veniam maxime eos ut libero. Totam molestias quos voluptatem ducimus molestiae aliquid.</Para>
-        </ScrollView>
+    </ScrollView>
     )
 }   
 
