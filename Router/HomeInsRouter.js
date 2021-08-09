@@ -8,7 +8,7 @@ import Installment from '../screens/Installment';
 import InsuranceRequirements from '../screens/InsuranceRequirements';
 import InsurancePay from '../screens/InsurancePay';
 import MoreDetailsPay from '../screens/MoreDetailsPay';
-
+import Playground from '../screens/Playground';
 
 const Stack = createStackNavigator();
 
@@ -24,6 +24,7 @@ const HomeInsRouter = ({ indexScreen , nestedScreen }) => (
                 <Stack.Screen name="insuranceRequirements" component={InsuranceRequirements} />
                 <Stack.Screen name="insurancePayment" component={InsurancePay} />
                 <Stack.Screen name="insurancePaymentMoreDetails" component={MoreDetailsPay} />
+                <Stack.Screen name="playground" component={Playground} />
             </Stack.Navigator>
     </React.Fragment>
 )

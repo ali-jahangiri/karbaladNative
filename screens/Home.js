@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import HomeInsRouter from '../Router/HomeInsRouter';
 
@@ -17,10 +17,13 @@ const InsIndexScreen = ({ navigation }) => {
         navigation.push('stepScreen' , routeParameters);
 
 
+    useEffect(() => {
+        navigation.navigate("playground")
+    } , [])
 
     return (
         <ScreenWrapper>
-            <TabHeaderBadge title="خانه" />
+        <TabHeaderBadge title="خانه" />
             <InsuranceDirectory handler={routeChangeHandler} items={catItems} />
         </ScreenWrapper>
     )
