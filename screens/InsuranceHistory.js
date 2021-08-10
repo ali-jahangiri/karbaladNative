@@ -14,6 +14,7 @@ import useFetch from '../Providers/useFetch';
 import { useIsFocused } from '@react-navigation/native';
 import RefreshAlert from '../components/RefreshAlert';
 import HeaderProvider from '../Providers/HeaderProvider/HeaderProvider';
+import DirectionProvider from '../Providers/DirectoryProvider/DirectionProvider';
 
 
 const Stack = createStackNavigator();
@@ -57,7 +58,9 @@ const Home = () => {
     return (
         <>
             <HeaderProvider title="بیمه نامه" />
-            <InsuranceHistoryDirectory items={insItems} />
+            <DirectionProvider>
+                <InsuranceHistoryDirectory items={insItems} />
+            </DirectionProvider>
             {
                 refresh ? <RefreshAlert /> : null
             }

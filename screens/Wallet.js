@@ -21,6 +21,7 @@ import useFetch from '../Providers/useFetch';
 import { useIsFocused, useScrollToTop } from '@react-navigation/native';
 import RefreshAlert from '../components/RefreshAlert';
 import HeaderProvider from '../Providers/HeaderProvider/HeaderProvider';
+import DirectionProvider from '../Providers/DirectoryProvider/DirectionProvider';
 
 const Wallet = () => {
     const [walletData, setWalletData] = useState(null)
@@ -86,22 +87,24 @@ const Wallet = () => {
         <>
         <ScreenWrapper>
             <HeaderProvider title="کیف پول" />
-            <WalletCart
-                setTransactionStatus={setTransactionStatus}
-                paymentProcessHandler={setIsInPaymentProcess}
-                isInPaymentProcess={isInPaymentProcess}
-                finalResult={walletData.walletData.finalResult} />
-            {
-                walletData.walletData.walletItems.length ? <>
-                    <ScrollView ref={transactionContainerRef}>
-                        {
-                            walletData.walletData.walletItems.map((el , i) => (
-                                <WalletTransaction index={i + 1} key={i} {...el} />
-                            ))
-                        }
-                    </ScrollView>
-                </> : <EmptyScreen desc={client.static.EMPTY_SCREEN_WALLET} />
-            }
+            <DirectionProvider>
+                <WalletCart
+                    setTransactionStatus={setTransactionStatus}
+                    paymentProcessHandler={setIsInPaymentProcess}
+                    isInPaymentProcess={isInPaymentProcess}
+                    finalResult={walletData.walletData.finalResult} />
+                {
+                    walletData.walletData.walletItems.length ? <>
+                        <ScrollView ref={transactionContainerRef}>
+                            {
+                                walletData.walletData.walletItems.map((el , i) => (
+                                    <WalletTransaction index={i + 1} key={i} {...el} />
+                                ))
+                            }
+                        </ScrollView>
+                    </> : <EmptyScreen desc={client.static.EMPTY_SCREEN_WALLET} />
+                }
+            </DirectionProvider>
              {
                  refresh ? <RefreshAlert /> : null
              }

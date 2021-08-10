@@ -1,11 +1,25 @@
 import React from 'react';
 
-const _directionClone = () => ({
+import { useStyle } from '../../Hooks/useStyle';
+import SimpleDirectory from '../../components/Directory/SimpleDirectory/SimpleDirectory';
+import NegativeDirectory from '../../components/Directory/NegativeDirectory/NegativeDirectory';
 
-})
+// const _directionClone = ({ children }) => ({
+//     simple : <SimpleDirectory children={children} />,
+//     negative : <NegativeDirectory children={children} />
+// })
 
-const DirectionProvider = () => {
+const DirectionProvider = ({ children }) => {
+    const { indexHeader } = useStyle();
     
+    const renderChecker = () => {
+        if(indexHeader === "negative") {
+            return <NegativeDirectory children={children} />
+        }else {
+            return <SimpleDirectory children={children} />
+        }
+    }
+    return renderChecker()
 }
 
 

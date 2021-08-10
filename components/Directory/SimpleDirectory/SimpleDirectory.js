@@ -13,7 +13,7 @@ const SimpleDirectory = ({ children }) => {
 
 const style = StyleSheet.create({
     container : {
-
+        
     }
 })
 

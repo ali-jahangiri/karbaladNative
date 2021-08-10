@@ -2,16 +2,14 @@ import React, { useEffect } from 'react';
 
 import HomeInsRouter from '../Router/HomeInsRouter';
 
-import TabHeaderBadge from '../components/ScreenHeader';
 import InsuranceDirectory from '../components/InsuranceDirectory';
 import TabScreenHeader from '../components/TabScreenHeader';
 import ScreenWrapper from '../components/ScreenWrapper';
 import InsuranceStepper from './InsuranceStepper';
 
 import { useSelector } from '../Store/Y-state';
-import NegativeHeader from '../components/Header/NegativeHeader/NegativeHeader';
-import FadeHeader from '../components/Header/FadeHeader/FadeHeader';
 import HeaderProvider from '../Providers/HeaderProvider/HeaderProvider';
+import DirectionProvider from '../Providers/DirectoryProvider/DirectionProvider';
 
 
 
@@ -25,7 +23,9 @@ const InsIndexScreen = ({ navigation }) => {
         return (
         <ScreenWrapper>
             <HeaderProvider title="خانه" />
-            <InsuranceDirectory handler={routeChangeHandler} items={catItems} />
+            <DirectionProvider>
+                <InsuranceDirectory handler={routeChangeHandler} items={catItems} />            
+            </DirectionProvider>
         </ScreenWrapper>
     )
 }
