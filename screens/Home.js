@@ -9,6 +9,11 @@ import ScreenWrapper from '../components/ScreenWrapper';
 import InsuranceStepper from './InsuranceStepper';
 
 import { useSelector } from '../Store/Y-state';
+import NegativeHeader from '../components/Header/NegativeHeader/NegativeHeader';
+import FadeHeader from '../components/Header/FadeHeader/FadeHeader';
+import HeaderProvider from '../Providers/HeaderProvider/HeaderProvider';
+
+
 
 const InsIndexScreen = ({ navigation }) => {
     const catItems = useSelector(state => state.initial);
@@ -17,13 +22,9 @@ const InsIndexScreen = ({ navigation }) => {
         navigation.push('stepScreen' , routeParameters);
 
 
-    useEffect(() => {
-        navigation.navigate("playground")
-    } , [])
-
-    return (
+        return (
         <ScreenWrapper>
-        <TabHeaderBadge title="خانه" />
+            <HeaderProvider title="خانه" />
             <InsuranceDirectory handler={routeChangeHandler} items={catItems} />
         </ScreenWrapper>
     )

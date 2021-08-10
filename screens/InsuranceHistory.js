@@ -13,6 +13,7 @@ import Loading from '../components/Loading';
 import useFetch from '../Providers/useFetch';
 import { useIsFocused } from '@react-navigation/native';
 import RefreshAlert from '../components/RefreshAlert';
+import HeaderProvider from '../Providers/HeaderProvider/HeaderProvider';
 
 
 const Stack = createStackNavigator();
@@ -55,7 +56,7 @@ const Home = () => {
     if(loading) return <Loading />
     return (
         <>
-            <ScreenHeader title="بیمه نامه " />
+            <HeaderProvider title="بیمه نامه" />
             <InsuranceHistoryDirectory items={insItems} />
             {
                 refresh ? <RefreshAlert /> : null

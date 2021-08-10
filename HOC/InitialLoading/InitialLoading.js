@@ -97,6 +97,9 @@ const InitialLoading = ({ children }) => {
             secondary : '#dbe6fd',
             headerTitleColor : "white",
             ctaTextColor : "black",
+            indexHeader : "fade",
+            nestedHeader : "negative",
+            category : "row"
         }
         styleDispatcher({ globalStyle });
 

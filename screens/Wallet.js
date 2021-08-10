@@ -20,6 +20,7 @@ import { useStyle } from '../Hooks/useStyle';
 import useFetch from '../Providers/useFetch';
 import { useIsFocused, useScrollToTop } from '@react-navigation/native';
 import RefreshAlert from '../components/RefreshAlert';
+import HeaderProvider from '../Providers/HeaderProvider/HeaderProvider';
 
 const Wallet = () => {
     const [walletData, setWalletData] = useState(null)
@@ -84,7 +85,7 @@ const Wallet = () => {
     else return (
         <>
         <ScreenWrapper>
-            <ScreenHeader title="کیف پول" />
+            <HeaderProvider title="کیف پول" />
             <WalletCart
                 setTransactionStatus={setTransactionStatus}
                 paymentProcessHandler={setIsInPaymentProcess}
