@@ -1,15 +1,15 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import HomeInsRouter from '../Router/HomeInsRouter';
 
 import InsuranceDirectory from '../components/InsuranceDirectory';
-import TabScreenHeader from '../components/TabScreenHeader';
 import ScreenWrapper from '../components/ScreenWrapper';
 import InsuranceStepper from './InsuranceStepper';
 
 import { useSelector } from '../Store/Y-state';
 import HeaderProvider from '../Providers/HeaderProvider/HeaderProvider';
 import DirectionProvider from '../Providers/DirectoryProvider/DirectionProvider';
+import CategoryProvider from '../Providers/CategoryProvider/CategoryProvider';
 
 
 const InsIndexScreen = ({ navigation }) => {
@@ -23,7 +23,7 @@ const InsIndexScreen = ({ navigation }) => {
         <ScreenWrapper>
             <HeaderProvider title="خانه" />
             <DirectionProvider>
-                <InsuranceDirectory handler={routeChangeHandler} items={catItems} />            
+                <CategoryProvider handler={routeChangeHandler} items={catItems} />
             </DirectionProvider>
         </ScreenWrapper>
     )
@@ -43,7 +43,7 @@ const NestedInsStepScreen = ({ route : { params : { cat , name , id } }, navigat
             <ScreenWrapper>
                 <HeaderProvider title={name} isNested />
                 <DirectionProvider >
-                    <InsuranceDirectory handler={routeChangeHandler} items={cat} />
+                    <CategoryProvider items={cat} handler={routeChangeHandler} />
                 </DirectionProvider>
             </ScreenWrapper>
         )
