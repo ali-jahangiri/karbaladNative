@@ -168,7 +168,7 @@ const InsuranceHistoryDetails = () => {
     return loading ? <Loading /> : <InsDetailsView details={details} />
 }
 
-const style = ({ primary , secondary , baseBorderRadius } , statusColor) => StyleSheet.create({
+const style = ({ primary , baseBorderRadius } , statusColor) => StyleSheet.create({
     statusContainer : {
         flexDirection : "row",
         alignItems : 'center',
@@ -199,7 +199,7 @@ const style = ({ primary , secondary , baseBorderRadius } , statusColor) => Styl
         color: 'grey',
         fontSize : 15,
         marginVertical : 10,
-        backgroundColor : generateColor(secondary , 4),
+        backgroundColor : generateColor(primary , 1),
         borderRadius: baseBorderRadius,
         paddingVertical : 10,
         paddingHorizontal : 20,

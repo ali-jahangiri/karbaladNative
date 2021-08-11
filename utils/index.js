@@ -8,6 +8,7 @@ import numberSeparator from "./numberSeparator";
 import toFarsiNumber from "./toPersianNumber";
 import persister from "./persister";
 import encrypt from "./encrypt";
+import makeLeanPallet from "./makeLeanPallet";
 
 export {
     generateColor,
@@ -20,4 +21,5 @@ export {
     toFarsiNumber,
     persister,
     encrypt,
+    makeLeanPallet
 }

@@ -1,16 +1,19 @@
 import React , { useEffect, useState } from 'react';
 import { useFonts } from 'expo-font';
 
-import { useStyleDispatcher } from "../../Hooks/useStyle"
+import { useStyle, useStyleDispatcher } from "../../Hooks/useStyle"
 import encrypt from '../../utils/encrypt';
 import client from '../../client';
 import config from '../../config';
-import { persister } from '../../utils';
+import { makeLeanPallet, persister } from '../../utils';
 
 import { useDispatch, useSelector } from '../../Store/Y-state';
 import { setAppKey, setSeeWelcomeScreen, setSystemTime } from '../../Store/Slices/authSlice';
 import { setInsCat } from '../../Store/Slices/initialSlice';
 import api from '../../api';
+
+
+
 
 import Login from '../../screens/Login';
 import InitialErrorPage from '../../screens/InitialErrorPage';
@@ -23,6 +26,9 @@ const InitialLoading = ({ children }) => {
     const [forceToReRender, setForceToReRender] = useState(0);
     const [loading, setLoading] = useState(true);
     const storeDispatcher = useDispatch();
+    const [Inhibitor, setInhibitor] = useState(true);
+
+    const style = useStyle()
 
     const {appKey :  isAuth , seeWelcome} = useSelector(state => state.auth);
 
@@ -40,12 +46,14 @@ const InitialLoading = ({ children }) => {
         if(err) setSomethingWentWrong(err)
     } , [err])
     
-    const resetHandler = () => setForceToReRender(prev => !prev);
+    const resetHandler = () => {
+        setLoading(true)
+        setSomethingWentWrong(false);
+        setForceToReRender(prev => !prev)
+    };
     const continueHandler = () => storeDispatcher(() => setSeeWelcomeScreen(true))
 
     useEffect(() => {
-        setLoading(true)
-        setSomethingWentWrong(false);
         api.post(`${config.serverPath}/baseApi/getServerTime`)
                 .then(({ data }) => {
                     let serverTime = +data.split(" ")[1].split(':')[1];
@@ -70,14 +78,15 @@ const InitialLoading = ({ children }) => {
                                     storeDispatcher(() => setAppKey(data));
                                     return api.post("baseData" , {} , { headers : { packageName : config.packageName , appToken } })
                                         .then(({ data }) => {
-                                            console.log(data ,"**");
+                                            const { mainData : { components } , manifest } = data;
+                                            const globalStyle = makeLeanPallet(components[0].componentStyles)
+                                            styleDispatcher(globalStyle)
                                             storeDispatcher(() => setInsCat(data.categories.cat));
+                                            setLoading(false)
                                         })
                                 }
                             }).catch(err => {
                                 throw new Error(err);
-                            }).finally(() => {
-                                setLoading(false);
                             })
                     })
                     .catch(err => {
@@ -85,22 +94,13 @@ const InitialLoading = ({ children }) => {
                     })
                 }).catch(err => setSomethingWentWrong(err.message))
 
-
-        const globalStyle = {
-            baseBorderRadius : 15,
-            primary : '#5E8B7E',
-            secondary : '#dbe6fd',
-            headerTitleColor : "black",
-            ctaTextColor : "black",
-            indexHeader : "badge",
-            nestedHeader : "badge",
-            category : "row"
-        }
-
-        
-        styleDispatcher({ globalStyle });
-
     } , [forceToReRender]);
+
+
+    useEffect(() => {
+        if(!loading) setInhibitor(false)
+    } , [loading])
+
 
     if(somethingWentWrong) {
         return <InitialErrorPage
@@ -118,7 +118,7 @@ const InitialLoading = ({ children }) => {
         return <Login />
     }
 
-    return  fontLoaded && !loading ? authRenderChecker() : <LoadingScreen />
+    return  fontLoaded && !Inhibitor ? authRenderChecker() : <LoadingScreen />
 }
 
 
