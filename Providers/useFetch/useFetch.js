@@ -30,10 +30,9 @@ const useFetch = () => {
                 if(data === client.static.ACCESS_DENIED) throw new Error (data)
                 resolve(api.post(path , config , {
                   headers : { appToken : data, ticket },
-                  timeout : 5000
+                  timeout : 1,
+                  timeoutErrorMessage : "shot"
                 }))
-              }).catch(err => {
-                throw new Error(err.message)
               })
           })
 

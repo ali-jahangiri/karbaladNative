@@ -1,14 +1,7 @@
 import React , { useEffect, useState } from 'react';
 import { useFonts } from 'expo-font';
 
-import LoadingScreen from "./LoadingScreen";
-
 import { useStyleDispatcher } from "../../Hooks/useStyle"
-
-import Login from '../../screens/Login';
-
-import InitialErrorPage from '../../screens/InitialErrorPage';
-
 import encrypt from '../../utils/encrypt';
 import client from '../../client';
 import config from '../../config';
@@ -16,10 +9,13 @@ import { persister } from '../../utils';
 
 import { useDispatch, useSelector } from '../../Store/Y-state';
 import { setAppKey, setSeeWelcomeScreen, setSystemTime } from '../../Store/Slices/authSlice';
-import { Welcome } from '../../screens';
 import { setInsCat } from '../../Store/Slices/initialSlice';
-
 import api from '../../api';
+
+import Login from '../../screens/Login';
+import InitialErrorPage from '../../screens/InitialErrorPage';
+import { Welcome } from '../../screens';
+import LoadingScreen from "./LoadingScreen";
 
 
 const InitialLoading = ({ children }) => {
@@ -72,13 +68,11 @@ const InitialLoading = ({ children }) => {
                                 if(data) {
                                     storeDispatcher(() => setSeeWelcomeScreen(true));
                                     storeDispatcher(() => setAppKey(data));
-                                    return api
-                                            .post(`${config.serverPath}/MobileApi/getCategories` , {} , {
-                                                headers : {
-                                                    appToken,
-                                                }}).then(({data}) => {
-                                                    storeDispatcher(() => setInsCat(data.cat));
-                                            })
+                                    return api.post("baseData" , {} , { headers : { packageName : config.packageName , appToken } })
+                                        .then(({ data }) => {
+                                            console.log(data ,"**");
+                                            storeDispatcher(() => setInsCat(data.categories.cat));
+                                        })
                                 }
                             }).catch(err => {
                                 throw new Error(err);
@@ -91,16 +85,19 @@ const InitialLoading = ({ children }) => {
                     })
                 }).catch(err => setSomethingWentWrong(err.message))
 
+
         const globalStyle = {
             baseBorderRadius : 15,
             primary : '#5E8B7E',
             secondary : '#dbe6fd',
-            headerTitleColor : "white",
+            headerTitleColor : "black",
             ctaTextColor : "black",
-            indexHeader : "negative",
-            nestedHeader : "negative",
+            indexHeader : "badge",
+            nestedHeader : "badge",
             category : "row"
         }
+
+        
         styleDispatcher({ globalStyle });
 
     } , [forceToReRender]);

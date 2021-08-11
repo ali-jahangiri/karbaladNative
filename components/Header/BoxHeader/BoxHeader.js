@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { StatusBar, StyleSheet, View } from 'react-native';
 import { useStyle } from '../../../Hooks/useStyle';
@@ -6,15 +7,20 @@ import DirectionCta from '../../DirectionCta';
 import Para from '../../Para';
 
 
-const BoxHeader = ({ title }) => {
+const BoxHeader = ({ title , isNested }) => {
     const appendStyle = useStyle(style);
-    const { headerTitleColor } = useStyle()
+    const { headerTitleColor , primary } = useStyle();
+    const navigation = useNavigation();
+    
     return (
         <View style={appendStyle.container}>
-            <View></View>
-            <View>
-                <Para color={headerTitleColor} size={25} weight="bold">{title}</Para>
-            </View>
+            {
+                isNested ? isNested === true ?  <DirectionCta containerBgColor={generateColor(primary , 3)} onPress={navigation.goBack} /> : isNested : <View />
+            }
+            
+            {
+                typeof title === 'string' ? <Para color={headerTitleColor} size={22} weight="bold" >{title}</Para> : title
+            }
         </View>
     )
 }

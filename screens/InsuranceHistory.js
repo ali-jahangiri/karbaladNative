@@ -48,7 +48,7 @@ const Home = () => {
                     let timer = setTimeout(() => {
                         setRefresh(false);
                         clearTimeout(timer)
-                    } , 2500)
+                    } , 3000)
                 })
         }
     } , [navHash , isFocused])

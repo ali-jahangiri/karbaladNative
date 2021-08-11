@@ -13,6 +13,8 @@ import Loading from "../components/Loading"
 import useFetch from '../Providers/useFetch';
 import Btn from '../components/Btn';
 import client from '../client';
+import HeaderProvider from '../Providers/HeaderProvider/HeaderProvider';
+import DirectionProvider from '../Providers/DirectoryProvider/DirectionProvider';
 
 const { ORDER_TEXT , WATCH_IMAGE_TEXT } = client.static.INS_DETAILS;
 
@@ -74,62 +76,64 @@ const InsDetailsView = ({ details }) => {
 
     return (
         <>
-            <TabScreenHeader title="جزئیات بیمه نامه" navigation={navigation} />
-            <ScrollView>
-                <View>
-                    <View style={appendStyle.imageContainer}>
-                        <View style={{ alignItems : 'flex-end' , flex: 1 }}>
-                            <View style={{ borderColor : statusColor , borderWidth : 2 , borderRadius : 45 , alignItems : 'center' , justifyContent : 'center' }}>
-                                <Image style={{ borderRadius : 45 , overflow : "hidden" }} resizeMode="contain" source={{
-                                    uri : imageFinder(iconUrl),
-                                    height: 90,
-                                    width: 90
-                                    }} />
+            <HeaderProvider isNested title="جزئیات بیمه نامه" />
+            <DirectionProvider>
+                <ScrollView>
+                    <View>
+                        <View style={appendStyle.imageContainer}>
+                            <View style={{ alignItems : 'flex-end' , flex: 1 }}>
+                                <View style={{ borderColor : statusColor , borderWidth : 2 , borderRadius : 45 , alignItems : 'center' , justifyContent : 'center' }}>
+                                    <Image style={{ borderRadius : 45 , overflow : "hidden" }} resizeMode="contain" source={{
+                                        uri : imageFinder(iconUrl),
+                                        height: 90,
+                                        width: 90
+                                        }} />
+                                    </View>
+                            </View>
+                            <View style={appendStyle.mainDetail}>
+                                <Para align="center" style={{ marginTop : 20 , marginBottom : 10 }} weight="bold" size={18}>{categorysFullName}</Para>
+                                <View style={appendStyle.column}>
+                                    <Para color="grey">تاریخ</Para>
+                                    <Para size={16}>{toFarsiNumber(currentCreateTime)}</Para>
                                 </View>
+                                <View style={appendStyle.column}>
+                                    <Para color="grey">شماره پیگیری</Para>
+                                    <Para size={16}>{id}</Para>
+                                </View>
+                                <View style={appendStyle.column}>
+                                    <Para color="grey">وضعیت</Para>
+                                    <View style={appendStyle.statusContainer}>
+                                        <Para weight="bold" color={statusColor} size={14}>{statusTitle}</Para>
+                                        <View style={{ marginLeft : 5 }}>{statusIcon}</View>
+                                    </View>
+                                </View>
+                            </View>
                         </View>
-                        <View style={appendStyle.mainDetail}>
-                            <Para align="center" style={{ marginTop : 20 , marginBottom : 10 }} weight="bold" size={18}>{categorysFullName}</Para>
-                            <View style={appendStyle.column}>
-                                <Para color="grey">تاریخ</Para>
-                                <Para size={16}>{toFarsiNumber(currentCreateTime)}</Para>
-                            </View>
-                            <View style={appendStyle.column}>
-                                <Para color="grey">شماره پیگیری</Para>
-                                <Para size={16}>{id}</Para>
-                            </View>
-                            <View style={appendStyle.column}>
-                                <Para color="grey">وضعیت</Para>
-                                <View style={appendStyle.statusContainer}>
-                                    <Para weight="bold" color={statusColor} size={14}>{statusTitle}</Para>
-                                    <View style={{ marginLeft : 5 }}>{statusIcon}</View>
-                                </View>
-                            </View>
+                            <View style={appendStyle.detailsContainer}>
+                                <Para style={appendStyle.label}>مشخصات تحویل گیرنده</Para>
+                                <ListViewRow title="نام و نام خانوادگی" value={`${reciverName} ${reciverFamily}`} />
+                                <ListViewRow title="منطقه" value={areasFullName} />
+                                <ListViewRow title="شماره تلفن" value={toFarsiNumber(reciverPhone)} />
+                                <ListViewRow title="شماره همراه" value={toFarsiNumber(reciverMobile)} />
+                                <ListViewRow title="آدرس" value={exactAddress} />
+                                
+                                <Para style={appendStyle.label}>مشخصات بیمه گذار</Para>
+                                <ListViewRow title="نام و نام خانوادگی" value={`${name} ${reciverFamily}`} />
+                                <ListViewRow title="شماره همراه" value={toFarsiNumber(mobile)} />
+                                <ListViewRow title="کد ملی" value={toFarsiNumber(nCode)} />
+                                <ListViewRow title="تاریخ تولد" value={toFarsiNumber(birthDay.split('T')[0].replace(/-/g, '/'))} />
+                                <ListViewRow title="جنسیت" value={genders == 1 ? ' مرد ' : ' زن' } />
+                                
+                                <Para style={appendStyle.label}>مشخصات بیمه نامه</Para>
+                                {
+                                    factorItems?.map((el , i) => (
+                                        <ListViewRow key={i} title={el.lable} value={toFarsiNumber(el.show_Value)} />
+                                    ))
+                                }
                         </View>
                     </View>
-                        <View style={appendStyle.detailsContainer}>
-                            <Para style={appendStyle.label}>مشخصات تحویل گیرنده</Para>
-                            <ListViewRow title="نام و نام خانوادگی" value={`${reciverName} ${reciverFamily}`} />
-                            <ListViewRow title="منطقه" value={areasFullName} />
-                            <ListViewRow title="شماره تلفن" value={toFarsiNumber(reciverPhone)} />
-                            <ListViewRow title="شماره همراه" value={toFarsiNumber(reciverMobile)} />
-                            <ListViewRow title="آدرس" value={exactAddress} />
-                            
-                            <Para style={appendStyle.label}>مشخصات بیمه گذار</Para>
-                            <ListViewRow title="نام و نام خانوادگی" value={`${name} ${reciverFamily}`} />
-                            <ListViewRow title="شماره همراه" value={toFarsiNumber(mobile)} />
-                            <ListViewRow title="کد ملی" value={toFarsiNumber(nCode)} />
-                            <ListViewRow title="تاریخ تولد" value={toFarsiNumber(birthDay.split('T')[0].replace(/-/g, '/'))} />
-                            <ListViewRow title="جنسیت" value={genders == 1 ? ' مرد ' : ' زن' } />
-                            
-                            <Para style={appendStyle.label}>مشخصات بیمه نامه</Para>
-                            {
-                                factorItems?.map((el , i) => (
-                                    <ListViewRow key={i} title={el.lable} value={toFarsiNumber(el.show_Value)} />
-                                ))
-                            }
-                    </View>
-                </View>
-            </ScrollView>
+                </ScrollView>
+            </DirectionProvider>
             {
                 showCta ?
                 <Btn 

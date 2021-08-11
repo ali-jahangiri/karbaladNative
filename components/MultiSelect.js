@@ -1,7 +1,5 @@
 import React from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import { max } from 'react-native-reanimated';
+import { ScrollView, StyleSheet, View , TouchableOpacity} from 'react-native';
 import { useStyle } from '../Hooks/useStyle';
 import { generateColor } from '../utils';
 import Para from './Para';
@@ -33,7 +31,7 @@ const MultiSelect = ({ values = [], onChange , items = [] }) => {
                                 values.find(item => item === el.id) && <Feather name="check" size={24} color={primary} />
                             }
                         </View>
-                        <Para size={16}>{el.dataName}</Para>
+                        <Para style={{ flex: 1 }} size={16}>{el.dataName}</Para>
                     </TouchableOpacity>
                 ))
             }
@@ -42,8 +40,6 @@ const MultiSelect = ({ values = [], onChange , items = [] }) => {
 }
 
 const style = ({ primary , baseBorderRadius }) => StyleSheet.create({
-    directoryWrapper : {
-    },  
     itemContainer : {
         flexDirection : 'row',
         alignItems : 'center',
@@ -58,9 +54,6 @@ const style = ({ primary , baseBorderRadius }) => StyleSheet.create({
         backgroundColor :  generateColor(primary , 5),
         alignItems : 'center',
         justifyContent : 'center'
-    },
-    text : {
-
     },
     selectedItem : {
         backgroundColor : 'red',

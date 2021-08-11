@@ -1,21 +1,29 @@
+import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { StatusBar, StyleSheet, View } from 'react-native';
 import { useStyle } from '../../../Hooks/useStyle';
 import { generateColor } from '../../../utils';
+import DirectionCta from '../../DirectionCta';
 import Para from '../../Para';
 
 
 
-const BadgeHeader = ({ title }) => {
+const BadgeHeader = ({ title , isNested }) => {
     const appendStyle = useStyle(style);
     const { primary } = useStyle();
-
+    const navigation = useNavigation();
+    
     return (
         <View style={appendStyle.container}>
-            <View></View>
-            <View style={appendStyle.badge}>
-                <Para color={primary} size={21} weight="bold">{title}</Para>
-            </View>
+            {
+                isNested ? isNested === true ?  <DirectionCta containerBgColor={generateColor(primary , 3)} onPress={navigation.goBack} /> : isNested : <View />
+            }
+            
+            {
+                typeof title === 'string' ? <View style={appendStyle.badge}>
+                <Para color={primary} size={22} weight="bold">{title}</Para>
+            </View> : title
+            }
         </View>
     )
 }

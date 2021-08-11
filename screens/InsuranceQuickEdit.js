@@ -11,6 +11,8 @@ import DirectionCta from '../components/DirectionCta';
 import Para from '../components/Para';
 
 import { Feather } from '@expo/vector-icons';
+import HeaderProvider from '../Providers/HeaderProvider/HeaderProvider';
+import DirectionProvider from '../Providers/DirectoryProvider/DirectionProvider';
 
 export const valueFinder = (store , selectedValue) =>  {
     switch(store.typesName) {
@@ -108,25 +110,23 @@ const InsuranceQuickEdit = ({ navigation , route : { params } }) => {
       
     return (
         <View style={appendStyle.container}>
-            <View style={appendStyle.header}>
-                <DirectionCta onPress={givUpHandler} />
-                <Para color="white" size={18} weight="bold" >ایجاد تغییر در بیمه</Para>
-            </View>
-
-            <ScrollView style={appendStyle.itemsDirectory}>
-                {
-                    params?.server.map((el , i) => (
-                        <InsuranceQuickEditItem
-                            index={i + 1}
-                            tempStore={tempState}
-                            store={params.selectedInsData}
-                            value={valueFinder(params.selectedInsData.find(item => item.formName === el.name) , params.valueStore[el.name])}
-                            label={el.lable} 
-                            key={i}
-                            onEdit={selectAnChangeOptionHandler} />
-                    ))
-                }
-            </ScrollView>
+            <HeaderProvider isNested title="ایجاد تغییر در بیمه" />
+            <DirectionProvider>
+                <ScrollView style={appendStyle.itemsDirectory}>
+                    {
+                        params?.server.map((el , i) => (
+                            <InsuranceQuickEditItem
+                                index={i + 1}
+                                tempStore={tempState}
+                                store={params.selectedInsData}
+                                value={valueFinder(params.selectedInsData.find(item => item.formName === el.name) , params.valueStore[el.name])}
+                                label={el.lable} 
+                                key={i}
+                                onEdit={selectAnChangeOptionHandler} />
+                        ))
+                    }
+                </ScrollView>
+            </DirectionProvider>
             {
                 // if we have a change in temp value , then we gonna see controller ( confirmChange )
                 Object.values(tempState).length ? <TouchableOpacity style={appendStyle.newResultCta} onPress={getNewResultHandler}>
@@ -136,12 +136,12 @@ const InsuranceQuickEdit = ({ navigation , route : { params } }) => {
             }
             {
                 isDrawerOpen && 
-                <Drawer 
+                <Drawer
                     onCancel={discardHandler}
                     onClose={() => setIsDrawerOpen(false)}
                     onDone={applyChangeHandler} 
                     title={currentSetting} 
-                    extendStyle={{ padding : 10 }}
+                    extendStyle={{ padding : 10 , flex :  2}}
                     showController={currentForm?.formData[0]?.isCar || tempState?.searchFilterBase || ['Float' , "Int" , "Long" , "CheckedForm" , "Date"].includes(currentTypeName)}
                     >
                     <View style={{ flex : 1 }}>

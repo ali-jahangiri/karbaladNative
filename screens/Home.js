@@ -12,7 +12,6 @@ import HeaderProvider from '../Providers/HeaderProvider/HeaderProvider';
 import DirectionProvider from '../Providers/DirectoryProvider/DirectionProvider';
 
 
-
 const InsIndexScreen = ({ navigation }) => {
     const catItems = useSelector(state => state.initial);
     
@@ -42,10 +41,10 @@ const NestedInsStepScreen = ({ route : { params : { cat , name , id } }, navigat
         if(!cat.length) return <InsuranceStepper name={name} id={id} />
         else return (
             <ScreenWrapper>
-                <TabScreenHeader title={name} />
-                {
+                <HeaderProvider title={name} isNested />
+                <DirectionProvider >
                     <InsuranceDirectory handler={routeChangeHandler} items={cat} />
-                }
+                </DirectionProvider>
             </ScreenWrapper>
         )
     }

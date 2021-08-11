@@ -1,13 +1,11 @@
 import React from 'react';
-import { ScrollView, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 
-const NegativeDirectory = ({ children }) => {
-    return (
-        <View style={style.container}>
+const NegativeDirectory = ({ children }) => (
+    <View style={style.container}>
             {children}
-        </View>
-    )
-}
+    </View>
+)
 
 
 const style = StyleSheet.create({
@@ -15,7 +13,7 @@ const style = StyleSheet.create({
         marginTop : -50,
         flex: 1,
         backgroundColor : 'white',
-        paddingTop : 25,
+        paddingTop : 10,
         borderTopRightRadius : 30,
         borderTopLeftRadius : 30
     }

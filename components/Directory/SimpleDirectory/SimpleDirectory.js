@@ -1,19 +1,19 @@
 import React from 'react';
-import { StyleSheet, ScrollView } from 'react-native';
+import { StyleSheet, View, } from 'react-native';
 
 
 const SimpleDirectory = ({ children }) => {
     return (
-        <ScrollView style={style.container}>
+        <View style={style.container}>
             {children}
-        </ScrollView>
+        </View>
     )
 }
 
 
 const style = StyleSheet.create({
     container : {
-        
+        flex : 1,
     }
 })
 
