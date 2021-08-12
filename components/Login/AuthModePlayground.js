@@ -28,7 +28,10 @@ const AuthModePlayground = ({ currentStage , error , loadingCta , currentStageTi
                 {
                     error &&
                     <View style={appendStyle.error}>
-                        <Para color='red'>{error}</Para>
+                        <Para style={{ flex : 1 }} color='red'>{error}</Para>
+                        <View style={appendStyle.errorIconContainer}>
+                            <Feather name="alert-circle" size={24} color='red' />
+                        </View>
                     </View> 
                 }
                 <TouchableOpacity disabled={error || loadingCta} onPress={currentStage.ctaHandler} style={[appendStyle.endCta , error || loadingCta ? appendStyle.disabledCta : {}]}>
@@ -70,7 +73,24 @@ const style = ({ primary , baseBorderRadius }) => StyleSheet.create({
         borderRadius : baseBorderRadius - 5,
         marginLeft : 10
     },
-    error : { marginBottom : 10 },  
+    error : { 
+        marginBottom : 10 ,
+        flexDirection : "row", 
+        justifyContent : 'flex-end',
+        alignItems : 'center',
+        marginVertical : 10 ,
+        backgroundColor :"#E9858058",
+        borderRadius : baseBorderRadius,
+        padding : 10
+    },
+    errorIconContainer : {
+        borderRadius : baseBorderRadius,
+        marginLeft : 10,
+        padding : 10,
+        alignItems : 'center',
+        justifyContent : 'center',
+        backgroundColor : "#E9858055",
+    },
     disabledCta : { opacity: .3 },
     endCta : {
         flexDirection : "row",

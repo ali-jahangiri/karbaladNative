@@ -35,6 +35,7 @@ const style = ({ primary }) => StyleSheet.create({
         backgroundColor : generateColor(primary , 9),
         paddingTop : StatusBar.currentHeight + 30,
         paddingBottom : StatusBar.currentHeight + 10,
+        marginBottom : 10
     },
     innerContainer : {
         width : "90%",

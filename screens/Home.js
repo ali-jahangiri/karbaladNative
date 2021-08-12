@@ -2,7 +2,6 @@ import React from 'react';
 
 import HomeInsRouter from '../Router/HomeInsRouter';
 
-import InsuranceDirectory from '../components/InsuranceDirectory';
 import ScreenWrapper from '../components/ScreenWrapper';
 import InsuranceStepper from './InsuranceStepper';
 
@@ -10,6 +9,8 @@ import { useSelector } from '../Store/Y-state';
 import HeaderProvider from '../Providers/HeaderProvider/HeaderProvider';
 import DirectionProvider from '../Providers/DirectoryProvider/DirectionProvider';
 import CategoryProvider from '../Providers/CategoryProvider/CategoryProvider';
+import ComponentGenerator from '../HOC/ComponentGenerator/ComponentGenerator';
+import { ScrollView } from 'react-native';
 
 
 const InsIndexScreen = ({ navigation }) => {
@@ -18,13 +19,15 @@ const InsIndexScreen = ({ navigation }) => {
     const routeChangeHandler = routeParameters => 
         navigation.push('stepScreen' , routeParameters);
 
-
         return (
         <ScreenWrapper>
             <HeaderProvider title="خانه" />
+            <ScrollView>
             <DirectionProvider>
-                <CategoryProvider handler={routeChangeHandler} items={catItems} />
+                {/* <CategoryProvider handler={routeChangeHandler} items={catItems} /> */}
+                <ComponentGenerator />
             </DirectionProvider>
+            </ScrollView>
         </ScreenWrapper>
     )
 }

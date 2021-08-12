@@ -1,0 +1,27 @@
+import React from 'react';
+import { DynamicImage, DynamicText } from '../../components/DynamicComponents';
+import { useSelector } from '../../Store/Y-state';
+
+import { makeLeanComponentVariables } from "../../utils"
+
+const staticStore = [
+    
+]
+
+
+const _dynamicElementComponent = ({...rest}) => ({
+    // "MobileInsuranceCategoryBox", 
+    // "MobileInsuranceCategoryRow",
+    MobileImage : <DynamicImage {...rest} />,
+    MobileText : <DynamicText {...rest} />,
+})
+
+const ComponentGenerator = () => {
+    const dynamicComponentList = useSelector(state => state.dynamicComponent) || [];
+    console.log(dynamicComponentList);
+    
+    return dynamicComponentList.map((el , i) => _dynamicElementComponent({ componentDatas : makeLeanComponentVariables(el.componentDatas) , componentStyles : makeLeanComponentVariables(el.componentStyles) , key : i })?.[el.name])
+}
+
+
+export default ComponentGenerator;

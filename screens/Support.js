@@ -48,16 +48,16 @@ const Support = () => {
             userSupportReqHandler()
                 .then(_ => setLoading(false));
         }else {
-            timer = setInterval(() => {
-                userSupportReqHandler()
-                    .then(_ => {
-                        setGetRefreshed(true)
-                        let timeoutTimer = setTimeout(() => {
-                            setGetRefreshed(false);
-                            clearTimeout(timeoutTimer)
-                        } , 3000)
-                    })
-            } , 60000);
+            // timer = setInterval(() => {
+            //     userSupportReqHandler()
+            //         .then(_ => {
+            //             setGetRefreshed(true)
+            //             let timeoutTimer = setTimeout(() => {
+            //                 setGetRefreshed(false);
+            //                 clearTimeout(timeoutTimer)
+            //             } , 3000)
+            //         })
+            // } , 60000);
         }
         return () => clearInterval(timer)
     } , [loading])

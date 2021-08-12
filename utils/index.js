@@ -9,6 +9,8 @@ import toFarsiNumber from "./toPersianNumber";
 import persister from "./persister";
 import encrypt from "./encrypt";
 import makeLeanPallet from "./makeLeanPallet";
+import makeLeanComponentVariables from "./makeLeanComponentVariables";
+import borderConstructor from "./borderConstructor";
 
 export {
     generateColor,
@@ -21,5 +23,7 @@ export {
     toFarsiNumber,
     persister,
     encrypt,
-    makeLeanPallet
+    makeLeanPallet,
+    makeLeanComponentVariables,
+    borderConstructor
 }

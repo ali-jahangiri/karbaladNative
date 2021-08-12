@@ -7,11 +7,13 @@ import client from '../client';
 import useFetch from '../Providers/useFetch';
 
 import { fixNumbers } from '../utils/Date';
-import { persister } from '../utils';
+import { persister, toFarsiNumber } from '../utils';
 import { useDispatch } from '../Store/Y-state';
 import { setAppKey, setSeeWelcomeScreen } from '../Store/Slices/authSlice';
 
 import { VerifyInput , PhoneInput, PasswordInput, AuthLanding, AuthModePlayground } from '../components/Login';
+import Para from '../components/Para';
+import VerifyTextHelper from '../components/Login/VerifyTextHelpler';
 
 
 const { LOGIN } = client.static;
@@ -118,14 +120,20 @@ const Login = () => {
         },
         "2" : {
             ctaText : "تایید کد",
-            backHandler() {
+            backHandler(comeWithWrongNumber) {
+                if(comeWithWrongNumber === true) setInputValue({});
                 setStage(prev => prev - 1);
             },
             body() {
-                return <VerifyInput
-                value={inputValue?.verifyCode}
-                changeHandler={value => verificationCodeChangeHandler(value)}
-                />  
+                return (
+                    <View>
+                        <VerifyTextHelper phone={inputValue.phone} backHandler={() => this.backHandler(true)} />
+                        <VerifyInput
+                            value={inputValue?.verifyCode}
+                            changeHandler={value => verificationCodeChangeHandler(value)}
+                            />  
+                    </View>
+                )
             },
             ctaHandler() {
                 setError("کد تایید صحیح نمیباشد")

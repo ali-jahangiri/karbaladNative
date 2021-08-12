@@ -1,7 +1,7 @@
 import React , { useEffect, useState } from 'react';
 import { useFonts } from 'expo-font';
 
-import { useStyle, useStyleDispatcher } from "../../Hooks/useStyle"
+import { useStyleDispatcher } from "../../Hooks/useStyle"
 import encrypt from '../../utils/encrypt';
 import client from '../../client';
 import config from '../../config';
@@ -19,6 +19,7 @@ import Login from '../../screens/Login';
 import InitialErrorPage from '../../screens/InitialErrorPage';
 import { Welcome } from '../../screens';
 import LoadingScreen from "./LoadingScreen";
+import { setDynamicComponent } from '../../Store/Slices/dynamicComponentSlice';
 
 
 const InitialLoading = ({ children }) => {
@@ -28,8 +29,7 @@ const InitialLoading = ({ children }) => {
     const storeDispatcher = useDispatch();
     const [Inhibitor, setInhibitor] = useState(true);
 
-    const style = useStyle()
-
+    
     const {appKey :  isAuth , seeWelcome} = useSelector(state => state.auth);
 
     const [fontLoaded , err ] = useFonts({
@@ -76,15 +76,16 @@ const InitialLoading = ({ children }) => {
                                 if(data) {
                                     storeDispatcher(() => setSeeWelcomeScreen(true));
                                     storeDispatcher(() => setAppKey(data));
-                                    return api.post("baseData" , {} , { headers : { packageName : config.packageName , appToken } })
-                                        .then(({ data }) => {
-                                            const { mainData : { components } , manifest } = data;
-                                            const globalStyle = makeLeanPallet(components[0].componentStyles)
-                                            styleDispatcher(globalStyle)
-                                            storeDispatcher(() => setInsCat(data.categories.cat));
-                                            setLoading(false)
-                                        })
                                 }
+                                return api.post("baseData" , {} , { headers : { packageName : config.packageName , appToken } })
+                                    .then(({ data }) => {
+                                        const { mainData : { components } , manifest } = data;
+                                        const mobileConfig = components.find(el => el.name === "MobileConfig").componentStyles
+                                        styleDispatcher(makeLeanPallet(mobileConfig))
+                                        storeDispatcher(() => setInsCat(data.categories.cat));
+                                        storeDispatcher(() => setDynamicComponent(components.filter(el => el.name !== "MobileConfig")))
+                                        setLoading(false)
+                                    })
                             }).catch(err => {
                                 throw new Error(err);
                             })
@@ -102,6 +103,7 @@ const InitialLoading = ({ children }) => {
     } , [loading])
 
 
+    
     if(somethingWentWrong) {
         return <InitialErrorPage
                     errMessage={somethingWentWrong} 

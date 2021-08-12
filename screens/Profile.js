@@ -148,14 +148,17 @@ const style = ({ primary , baseBorderRadius }) => StyleSheet.create({
 const Stack = createStackNavigator();
 
 
-const ProfileRouter = () => (
-    <Stack.Navigator screenOptions={{ headerShown : false }}>
+const ProfileRouter = ({ ...rest }) => {
+    console.log(rest);
+    return (
+        <Stack.Navigator screenOptions={{ headerShown : false }}>
         <Stack.Screen name="profileIndex" component={Profile} />
         <Stack.Screen name="profileEdit" component={ProfileEdit} />
         <Stack.Screen name="reminder" component={Reminder} />
         <Stack.Screen name="support" component={Support} />
         <Stack.Screen name="feedback" component={SupportFeedBack} />
     </Stack.Navigator>
-)
+    )
+}
 
 export default ProfileRouter;
