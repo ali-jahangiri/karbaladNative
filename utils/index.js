@@ -11,6 +11,7 @@ import encrypt from "./encrypt";
 import makeLeanPallet from "./makeLeanPallet";
 import makeLeanComponentVariables from "./makeLeanComponentVariables";
 import borderConstructor from "./borderConstructor";
+import booleanExtractor from "./booleanExtractor";
 
 export {
     generateColor,
@@ -25,5 +26,6 @@ export {
     encrypt,
     makeLeanPallet,
     makeLeanComponentVariables,
-    borderConstructor
+    borderConstructor,
+    booleanExtractor
 }

@@ -1,19 +1,18 @@
 import React from 'react';
-import { DynamicImage, DynamicText } from '../../components/DynamicComponents';
+import CategoryRow from '../../components/CategoryRow/CategoryRow';
+import { DynamicImage, DynamicText , DynamicSlider } from '../../components/DynamicComponents';
+import InsuranceDirectory from '../../components/InsuranceDirectory';
 import { useSelector } from '../../Store/Y-state';
 
 import { makeLeanComponentVariables } from "../../utils"
 
-const staticStore = [
-    
-]
-
 
 const _dynamicElementComponent = ({...rest}) => ({
-    // "MobileInsuranceCategoryBox", 
-    // "MobileInsuranceCategoryRow",
+    MobileInsuranceCategoryBox : <InsuranceDirectory {...rest} />,
+    MobileInsuranceCategoryRow : <CategoryRow {...rest} />,
     MobileImage : <DynamicImage {...rest} />,
     MobileText : <DynamicText {...rest} />,
+    MobileSlider : <DynamicSlider {...rest} />
 })
 
 const ComponentGenerator = () => {

@@ -1,22 +1,44 @@
-import { useScrollToTop } from '@react-navigation/native';
+import { useNavigation, useScrollToTop } from '@react-navigation/native';
 import React, { useRef } from 'react';
-import { ScrollView } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
+import { useSelector } from '../../Store/Y-state';
 import CategoryRowItem from './CategoryRowItem';
 
 
-const CategoryRow = ({ items = [] , handler }) => {
+const CategoryRow = ({ passedNestedItems , componentStyles }) => {
+    const items = useSelector(state => state.initial)
+    const navigation = useNavigation()      
     const container = useRef();
     useScrollToTop(container);
+    const appendStyle = style(componentStyles)
+
+    const handler = routeParameters => {
+        navigation.push('stepScreen' , routeParameters);
+    }
+
+    const itemsList = passedNestedItems || items;
+
     return (
-    <ScrollView ref={container}>
+        <View style={appendStyle.container}>
+            <ScrollView ref={container}>
             {
-                items.map((el , i) => (
-                    <CategoryRowItem {...el} key={i} onItemPress={handler} />
+                itemsList.map((el , i) => (
+                    <CategoryRowItem passedStyle={componentStyles} {...el} key={i} onItemPress={handler} />
                 ))
             }
-    </ScrollView>
+            </ScrollView>
+        </View>
     )
 }
+
+
+const style = ({ containerBgColor , containerMarginTop , containerMarginBottom }) => StyleSheet.create({
+    container : {
+        backgroundColor : containerBgColor,
+        marginTop : Number(containerMarginTop),
+        marginBottom : Number(containerMarginBottom)
+    }
+})
 
 
 export default CategoryRow;
