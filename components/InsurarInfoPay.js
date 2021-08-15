@@ -4,7 +4,7 @@ import { useStyle } from '../Hooks/useStyle';
 
 import { Feather } from '@expo/vector-icons';
 import Para from './Para';
-import { toFarsiNumber } from '../utils';
+import { generateColor, toFarsiNumber } from '../utils';
 
 const InsurerInfoPay = ({ birthDay , genders , nCode , mobile, name , family}) => {
     const appendStyle = useStyle(style);
@@ -13,7 +13,9 @@ const InsurerInfoPay = ({ birthDay , genders , nCode , mobile, name , family}) =
         <View style={appendStyle.container}> 
             <View style={appendStyle.header}>
                 <Para size={18} weight="bold">مشخصات بیمه‌گذار</Para>
-                <Feather style={{ marginLeft : 10 }} name="user" size={24} color="black" />
+                <View style={appendStyle.negativeIcon}>
+                    <Feather name="user" size={24} color="black" />
+                </View>
             </View>
             <View style={appendStyle.itemsContainer}>
                 <View style={appendStyle.row}>
@@ -41,7 +43,7 @@ const InsurerInfoPay = ({ birthDay , genders , nCode , mobile, name , family}) =
     )
 }
 
-const style = () => StyleSheet.create({
+const style = ({ primary , baseBorderRadius}) => StyleSheet.create({
     container : {
         marginTop : 10
     },
@@ -59,6 +61,13 @@ const style = () => StyleSheet.create({
     },
     value : {
         fontSize : 16
+    },
+    negativeIcon : {
+        backgroundColor : generateColor(primary , 5),
+        borderTopLeftRadius : baseBorderRadius,
+        borderBottomLeftRadius : baseBorderRadius,
+        padding: 15,
+        marginLeft : 10
     },
     row : {
         flexDirection : "row",

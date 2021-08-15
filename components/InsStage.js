@@ -13,20 +13,22 @@ import Para from './Para';
 import StepTimeline from './StepTimeline';
 
 
-const InsStage = (props) => {
+const InsStage = props => {
     const { stageNumber , nextStageHandler , prevStageHandler , categoryName , store , typesName , formData , formName , carCategory , isRequierd , lbLName} = props
     
-    const nestedKeyName = `Nested_${formName}`;
+    const NESTED_KEY_NAME = `Nested_${formName}`;
     
     const appendStyle = useStyle(style);
+    const [err, setErr] = useState(false);
     
-    const [err, setErr] = useState(false)
-    const [temporaryValue, setTemporaryValue] = useState({ 
+    const baseObject = { 
         searchFilterBase : "" , 
         formName : store[formName] || formName , 
-        [nestedKeyName] : store[nestedKeyName] , 
+        [NESTED_KEY_NAME] : store[NESTED_KEY_NAME] , 
         date : persianDate.dateInstance 
-        });
+    }
+
+    const [temporaryValue, setTemporaryValue] = useState(baseObject);
 
 
     const temporaryChangeHandler = ({key = formName , value , isNested}) => {
@@ -41,7 +43,7 @@ const InsStage = (props) => {
         else {
         // push change directly in main end result store without user event 
             const newClonedTemp = {...temporaryValue , [isNested ? `Nested_${key}`: key] : value};
-            const haveNestedKey = formData[0]?.hasNestedData ? { [nestedKeyName]: newClonedTemp[nestedKeyName] } : undefined
+            const haveNestedKey = formData[0]?.hasNestedData ? { [NESTED_KEY_NAME]: newClonedTemp[NESTED_KEY_NAME] } : undefined
             const pureTarget = {
                 [formName] : newClonedTemp[formName],
                 ...haveNestedKey
@@ -53,12 +55,12 @@ const InsStage = (props) => {
     
     const pushToNextStageHandler = () => {
         // !Important this is a special case witch nested propertied is a required field
-        if(carCategory && !temporaryValue[nestedKeyName]) return setErr(true);
+        if(carCategory && !temporaryValue[NESTED_KEY_NAME]) return setErr(true);
         
-        if(isRequierd && (!temporaryValue[formName] && !temporaryValue[nestedKeyName] )) setErr(true);
+        if(isRequierd && (!temporaryValue[formName] && !temporaryValue[NESTED_KEY_NAME] )) setErr(true);
         
         else {
-            const haveNestedKey = formData[0]?.hasNestedData ? { [nestedKeyName]: temporaryValue[nestedKeyName] } : undefined
+            const haveNestedKey = formData[0]?.hasNestedData ? { [NESTED_KEY_NAME]: temporaryValue[NESTED_KEY_NAME] } : undefined
             setErr(false);
             const pureTarget = {
                 [formName] : temporaryValue[formName],

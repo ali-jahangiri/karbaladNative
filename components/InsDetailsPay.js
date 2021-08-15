@@ -12,27 +12,28 @@ const InsDetailsPay = ({ iconUrl , id , createTime , categorysFullName , insuran
     const appendStyle = useStyle(style);
     
     const date = dayjs(createTime).calendar("jalali").locale("fa").format("YYYY/MM/DD");
+    
     return (
         <View style={appendStyle.container}>
             <View style={{ justifyContent : "center" , flexDirection : "row" }}>
                 <Image resizeMode="center" source={{
                     uri : imageFinder(iconUrl),
-                    width: 80,
-                    height: 80
+                    width: 100,
+                    height: 100
                 }} />
             </View>
-            <View style={{ flexDirection : "row" , justifyContent : 'space-between' }}>
-                    <Para color="grey">{insuranceCoName}</Para>
-                    <Para size={16}>{categorysFullName}</Para>
-            </View>
-            <View style={appendStyle.row}>
-                <View>
-                    <Para color="grey">شماره پیگیری</Para>
-                    <Para size={16}>{toFarsiNumber(id)}</Para>
-                </View>
-                <View>
-                    <Para color="grey">تاریخ ثبت </Para>
-                    <Para size={16}>{toFarsiNumber(date)}</Para>
+            <View style={{ width : "90%" , marginHorizontal : "5%"}}>
+                        <Para size={19} >{insuranceCoName}</Para>
+                        <Para size={16}>{categorysFullName}</Para>
+                <View style={appendStyle.row}>
+                    <View>
+                        <Para color="grey">شماره پیگیری</Para>
+                        <Para size={16}>{toFarsiNumber(id)}</Para>
+                    </View>
+                    <View>
+                        <Para color="grey">تاریخ ثبت </Para>
+                        <Para size={16}>{toFarsiNumber(date)}</Para>
+                    </View>
                 </View>
             </View>
         </View>

@@ -18,30 +18,34 @@ const InsPayDeliveryOption = ({ setOption , currentOption , items , setPrice }) 
         <View style={appendStyle.container}>
             <View style={appendStyle.header}>
                 <Para size={18} weight="bold">روش ارسال</Para>
-                <Feather style={{ marginLeft : 10 }} name="box" size={24} color="black" />
+                <View style={appendStyle.negativeIcon}>
+                    <Feather name="box" size={24} color="black" />
+                </View>
             </View>
-            {
-                items.map((el , i) => (
-                    <TouchableOpacity onPress={() => selectHandler(el.id , el.addAmount)} style={[appendStyle.item , currentOption === el.id ? appendStyle.selectedItem : {}]} key={i}>
-                        <View>
-                            {
-                                !el.addAmount ? <Para>رایگان</Para> : <View style={{ flexDirection : "row" , alignItems : "center" }}>
-                                    <Para size={14} color="grey" style={{ marginRight : 5 }}>تومان</Para>
-                                    <Para weight="bold" size={16}>{numberSeparator(toFarsiNumber(el.addAmount))}</Para>
-                                </View>
-                            }
+            <View style={appendStyle.itemContainer}>
+                {
+                    items.map((el , i) => (
+                        <TouchableOpacity onPress={() => selectHandler(el.id , el.addAmount)} style={[appendStyle.item , currentOption === el.id ? appendStyle.selectedItem : {}]} key={i}>
+                            <View>
+                                {
+                                    !el.addAmount ? <Para>رایگان</Para> : <View style={{ flexDirection : "row" , alignItems : "center" }}>
+                                        <Para size={14} color="grey" style={{ marginRight : 5 }}>تومان</Para>
+                                        <Para weight="bold" size={16}>{numberSeparator(toFarsiNumber(el.addAmount))}</Para>
+                                    </View>
+                                }
+                            </View>
+                        <View style={appendStyle.optionName}>
+                            <Para>{el.name}</Para>
                         </View>
-                    <View style={appendStyle.optionName}>
-                        <Para>{el.name}</Para>
-                    </View>
-                    <Image style={[{ opacity : .5 , } , currentOption === el.id ? appendStyle.selectedItemImage : {}]} resizeMode="contain" source={{ 
-                        uri : imageFinder(el.image),
-                        width: 40,
-                        height: 40,
-                    }}  />
-                    </TouchableOpacity>
-                ))
-            }
+                        <Image style={[{ opacity : .5 , } , currentOption === el.id ? appendStyle.selectedItemImage : {}]} resizeMode="contain" source={{ 
+                            uri : imageFinder(el.image),
+                            width: 40,
+                            height: 40,
+                        }}  />
+                        </TouchableOpacity>
+                    ))
+                }
+            </View>
         </View>
     )
 }
@@ -54,6 +58,17 @@ const style = ({ primary , baseBorderRadius }) => StyleSheet.create({
         alignItems : 'center',
         marginVertical : 5,
         padding: 10
+    },
+    itemContainer : {
+        width : "95%",
+        marginHorizontal : "2.5%"
+    },
+    negativeIcon : {
+        backgroundColor : generateColor(primary , 5),
+        borderTopLeftRadius : baseBorderRadius,
+        borderBottomLeftRadius : baseBorderRadius,
+        padding: 15,
+        marginLeft : 10
     },
     selectedItem : {
         backgroundColor : generateColor(primary , 2),

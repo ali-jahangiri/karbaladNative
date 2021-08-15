@@ -2,7 +2,7 @@ import { Feather } from '@expo/vector-icons';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useStyle } from '../Hooks/useStyle';
-import { toFarsiNumber } from '../utils';
+import { generateColor, toFarsiNumber } from '../utils';
 import Para from './Para';
 
 
@@ -12,7 +12,9 @@ const InsTransfereePay = ({ reciverFamily ,reciverMobile , reciverName , reciver
         <View style={appendStyle.container}>
             <View style={appendStyle.header}>
                 <Para size={18} weight="bold">مشخصات تحویل گیرنده</Para>
-                <Feather style={{ marginLeft : 10 }} name="user-check" size={24} color="black" />
+                <View style={appendStyle.negativeIcon}>
+                    <Feather style={{ marginLeft : 10 }} name="user-check" size={24} color="black" />
+                </View>
             </View>
             <View style={appendStyle.itemsContainer}>
                 <View style={appendStyle.row}>
@@ -41,10 +43,16 @@ const InsTransfereePay = ({ reciverFamily ,reciverMobile , reciverName , reciver
 }
 
 
-const style = () => StyleSheet.create({
-    
+const style = ({ primary , baseBorderRadius}) => StyleSheet.create({
     container : {
         marginTop : 20
+    },
+    negativeIcon : {
+        backgroundColor : generateColor(primary , 5),
+        borderTopLeftRadius : baseBorderRadius,
+        borderBottomLeftRadius : baseBorderRadius,
+        padding: 15,
+        marginLeft : 10
     },
     header : {
         flexDirection : 'row',

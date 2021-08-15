@@ -1,5 +1,5 @@
-import React from 'react';
-import { StyleSheet, TextInput, View } from 'react-native';
+import React, { useEffect } from 'react';
+import { Alert, StyleSheet, TextInput, View } from 'react-native';
 import { useStyle } from '../Hooks/useStyle';
 import { Feather } from '@expo/vector-icons';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -14,34 +14,39 @@ fixNumbers = function (str)
 {
   if(typeof str === 'string')
   {
-    for(var i=0; i<10; i++)
-    {
+    for(var i=0; i<10; i++) {
       str = str.replace(persianNumbers[i], i).replace(arabicNumbers[i], i);
     }
   }
   return str;
 };
 
-const InputNumber = ({ onChange , stepForEachOperation = 10000, value = String(stepForEachOperation) , length : { max , min } , isNotLimited , triggersStyle}) => {
+const InputNumber = ({ onChange , stepForEachOperation = 10000, length : { max , min } , value = min , isNotLimited , triggersStyle , liftValueForFirstTime }) => {
     const appendStyle = useStyle(style , triggersStyle);
     const { primary } = useStyle();
-        
+
+
+    useEffect(() => {
+        if(liftValueForFirstTime) onChange({ value : min });
+    } , [])
+
+
     const changeHandler = value => {
-        
         let newValue = makePureNumber(fixNumbers(value))
-        onChange({ value  : newValue })
-        
-        if(newValue > max) {
-            onChange({ value : max})
+        if(newValue < min) {
+            Alert.alert(`حداقل مقدار ورودی ${numberSeparator(min)} میباشد` , null , [{ text : "تایید" }])
+            onChange({ value : min })
+        }else if(newValue > max) {
+            Alert.alert(`حداکثر مقدار ورودی ${numberSeparator(max)} میباشد` , null , [{ text : "تایید" }])
+            onChange({ value  : max })
+        }else {
+            onChange({ value : newValue })
         }
     }
 
-    const increaseHandler = () => 
-        value < max && onChange({ value : +value + stepForEachOperation });
+    const increaseHandler = () => value < max && onChange({ value : +value + stepForEachOperation });
 
-    const decreaseHandler = () => {
-        value > stepForEachOperation && onChange({ value : +value - stepForEachOperation });
-    }
+    const decreaseHandler = () => value > stepForEachOperation && onChange({ value : +value - stepForEachOperation });
 
     return (
         <View style={{ flex : 1 , alignItems : 'center' , justifyContent : 'center'}}>
@@ -51,11 +56,12 @@ const InputNumber = ({ onChange , stepForEachOperation = 10000, value = String(s
                 </TouchableOpacity>
                 <View style={appendStyle.inputContainer}>
                     <TextInput 
-                        keyboardType="numeric" 
+                        value={numberSeparator(toFarsiNumber(value))} 
+                        keyboardType="numeric"
                         maxLength={numberSeparator(max).length} 
                         style={appendStyle.input} 
                         onChangeText={changeHandler} 
-                        value={numberSeparator(toFarsiNumber(value))} />
+                        />
                 </View>
                 <TouchableOpacity onPress={decreaseHandler} style={[appendStyle.controller , value <= stepForEachOperation ? appendStyle.disabledCta : null]}>
                     <Feather name="minus" size={24} color={primary} />

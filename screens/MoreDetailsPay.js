@@ -7,13 +7,17 @@ import ScreenWrapper from '../components/ScreenWrapper';
 import HeaderProvider from '../Providers/HeaderProvider/HeaderProvider';
 import DirectionProvider from '../Providers/DirectoryProvider/DirectionProvider';
 
-const MoreDetailsPay = ({ navigation , route : { params : { items } } }) => {
+import InsDetailsPay from "../components/InsDetailsPay"
+
+
+const MoreDetailsPay = ({ navigation , route : { params : { items , payResponse } } }) => {
     const appendStyle =  useStyle(style);
 
     return (
         <ScreenWrapper style={appendStyle.container}>
             <HeaderProvider isNested title="جزئیات بیمه نامه"  />
             <DirectionProvider>
+            <InsDetailsPay {...payResponse} />
                 <View style={appendStyle.itemContainer}>
                     <ScrollView>
                         {

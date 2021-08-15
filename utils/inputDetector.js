@@ -88,7 +88,8 @@ const InputDetector = ({typesName , isCarCase , temporary : { value , setValue }
         case INT :
         case FLOAT :
             return (
-                <InputNumber 
+                <InputNumber
+                    liftValueForFirstTime
                     isNotLimited={!maxNumber} 
                     length={{ max : maxNumber || 100000000 , min : minNumber || 0 }} 
                     stepForEachOperation={step || 10000} 
