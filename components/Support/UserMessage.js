@@ -38,6 +38,7 @@ const style = ({ primary , baseBorderRadius }) => StyleSheet.create({
     },
     innerContainer : {
         backgroundColor : generateColor(primary, 5),
+        minWidth : 70,
         maxWidth : "78%",
         padding: 15,
         borderRadius : baseBorderRadius,

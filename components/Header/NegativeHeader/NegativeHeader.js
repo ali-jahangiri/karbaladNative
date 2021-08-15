@@ -30,7 +30,8 @@ const style = ({ primary }) => StyleSheet.create({
         backgroundColor : generateColor(primary , 5),
         paddingBottom : 15,
         alignItems :'center',
-        justifyContent : 'center'
+        justifyContent : 'center',
+        marginBottom : -50
     },
     innerContainer : {
         width : "90%",

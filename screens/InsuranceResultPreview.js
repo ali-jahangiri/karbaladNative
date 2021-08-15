@@ -82,7 +82,7 @@ const InsuranceResultPreview = ({ route : { params : { id , valueStore , flatted
                         : <Para color={headerTextColor} size={20} weight="bold">نتایج جستجو : </Para>
                     }
                 </View>} />
-                <DirectoryProvider >
+                <DirectoryProvider isNested >
                 {
                     responseValues?.insuranceQuotes?.addInsCoAmountV2?.length ? (<ScrollView >
                     {
@@ -118,7 +118,6 @@ const style = ({ baseBorderRadius }) => StyleSheet.create({
         borderRadius : baseBorderRadius,
         alignItems : "center",
         alignSelf : "center",
-        // backgroundColor : '#fff2',
         padding: 12,
         marginRight : 5
     },

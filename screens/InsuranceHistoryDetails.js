@@ -77,7 +77,7 @@ const InsDetailsView = ({ details }) => {
     return (
         <>
             <HeaderProvider isNested title="جزئیات بیمه نامه" />
-            <DirectionProvider>
+            <DirectionProvider isNested>
                 <ScrollView>
                     <View>
                         <View style={appendStyle.imageContainer}>

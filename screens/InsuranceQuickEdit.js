@@ -111,7 +111,7 @@ const InsuranceQuickEdit = ({ navigation , route : { params } }) => {
     return (
         <View style={appendStyle.container}>
             <HeaderProvider isNested title="ایجاد تغییر در بیمه" />
-            <DirectionProvider>
+            <DirectionProvider isNested>
                 <ScrollView style={appendStyle.itemsDirectory}>
                     {
                         params?.server.map((el , i) => (

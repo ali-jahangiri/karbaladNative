@@ -10,7 +10,7 @@ const InsuranceDirectory = ({ passedNestedItems , componentStyles }) => {
     const items = useSelector(state => state.initial);
     const navigation = useNavigation();
     const container = useRef();
-    const appendStyle = style(componentStyles)
+    const appendStyle = style(componentStyles);
     useScrollToTop(container);
 
     const handler = routeParameters => {
@@ -36,7 +36,7 @@ const InsuranceDirectory = ({ passedNestedItems , componentStyles }) => {
     )
 }
 
-const style = ({ containerMarginTop , containerMarginBottom , containerBgColor ,  }) => StyleSheet.create({
+const style = ({ containerMarginTop , containerMarginBottom , containerBgColor }) => StyleSheet.create({
     container : {
         marginTop : client.style.size.spacing.screenHeaderAndDirectoryGap,
         flexDirection : 'row',

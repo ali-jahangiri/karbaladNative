@@ -10,12 +10,11 @@ const NegativeDirectory = ({ children }) => (
 
 const style = StyleSheet.create({
     container : {
-        marginTop : -50,
         flex: 1,
         backgroundColor : 'white',
-        paddingTop : 10,
         borderTopRightRadius : 30,
-        borderTopLeftRadius : 30
+        borderTopLeftRadius : 30,
+        overflow: "hidden",
     }
 })
 

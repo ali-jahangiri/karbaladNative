@@ -7,12 +7,11 @@ import client from '../client';
 import useFetch from '../Providers/useFetch';
 
 import { fixNumbers } from '../utils/Date';
-import { persister, toFarsiNumber } from '../utils';
+import { persister } from '../utils';
 import { useDispatch } from '../Store/Y-state';
 import { setAppKey, setSeeWelcomeScreen } from '../Store/Slices/authSlice';
 
 import { VerifyInput , PhoneInput, PasswordInput, AuthLanding, AuthModePlayground } from '../components/Login';
-import Para from '../components/Para';
 import VerifyTextHelper from '../components/Login/VerifyTextHelpler';
 
 
@@ -99,8 +98,8 @@ const Login = () => {
                     
                     fetcher('VerifyNumber' , { mobile : fixNumbers(inputValue?.phone) })
                     .then(({ data }) => {
-                         if(data.typeId < 0) throw new Error(data.message)
-                         setStage(prev => prev + 1)
+                        if(data.typeId < 0) throw new Error(data.message)
+                        setStage(prev => prev + 1)
                     }).catch(err => {
                         setError(err.message);
                     }).finally(() => {

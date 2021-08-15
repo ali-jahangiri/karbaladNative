@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { createStackNavigator } from "@react-navigation/stack";
 
-import ScreenHeader from '../components/ScreenHeader';
 import InsuranceHistoryDirectory from '../components/InsuranceHistoryDirectory';
 import ScreenWrapper from "../components/ScreenWrapper";
 
@@ -52,7 +51,6 @@ const Home = () => {
                 })
         }
     } , [navHash , isFocused])
-
 
     if(loading) return <Loading />
     return (
