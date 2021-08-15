@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, View , StatusBar, ScrollView, TouchableOpacity } from 'react-native';
 import { useStyle } from '../Hooks/useStyle';
 
@@ -7,7 +7,6 @@ import InputDetector from '../utils/inputDetector';
 
 import Drawer from '../components/Drawer';
 import InsuranceQuickEditItem from '../components/InsuranceQuickEditItem';
-import DirectionCta from '../components/DirectionCta';
 import Para from '../components/Para';
 
 import { Feather } from '@expo/vector-icons';
@@ -130,8 +129,8 @@ const InsuranceQuickEdit = ({ navigation , route : { params } }) => {
             {
                 // if we have a change in temp value , then we gonna see controller ( confirmChange )
                 Object.values(tempState).length ? <TouchableOpacity style={appendStyle.newResultCta} onPress={getNewResultHandler}>
-                            <Feather style={{ marginRight : 10 }} name="arrow-left" size={24} color="black" />
-                            <Para size={16} weight="bold" align="center">استعلام مجدد</Para>
+                            <Feather style={appendStyle.ctaIcon} name="arrow-left" size={24} />
+                            <Para style={appendStyle.ctaText} size={16} weight="bold" align="center">استعلام مجدد</Para>
                         </TouchableOpacity> : null
             }
             {
@@ -167,7 +166,7 @@ const InsuranceQuickEdit = ({ navigation , route : { params } }) => {
 }
 
 
-const style = ({ primary , baseBorderRadius }) => StyleSheet.create({
+const style = ({ primary , baseBorderRadius , ctaTextColor }) => StyleSheet.create({
     container : {flex : 1,},
     header : {
         paddingTop : StatusBar.currentHeight + 20,
@@ -187,6 +186,13 @@ const style = ({ primary , baseBorderRadius }) => StyleSheet.create({
         alignItems : 'center',
         justifyContent : 'center',
         borderRadius : baseBorderRadius
+    },
+    ctaText : {
+        color : ctaTextColor
+    },
+    ctaIcon : {
+        marginRight : 10 ,
+        color : ctaTextColor
     }
 })
 

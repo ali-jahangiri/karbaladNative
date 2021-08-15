@@ -23,14 +23,13 @@ const style = ({ primary , baseBorderRadius  } , selectedInStore) => StyleSheet.
         alignItems : 'center',
         flexDirection : 'row',
         justifyContent : 'center',
-        padding: 20,
         height: 70,
         marginRight : -20
     },
     statusBullet : {
         borderRadius : baseBorderRadius ,
-        width: 20,
-        height: 20,
+        width: 15,
+        height: 15,
         backgroundColor : selectedInStore ?  generateColor(primary , 5) : "white",
         marginLeft : 10,
         alignItems : 'center',
@@ -42,8 +41,8 @@ const style = ({ primary , baseBorderRadius  } , selectedInStore) => StyleSheet.
     emptySpace : {
         backgroundColor : "white",
         borderRadius : baseBorderRadius,
-        height : 6,
-        width : 6,
+        height : 5,
+        width : 5,
     }
 })
 

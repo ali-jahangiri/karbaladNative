@@ -17,14 +17,9 @@ const InsuranceConfirm = ({ route : { params : { factorItems , insModel , haveIn
     const { primary , ctaTextColor } = useStyle();
     
 
-    const installmentHandler = () => {
-        navigation.push("insuranceInstallment" , { factorId : haveInstallment , reqId , installment_Value })
-    }
-
+    const installmentHandler = () => navigation.push("insuranceInstallment" , { factorId : haveInstallment , reqId , installment_Value })
+    const goDirectlyToRequirement = () => navigation.push("insuranceRequirements" , { factorId : formulId , reqId , installmentId : null })
     
-    const goDirectlyToRequirement = () => {
-        navigation.push("insuranceRequirements" , { factorId : formulId , reqId , installmentId : null })
-    }
 
     return (
         <ScreenWrapper>
@@ -67,9 +62,7 @@ const InsuranceConfirm = ({ route : { params : { factorItems , insModel , haveIn
                         <View style={appendStyle.actionsContainer}>
                             <TouchableOpacity onPress={goDirectlyToRequirement} style={[appendStyle.action , { backgroundColor : generateColor(primary , 5) }]}>
                                 <Para color={ctaTextColor} weight="bold" align="center" size={16}>
-                                    {
-                                        haveInstallment ? CASH : DIRECT_ORDER
-                                    }
+                                    { haveInstallment ? CASH : DIRECT_ORDER }
                                 </Para>
                             </TouchableOpacity>
                             {
