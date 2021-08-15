@@ -13,8 +13,6 @@ const _parent = {reminder : 'profile' , support : "profile" , profileEdit : "pro
 const useRedirection = ({ webLink, selectedInternalPath }) => {
     const navigation = useNavigation();
 
-    console.log( webLink, selectedInternalPath);
-
     return () => {
         // if web_link was empty and internal path was not selected (was default), we return out from function and do nothing
         if(!webLink && selectedInternalPath === _defaultDeveloperOptions.internalPath) return;
@@ -24,7 +22,8 @@ const useRedirection = ({ webLink, selectedInternalPath }) => {
         }else {
             if(_rootPath.includes(selectedInternalPath)) {
                 navigation.navigate(selectedInternalPath);
-            }else navigation.navigate(_parent[selectedInternalPath] , { screen : selectedInternalPath }); 
+                
+            }else navigation.navigate(_parent[selectedInternalPath] , { comeFromNestedPath : selectedInternalPath }) 
         }
     }
 }

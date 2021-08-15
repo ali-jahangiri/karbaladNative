@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { ScrollView, StyleSheet, View  } from 'react-native';
 import { Feather, Ionicons } from '@expo/vector-icons';
-import { useIsFocused } from '@react-navigation/native';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import { useStyle } from '../Hooks/useStyle';
@@ -35,7 +35,7 @@ const Profile = () => {
     const fetcher = useFetch();
     const isFocused = useIsFocused();
     const storeDispatcher = useDispatch();
-
+    
     useEffect(() => {
         if(!isFocused) storeDispatcher(() => setTabBarState("transparent"))
         else storeDispatcher(() => setTabBarState(generateColor(primary , 5)));
@@ -148,8 +148,12 @@ const style = ({ primary , baseBorderRadius }) => StyleSheet.create({
 const Stack = createStackNavigator();
 
 
-const ProfileRouter = ({ ...rest }) => {
-    console.log(rest);
+const ProfileRouter = ({ navigation , route : { params } }) => {
+    useEffect(() => {
+        if(params?.comeFromNestedPath) {
+            navigation.navigate(params?.comeFromNestedPath)
+        }
+    } , [params])
     return (
         <Stack.Navigator screenOptions={{ headerShown : false }}>
         <Stack.Screen name="profileIndex" component={Profile} />

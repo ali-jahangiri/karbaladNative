@@ -23,10 +23,13 @@ const DynamicText = ({ componentDatas : { content , headerText , linkLabel , web
             {
                 !!headerText && <Para style={appendStyle.header}>{headerText}</Para>
             }
-            <Para style={appendStyle.body}>{content}</Para>
+            {
+                !!content && <Para style={appendStyle.text}>{content}</Para>
+            }
+
             {/* NOTE if we don't provide a linkLabel , that means we want a link for this component */}
             {
-                !!linkLabel && <TouchableOpacity style={appendStyle.ctaContainer} onPress={redirectionHandler}>
+                !!webLink && <TouchableOpacity style={appendStyle.ctaContainer} onPress={redirectionHandler}>
                     <Feather style={{ marginRight : 5 }} name="arrow-up-left" size={24} style={appendStyle.linkIcon} />
                     <Para style={appendStyle.linkText}>{linkLabel}</Para>
                 </TouchableOpacity>
