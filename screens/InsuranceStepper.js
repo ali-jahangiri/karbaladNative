@@ -11,7 +11,7 @@ import { useNavigation } from '@react-navigation/native';
 import Loading from '../components/Loading';
 import client from '../client';
 
-const InsuranceStepper = ({ id , name }) => {
+const InsuranceStepper = ({ route : { params : { id , name }} }) => {
     const navigation = useNavigation();
 
     const [currentStage, setCurrentStage] = useState(0);

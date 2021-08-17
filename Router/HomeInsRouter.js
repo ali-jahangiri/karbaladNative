@@ -9,6 +9,7 @@ import InsuranceRequirements from '../screens/InsuranceRequirements';
 import InsurancePay from '../screens/InsurancePay';
 import MoreDetailsPay from '../screens/MoreDetailsPay';
 import Playground from '../screens/Playground';
+import InsuranceStepper from '../screens/InsuranceStepper';
 
 const Stack = createStackNavigator();
 
@@ -16,6 +17,7 @@ const HomeInsRouter = ({ indexScreen , nestedScreen }) => (
     <React.Fragment>
             <Stack.Navigator screenOptions={{ headerShown : false }}>
                 <Stack.Screen name="home" component={indexScreen} />
+                <Stack.Screen name="insStepper" component={InsuranceStepper} />
                 <Stack.Screen name="stepScreen" component={nestedScreen} />
                 <Stack.Screen name="insuranceResultPreview" component={InsuranceResultPreview} />
                 <Stack.Screen name="insuranceQuickEdit" component={InsuranceQuickEdit} />

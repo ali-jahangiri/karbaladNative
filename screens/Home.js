@@ -12,6 +12,7 @@ import ComponentGenerator from '../HOC/ComponentGenerator/ComponentGenerator';
 import { ScrollView } from 'react-native';
 
 
+
 const InsIndexScreen = () => (
     <ScreenWrapper>
         <HeaderProvider title="خانه" />
@@ -24,12 +25,11 @@ const InsIndexScreen = () => (
 )
 
 
-const NestedInsStepScreen = ({ route : { params : { cat , name , id } }, navigation }) => {
+const NestedInsStepScreen = ({ route : { params : { cat , name , id } }}) => {
     
-   const renderChecker = () => {
         // don't have any sub item , therefore this is end stage of selection insurance category's
-        if(!cat.length) return <InsuranceStepper name={name} id={id} />
-        else return (
+        return !cat.length ? <InsuranceStepper route={{ params : { id , name } }} />
+        : (
             <ScreenWrapper>
                 <HeaderProvider title={name} isNested />
                 <DirectionProvider >
@@ -37,9 +37,6 @@ const NestedInsStepScreen = ({ route : { params : { cat , name , id } }, navigat
                 </DirectionProvider>
             </ScreenWrapper>
         )
-    }
-
-    return renderChecker()
 }
 
 const Home = () => (
