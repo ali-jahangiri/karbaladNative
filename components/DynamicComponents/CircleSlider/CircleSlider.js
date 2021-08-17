@@ -1,13 +1,12 @@
 import React from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
 
-import { useStyle } from '../../../Hooks/useStyle';
 import { booleanExtractor } from '../../../utils';
 import CircleSliderItem from './CircleSliderItem';
 
 
 const CircleSlider = ({ componentStyles , componentDatas }) => {
-    const appendStyle = useStyle(style);
+    const appendStyle = style(componentStyles);
     console.log(componentStyles , componentDatas);
     const items = Object.entries(componentDatas).filter(([key]) => key.includes("slideText")).map(([_ , value]) => value);
     const bgColorList = Object.entries(componentStyles).filter(([key]) => key.includes("bgColorSlide")).map(([_ , value]) => value);
@@ -28,9 +27,10 @@ const CircleSlider = ({ componentStyles , componentDatas }) => {
 }
 
 
-const style = () => StyleSheet.create({
+const style = ({ containerMarginTop , containerMarginBottom }) => StyleSheet.create({
     container : {
-
+        marginTop : Number(containerMarginTop),
+        marginBottom : Number(containerMarginBottom)
     }
 })
 
