@@ -112,6 +112,7 @@ const style = ({ primary , baseBorderRadius }) => StyleSheet.create({
         height : 230,
         justifyContent : 'space-between',
         marginBottom : 10,
+        marginTop : 10
     },
     lastTransaction : {
         backgroundColor : fadeBg_1,

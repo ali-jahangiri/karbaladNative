@@ -120,6 +120,7 @@ const InsurancePay = ({ navigation , route : { params : { id } } }) => {
                     </TouchableOpacity>
                     <Para size={18} weight="bold">تایید و پرداخت نهایی</Para>
                 </View>
+                <View style={{ width : "100%" , flexDirection : "row" , flex : 1}}>
                     <ScrollView showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false}>
                         <InsPayDeliveryOption
                             setPrice={setAdditionalPrice}
@@ -130,6 +131,8 @@ const InsurancePay = ({ navigation , route : { params : { id } } }) => {
                         <InsurerInfoPay {...payResponse} />
                         <InsTransfereePay {...payResponse} />
                     </ScrollView>
+                    <View style={appendStyle.timeLine} />
+                </View>
                 <View style={appendStyle.price}>
                     <View style={{ flexDirection : "row" , alignItems : "center" }}>
                         <Para style={{ marginRight : 5 }} color="grey">تومان</Para>
@@ -154,7 +157,6 @@ const InsurancePay = ({ navigation , route : { params : { id } } }) => {
                     </TouchableOpacity>
                 </View>
             </View>
-            <View style={appendStyle.timeLine} />
         </View>
         </ScreenWrapper>
                     {
@@ -191,8 +193,8 @@ const style = ({ primary , baseBorderRadius }) => StyleSheet.create({
     },
     mainContainer : {
         flex: 1,
-        width : "90%",
-        marginHorizontal : "5%",
+        width : "94%",
+        marginHorizontal : "3%",
         flexDirection : "row",
         justifyContent : 'space-between',
     },

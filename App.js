@@ -48,6 +48,6 @@ export default function App() {
 
 const generalStyle = StyleSheet.create({
   appContainer : {
-    flex: 1
+    flex: 1,
   }
 })

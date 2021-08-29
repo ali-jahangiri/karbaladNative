@@ -34,7 +34,7 @@ const ProfileHeader = ({ userData }) => {
                     </TouchableOpacity>
                     </View>
                 <View style={appendStyle.avatar}>
-                    <Image style={appendStyle.avatarImage} source={{ uri : "https://i.guim.co.uk/img/media/75bd4161378dd43913815ce76caab186a9d5d287/0_10_6720_4032/master/6720.jpg?width=1200&height=1200&quality=85&auto=format&fit=crop&s=41cbc8935ae4e0f498227fa8b10953d0" , width : 100 , height : 100}} />
+                    <View style={appendStyle.avatarImage} />
                     <Para weight="bold" color="#050513" size={22}>
                         {userData?.fullName || userData.mobile_UserName}
                     </Para>
@@ -49,8 +49,11 @@ const ProfileHeader = ({ userData }) => {
 
 const style = ({  baseBorderRadius }) => StyleSheet.create({
     avatarImage : {
+        width : 100,
+        height : 100,
+        backgroundColor : "#2e2e2e2e",
         borderRadius : baseBorderRadius,
-        marginBottom : 10
+        marginBottom : 10,
     },  
     container : {
         marginTop : StatusBar.currentHeight + 5

@@ -13,7 +13,7 @@ const InsTransfereePay = ({ reciverFamily ,reciverMobile , reciverName , reciver
             <View style={appendStyle.header}>
                 <Para size={18} weight="bold">مشخصات تحویل گیرنده</Para>
                 <View style={appendStyle.negativeIcon}>
-                    <Feather style={{ marginLeft : 10 }} name="user-check" size={24} color="black" />
+                    <Feather style={{ marginLeft : 10 }} name="user-check" size={24} style={appendStyle.icon} />
                 </View>
             </View>
             <View style={appendStyle.itemsContainer}>
@@ -47,11 +47,15 @@ const style = ({ primary , baseBorderRadius}) => StyleSheet.create({
     container : {
         marginTop : 20
     },
+    icon : {
+        color: primary
+    },
     negativeIcon : {
         backgroundColor : generateColor(primary , 5),
         borderTopLeftRadius : baseBorderRadius,
         borderBottomLeftRadius : baseBorderRadius,
         padding: 15,
+        paddingLeft : 20,
         marginLeft : 10
     },
     header : {
@@ -61,7 +65,8 @@ const style = ({ primary , baseBorderRadius}) => StyleSheet.create({
         marginBottom : 10
     },
     itemsContainer : {
-        paddingHorizontal : 5
+        width : "90%",
+        marginHorizontal : "5%"
     },
     label : {
         color: "grey"

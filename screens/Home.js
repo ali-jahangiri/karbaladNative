@@ -12,7 +12,6 @@ import ComponentGenerator from '../HOC/ComponentGenerator/ComponentGenerator';
 import { ScrollView } from 'react-native';
 
 
-
 const InsIndexScreen = () => (
     <ScreenWrapper>
         <HeaderProvider title="خانه" />

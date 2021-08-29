@@ -14,7 +14,7 @@ const InsurerInfoPay = ({ birthDay , genders , nCode , mobile, name , family}) =
             <View style={appendStyle.header}>
                 <Para size={18} weight="bold">مشخصات بیمه‌گذار</Para>
                 <View style={appendStyle.negativeIcon}>
-                    <Feather name="user" size={24} color="black" />
+                    <Feather name="user" size={24} style={appendStyle.icon} />
                 </View>
             </View>
             <View style={appendStyle.itemsContainer}>
@@ -54,7 +54,11 @@ const style = ({ primary , baseBorderRadius}) => StyleSheet.create({
         marginBottom : 10
     },
     itemsContainer : {
-        paddingHorizontal : 5
+        width : "90%",
+        marginHorizontal : "5%"
+    },
+    icon : {
+        color: primary
     },
     label : {
         color: "grey"
@@ -67,6 +71,7 @@ const style = ({ primary , baseBorderRadius}) => StyleSheet.create({
         borderTopLeftRadius : baseBorderRadius,
         borderBottomLeftRadius : baseBorderRadius,
         padding: 15,
+        paddingLeft : 20,
         marginLeft : 10
     },
     row : {

@@ -42,7 +42,7 @@ const style = ({ primary, baseBorderRadius }) => StyleSheet.create({
     rowIconContainer : {
         borderRadius : baseBorderRadius,
         padding: 15,
-        marginLeft  : 10,
+        marginLeft  : 15,
         backgroundColor : generateColor(primary , 3),
     },
     rowIcon : {

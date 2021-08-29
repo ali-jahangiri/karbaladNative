@@ -19,7 +19,7 @@ const InsPayDeliveryOption = ({ setOption , currentOption , items , setPrice }) 
             <View style={appendStyle.header}>
                 <Para size={18} weight="bold">روش ارسال</Para>
                 <View style={appendStyle.negativeIcon}>
-                    <Feather name="box" size={24} color="black" />
+                    <Feather name="box" size={24} style={appendStyle.icon} />
                 </View>
             </View>
             <View style={appendStyle.itemContainer}>
@@ -63,11 +63,15 @@ const style = ({ primary , baseBorderRadius }) => StyleSheet.create({
         width : "95%",
         marginHorizontal : "2.5%"
     },
+    icon : {
+        color: primary
+    },
     negativeIcon : {
         backgroundColor : generateColor(primary , 5),
         borderTopLeftRadius : baseBorderRadius,
         borderBottomLeftRadius : baseBorderRadius,
         padding: 15,
+        paddingLeft : 20,
         marginLeft : 10
     },
     selectedItem : {
