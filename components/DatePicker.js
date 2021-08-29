@@ -59,7 +59,7 @@ const DatePicker = ({ date = persianDate.dateInstance,  onChange , yearList , ab
     return (
         <View style={{ flex : 1 ,alignItems  : 'center' , justifyContent : 'center'}}>
         <View style={appendStyle.container}>
-            <ScrollView nestedScrollEnabled ref={yearRef} style={appendStyle.column}>
+            <ScrollView showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false} nestedScrollEnabled ref={yearRef} style={appendStyle.column}>
                 {
                         conditionalYear.map((el , i) => (
                             <TouchableOpacity style={{ height : 70 }} onPress={() => internalStateHandler({ key :  'year' , value : el})} key={i}>
@@ -70,7 +70,7 @@ const DatePicker = ({ date = persianDate.dateInstance,  onChange , yearList , ab
                         ))
                 }
             </ScrollView>
-            <ScrollView nestedScrollEnabled ref={monthRef} style={[appendStyle.middleColumn , appendStyle.column]} >
+            <ScrollView showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false} nestedScrollEnabled ref={monthRef} style={[appendStyle.middleColumn , appendStyle.column]} >
                 {
                     persianDate.month.slice(1).map((el , i) => (
                         <TouchableOpacity style={{ height : 70 }} onPress={() => internalStateHandler({ key :  'month' , value : el})} key={i}>
@@ -81,7 +81,7 @@ const DatePicker = ({ date = persianDate.dateInstance,  onChange , yearList , ab
                     ))
                 }
             </ScrollView>
-            <ScrollView nestedScrollEnabled ref={dayRef} style={appendStyle.column}>
+            <ScrollView showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false} nestedScrollEnabled ref={dayRef} style={appendStyle.column}>
                 {persianDate.day.slice(1).map((el , i) => (
                         <TouchableOpacity style={{ height : 70 }}  onPress={() => internalStateHandler({ key :  'day' , value : el})} key={i}>
                             <View  style={[day === absoluteValueReturn(el) && appendStyle.selectedItem , appendStyle.item]}>

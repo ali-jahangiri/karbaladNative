@@ -1,6 +1,7 @@
 import React from 'react';
 import CategoryRow from '../../components/CategoryRow/CategoryRow';
 import { DynamicImage, DynamicText , DynamicSlider , CircleSlider, SliderLabeled, DirectInsurance } from '../../components/DynamicComponents';
+import ImageGallery from '../../components/DynamicComponents/ImageGallery/ImageGallery';
 import InsuranceDirectory from '../../components/InsuranceDirectory';
 import { useSelector } from '../../Store/Y-state';
 
@@ -14,8 +15,9 @@ const _dynamicElementComponent = ({...rest}) => ({
     MobileText : <DynamicText {...rest} />,
     MobileSlider : <DynamicSlider {...rest} />, 
     MobileCircleSlider : <CircleSlider {...rest} />,
-    MobileSliderLabeled : <SliderLabeled {...rest} /> , 
-    DirectInsurance : <DirectInsurance {...rest} />
+    MobileSliderLabeled : <SliderLabeled {...rest} />,
+    DirectInsurance : <DirectInsurance {...rest} />,
+    MobileImageGallery : <ImageGallery {...rest} />
 })
 
 const ComponentGenerator = () => {

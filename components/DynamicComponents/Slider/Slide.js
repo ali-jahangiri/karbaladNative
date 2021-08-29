@@ -29,7 +29,9 @@ const Slide = ({ Link , TEXT : title , value : image , passedStyle , backgroundC
         <View style={appendStyle.container}>
             <View style={appendStyle.innerContainer}>
                 {
-                    image ? <Image style={appendStyle.image} resizeMode="contain" source={{ uri : imageFinder(image) }} /> : null
+                    image ? <TouchableOpacity style={appendStyle.imageContainer} onPress={redirectionHandler}>
+                        <Image style={appendStyle.image} resizeMode="contain" source={{ uri : imageFinder(image) }} />
+                    </TouchableOpacity> : null
                 }
                 {
                     !!title && <Para style={appendStyle.title} weight="bold">{title}</Para>
@@ -87,11 +89,16 @@ const style = ({ primary }, {
         fontSize : Number(subTitleFontSize),
         color: subTitleColor
     },
-    image : {
-        borderRadius : Number(imageBorderRadius),
+    imageContainer : {
         width : "100%" ,
         height : `${imageSizeByPercentage}%`,
         marginBottom : 10
+
+    },
+    image : {
+        borderRadius : Number(imageBorderRadius),
+        height : "100%",
+        width : "100%"
     },
     linkToWeb : {
         flexDirection : "row",

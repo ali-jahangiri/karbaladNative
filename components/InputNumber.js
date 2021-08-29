@@ -64,7 +64,7 @@ const InputNumber = ({ onChange , stepForEachOperation = 10000, length : { max ,
                         />
                 </View>
                 <TouchableOpacity onPress={decreaseHandler} style={[appendStyle.controller , value <= stepForEachOperation ? appendStyle.disabledCta : null]}>
-                    <Feather name="minus" size={24} color={primary} />
+                    <Feather name="minus" size={24} color={value <= stepForEachOperation ? "grey" : primary} />
                 </TouchableOpacity>
             </View>
         </View>

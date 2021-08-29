@@ -1,7 +1,7 @@
 import React from 'react';
 import { Dimensions, Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import useRedirection from '../../../Hooks/useRedirection/useRedirection';
-import { imageFinder } from '../../../utils';
+import { generateColor, imageFinder } from '../../../utils';
 import Para from '../../Para';
 
 const DynamicImage = ({ componentDatas : { src , desc , webLink } , componentStyles }) => {
@@ -51,11 +51,11 @@ const style = ({
     descContainer : {
         position: "absolute",
         bottom : 0,
-        width : Dimensions.get("screen").width * (width / 100), 
+        width : Dimensions.get("screen").width * (width / 100),
         marginHorizontal : (Dimensions.get("screen").width - (Dimensions.get("screen").width * (width / 100))) / 2,
         zIndex : 555,
         padding: 15,
-        backgroundColor : descContainerBgColor,
+        backgroundColor : generateColor(descContainerBgColor , 9),
         borderBottomLeftRadius : Number(imageBorderRadius),
         borderBottomRightRadius : Number(imageBorderRadius)
     },
