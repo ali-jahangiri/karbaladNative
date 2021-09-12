@@ -49,8 +49,7 @@ const Wallet = () => {
     const fetchDataHandler = () => {
         return fetcher("UserWallet")
                 .then(({ data }) => {
-                    setWalletData(data)
-                    
+                    setWalletData(data);
                     const currentStatus = data?.checkTransactionToWallet
                     if([DONE , FAIL].includes(currentStatus)) 
                         setTransactionStatus(currentStatus)

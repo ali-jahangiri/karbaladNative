@@ -35,7 +35,6 @@ const Login = () => {
         }))
     }
 
-    const passRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
     const passwordValidation = (pass = "", passConfirm = "") => {
         if([pass , passConfirm].includes("")) {
             setError(LOGIN.AUTH_ERRORS.EMPTY_PASSWORD)
@@ -43,7 +42,7 @@ const Login = () => {
         }else if(pass !== passConfirm) {
             setError(LOGIN.AUTH_ERRORS.DIFFERENCE_PASSWORD);
             return false
-        }else if(!passRegex.test(pass)) {
+        }else if(pass.length < 6) {
             setError(LOGIN.AUTH_ERRORS.INVALID_PASSWORD)
             return false
         }else return true

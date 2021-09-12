@@ -35,7 +35,7 @@ const client = {
             AUTH_ERRORS : {
                 EMPTY_PASSWORD : "رمز عبور خود را وارد کنید",
                 DIFFERENCE_PASSWORD : "رمز عبور و تکرار آن مطابقت ندارد . مجددا برسی نمایید",
-                INVALID_PASSWORD : "رمز عبور باید حداقل دارای 8 کارکتر ، یک حرف ، یک کارکتر خاص ( @$!%*#?& ) و  یک عدد باشد",
+                INVALID_PASSWORD : "رمز عبور باید حداقل دارای 6 کارکتر باشد",
                 INVALID_PHONE_NUMBER_LENGTH : "تعداد ارقام شماره تماس صحیح نمیباشد",
                 EMPTY_PHONE : "شماره تماس خود را وارد نمایید"
             },

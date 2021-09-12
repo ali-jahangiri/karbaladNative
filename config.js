@@ -6,7 +6,5 @@ const config = {
 }
 
 
+
 export default config;
-
-
-// new appLoginMode(){UserName="sIILqEanNW",PassWord="k9tDB2bjkH",PackageName="babimeh.com"},
