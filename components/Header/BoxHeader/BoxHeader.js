@@ -7,10 +7,11 @@ import DirectionCta from '../../DirectionCta';
 import Para from '../../Para';
 
 
-const BoxHeader = ({ title , isNested }) => {
-    const appendStyle = useStyle(style);
+const BoxHeader = ({ title , isNested , style : injectedStyle }) => {
+    const appendStyle = useStyle(style , injectedStyle);
     const { headerTitleColor , primary } = useStyle();
     const navigation = useNavigation();
+    
     
     return (
         <View style={appendStyle.container}>
@@ -26,18 +27,19 @@ const BoxHeader = ({ title , isNested }) => {
 }
 
 
-const style = ({ primary , baseBorderRadius }) => StyleSheet.create({
+const style = ({ baseBorderRadius , headerBgColor , headerHeight }) => StyleSheet.create({
     container : {
-        backgroundColor : generateColor(primary , 9),
+        backgroundColor : headerBgColor,
         marginBottom : 15,
         borderRadius : baseBorderRadius,
-        marginTop : StatusBar.currentHeight + 10,
+        marginTop : StatusBar.currentHeight,
         width : "90%",
         marginHorizontal : "5%",
-        padding : 20,
+        paddingHorizontal : 20,
+        height: Number(headerHeight),
         flexDirection : "row",
         justifyContent : 'space-between',
-        alignItems : 'center'
+        alignItems : 'center',
     }
 })
 

@@ -24,7 +24,7 @@ const InsStage = props => {
     const baseObject = { 
         searchFilterBase : "" , 
         formName : store[formName] || formName , 
-        [NESTED_KEY_NAME] : store[NESTED_KEY_NAME] , 
+        [NESTED_KEY_NAME] : store[NESTED_KEY_NAME],
         date : persianDate.dateInstance 
     }
 

@@ -7,8 +7,8 @@ import DirectionCta from '../../DirectionCta';
 import Para from '../../Para';
 
 
-const NegativeHeader = ({ title , isNested }) => {
-    const appendStyle = useStyle(style);
+const NegativeHeader = ({ title , isNested , style : injectedStyle }) => {
+    const appendStyle = useStyle(style , injectedStyle);
     const { headerTitleColor , primary } = useStyle();
 
     const navigation = useNavigation();
@@ -24,10 +24,10 @@ const NegativeHeader = ({ title , isNested }) => {
 }
 
 
-const style = ({ primary }) => StyleSheet.create({
+const style = ({ headerHeight , headerBgColor }) => StyleSheet.create({
     container : {
-        height : 180,
-        backgroundColor : generateColor(primary , 5),
+        height : Number(headerHeight) * 5,
+        backgroundColor : headerBgColor,
         paddingBottom : 15,
         alignItems :'center',
         justifyContent : 'center',

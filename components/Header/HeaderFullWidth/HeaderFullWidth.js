@@ -7,11 +7,13 @@ import DirectionCta from '../../DirectionCta';
 import Para from '../../Para';
 
 
-const HeaderFullWidth = ({ title , isNested })  => {
+const HeaderFullWidth = ({ title , isNested , style : injectedStyle })  => {
     const appendStyle = useStyle(style);
-    const { headerTitleColor , primary } = useStyle();
+    const { headerTitleColor , primary } = useStyle(style , injectedStyle);
 
-    const navigation = useNavigation()
+    const navigation = useNavigation();
+
+    
 
     return (
         <View style={appendStyle.container}>
@@ -27,15 +29,16 @@ const HeaderFullWidth = ({ title , isNested })  => {
 }
 
 
-const style = ({ primary }) => StyleSheet.create({
+const style = ({ headerBgColor , headerHeight } ) => StyleSheet.create({
     container : {
         flexDirection : 'row',
         alignItems : 'center',
         justifyContent : 'space-between',
-        backgroundColor : generateColor(primary , 9),
-        paddingTop : StatusBar.currentHeight + 30,
-        paddingBottom : StatusBar.currentHeight - 10,
-        marginBottom : 10
+        backgroundColor : headerBgColor,
+        paddingTop : StatusBar.currentHeight + (Number(headerHeight) / 2),
+        paddingBottom : Number(headerHeight),
+        marginBottom : 10,
+        
     },
     innerContainer : {
         width : "90%",

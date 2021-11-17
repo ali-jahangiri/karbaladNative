@@ -4,7 +4,7 @@ import { Feather } from '@expo/vector-icons';
 
 import Para from './Para';
 import { useStyle } from '../Hooks/useStyle';
-import { generateColor, imageFinder } from '../utils';
+import { generateColor, imageFinder , booleanExtractor } from '../utils';
 
 
 const InsuranceCart = ({ name , onItemPress , cat , id , webIcon , passedStyle }) => {
@@ -15,9 +15,11 @@ const InsuranceCart = ({ name , onItemPress , cat , id , webIcon , passedStyle }
             <View style={appendStyle.container}>
                 <Para weight={passedStyle.fontWeight} style={appendStyle.label} size={18}>{name}</Para>
                 <View style={appendStyle.bottomContainer}>
-                    <Feather name="arrow-down-left" size={24} color="black" />
                     {
-                        webIcon ? <Image style={{ marginBottom : 10 , opacity : .5 }} source={{
+                        booleanExtractor(passedStyle.showArrow) && <Feather name="arrow-down-left" size={24} color="black" />
+                    }
+                    {
+                        webIcon && booleanExtractor(passedStyle.showIcon) ? <Image style={{ marginBottom : 10 , opacity : Number(passedStyle.iconOpacity) / 100 }} source={{
                             uri : imageFinder(webIcon),
                             width: 50,
                             height : 50
@@ -29,7 +31,7 @@ const InsuranceCart = ({ name , onItemPress , cat , id , webIcon , passedStyle }
     )
 }
 
-const style = ({ baseBorderRadius , primary } , { labelColor , rowDistance , itemHeight , itemWidth }) => StyleSheet.create({
+const style = ({ baseBorderRadius , primary } , { labelColor , rowDistance , itemHeight , itemWidth , fontSize }) => StyleSheet.create({
     container : {
         width: `${itemWidth}%`,
         marginBottom : `${rowDistance}%`,
@@ -46,6 +48,7 @@ const style = ({ baseBorderRadius , primary } , { labelColor , rowDistance , ite
     },
     label : {
         color : labelColor,
+        fontSize : Number(fontSize),
 
     }
 })

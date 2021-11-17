@@ -10,9 +10,9 @@ import DirectionCta from '../../DirectionCta';
 import { useNavigation } from '@react-navigation/native';
 import { generateColor } from '../../../utils';
 
-const FadeHeader = ({ title ,  isNested }) => {
+const FadeHeader = ({ title ,  isNested , style : injectedStyle }) => {
     const appendStyle = useStyle(style);
-    const { primary  , headerTitleColor } = useStyle()
+    const { primary  , headerTitleColor } = useStyle(style)
 
 
     const navigation = useNavigation()
@@ -20,7 +20,7 @@ const FadeHeader = ({ title ,  isNested }) => {
     return (
         <LinearGradient
             style={appendStyle.container}
-            colors={[primary , "white"]} >
+            colors={[injectedStyle.headerBgColor , "white"]} >
                 <View style={appendStyle.innerContainer}>
                     {
                         isNested ? isNested === true ?  <DirectionCta containerBgColor={generateColor(primary , 3)} onPress={navigation.goBack} /> : isNested : <View />
@@ -35,12 +35,13 @@ const FadeHeader = ({ title ,  isNested }) => {
 }
 
 
-const style = () => StyleSheet.create({
+const style = ({ headerHeight }) => StyleSheet.create({
     container : {
-        paddingTop : StatusBar.currentHeight + 5,
-        minHeight : 150,
+        paddingTop : StatusBar.currentHeight,
+        minHeight : 100,
         alignItems : 'center',
         justifyContent : 'space-between',
+        height: Number(headerHeight)
     },
     innerContainer : {
         flexDirection : 'row',

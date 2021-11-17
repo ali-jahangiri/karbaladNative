@@ -15,8 +15,14 @@ const _headerClone = ({ ...rest }) => ({
 });
 
 const HeaderProvider = ({ title , isNested }) => {
-    const { indexHeader , nestedHeader} = useStyle();
-    return _headerClone({ title , isNested })[isNested ? nestedHeader : indexHeader]
+    const { indexHeader , nestedHeader , headerHeight , headerBgColor } = useStyle();
+
+    const headerInjectedStyle = {
+        headerBgColor,
+        headerHeight,
+    }
+
+    return _headerClone({ title , isNested , style : headerInjectedStyle })[isNested ? nestedHeader : indexHeader]
 }
 
 

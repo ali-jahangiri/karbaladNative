@@ -3,17 +3,17 @@ import { StyleSheet, TextInput, View } from 'react-native';
 import { useStyle } from '../../Hooks/useStyle';
 import { generateColor, toFarsiNumber } from '../../utils';
 
-const PhoneInput = ({ value , changeHandler }) => {
+const PhoneInput = ({ value = '' , changeHandler }) => {
     const appendStyle = useStyle(phoneInputStyle);
     return (
         <View style={appendStyle.container}>
             <TextInput
                 maxLength={11}
                 autoFocus
-                keyboardType="number-pad"
+                keyboardType="numeric"
                 style={appendStyle.input}
                 placeholder="شماره همراه"
-                value={toFarsiNumber(value || "")}
+                value={value}
                 onChangeText={changeHandler}
             />
         </View>

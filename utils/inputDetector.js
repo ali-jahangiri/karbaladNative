@@ -28,7 +28,7 @@ const InputDetector = ({typesName , isCarCase , temporary : { value , setValue }
                 return (
                     <ScrollView>
                         <SearchBox
-                            placeholder="نام خودرو موردنظر را جستجو کنید" 
+                            placeholder="نام خودرو موردنظر را جستجو کنید"
                             value={value.searchFilterBase} 
                             onChange={value => setValue({key : 'searchFilterBase' , value})} />
                         <CarCategory 
@@ -93,7 +93,7 @@ const InputDetector = ({typesName , isCarCase , temporary : { value , setValue }
                     isNotLimited={!maxNumber} 
                     length={{ max : maxNumber || 100000000 , min : minNumber || 0 }} 
                     stepForEachOperation={step || 10000} 
-                    value={value[formName] || 0} 
+                    value={value[formName] || 0}
                     onChange={setValue} />
             )
         case CREATE_YEAR :
@@ -101,7 +101,7 @@ const InputDetector = ({typesName , isCarCase , temporary : { value , setValue }
                 <React.Fragment>  
                     <SearchBox
                         searchType="number-pad"
-                        placeholder="سال ساخت خودرو را وارد کنید" 
+                        placeholder="سال ساخت خودرو را وارد کنید"
                         onChange={value => setValue({ key : "searchFilterBase" , value })}
                         value={value?.searchFilterBase} />
                         <SelectBox 

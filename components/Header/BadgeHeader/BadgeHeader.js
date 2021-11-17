@@ -8,8 +8,8 @@ import Para from '../../Para';
 
 
 
-const BadgeHeader = ({ title , isNested }) => {
-    const appendStyle = useStyle(style);
+const BadgeHeader = ({ title , isNested , style : injectedStyle }) => {
+    const appendStyle = useStyle(style , injectedStyle);
     const { primary } = useStyle();
     const navigation = useNavigation();
     
@@ -30,7 +30,7 @@ const BadgeHeader = ({ title , isNested }) => {
 
 
 
-const style = ({ primary , baseBorderRadius }) => StyleSheet.create({
+const style = ({ baseBorderRadius , headerBgColor , headerHeight }) => StyleSheet.create({
     container : {
         flexDirection : 'row',
         alignItems : "center",
@@ -41,10 +41,12 @@ const style = ({ primary , baseBorderRadius }) => StyleSheet.create({
         marginBottom : 10
     },
     badge : {
-        padding : 10,
+        height: Number(headerHeight),
         paddingHorizontal : 30,
         borderRadius : baseBorderRadius,
-        backgroundColor : generateColor(primary , 1)
+        backgroundColor : headerBgColor,
+        alignItems : "center",
+        justifyContent : "center"
     }
 })
 
