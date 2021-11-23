@@ -1,18 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { ScrollView, StyleSheet, View  } from 'react-native';
 import { Feather, Ionicons } from '@expo/vector-icons';
-import { useIsFocused, useNavigation } from '@react-navigation/native';
+import { useIsFocused } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+
 
 import { useStyle } from '../Hooks/useStyle';
 
-import { generateColor} from '../utils';
+import { generateColor, shareAppHandler} from '../utils';
 import useFetch from '../Providers/useFetch';
 
 
 import Reminder from './Reminder';
 import Support from './Support';
 import ProfileEdit from './ProfileEdit';
+import TermsAndConditions from "./TermsAndConditions";
+
 
 import Loading from "../components/Loading";
 import ProfileHeader from '../components/Profile/ProfileHeader';
@@ -22,6 +25,7 @@ import RefreshAlert from '../components/RefreshAlert';
 import { useDispatch } from '../Store/Y-state';
 import { setTabBarState } from '../Store/Slices/uiSlice';
 import { SupportFeedBack } from '../components/Support';
+import LogoutRow from '../components/LogoutRow';
 
 const Profile = () => {
     const [loading, setLoading] = useState(true);
@@ -62,6 +66,8 @@ const Profile = () => {
         }
     } , [isFocused]);
 
+    const shareWithFriendHandler = () => shareAppHandler()
+
 
     if(loading) return <Loading />
     else return (
@@ -69,7 +75,7 @@ const Profile = () => {
                 <ScrollView contentContainerStyle={{ flex : 1 }}>
                 <ProfileHeader userData={userData} />
                 <View style={appendStyle.contentContainer}>
-                    <View>
+                    <ScrollView showsHorizontalScrollIndicator={false} showsHorizontalScrollIndicator={false}>
                         <ProfileSection
                             path="profileEdit"
                             title="ویرایش حساب"
@@ -79,18 +85,27 @@ const Profile = () => {
                             path="support"
                             title="پشتیبانی" 
                             icon={<Ionicons name="help-buoy-outline" size={24} color={primary} />} />
-
                         <ProfileSection 
                             icon={<Feather name="calendar" size={24} color={primary}/>} 
                             path="reminder" 
                             title="یادآور" />
+                        <ProfileSection 
+                            icon={<Feather name="calendar" size={24} color={primary}/>} 
+                            path="termsAndConditions" 
+                            title="قوانین و مقررات" />
+                        <ProfileSection 
+                            icon={<Feather name="share-2" size={24} color={primary}/>} 
+                            onClockCallBack={shareWithFriendHandler}
+                            path="shareWithFriends" 
+                            title="اشتراک با دوستان" />
 
                         <ProfileSection 
                             icon={<Ionicons name="bug-outline" size={24} color={primary} />}
                             path="feedback"
                             title="بازخورد"
                         />
-                    </View>
+                        <LogoutRow />
+                    </ScrollView>
                     <ProfileClineVersion />
                 </View>
                 </ScrollView>
@@ -160,6 +175,7 @@ const ProfileRouter = ({ navigation , route : { params } }) => {
         <Stack.Screen name="profileEdit" component={ProfileEdit} />
         <Stack.Screen name="reminder" component={Reminder} />
         <Stack.Screen name="support" component={Support} />
+        <Stack.Screen name="termsAndConditions" component={TermsAndConditions} />
         <Stack.Screen name="feedback" component={SupportFeedBack} />
     </Stack.Navigator>
     )

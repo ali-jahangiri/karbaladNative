@@ -106,7 +106,7 @@ const InsuranceStepper = ({ route : { params : { id , name }} }) => {
       </>
 }
 
-const style = ({ primary }) => StyleSheet.create({
+const style = () => StyleSheet.create({
     container : {
         flex: 1,
     }

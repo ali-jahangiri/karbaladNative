@@ -12,6 +12,7 @@ import makeLeanPallet from "./makeLeanPallet";
 import makeLeanComponentVariables from "./makeLeanComponentVariables";
 import borderConstructor from "./borderConstructor";
 import booleanExtractor from "./booleanExtractor";
+import shareAppHandler from "./shareAppHandler";
 
 export {
     generateColor,
@@ -27,5 +28,6 @@ export {
     makeLeanPallet,
     makeLeanComponentVariables,
     borderConstructor,
-    booleanExtractor
+    booleanExtractor,
+    shareAppHandler,
 }

@@ -1,5 +1,5 @@
 const client = {
-    version : "1.3.0",
+    version : "1.3.1",
     style : {
         colors : {
             insStageBackStepBgColor :  "#EEEEEE",
@@ -26,6 +26,8 @@ const client = {
         ERROR_BOUNDARY_MAIN_MESSAGE : "مشکلی در پردازش رخ داده است ، مجددا تلاش نمایید",
         REFRESH_ALERT_TEXT : "بروزرسانی اطلاعات",
         OPTIONAL_STEP_TEXT : "مرحله اختیاری",
+        SHARE_WITH_FRIEND : "دانلود نرم افزار راحت بیمه از ",
+        TERMS_AND_CONDITION_HEADER : "قوانین و مقررات",
         LOGIN : {
             LOGIN_KEY : "login",
             REGISTER_KEY : "register",

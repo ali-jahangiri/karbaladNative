@@ -10,16 +10,15 @@ import DirectionProvider from '../Providers/DirectoryProvider/DirectionProvider'
 import CategoryProvider from '../Providers/CategoryProvider/CategoryProvider';
 import ComponentGenerator from '../HOC/ComponentGenerator/ComponentGenerator';
 import { Button, ScrollView } from 'react-native';
-import { persister } from '../utils';
-
+import Para from '../components/Para';
 
 const InsIndexScreen = () => (
     <ScreenWrapper>
-        <HeaderProvider title="خانه" />
+        {/* <HeaderProvider title="خانه" /> */}
             <ScrollView>
-                <DirectionProvider>
+                {/* <DirectionProvider> */}
                     <ComponentGenerator />
-                </DirectionProvider>
+                {/* </DirectionProvider> */}
             </ScrollView>
     </ScreenWrapper>
 )
@@ -31,10 +30,10 @@ const NestedInsStepScreen = ({ route : { params : { cat , name , id } }}) => {
         return !cat.length ? <InsuranceStepper route={{ params : { id , name } }} />
         : (
             <ScreenWrapper>
-                <HeaderProvider title={name} isNested />
-                <DirectionProvider >
+                {/* <HeaderProvider title={name} isNested /> */}
+                {/* <DirectionProvider > */}
                     <CategoryProvider passedNestedItems={cat} />
-                </DirectionProvider>
+                {/* </DirectionProvider> */}
             </ScreenWrapper>
         )
 }

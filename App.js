@@ -27,7 +27,7 @@ export default function App() {
   return (
     <View style={generalStyle.appContainer}>
       <ErrorBoundary>
-        <OfflineProvider>
+        {/* <OfflineProvider> */}
           <StoreProvider store={myStore}>
             <CommutingProvider />
             <FetchProvider packageName={config.packageName} baseURL={`${config.serverPath}/MobileApi/`}>
@@ -38,7 +38,7 @@ export default function App() {
               </StyleProvider>
             </FetchProvider>
           </StoreProvider>
-        </OfflineProvider>
+        {/* </OfflineProvider> */}
       </ErrorBoundary>
       <StatusBar style="auto" />
     </View>

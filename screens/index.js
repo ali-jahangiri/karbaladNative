@@ -6,6 +6,7 @@ import Installment from "./Installment";
 import Welcome from "./Welcome";
 import Reminder from "./Reminder";
 import Support from "./Support";
+import TermsAndConditions from "./TermsAndConditions";
 
 export {
     Home,
@@ -15,5 +16,6 @@ export {
     Installment,
     Welcome,
     Reminder,
-    Support
+    Support,
+    TermsAndConditions,
 }

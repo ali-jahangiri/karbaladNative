@@ -1,11 +1,13 @@
 import React from 'react';
 import CategoryRow from '../../components/CategoryRow/CategoryRow';
 import { DynamicImage, DynamicText , DynamicSlider , CircleSlider, SliderLabeled, DirectInsurance } from '../../components/DynamicComponents';
+import { BadgeHeader , NegativeHeader , ShallowHeader, FadeHeader , HeaderFullWidth , BoxHeader } from "../../components/Header"
 import ImageGallery from '../../components/DynamicComponents/ImageGallery/ImageGallery';
 import InsuranceDirectory from '../../components/InsuranceDirectory';
 import { useSelector } from '../../Store/Y-state';
 
 import { makeLeanComponentVariables } from "../../utils"
+import MobileModalAlert from '../../components/ModalNotification';
 
 
 const _dynamicElementComponent = ({...rest}) => ({
@@ -17,13 +19,17 @@ const _dynamicElementComponent = ({...rest}) => ({
     MobileCircleSlider : <CircleSlider {...rest} />,
     MobileSliderLabeled : <SliderLabeled {...rest} />,
     DirectInsurance : <DirectInsurance {...rest} />,
-    MobileImageGallery : <ImageGallery {...rest} />
+    MobileImageGallery : <ImageGallery {...rest} />,
+    MobileBoxHeader : <BoxHeader {...rest} />,
+    MobileFadeHeader : <FadeHeader {...rest} />,
+    // MobileFullWidthHeader : ,
+    // MobileNegativeHeader : ,
+    // MobileBadgeHeader : ,
+    MobileAlert : <MobileModalAlert {...rest} />
 })
 
 const ComponentGenerator = () => {
     const dynamicComponentList = useSelector(state => state.dynamicComponent) || [];
-    console.log(dynamicComponentList);
-    
     return dynamicComponentList.map((el , i) => _dynamicElementComponent({ componentDatas : makeLeanComponentVariables(el.componentDatas) , componentStyles : makeLeanComponentVariables(el.componentStyles) , key : i })?.[el.name])
 }
 
