@@ -14,9 +14,13 @@ const DirectionCta = ({ onPress , iconColor = 'white' , containerBgColor , exten
 }
 
 
-const style = ({ baseBorderRadius } , containerBgColor) => StyleSheet.create({
+const style = ({ baseBorderRadius } , passed) => StyleSheet.create({
     btn : {
-        backgroundColor : containerBgColor || "#fff2",
+        backgroundColor : (() => {
+            // containerBgColor || "#fff2"
+            console.log(passed , "EX");
+            return "red"
+        })(),
         padding: 12,
         borderRadius : baseBorderRadius,
     }

@@ -16,32 +16,34 @@ const DEFAULT_ICON_PATH = "846086bc-4811-4837-afda-ba39f6e0c4d8.png{DATA}";
 
 
 
-const FadeHeader = ({ isNested , componentStyles , componentDatas }) => {
+const FadeHeader = ({ isNested , componentStyles , componentDatas , isInReading }) => {
     const appendStyle = useStyle(style , componentStyles);
     const { primary } = useStyle()
 
     const navigation = useNavigation();
 
-    const primaryRedirectionHandler = useRedirection({ webLink : componentDatas.primaryIconWebLink , selectedInternalPath : componentStyles.internalPathRedirectionPrimary });
-    const secondaryRedirectionHandler = useRedirection({ webLink : componentDatas.secondaryIconWebLink , selectedInternalPath : componentStyles.internalPathRedirectionSecondary});
+    const primaryRedirectionHandler = !isInReading && useRedirection({ webLink : componentDatas.primaryIconWebLink , selectedInternalPath : componentStyles.internalPathRedirectionPrimary });
+    const secondaryRedirectionHandler = !isInReading && useRedirection({ webLink : componentDatas.secondaryIconWebLink , selectedInternalPath : componentStyles.internalPathRedirectionSecondary});
 
+    const generatedColorBtn = generateColor(primary , 3);
+    
     return (
         <LinearGradient
             style={appendStyle.container}
             colors={[componentStyles.headerBgColor , "white"]} >
                 <View style={appendStyle.innerContainer}>
                     {
-                        DEFAULT_ICON_PATH !== componentDatas.primaryIcon && <TouchableOpacity onPress={primaryRedirectionHandler} activeOpacity={1}>
+                        !isInReading && DEFAULT_ICON_PATH !== componentDatas.primaryIcon && <TouchableOpacity onPress={primaryRedirectionHandler} activeOpacity={1}>
                             <Image style={appendStyle.icon} resizeMode="center" source={{ uri : imageFinder(componentDatas.primaryIcon)}} />
                         </TouchableOpacity>
                     }
                     {
-                        DEFAULT_ICON_PATH !== componentDatas.secondaryIcon && <TouchableOpacity onPress={secondaryRedirectionHandler} activeOpacity={1}>
+                        !isInReading && DEFAULT_ICON_PATH !== componentDatas.secondaryIcon && <TouchableOpacity onPress={secondaryRedirectionHandler} activeOpacity={1}>
                             <Image style={appendStyle.icon} resizeMode="center" source={{ uri : imageFinder(componentDatas.secondaryIcon) }} />
                         </TouchableOpacity>
                     }
                     {
-                        isNested ? isNested === true ?  <DirectionCta containerBgColor={generateColor(primary , 3)} onPress={navigation.goBack} /> : isNested : <View />
+                        // isNested ? isNested === true ?  <DirectionCta containerBgColor={generatedColorBtn} onPress={navigation.goBack} /> : isNested : <View />
                     }
                     
                     {

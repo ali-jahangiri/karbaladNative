@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { View } from "react-native"
 import { createStackNavigator } from "@react-navigation/stack";
 
 import InsuranceHistoryDirectory from '../components/InsuranceHistoryDirectory';
@@ -14,6 +15,7 @@ import { useIsFocused } from '@react-navigation/native';
 import RefreshAlert from '../components/RefreshAlert';
 import HeaderProvider from '../Providers/HeaderProvider/HeaderProvider';
 import DirectionProvider from '../Providers/DirectoryProvider/DirectionProvider';
+
 
 
 const Stack = createStackNavigator();
@@ -32,8 +34,8 @@ const Home = () => {
     const dataFetcherInstance = () => {
         return fetcher("UserInsurance")
                 .then(({ data }) => {
-                    console.log(data , "-data");
-                    setInsItems(data);
+                    console.log(data);
+                    setInsItems(JSON.parse(JSON.stringify(data)));
                 })
     }
 
@@ -55,15 +57,15 @@ const Home = () => {
 
     if(loading) return <Loading />
     return (
-        <>
-            <HeaderProvider title="بیمه نامه" />
+        <React.Fragment>
+            <HeaderProvider isInReading title="بیمه نامه" />
             <DirectionProvider>
                 <InsuranceHistoryDirectory items={insItems} />
             </DirectionProvider>
-            {
-                refresh ? <RefreshAlert /> : null
-            }
-        </>
+                {
+                    refresh ? <RefreshAlert /> : null
+                }
+        </React.Fragment>
     )
 }
 

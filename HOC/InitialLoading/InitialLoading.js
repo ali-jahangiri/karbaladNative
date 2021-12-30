@@ -83,7 +83,6 @@ const InitialLoading = ({ children }) => {
                                         const mobileConfig = components.find(el => el.name === "MobileConfig").componentStyles
                                         styleDispatcher(makeLeanPallet(mobileConfig))
                                         storeDispatcher(() => setInsCat(data.categories.cat));
-                                        console.log(components , "component");
                                         storeDispatcher(() => setDynamicComponent(components.filter(el => el.name !== "MobileConfig")))
                                         setLoading(false)
                                     })

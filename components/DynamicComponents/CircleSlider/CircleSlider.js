@@ -7,7 +7,6 @@ import CircleSliderItem from './CircleSliderItem';
 
 const CircleSlider = ({ componentStyles , componentDatas , onPressOverwrite }) => {
     const appendStyle = style(componentStyles);
-    console.log(componentStyles , componentDatas);
     const items = Object.entries(componentDatas).filter(([key]) => key.includes("slideText")).map(([_ , value]) => value);
     const bgColorList = Object.entries(componentStyles).filter(([key]) => key.includes("bgColorSlide")).map(([_ , value]) => value);
     const linkList = Object.entries(componentStyles).filter(([key]) => key.includes("internalPathRedirection")).map(([_ , value]) => value);

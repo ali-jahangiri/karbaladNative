@@ -11,9 +11,6 @@ const SliderLabeled = ({ componentStyles , componentDatas }) => {
 
     const containerRef = useRef();
 
-
-    console.log(componentStyles , componentDatas);
-
     return (
         <ScrollView ref={containerRef} onContentSizeChange={() => containerRef.current.scrollToEnd({animated: true})} contentContainerStyle={{ flexDirection : 'row-reverse', }} showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false} horizontal style={appendStyle.container}>
             <IntroSlide passedStyle={componentStyles} {...componentDatas} />

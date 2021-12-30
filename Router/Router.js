@@ -6,7 +6,7 @@ import navigationTheme from './navigationTheme';
 
 const Router = () => (
     <NavigationContainer theme={navigationTheme}>
-            <TabNavigation />
+        <TabNavigation />
     </NavigationContainer>
 )
 

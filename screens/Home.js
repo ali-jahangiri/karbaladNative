@@ -10,7 +10,6 @@ import DirectionProvider from '../Providers/DirectoryProvider/DirectionProvider'
 import CategoryProvider from '../Providers/CategoryProvider/CategoryProvider';
 import ComponentGenerator from '../HOC/ComponentGenerator/ComponentGenerator';
 import { Button, ScrollView } from 'react-native';
-import Para from '../components/Para';
 
 const InsIndexScreen = () => (
     <ScreenWrapper>

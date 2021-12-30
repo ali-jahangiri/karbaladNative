@@ -52,8 +52,6 @@ const CategoryCollapse = ({ componentStyles }) => {
     const items = useSelector(state => state.initial)
     const [currentStage, setCurrentStage] = useState(0);
 
-    console.log(items);
-
     const selectHandler = index => setCurrentStage(index);
 
     return (

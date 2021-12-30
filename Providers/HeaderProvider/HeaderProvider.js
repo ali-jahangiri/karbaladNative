@@ -14,15 +14,16 @@ const _headerClone = ({ ...rest }) => ({
     badge : <BadgeHeader {...rest} />
 });
 
-const HeaderProvider = ({ title , isNested }) => {
+const HeaderProvider = ({ title , isNested , isInReading }) => {
     const { indexHeader , nestedHeader , headerHeight , headerBgColor } = useStyle();
+
 
     const headerInjectedStyle = {
         headerBgColor,
         headerHeight,
     }
 
-    return _headerClone({ title , isNested , style : headerInjectedStyle })[isNested ? nestedHeader : indexHeader]
+    return _headerClone({ title , isNested , componentStyles : headerInjectedStyle , isInReading , componentData : { title } })[isNested ? nestedHeader : indexHeader]
 }
 
 
