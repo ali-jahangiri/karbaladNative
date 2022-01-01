@@ -20,6 +20,7 @@ import InitialErrorPage from '../../screens/InitialErrorPage';
 import { Welcome } from '../../screens';
 import LoadingScreen from "./LoadingScreen";
 import { setDynamicComponent } from '../../Store/Slices/dynamicComponentSlice';
+import useDataDispatcher from '../../Hooks/useData/useDataDispatcher';
 
 
 const InitialLoading = ({ children }) => {
@@ -41,6 +42,8 @@ const InitialLoading = ({ children }) => {
 
 
     const styleDispatcher = useStyleDispatcher();
+    const dataDispatcher = useDataDispatcher();
+
 
     useEffect(() => {
         if(err) setSomethingWentWrong(err)
@@ -80,8 +83,9 @@ const InitialLoading = ({ children }) => {
                                 return api.post("baseData" , {} , { headers : { packageName : config.packageName , appToken } })
                                     .then(({ data }) => {
                                         const { mainData : { components } , manifest } = data;
-                                        const mobileConfig = components.find(el => el.name === "MobileConfig").componentStyles
-                                        styleDispatcher(makeLeanPallet(mobileConfig))
+                                        const { componentStyles : configStyle , componentDatas : configData } = components.find(el => el.name === "MobileConfig")
+                                        dataDispatcher(makeLeanPallet(configData , false));
+                                        styleDispatcher(makeLeanPallet(configStyle)); 
                                         storeDispatcher(() => setInsCat(data.categories.cat));
                                         storeDispatcher(() => setDynamicComponent(components.filter(el => el.name !== "MobileConfig")))
                                         setLoading(false)

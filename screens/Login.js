@@ -13,6 +13,7 @@ import { setAppKey, setSeeWelcomeScreen } from '../Store/Slices/authSlice';
 
 import { VerifyInput , PhoneInput, PasswordInput, AuthLanding, AuthModePlayground } from '../components/Login';
 import VerifyTextHelper from '../components/Login/VerifyTextHelpler';
+import useData from '../Hooks/useData/useData';
 
 
 const { LOGIN } = client.static;
@@ -23,6 +24,9 @@ const Login = () => {
     const [error, setError] = useState(null);
     const [stage, setStage] = useState(1);
     const [loadingCta, setLoadingCta] = useState(false);
+    const data = useData();
+
+    console.log(data , 'other ine');
 
     const fetcher = useFetch();
     const storeDispatcher = useDispatch();

@@ -1,9 +1,11 @@
-const makeLeanPallet = (pallet = []) => {
+const makeLeanPallet = (pallet = [] , includeBaseBorder = true) => {
     let leanObj = {};
     pallet.map(el => leanObj[el.name] = el.value);
     
     // type change for baseBorderRadius
-    leanObj.baseBorderRadius = Number(leanObj.baseBorderRadius)
+    if(includeBaseBorder) {
+        leanObj.baseBorderRadius = Number(leanObj.baseBorderRadius)
+    }
     return leanObj;
 }
 

@@ -19,6 +19,7 @@ import CommutingProvider from './Providers/CommutingProvider';
 import myStore from './Store/myStore';
 import config from './config';
 import OfflineProvider from './Providers/OfflineProvider/OfflineProvider';
+import DataProvider from './HOC/DataProvider/DataProvider';
 
 
 dayjs.extend(jalaliday);
@@ -32,9 +33,11 @@ export default function App() {
             <CommutingProvider />
             <FetchProvider packageName={config.packageName} baseURL={`${config.serverPath}/MobileApi/`}>
               <StyleProvider>
-                <InitialLoading>
-                  <Router />
-                </InitialLoading>
+                <DataProvider>
+                  <InitialLoading>
+                    <Router />
+                  </InitialLoading>
+                </DataProvider>
               </StyleProvider>
             </FetchProvider>
           </StoreProvider>

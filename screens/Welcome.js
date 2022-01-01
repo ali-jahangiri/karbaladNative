@@ -9,15 +9,20 @@ import useFetch from '../Providers/useFetch';
 import { setInsCat } from '../Store/Slices/initialSlice';
 import client from '../client';
 
+
+
 import Para from '../components/Para';
 import ScreenWrapper from '../components/ScreenWrapper';
+import useData from '../Hooks/useData/useData';
 
-const { WELCOME_DESK , PEND_MESSAGE , CONTINUE_MESSAGE } = client.static.WELCOME
+const { PEND_MESSAGE , CONTINUE_MESSAGE } = client.static.WELCOME;
 
 const Welcome = ({ continueHandler }) => {
     const appendStyle = useStyle(style);
     const storeDispatcher = useDispatch();
     const [loading, setLoading] = useState(true);
+    const { welcomePageContent } = useData();
+
 
     const fetcher = useFetch();
 
@@ -35,7 +40,7 @@ const Welcome = ({ continueHandler }) => {
             <View style={appendStyle.container} >
                 <Para weight="bold" size={22}>خوش آمدید</Para>
                 <View style={appendStyle.deskContainer}>
-                    <Para>{WELCOME_DESK}</Para>
+                    <Para>{welcomePageContent}</Para>
                 </View>
                 <TouchableOpacity style={[appendStyle.cta , loading ? appendStyle.ctaInLoading : {}]} disabled={loading} onPress={continueHandler}>
                     <Feather style={{ marginRight : 10 }} name={loading ? "loader" : "arrow-left"} size={24} color="black" />

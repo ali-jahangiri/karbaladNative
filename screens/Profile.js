@@ -75,7 +75,7 @@ const Profile = () => {
                 <ScrollView contentContainerStyle={{ flex : 1 }}>
                 <ProfileHeader userData={userData} />
                 <View style={appendStyle.contentContainer}>
-                    <ScrollView showsHorizontalScrollIndicator={false} showsHorizontalScrollIndicator={false}>
+                    <ScrollView showsHorizontalScrollIndicator={false}>
                         <ProfileSection
                             path="profileEdit"
                             title="ویرایش حساب"
@@ -90,7 +90,7 @@ const Profile = () => {
                             path="reminder" 
                             title="یادآور" />
                         <ProfileSection 
-                            icon={<Feather name="calendar" size={24} color={primary}/>} 
+                            icon={<Feather name="shield" size={24} color={primary}/>} 
                             path="termsAndConditions" 
                             title="قوانین و مقررات" />
                         <ProfileSection 

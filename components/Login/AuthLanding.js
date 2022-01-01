@@ -6,11 +6,16 @@ import UserIconBox from '../UserIconBox';
 
 import client from "../../client";
 import { generateColor } from '../../utils';
+import useData from '../../Hooks/useData/useData';
 
-const { LOGIN : { LOGIN_APP_NAME , LOGIN_SCREEN_DESK , REGISTER_KEY , LOGIN_KEY , FORGOT_key } } = client.static;
+const { LOGIN : { LOGIN_APP_NAME , REGISTER_KEY , LOGIN_KEY , FORGOT_key } } = client.static;
 
 const AuthLanding = ({ setAuthMode  }) => {
     const appendStyle = useStyle(style);
+    const { loginPageContent } = useData();
+
+
+
     return (
         <>
             <View style={{ alignItems : "center" }}>
@@ -18,7 +23,7 @@ const AuthLanding = ({ setAuthMode  }) => {
                 <Para size={20} >{LOGIN_APP_NAME}</Para>
             </View>
             <View style={appendStyle.descContainer}>
-                <Para>{LOGIN_SCREEN_DESK}</Para>
+                <Para>{loginPageContent}</Para>
             </View>
             <View style={appendStyle.ctaContainer}>
                 <View style={{ flexDirection : "row" , justifyContent : "space-between" }}>
