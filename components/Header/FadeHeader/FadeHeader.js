@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, StatusBar, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { StatusBar, StyleSheet, View } from 'react-native';
 
 import { LinearGradient } from 'expo-linear-gradient';
 
@@ -8,60 +8,39 @@ import Para from '../../Para';
 
 import DirectionCta from '../../DirectionCta';
 import { useNavigation } from '@react-navigation/native';
-import { generateColor, imageFinder } from '../../../utils';
-import useRedirection from '../../../Hooks/useRedirection/useRedirection';
 
+import { generateColor }  from "../../../utils"
 
 const DEFAULT_ICON_PATH = "846086bc-4811-4837-afda-ba39f6e0c4d8.png{DATA}";
 
-
-
-const FadeHeader = ({ isNested , componentStyles , componentDatas , isInReading }) => {
-    const appendStyle = useStyle(style , componentStyles);
-    const { primary } = useStyle()
-
+const FadeHeader = ({ isNested , title = "" }) => {
+    const appendStyle = useStyle(style , isNested);
+    const { headerBgColor , headerTitleColor , primary , headerFontSize } = useStyle();
+    
     const navigation = useNavigation();
 
-    const primaryRedirectionHandler = !isInReading && useRedirection({ webLink : componentDatas.primaryIconWebLink , selectedInternalPath : componentStyles.internalPathRedirectionPrimary });
-    const secondaryRedirectionHandler = !isInReading && useRedirection({ webLink : componentDatas.secondaryIconWebLink , selectedInternalPath : componentStyles.internalPathRedirectionSecondary});
-
-    const generatedColorBtn = generateColor(primary , 3);
-    
     return (
         <LinearGradient
             style={appendStyle.container}
-            colors={[componentStyles.headerBgColor , "white"]} >
+            colors={[headerBgColor , "white"]} >
                 <View style={appendStyle.innerContainer}>
                     {
-                        !isInReading && DEFAULT_ICON_PATH !== componentDatas.primaryIcon && <TouchableOpacity onPress={primaryRedirectionHandler} activeOpacity={1}>
-                            <Image style={appendStyle.icon} resizeMode="center" source={{ uri : imageFinder(componentDatas.primaryIcon)}} />
-                        </TouchableOpacity>
+                        isNested ? isNested === true ?  <DirectionCta containerBgColor={generateColor(primary , 5)} onPress={navigation.goBack} /> : isNested : <View />
                     }
-                    {
-                        !isInReading && DEFAULT_ICON_PATH !== componentDatas.secondaryIcon && <TouchableOpacity onPress={secondaryRedirectionHandler} activeOpacity={1}>
-                            <Image style={appendStyle.icon} resizeMode="center" source={{ uri : imageFinder(componentDatas.secondaryIcon) }} />
-                        </TouchableOpacity>
-                    }
-                    {
-                        // isNested ? isNested === true ?  <DirectionCta containerBgColor={generatedColorBtn} onPress={navigation.goBack} /> : isNested : <View />
-                    }
-                    
-                    {
-                        typeof componentDatas.title === 'string' ? <Para color={componentStyles.textColor} size={Number(componentStyles.fontSize)} weight="bold" >{componentDatas.title}</Para> : null
-                    }
+                    <Para size={+headerFontSize} color={headerTitleColor} weight="bold" >{title}</Para> 
                 </View>
         </LinearGradient>
     )
 }
 
 
-const style = (_ , { headerHeight , headerBgColor , iconWidth , iconHeight }) => StyleSheet.create({
+const style = ({ headerHeight , headerBgColor , nestedHeaderHeight } , isNested) => StyleSheet.create({
     container : {
         paddingTop : StatusBar.currentHeight,
         minHeight : 100,
         alignItems : 'center',
         justifyContent : 'space-between',
-        height: Number(headerHeight) * 1.7,
+        height: (isNested ? Number(nestedHeaderHeight) : Number(headerHeight)) * 1.7,
         backgroundColor : headerBgColor
     },
     innerContainer : {
@@ -72,10 +51,6 @@ const style = (_ , { headerHeight , headerBgColor , iconWidth , iconHeight }) =>
         paddingBottom : 25,
         marginHorizontal : "10%"
     },
-    icon : {
-        width: Number(iconWidth),
-        height : Number(iconHeight)
-    }
 })
 
 export default FadeHeader;

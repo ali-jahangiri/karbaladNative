@@ -7,9 +7,9 @@ import DirectionCta from '../../DirectionCta';
 import Para from '../../Para';
 
 
-const NegativeHeader = ({ title , isNested , style : injectedStyle }) => {
-    const appendStyle = useStyle(style , injectedStyle);
-    const { headerTitleColor , primary } = useStyle();
+const NegativeHeader = ({ title , isNested }) => {
+    const appendStyle = useStyle(style , isNested);
+    const { headerTitleColor , primary , headerFontSize } = useStyle();
 
     const navigation = useNavigation();
 
@@ -17,16 +17,16 @@ const NegativeHeader = ({ title , isNested , style : injectedStyle }) => {
         <View style={appendStyle.container}>
             <View style={appendStyle.innerContainer}>
                     {isNested ? isNested === true ?  <DirectionCta containerBgColor={generateColor(primary , 3)} onPress={navigation.goBack} /> : isNested : <View />}
-                    {typeof title === 'string' ? <Para color={headerTitleColor} size={22} weight="bold" >{title}</Para> : title} 
+                    {typeof title === 'string' ? <Para color={headerTitleColor} size={+headerFontSize} weight="bold" >{title}</Para> : title} 
             </View>
         </View>
     )
 }
 
 
-const style = ({ headerHeight , headerBgColor }) => StyleSheet.create({
+const style = ({ headerHeight , headerBgColor , nestedHeaderHeight } , isNested) => StyleSheet.create({
     container : {
-        height : Number(headerHeight) * 5,
+        height : isNested ? Number(nestedHeaderHeight) * 5 : Number(headerHeight) * 5,
         backgroundColor : headerBgColor,
         paddingBottom : 15,
         alignItems :'center',

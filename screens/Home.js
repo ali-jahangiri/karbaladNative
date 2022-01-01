@@ -29,7 +29,7 @@ const NestedInsStepScreen = ({ route : { params : { cat , name , id } }}) => {
         return !cat.length ? <InsuranceStepper route={{ params : { id , name } }} />
         : (
             <ScreenWrapper>
-                {/* <HeaderProvider title={name} isNested /> */}
+                <HeaderProvider title={name} isNested />
                 {/* <DirectionProvider > */}
                     <CategoryProvider passedNestedItems={cat} />
                 {/* </DirectionProvider> */}

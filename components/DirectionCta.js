@@ -3,6 +3,7 @@ import { StyleSheet, TouchableOpacity } from 'react-native';
 
 import { Feather } from '@expo/vector-icons';
 import { useStyle } from '../Hooks/useStyle';
+import { generateColor } from '../utils';
 
 const DirectionCta = ({ onPress , iconColor = 'white' , containerBgColor , extendStyle= {} , direction = "left" , icon = `arrow-${direction}` }) => {
     const appendStyle = useStyle(style , containerBgColor);
@@ -14,13 +15,9 @@ const DirectionCta = ({ onPress , iconColor = 'white' , containerBgColor , exten
 }
 
 
-const style = ({ baseBorderRadius } , passed) => StyleSheet.create({
+const style = ({ baseBorderRadius , primary } , overwriteBgColorFromParentInvoker) => StyleSheet.create({
     btn : {
-        backgroundColor : (() => {
-            // containerBgColor || "#fff2"
-            console.log(passed , "EX");
-            return "red"
-        })(),
+        backgroundColor : overwriteBgColorFromParentInvoker || generateColor(primary , 8),
         padding: 12,
         borderRadius : baseBorderRadius,
     }

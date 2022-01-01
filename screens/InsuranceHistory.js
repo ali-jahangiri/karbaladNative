@@ -58,7 +58,7 @@ const Home = () => {
     if(loading) return <Loading />
     return (
         <React.Fragment>
-            <HeaderProvider isInReading title="بیمه نامه" />
+            <HeaderProvider title="بیمه نامه" />
             <DirectionProvider>
                 <InsuranceHistoryDirectory items={insItems} />
             </DirectionProvider>

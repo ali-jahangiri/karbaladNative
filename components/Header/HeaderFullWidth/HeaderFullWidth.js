@@ -7,9 +7,9 @@ import DirectionCta from '../../DirectionCta';
 import Para from '../../Para';
 
 
-const HeaderFullWidth = ({ title , isNested , style : injectedStyle })  => {
-    const appendStyle = useStyle(style);
-    const { headerTitleColor , primary } = useStyle(style , injectedStyle);
+const HeaderFullWidth = ({ title , isNested })  => {
+    const appendStyle = useStyle(style , isNested);
+    const { headerTitleColor , primary , headerFontSize } = useStyle();
 
     const navigation = useNavigation();
 
@@ -22,20 +22,20 @@ const HeaderFullWidth = ({ title , isNested , style : injectedStyle })  => {
                         isNested ? isNested === true ?  <DirectionCta containerBgColor={generateColor(primary , 3)} onPress={navigation.goBack} /> : isNested : <View />
                     }
                     
-                    {typeof title === 'string' ? <Para color={headerTitleColor} size={26} weight="bold" >{title}</Para> : title}
+                    {typeof title === 'string' ? <Para color={headerTitleColor} size={+headerFontSize} weight="bold" >{title}</Para> : title}
             </View>
         </View>
     )
 }
 
 
-const style = ({ headerBgColor , headerHeight } ) => StyleSheet.create({
+const style = ({ headerBgColor , headerHeight , nestedHeaderHeight } , isNested ) => StyleSheet.create({
     container : {
         flexDirection : 'row',
         alignItems : 'center',
         justifyContent : 'space-between',
         backgroundColor : headerBgColor,
-        paddingTop : StatusBar.currentHeight + (Number(headerHeight) / 2),
+        paddingTop : StatusBar.currentHeight + ((isNested ? Number(nestedHeaderHeight) : Number(headerHeight)) / 2),
         paddingBottom : Number(headerHeight),
         marginBottom : 10,
         

@@ -8,9 +8,9 @@ import Para from '../../Para';
 
 
 
-const BadgeHeader = ({ title , isNested , style : injectedStyle }) => {
-    const appendStyle = useStyle(style , injectedStyle);
-    const { primary } = useStyle();
+const BadgeHeader = ({ title , isNested }) => {
+    const appendStyle = useStyle(style , isNested);
+    const { primary , headerFontSize } = useStyle();
     const navigation = useNavigation();
     
     return (
@@ -21,7 +21,7 @@ const BadgeHeader = ({ title , isNested , style : injectedStyle }) => {
             
             {
                 typeof title === 'string' ? <View style={appendStyle.badge}>
-                <Para color={primary} size={22} weight="bold">{title}</Para>
+                <Para color={primary} size={+headerFontSize} weight="bold">{title}</Para>
             </View> : title
             }
         </View>
@@ -30,7 +30,7 @@ const BadgeHeader = ({ title , isNested , style : injectedStyle }) => {
 
 
 
-const style = ({ baseBorderRadius , headerBgColor , headerHeight }) => StyleSheet.create({
+const style = ({ baseBorderRadius , headerBgColor , headerHeight , nestedHeaderHeight } , isNested) => StyleSheet.create({
     container : {
         flexDirection : 'row',
         alignItems : "center",
@@ -41,7 +41,7 @@ const style = ({ baseBorderRadius , headerBgColor , headerHeight }) => StyleShee
         marginBottom : 10
     },
     badge : {
-        height: Number(headerHeight),
+        height: isNested ? Number(nestedHeaderHeight) : Number(headerHeight),
         paddingHorizontal : 30,
         borderRadius : baseBorderRadius,
         backgroundColor : headerBgColor,
