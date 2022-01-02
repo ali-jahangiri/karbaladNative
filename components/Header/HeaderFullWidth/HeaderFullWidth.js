@@ -19,9 +19,8 @@ const HeaderFullWidth = ({ title , isNested })  => {
         <View style={appendStyle.container}>
             <View style={appendStyle.innerContainer}>
                     {
-                        isNested ? isNested === true ?  <DirectionCta containerBgColor={generateColor(primary , 3)} onPress={navigation.goBack} /> : isNested : <View />
+                        isNested  ? isNested === true ? <DirectionCta containerBgColor={generateColor(primary , 3)} onPress={navigation.goBack} /> : isNested : <View />
                     }
-                    
                     {typeof title === 'string' ? <Para color={headerTitleColor} size={+headerFontSize} weight="bold" >{title}</Para> : title}
             </View>
         </View>

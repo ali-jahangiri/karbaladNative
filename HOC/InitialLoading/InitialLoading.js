@@ -84,7 +84,7 @@ const InitialLoading = ({ children }) => {
                                     .then(({ data }) => {
                                         const { mainData : { components } , manifest } = data;
                                         const { componentStyles : configStyle , componentDatas : configData } = components.find(el => el.name === "MobileConfig")
-                                        dataDispatcher(makeLeanPallet(configData , false));
+                                        dataDispatcher({...makeLeanPallet(configData) , businessIcon : manifest.icons[0].src} , false);
                                         styleDispatcher(makeLeanPallet(configStyle)); 
                                         storeDispatcher(() => setInsCat(data.categories.cat));
                                         storeDispatcher(() => setDynamicComponent(components.filter(el => el.name !== "MobileConfig")))

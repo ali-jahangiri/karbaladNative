@@ -24,10 +24,7 @@ const Login = () => {
     const [error, setError] = useState(null);
     const [stage, setStage] = useState(1);
     const [loadingCta, setLoadingCta] = useState(false);
-    const data = useData();
-
-    console.log(data , 'other ine');
-
+    
     const fetcher = useFetch();
     const storeDispatcher = useDispatch();
 

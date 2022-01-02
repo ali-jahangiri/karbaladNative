@@ -6,21 +6,32 @@ import ScreenWrapper from '../components/ScreenWrapper';
 import InsuranceStepper from './InsuranceStepper';
 
 import HeaderProvider from '../Providers/HeaderProvider/HeaderProvider';
-import DirectionProvider from '../Providers/DirectoryProvider/DirectionProvider';
 import CategoryProvider from '../Providers/CategoryProvider/CategoryProvider';
 import ComponentGenerator from '../HOC/ComponentGenerator/ComponentGenerator';
-import { Button, ScrollView } from 'react-native';
+import { Image, ScrollView } from 'react-native';
+import useData from '../Hooks/useData/useData';
+import { imageFinder } from '../utils'
+import HomeUserProfileBox from '../components/HomeUserProfileBox';
 
-const InsIndexScreen = () => (
-    <ScreenWrapper>
-        {/* <HeaderProvider title="خانه" /> */}
-            <ScrollView>
-                {/* <DirectionProvider> */}
-                    <ComponentGenerator />
-                {/* </DirectionProvider> */}
-            </ScrollView>
-    </ScreenWrapper>
-)
+
+
+const InsIndexScreen = () => {
+    const { businessIcon } = useData()
+    const headerHomeIcon = businessIcon.slice(businessIcon.indexOf("/" , 1) + 1)
+    
+
+
+    return (
+        <ScreenWrapper>
+        <HeaderProvider isNested={<HomeUserProfileBox />} title={<Image style={{ marginVertical : -15 }} source={{ uri : imageFinder(headerHomeIcon) , width : 50 , height : 50}} />} />
+                <ScrollView>
+                    {/* <DirectionProvider> */}
+                        <ComponentGenerator />
+                    {/* </DirectionProvider> */}
+                </ScrollView>
+        </ScreenWrapper>
+    )
+}
 
 
 const NestedInsStepScreen = ({ route : { params : { cat , name , id } }}) => {
@@ -30,9 +41,7 @@ const NestedInsStepScreen = ({ route : { params : { cat , name , id } }}) => {
         : (
             <ScreenWrapper>
                 <HeaderProvider title={name} isNested />
-                {/* <DirectionProvider > */}
-                    <CategoryProvider passedNestedItems={cat} />
-                {/* </DirectionProvider> */}
+                <CategoryProvider passedNestedItems={cat} />
             </ScreenWrapper>
         )
 }

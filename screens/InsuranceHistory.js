@@ -34,7 +34,6 @@ const Home = () => {
     const dataFetcherInstance = () => {
         return fetcher("UserInsurance")
                 .then(({ data }) => {
-                    console.log(data);
                     setInsItems(JSON.parse(JSON.stringify(data)));
                 })
     }

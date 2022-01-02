@@ -49,7 +49,6 @@ const Wallet = () => {
     const fetchDataHandler = () => {
         return fetcher("UserWallet")
                 .then(({ data }) => {
-                    console.log(data , 'lorem');
                     setWalletData(data);
                     const currentStatus = data?.checkTransactionToWallet
                     if([DONE , FAIL].includes(currentStatus)) 
