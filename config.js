@@ -1,8 +1,8 @@
 const config = {
-    packageName : "rahatbime.com",
-    serverPath: "https://rahatbime.com/",
-    adminUserName : "LMKGvkA67X",
-    adminPassword : "nwGsa34Qdm",
+    packageName : "theme292.karbaladcms.ir",
+    serverPath: "http://theme292.karbaladcms.ir/",
+    adminUserName : "sIIwxwaNs",
+    adminPassword : "k98D69bjwH",
 }
 
 

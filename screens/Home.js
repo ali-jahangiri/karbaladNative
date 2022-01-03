@@ -16,8 +16,8 @@ import HomeUserProfileBox from '../components/HomeUserProfileBox';
 
 
 const InsIndexScreen = () => {
-    const { businessIcon } = useData()
-    const headerHomeIcon = businessIcon.slice(businessIcon.indexOf("/" , 1) + 1)
+    const { businessIcon } = useData();
+    const headerHomeIcon = businessIcon.slice(businessIcon.indexOf("/" , 1) + 1);
     
 
 
