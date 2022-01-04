@@ -11,9 +11,8 @@ import { persister } from '../utils';
 import { useDispatch } from '../Store/Y-state';
 import { setAppKey, setSeeWelcomeScreen } from '../Store/Slices/authSlice';
 
-import { VerifyInput , PhoneInput, PasswordInput, AuthLanding, AuthModePlayground } from '../components/Login';
+import { VerifyInput , PhoneInput , AuthLanding, AuthModePlayground, PasswordInput } from '../components/Login';
 import VerifyTextHelper from '../components/Login/VerifyTextHelpler';
-import useData from '../Hooks/useData/useData';
 
 
 const { LOGIN } = client.static;
@@ -36,25 +35,18 @@ const Login = () => {
         }))
     }
 
-    const passwordValidation = (pass = "", passConfirm = "") => {
-        if([pass , passConfirm].includes("")) {
-            setError(LOGIN.AUTH_ERRORS.EMPTY_PASSWORD)
-            return false
-        }else if(pass !== passConfirm) {
-            setError(LOGIN.AUTH_ERRORS.DIFFERENCE_PASSWORD);
-            return false
-        }else if(pass.length < 6) {
-            setError(LOGIN.AUTH_ERRORS.INVALID_PASSWORD)
-            return false
-        }else return true
+    
+    function validateVerifyCode() {
+        if(inputValue?.verifyCode && inputValue?.verifyCode.length === 4) {
+            const { phone , verifyCode } = inputValue;
+            setLoadingCta("ورود...");
+            getUserDataRequest({ mobile : phone, pass : verifyCode, newPass : verifyCode ,name : "" });
+        }else setError("کد تایید صحیح نمیباشد")
     }
 
     const verificationCodeChangeHandler = value => {
         inputChangeHandler("verifyCode" , value);
         setError(null);
-        if(value.length >= 4) {
-            setStage(prev => prev + 1)
-        }
     }
 
     const getUserDataRequest = body => {
@@ -103,7 +95,7 @@ const Login = () => {
                     }).catch(err => {
                         setError(err.message);
                     }).finally(() => {
-                           setLoadingCta(false);
+                        setLoadingCta(false);
                     })
                 }else {
                     if(!phone) return setError(LOGIN.AUTH_ERRORS.EMPTY_PHONE)
@@ -118,7 +110,7 @@ const Login = () => {
             }
         },
         "2" : {
-            ctaText : "تایید کد",
+            ctaText : "تایید و ثبت نام",
             backHandler(comeWithWrongNumber) {
                 if(comeWithWrongNumber === true) setInputValue({});
                 setStage(prev => prev - 1);
@@ -134,88 +126,20 @@ const Login = () => {
                     </View>
                 )
             },
+
             ctaHandler() {
-                setError("کد تایید صحیح نمیباشد")
+                validateVerifyCode();
             },
 
         },
-        "3" : {
-            ctaText : "تایید و ثبت نام",
-            backHandler() {
-                setStage(prev => prev -2);
-                ["verifyCode" , "password" , 'passwordConfirm']
-                    .map(el => inputChangeHandler(el , "")) 
-                setError(null);
-                setLoadingCta(false);
-            },
-            body() {
-                return (
-                    <>
-                        <PasswordInput
-                            autoFocus
-                            value={inputValue?.password} 
-                            placeholder="رمز عبور" 
-                            changeHandler={value => inputChangeHandler('password' , value)} />
-                        <PasswordInput
-                            value={inputValue?.passwordConfirm} 
-                            placeholder="تکرار رمز عبور" 
-                            changeHandler={value => inputChangeHandler('passwordConfirm' , value)} />
-                    </>
-                )
-            },
-            ctaHandler() {
-                if(passwordValidation(inputValue?.password , inputValue?.passwordConfirm)) {
-                    const { phone , password , verifyCode } = inputValue;
-                    setLoadingCta(LOGIN.PENDING_MESSAGE.PEND_IN_REGISTER);
-                    getUserDataRequest({ mobile : phone, pass : verifyCode, newPass : password , name : "" });
-                }
-            }
-        }
     }
 
 
 
     const loginStage = {
         stageLabel : "ورود",
-        "1" : {
-            ctaText : 'ورود',
-            body() {
-                return (
-                    <>
-                        <Input
-                            autoFocus
-                            extendInputStyle={{ fontSize : 20 }}
-                            placeholder="نام کاربری"
-                            value={inputValue?.userName}
-                            changeHandler={value => inputChangeHandler("userName", value)}
-                        />
-                        <PasswordInput 
-                            placeholder="رمز عبور" 
-                            value={inputValue?.password} 
-                            eyeEnable 
-                            changeHandler={value => inputChangeHandler('password' , value)} />
-                    </>
-                )
-            },
-            ctaHandler() {
-                if(inputValue?.userName && inputValue?.password) {
-                    setLoadingCta(LOGIN.PENDING_MESSAGE.PEND_IN_LOGIN);
-                    getUserDataRequest({mobile : inputValue.userName, pass : inputValue.password, newPass : "", name : ""})
-                }else {
-                    if(!inputValue?.userName) {
-                        setError("نام کاربری  را وارد کنید");
-                    }else {
-                        setError("رمز عبور را وارد کنید");
-                    }
-                }
-            },
-            backHandler() {
-                setStage(1);
-                setAuthMode(null);
-                setError(null);
-                setInputValue({});
-            }
-        }
+        "1" : { ...registerStage[1] },
+        "2" : { ...registerStage[2] }
     }
 
 

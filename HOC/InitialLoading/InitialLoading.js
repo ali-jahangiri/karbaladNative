@@ -12,6 +12,7 @@ import { setAppKey, setSeeWelcomeScreen, setSystemTime } from '../../Store/Slice
 import { setInsCat } from '../../Store/Slices/initialSlice';
 import api from '../../api';
 
+import * as SecureStore from 'expo-secure-store';
 
 
 
@@ -69,7 +70,7 @@ const InitialLoading = ({ children }) => {
                             PackageName : config.packageName
                         }, serverTime),
                     }).then(({ data : appToken }) => {
-                        if(data === client.static.ACCESS_DENIED) throw new Error(appToken);
+                        if(data === client.static.ACCESS_DENIED) throw new Error("دسترسی بسته شده");
                         setSomethingWentWrong(null);
                         return appToken
                     })
