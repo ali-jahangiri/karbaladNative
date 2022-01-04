@@ -11,15 +11,16 @@ import SelectBoxItem from '../components/SelectBoxItem';
 import DatePicker from '../components/DatePicker';
 import { ScrollView } from 'react-native';
 import InputNumber from '../components/InputNumber';
+import StringInput from '../components/StringInput';
 import MultiSelect from '../components/MultiSelect';
 import SelectBoxOptimized from '../components/SelectBoxOptimized';
 
 import client from '../client';
 
 
-const { CHECK_FORM , DATE , DROPDOWN , FLOAT , INT , INFO , LONG , CREATE_YEAR } = client.static.INPUT_DETECTOR
+const { CHECK_FORM , DATE , DROPDOWN , FLOAT , INT , INFO , LONG , CREATE_YEAR , STRING } = client.static.INPUT_DETECTOR
 
-const InputDetector = ({typesName , isCarCase , temporary : { value , setValue } , pushToNextStageHandler , formData , formName , formNameNested , step , maxNumber = 1000000 , minNumber = 0}) => {
+const InputDetector = ({typesName , isCarCase , temporary : { value , setValue } , pushToNextStageHandler , formData , formName , formNameNested , step , maxNumber = 1000000 , minNumber = 0 , onDropDownChangeHandler }) => {
     switch(typesName) {
         case INFO :   
             case DROPDOWN : 
@@ -59,7 +60,7 @@ const InputDetector = ({typesName , isCarCase , temporary : { value , setValue }
                         <SelectBoxOptimized
                                            items={formData.filter(el => el.dataName.includes(value.searchFilterBase))} 
                                            selectedItem={value[formName]}
-                                           onSelect={value => setValue({ value })} />
+                                           onSelect={onDropDownChangeHandler} />
                     </React.Fragment>
                 )
                 return (
@@ -70,7 +71,7 @@ const InputDetector = ({typesName , isCarCase , temporary : { value , setValue }
                                 .map((el , i) => (
                                 <SelectBoxItem 
                                     selectedInStore={value[formName] === el.id} 
-                                    onSelect={value => setValue({ value })}  
+                                    onSelect={onDropDownChangeHandler}  
                                     key={i} 
                                     value={el.id} >
                                     {el.dataName}
@@ -123,8 +124,13 @@ const InputDetector = ({typesName , isCarCase , temporary : { value , setValue }
             return (
                 <MultiSelect onChange={setValue} items={formData} values={value[formName]} />
             )
+        
+        case STRING : 
+            return (
+                <StringInput autoFocus onChange={value => setValue({ value })} value={value[formName]}  />
+            )
 
-        default : throw new Error("something went wrong in inputDetector ! Please try again.")
+        default : throw new Error("Custom Error : something went wrong in inputDetector ! Please try again.")
     }
 }
 

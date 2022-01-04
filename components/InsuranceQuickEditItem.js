@@ -49,11 +49,13 @@ const InsuranceQuickEditItem = ({ label , onEdit , value , index  , store , temp
                 <Feather 
                     style={{ marginHorizontal : 10 }} 
                     name={wasChange ? "edit-3" : "edit-2"} 
-                    size={24} 
+                    size={20} 
                     color={wasChange ? primary : "grey"} /> 
                 </TouchableOpacity>
-                <View style={{ flexDirection : "row" , alignItems : 'center' }}>
-                    <Para >{label}</Para>
+                <View style={{ flexDirection : "row" , alignItems : 'center' , flex : 1}}>
+                    <Para 
+                        style={{ flex : 1 , paddingHorizontal : 10}}
+                    >{label}</Para>
                     <View style={appendStyle.index}>
                         <Para color="grey">{toFarsiNumber(index)}</Para>
                     </View>
@@ -81,11 +83,12 @@ const style = ({ baseBorderRadius , primary } , wasChange ) => StyleSheet.create
     index : {
         backgroundColor : "#2e2e2e10",
         borderRadius : baseBorderRadius,
-        width: 40,
+        width: "20%",
         height : 40,
+        width : 40,
         alignItems : 'center',
         justifyContent : 'center',
-        marginLeft : 10
+        marginLeft : 10,
     },
     ctaContainer : {
         flexDirection : 'row',

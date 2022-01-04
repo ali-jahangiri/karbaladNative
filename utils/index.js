@@ -13,6 +13,8 @@ import makeLeanComponentVariables from "./makeLeanComponentVariables";
 import borderConstructor from "./borderConstructor";
 import booleanExtractor from "./booleanExtractor";
 import shareAppHandler from "./shareAppHandler";
+import detectAvailableInsuranceInput from "./detectAvailableInsuranceInput";
+import detectIsInInsuranceDynamicFlow from "./detectIsInInsuranceDynamicFlow";
 
 export {
     generateColor,
@@ -30,4 +32,6 @@ export {
     borderConstructor,
     booleanExtractor,
     shareAppHandler,
+    detectAvailableInsuranceInput,
+    detectIsInInsuranceDynamicFlow,
 }

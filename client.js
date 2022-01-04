@@ -54,8 +54,10 @@ const client = {
             INT : 'Int',
             FLOAT : "Float",
             CREATE_YEAR : "CreateYear",
-            CHECK_FORM : "CheckedForm"
+            CHECK_FORM : "CheckedForm",
+            STRING : "String",
         },
+        WHITE_LIST_FOR_PREVENTING_AUTO_NEXT : ['Float' , "Int" , "Long" , "CheckedForm" , 'Date' , "String"],
         REQUIREMENT_FIELD_ERROR_MESSAGE : "تمامی فیلد ها ضروری میباشد",
         REQUIREMENT_FIELD_ERROR_MESSAGE_DESC : "فیلد های ورودی برای ثبت بیمه ضروری میباشد . لطفا فیلد ها را به درستی تکمیل نمایید",
         PROFILE_EDIT : {

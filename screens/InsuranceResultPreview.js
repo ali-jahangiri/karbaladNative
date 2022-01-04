@@ -51,7 +51,14 @@ const InsuranceResultPreview = ({ route : { params : { id , valueStore , flatted
 
     const quickEditHandler = () => {
         if(responseValues?.insuranceQuotes?.factorItems) {
-            navigation.push('insuranceQuickEdit' ,{ server :  responseValues.insuranceQuotes.factorItems , valueStore , selectedInsData , id , carCategory })
+            const params = {
+                server :  responseValues.insuranceQuotes.factorItems , 
+                valueStore , 
+                selectedInsData , 
+                id , 
+                carCategory
+            }
+            navigation.push('insuranceQuickEdit' , params);
         }
     }
 

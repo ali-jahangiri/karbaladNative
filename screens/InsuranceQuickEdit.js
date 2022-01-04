@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, View , StatusBar, ScrollView, TouchableOpacity } from 'react-native';
 import { useStyle } from '../Hooks/useStyle';
 
-import { generateColor, numberSeparator } from '../utils';
+import { detectAvailableInsuranceInput, generateColor, numberSeparator } from '../utils';
 import InputDetector from '../utils/inputDetector';
 
 import Drawer from '../components/Drawer';
@@ -12,6 +12,7 @@ import Para from '../components/Para';
 import { Feather } from '@expo/vector-icons';
 import HeaderProvider from '../Providers/HeaderProvider/HeaderProvider';
 import DirectionProvider from '../Providers/DirectoryProvider/DirectionProvider';
+import client from '../client';
 
 export const valueFinder = (store , selectedValue) =>  {
     switch(store.typesName) {
@@ -38,6 +39,9 @@ export const valueFinder = (store , selectedValue) =>  {
         case "Float" : {
             return selectedValue ? numberSeparator(selectedValue) : selectedValue
         }
+        case "String" : {
+            return selectedValue;
+        }
         default : {
             return selectedValue;
         }
@@ -53,8 +57,46 @@ const InsuranceQuickEdit = ({ navigation , route : { params } }) => {
     const [currentTypeName, setCurrentTypeName] = useState("");
     const [tempState, setTempState] = useState({});
 
+    const [availableRenderClone, setAvailableRenderClone] = useState({});
+    const [isInInitialInputRender, setIsInInitialInputRender] = useState(true);
+
+    const insInputAvailableHandler = detectAvailableInsuranceInput(availableRenderClone , isInInitialInputRender);
+
     // this value define current selected option for changing and
     const currentForm = params.selectedInsData.find(el => el.lbLName === currentSetting);
+
+    console.log(params , "currentForm");
+
+
+
+    useEffect(function initialAvailableItemDetectorHandler() {
+        // const isInDynamicFlow = currentForm.selectedInsData.pages.some(page => page.forms.find(item => item.formData[0]?.actives && item.formData[0]?.deActives))
+
+        // if(isInDynamicFlow) {
+        //     const flattedAllCaseList = params.selectedInsData.pages.map(el => el.forms).flat();
+
+
+        //     params?.server.map(defaultItem => {
+        //         const targetItem = flattedAllCaseList.find(el => el.formName === defaultItem.name);
+        //         if(targetItem.typesName === "DropDown") {
+        //             const finedValueId = Number(defaultItem.value);
+        //             const selectedValue = targetItem.formData.find(formData => formData.id === finedValueId);
+                    
+        //             setAvailableRenderClone(prev => ({
+        //                 ...prev,
+        //                 [targetItem.formName] : {
+        //                     actives : selectedValue.actives,
+        //                     deActives : selectedValue.deActives
+        //                 }
+        //             }))
+        //         }
+        //     })
+
+        // }
+
+
+    } , []);
+
 
 
     const selectAnChangeOptionHandler = ({ label , key , typesName}) => {
@@ -73,7 +115,7 @@ const InsuranceQuickEdit = ({ navigation , route : { params } }) => {
         }));
 
         if(key === "searchFilterBase") return;
-        if(!currentForm?.formData[0]?.isCar && !['Float' , "Int" , "Long" , "CheckedForm" , "Date"].includes(currentTypeName)) {
+        if(!currentForm?.formData[0]?.isCar && !client.static.WHITE_LIST_FOR_PREVENTING_AUTO_NEXT.includes(currentTypeName)) {
             setIsDrawerOpen(false)
         }
     }
@@ -106,6 +148,8 @@ const InsuranceQuickEdit = ({ navigation , route : { params } }) => {
         navigation.goBack()
     }
 
+
+
       
     return (
         <View style={appendStyle.container}>
@@ -113,7 +157,7 @@ const InsuranceQuickEdit = ({ navigation , route : { params } }) => {
             <DirectionProvider isNested>
                 <ScrollView style={appendStyle.itemsDirectory}>
                     {
-                        params?.server.map((el , i) => (
+                        insInputAvailableHandler(params?.server).map((el , i) => (
                             <InsuranceQuickEditItem
                                 index={i + 1}
                                 tempStore={tempState}

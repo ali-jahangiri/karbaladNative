@@ -6,10 +6,11 @@ import InsStage from '../components/InsStage';
 import useFetch from "../Providers/useFetch"
 
 import { useStyle } from '../Hooks/useStyle';
-import { carCaseChecker } from '../utils';
+import { carCaseChecker, detectAvailableInsuranceInput } from '../utils';
 import { useNavigation } from '@react-navigation/native';
 import Loading from '../components/Loading';
 import client from '../client';
+import { detectIsInInsuranceDynamicFlow } from '../utils';
 
 const InsuranceStepper = ({ route : { params : { id , name }} }) => {
     const navigation = useNavigation();
@@ -20,41 +21,48 @@ const InsuranceStepper = ({ route : { params : { id , name }} }) => {
     const [seeIntro, setSeeIntro] = useState(false);
     const [valueStore, setValueStore] = useState({});
 
+    const [availableRenderClone, setAvailableRenderClone] = useState({});
+    const [isInInitialInputRender, setIsInInitialInputRender] = useState(true);
+    const [isInDynamicFlow, setIsInDynamicFlow] = useState(false);
+
 
     const fetcher = useFetch();
-    const appendStyle = useStyle(style)
+    const appendStyle = useStyle(style);
+    const insInputAvailableHandler = detectAvailableInsuranceInput(availableRenderClone , isInInitialInputRender);
     
     useEffect(() => {
         setLoading(true)
         fetcher('GetInsuranceForm' , { categoryId : id })
             .then(({ data }) => {
                 setInsuranceData(data)
+                if(detectIsInInsuranceDynamicFlow(data)) setIsInDynamicFlow(true);
                 setLoading(false)
             }).catch(err => {
                 throw new Error(err.message)
             })
 
-    } , [id])
-    
+    } , [id]);
 
-    
+
     const redirectionHandler = (activeStage , syncedStore) => {
 
         const flattedStage = insuranceData.pages
                                     .map(el => el.forms)
                                     .flat(1)
                                     .filter(el => el.typesName !== client.static.INPUT_DETECTOR.INFO);
-            const currentStageData = flattedStage[activeStage];
-            if(!currentStageData) {
-                const clonedStore = JSON.stringify({
-                    id , valueStore : syncedStore , flattedStage , carCategory : insuranceData?.carGroup
-                })
-                navigation.replace("insuranceResultPreview" , { ...JSON.parse(clonedStore) });
-            }
+        const filteredFlattedStage = insInputAvailableHandler(flattedStage);
+        const currentStageData = filteredFlattedStage[activeStage];
+        if(!currentStageData) {
+            const clonedStore = JSON.stringify({
+                id , 
+                valueStore : syncedStore ,
+                flattedStage , 
+                carCategory : insuranceData?.carGroup
+            })
+            navigation.replace("insuranceResultPreview" , { ...JSON.parse(clonedStore) });
+        }
     }
     
-
-
 
     const nextStepHandler = haveNewTempValueForSet => {
         setCurrentStage(prev =>  prev + 1);
@@ -75,24 +83,29 @@ const InsuranceStepper = ({ route : { params : { id , name }} }) => {
                         desc={insuranceData.description} 
                         title={insuranceData.title} />
         }else {
+
             const flattedStage = insuranceData.pages
                                     .map(el => el.forms)
                                     .flat(1)
                                     .filter(el => el.typesName !== client.static.INPUT_DETECTOR.INFO);
-            const currentStageData = flattedStage[currentStage];
-
+            const filteredFlattedStage = insInputAvailableHandler(flattedStage);
+            const currentStageData = filteredFlattedStage[currentStage];
             if(!currentStageData) return null
             // if we reach to end step (stage) of insurance stepper we should navigate to result preview
+            // NOTE initialInsuranceNameFallback is for a situation when we have a static insurance id redirection and don't provide a name for that
             return <InsStage
-                            nextStageHandler={nextStepHandler}
-                            prevStageHandler={previousStepHandler}
-                            carCategory={carCaseChecker(currentStageData.formData ,insuranceData.carGroup )}
-                            store={valueStore}
-                            stageNumber={{ length : flattedStage.length - 1, currentStage }} 
-                            title={insuranceData.pages[currentStage]?.title}  
-                            categoryName={name}
-                            {...currentStageData} />
-            // }
+                        initialInsuranceNameFallback={insuranceData.title}
+                        setAvailableRenderClone={setAvailableRenderClone}
+                        isInDynamicFlow={isInDynamicFlow}
+                        setIsInInitialInputRender={setIsInInitialInputRender}
+                        nextStageHandler={nextStepHandler}
+                        prevStageHandler={previousStepHandler}
+                        carCategory={carCaseChecker(currentStageData.formData ,insuranceData.carGroup )}
+                        store={valueStore}
+                        stageNumber={{ length : filteredFlattedStage.length - 1, currentStage }} 
+                        title={insuranceData.pages[currentStage]?.title}  
+                        categoryName={name}
+                        {...currentStageData} />
         }
     }
 
