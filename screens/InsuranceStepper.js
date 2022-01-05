@@ -25,6 +25,7 @@ const InsuranceStepper = ({ route : { params : { id , name }} }) => {
     const [isInInitialInputRender, setIsInInitialInputRender] = useState(true);
     const [isInDynamicFlow, setIsInDynamicFlow] = useState(false);
 
+    const [redirectKey, setRedirectKey] = useState(0);
 
     const fetcher = useFetch();
     const appendStyle = useStyle(style);
@@ -43,31 +44,32 @@ const InsuranceStepper = ({ route : { params : { id , name }} }) => {
 
     } , [id]);
 
-
-    const redirectionHandler = (activeStage , syncedStore) => {
-
-        const flattedStage = insuranceData.pages
-                                    .map(el => el.forms)
-                                    .flat(1)
-                                    .filter(el => el.typesName !== client.static.INPUT_DETECTOR.INFO);
-        const filteredFlattedStage = insInputAvailableHandler(flattedStage);
-        const currentStageData = filteredFlattedStage[activeStage];
-        if(!currentStageData) {
-            const clonedStore = JSON.stringify({
-                id , 
-                valueStore : syncedStore ,
-                flattedStage , 
-                carCategory : insuranceData?.carGroup
-            })
-            navigation.replace("insuranceResultPreview" , { ...JSON.parse(clonedStore) });
+    useEffect(() => {
+        if(!loading) {
+            const flattedStage = insuranceData.pages
+                                        .map(el => el.forms)
+                                        .flat(1)
+                                        .filter(el => el.typesName !== client.static.INPUT_DETECTOR.INFO);
+            const filteredFlattedStage = insInputAvailableHandler(flattedStage);
+            const currentStageData = filteredFlattedStage[currentStage];
+            if(!currentStageData) {
+                const clonedStore = JSON.stringify({
+                    id , 
+                    valueStore,
+                    flattedStage , 
+                    carCategory : insuranceData?.carGroup
+                })
+                navigation.replace("insuranceResultPreview" , { ...JSON.parse(clonedStore) });
+            }
         }
-    }
+    } , [redirectKey , currentStage])
     
 
     const nextStepHandler = haveNewTempValueForSet => {
         setCurrentStage(prev =>  prev + 1);
         if(haveNewTempValueForSet) setValueStore(prev => ({ ...prev , ...haveNewTempValueForSet}));
-        redirectionHandler(currentStage  + 1 , { ...valueStore , ...haveNewTempValueForSet})
+        // redirectionHandler(currentStage  + 1 , { ...valueStore , ...haveNewTempValueForSet})
+        setRedirectKey(Date.now())
     }   
     
     const previousStepHandler = () => {

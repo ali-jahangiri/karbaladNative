@@ -1,6 +1,6 @@
 
-const detectAvailableInsuranceInput = (availableRenderClone , isInInitialInputRender) => inputList => inputList.filter(el => {
-    if(isInInitialInputRender && el.defaultShow) return true;
+const detectAvailableInsuranceInput = (availableRenderClone , isInInitialInputRender , explicitAboutInitialRenderStatus = true) => inputList => inputList.filter(el => {
+    if(explicitAboutInitialRenderStatus && isInInitialInputRender && el.defaultShow) return true;
     else if(!isInInitialInputRender) {
         const reasonToDontRender = Object.values(availableRenderClone).map(value => value)
         const isSomeWhereActive = reasonToDontRender.some(item => item.actives.includes(el.formName));

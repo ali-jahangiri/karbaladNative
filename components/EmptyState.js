@@ -35,7 +35,7 @@ const style = ({ primary, baseBorderRadius }) => StyleSheet.create({
         marginBottom : 10
     },
     cta : {
-        backgroundColor : generateColor(primary , 5),
+        backgroundColor : generateColor(primary , 3),
         padding : 15,
         borderRadius : baseBorderRadius,
         marginTop : 10       

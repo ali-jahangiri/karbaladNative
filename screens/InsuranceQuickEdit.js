@@ -57,53 +57,54 @@ const InsuranceQuickEdit = ({ navigation , route : { params } }) => {
     const [currentTypeName, setCurrentTypeName] = useState("");
     const [tempState, setTempState] = useState({});
 
-    const [availableRenderClone, setAvailableRenderClone] = useState({});
-    const [isInInitialInputRender, setIsInInitialInputRender] = useState(true);
 
-    const insInputAvailableHandler = detectAvailableInsuranceInput(availableRenderClone , isInInitialInputRender);
+    const [isInDynamicFlow, setIsInDynamicFlow] = useState(false);
+    const [availableRenderClone, setAvailableRenderClone] = useState({});
+    const insInputAvailableHandler = detectAvailableInsuranceInput(availableRenderClone , false , true);
 
     // this value define current selected option for changing and
     const currentForm = params.selectedInsData.find(el => el.lbLName === currentSetting);
 
-    console.log(params , "currentForm");
-
-
+    
 
     useEffect(function initialAvailableItemDetectorHandler() {
-        // const isInDynamicFlow = currentForm.selectedInsData.pages.some(page => page.forms.find(item => item.formData[0]?.actives && item.formData[0]?.deActives))
+        const isInDynamicFlow = params.selectedInsData.some(formItem => formItem.formData.find(item => item?.actives && item?.deActives))
+        setIsInDynamicFlow(isInDynamicFlow);
 
-        // if(isInDynamicFlow) {
-        //     const flattedAllCaseList = params.selectedInsData.pages.map(el => el.forms).flat();
+        if(isInDynamicFlow) {
+            const flattedAllCaseList = params.selectedInsData
 
 
-        //     params?.server.map(defaultItem => {
-        //         const targetItem = flattedAllCaseList.find(el => el.formName === defaultItem.name);
-        //         if(targetItem.typesName === "DropDown") {
-        //             const finedValueId = Number(defaultItem.value);
-        //             const selectedValue = targetItem.formData.find(formData => formData.id === finedValueId);
+            params?.server.map(defaultItem => {
+                const targetItem = flattedAllCaseList.find(el => el.formName === defaultItem.name);
+                if(targetItem.typesName === "DropDown") {
+                    const finedValueId = Number(defaultItem.value);
+                    const selectedValue = targetItem.formData.find(formData => formData.id === finedValueId);
                     
-        //             setAvailableRenderClone(prev => ({
-        //                 ...prev,
-        //                 [targetItem.formName] : {
-        //                     actives : selectedValue.actives,
-        //                     deActives : selectedValue.deActives
-        //                 }
-        //             }))
-        //         }
-        //     })
+                    setAvailableRenderClone(prev => ({
+                        ...prev,
+                        [targetItem.formName] : {
+                            actives : selectedValue.actives,
+                            deActives : selectedValue.deActives
+                        }
+                    }))
+                }
+            })
 
-        // }
+        }
 
 
     } , []);
 
-
-
+    
     const selectAnChangeOptionHandler = ({ label , key , typesName}) => {
         setIsDrawerOpen(true);
         setCurrentFormName(key);
         setCurrentSetting(label);
         setCurrentTypeName(typesName);
+        if(client.static.WHITE_LIST_FOR_PREVENTING_AUTO_NEXT.includes(typesName) && params.valueStore?.[key]) {
+            setTempState({ [key] : params.valueStore[key] })
+        }
     }
 
     const temporaryChangeHandler = ({key = currentFormName , value , isNested }) => {
@@ -136,6 +137,21 @@ const InsuranceQuickEdit = ({ navigation , route : { params } }) => {
         setIsDrawerOpen(false);
     }
 
+    const onEditDropDownChangeHandler = value => {
+        if(isInDynamicFlow) {
+
+            const targetInputFormData = params.selectedInsData.find(el => el.formData.some(item => item.id === value));
+            
+            setAvailableRenderClone(prev => ({
+                ...prev,
+                [targetInputFormData.formName] : {
+                    actives : targetInputFormData.formData.find(el => el.id === value).actives,
+                    deActives : targetInputFormData.formData.find(el => el.id === value).deActives
+                }
+            }))
+        }
+        temporaryChangeHandler({ value })
+    }
 
     const getNewResultHandler = () => {
         const newStore = {...params.valueStore , ...tempState}
@@ -149,15 +165,13 @@ const InsuranceQuickEdit = ({ navigation , route : { params } }) => {
     }
 
 
-
-      
     return (
         <View style={appendStyle.container}>
             <HeaderProvider isNested title="ایجاد تغییر در بیمه" />
             <DirectionProvider isNested>
                 <ScrollView style={appendStyle.itemsDirectory}>
                     {
-                        insInputAvailableHandler(params?.server).map((el , i) => (
+                        insInputAvailableHandler(params.selectedInsData.filter(formItem => params?.server.find(filledItem => filledItem.name === formItem.formName))).map(el => params.server.find(filledItem => filledItem.name === el.formName)).map((el , i) => (
                             <InsuranceQuickEditItem
                                 index={i + 1}
                                 tempStore={tempState}
@@ -185,11 +199,13 @@ const InsuranceQuickEdit = ({ navigation , route : { params } }) => {
                     onDone={applyChangeHandler} 
                     title={currentSetting} 
                     extendStyle={{ padding : 10 , flex :  2}}
-                    showController={currentForm?.formData[0]?.isCar || tempState?.searchFilterBase || ['Float' , "Int" , "Long" , "CheckedForm" , "Date"].includes(currentTypeName)}
+                    showController={currentForm?.formData[0]?.isCar || tempState?.searchFilterBase || client.static.WHITE_LIST_FOR_PREVENTING_AUTO_NEXT.includes(currentTypeName)}
                     >
                     <View style={{ flex : 1 }}>
                         {
                             <InputDetector
+                                
+                                onDropDownChangeHandler={onEditDropDownChangeHandler}
                                 pushToNextStageHandler={() => {}}
                                 formData={currentForm.formData}
                                 typesName={currentForm.typesName}
