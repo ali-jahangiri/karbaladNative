@@ -1,10 +1,8 @@
 const config = {
-    packageName : "theme292.karbaladcms.ir",
-    serverPath: "http://theme292.karbaladcms.ir/",
-    adminUserName : "sIIwxwaFs",
-    adminPassword : "k98D85bjwH",
+    packageName : "babimeh.com",
+    serverPath: "https://babimeh.com/",
+    adminUserName : "sIILqEanNW",
+    adminPassword : "k9tDB2bjkH",
 }
-
-
 
 export default config;

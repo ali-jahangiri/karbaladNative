@@ -51,10 +51,8 @@ export const valueFinder = (store , selectedValue) =>  {
 
 const InsuranceQuickEdit = ({ navigation , route : { params } }) => {
     const appendStyle = useStyle(style);
-    const [currentSetting, setCurrentSetting] = useState(null);
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-    const [currentFormName, setCurrentFormName] = useState("");
-    const [currentTypeName, setCurrentTypeName] = useState("");
+    const [currentItemForEdit, setCurrentItemForEdit] = useState({ formName : "" , label : "" , typeName : "" })
     const [tempState, setTempState] = useState({});
 
 
@@ -63,10 +61,9 @@ const InsuranceQuickEdit = ({ navigation , route : { params } }) => {
     const insInputAvailableHandler = detectAvailableInsuranceInput(availableRenderClone , false , true);
 
     // this value define current selected option for changing and
-    const currentForm = params.selectedInsData.find(el => el.lbLName === currentSetting);
+    const currentForm = params.selectedInsData.find(el => el.lbLName === currentItemForEdit.label);
 
     
-
     useEffect(function initialAvailableItemDetectorHandler() {
         const isInDynamicFlow = params.selectedInsData.some(formItem => formItem.formData.find(item => item?.actives && item?.deActives))
         setIsInDynamicFlow(isInDynamicFlow);
@@ -99,15 +96,16 @@ const InsuranceQuickEdit = ({ navigation , route : { params } }) => {
     
     const selectAnChangeOptionHandler = ({ label , key , typesName}) => {
         setIsDrawerOpen(true);
-        setCurrentFormName(key);
-        setCurrentSetting(label);
-        setCurrentTypeName(typesName);
-        if(client.static.WHITE_LIST_FOR_PREVENTING_AUTO_NEXT.includes(typesName) && params.valueStore?.[key]) {
-            setTempState({ [key] : params.valueStore[key] })
-        }
+        setCurrentItemForEdit({
+            formName : key,
+            label,
+            typeName: typesName
+        })
+
+        setTempState(prev => ({ ...prev , [key] : tempState[key] || params.valueStore[key] }));
     }
 
-    const temporaryChangeHandler = ({key = currentFormName , value , isNested }) => {
+    const temporaryChangeHandler = ({key = currentItemForEdit.formName , value , isNested }) => {
         
         // store values should store any ways because we need recovery feature
         setTempState(prev => ({
@@ -116,7 +114,7 @@ const InsuranceQuickEdit = ({ navigation , route : { params } }) => {
         }));
 
         if(key === "searchFilterBase") return;
-        if(!currentForm?.formData[0]?.isCar && !client.static.WHITE_LIST_FOR_PREVENTING_AUTO_NEXT.includes(currentTypeName)) {
+        if(!currentForm?.formData[0]?.isCar && !client.static.WHITE_LIST_FOR_PREVENTING_AUTO_NEXT.includes(currentItemForEdit.typeName)) {
             setIsDrawerOpen(false)
         }
     }
@@ -127,14 +125,16 @@ const InsuranceQuickEdit = ({ navigation , route : { params } }) => {
     };
 
     const discardHandler = () => {
-        const leanedObject = {};
-        // clean up temporary state from passed value (input)
-        Object.entries(tempState)
-            .map(([key , value]) => {
-                if(key !== currentFormName) leanedObject[key] = value
-        });
-        setTempState({...leanedObject , searchFilterBase : ""});
+        if(params.valueStore[currentItemForEdit.formName] === tempState[currentItemForEdit.formName]) {
+        }
+    }
+
+
+    const closeDrawerHandler = () => {
         setIsDrawerOpen(false);
+        if(params.valueStore[currentItemForEdit.formName] === tempState[currentItemForEdit.formName]) {
+            setTempState(prev => ({ ...prev , [currentItemForEdit.formName] : undefined }));
+        }
     }
 
     const onEditDropDownChangeHandler = value => {
@@ -195,11 +195,11 @@ const InsuranceQuickEdit = ({ navigation , route : { params } }) => {
                 isDrawerOpen && 
                 <Drawer
                     onCancel={discardHandler}
-                    onClose={() => setIsDrawerOpen(false)}
-                    onDone={applyChangeHandler} 
-                    title={currentSetting} 
+                    onClose={closeDrawerHandler}
+                    onDone={applyChangeHandler}
+                    title={currentItemForEdit.label} 
                     extendStyle={{ padding : 10 , flex :  2}}
-                    showController={currentForm?.formData[0]?.isCar || tempState?.searchFilterBase || client.static.WHITE_LIST_FOR_PREVENTING_AUTO_NEXT.includes(currentTypeName)}
+                    showController={currentForm?.formData[0]?.isCar || tempState?.searchFilterBase || client.static.WHITE_LIST_FOR_PREVENTING_AUTO_NEXT.includes(currentItemForEdit.typeName)}
                     >
                     <View style={{ flex : 1 }}>
                         {
@@ -212,7 +212,7 @@ const InsuranceQuickEdit = ({ navigation , route : { params } }) => {
                                 formName={currentForm.formName}
                                 temporary={{ value: tempState , setValue : temporaryChangeHandler }}
                                 isCarCase={currentForm?.formData[0]?.isCar && params?.carCategory}
-                                formNameNested={`Nested_${currentFormName}`}
+                                formNameNested={`Nested_${currentItemForEdit.formName}`}
                                 maxNumber={currentForm?.maxNumber}
                                 minNumber={currentForm?.minNumber}
                                 step={currentForm?.step}
