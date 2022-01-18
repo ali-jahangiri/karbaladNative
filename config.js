@@ -1,8 +1,8 @@
 const config = {
-    packageName : "babimeh.com",
-    serverPath: "https://babimeh.com/",
-    adminUserName : "sIILqEanNW",
-    adminPassword : "k9tDB2bjkH",
+    packageName : "bimitek.ir",
+    serverPath: "https://bimitek.ir/",
+    adminUserName : "sIILmwaNW",
+    adminPassword : "k9tD69bjkH",
 }
 
 export default config;

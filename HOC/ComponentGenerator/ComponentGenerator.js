@@ -8,11 +8,13 @@ import { useSelector } from '../../Store/Y-state';
 
 import { makeLeanComponentVariables } from "../../utils"
 import MobileModalAlert from '../../components/ModalNotification';
+import CategoryGrid from '../../components/CategoryGrid/CategoryGrid';
 
 
 const _dynamicElementComponent = ({...rest}) => ({
     MobileInsuranceCategoryBox : <InsuranceDirectory {...rest} />,
     MobileInsuranceCategoryRow : <CategoryRow {...rest} />,
+    MobileInsuranceCategoryGrid : <CategoryGrid {...rest} />,
     MobileImage : <DynamicImage {...rest} />,
     MobileText : <DynamicText {...rest} />,
     MobileSlider : <DynamicSlider {...rest} />, 

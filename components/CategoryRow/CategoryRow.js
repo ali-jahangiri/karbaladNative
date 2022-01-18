@@ -7,7 +7,7 @@ import CategoryRowItem from './CategoryRowItem';
 
 const CategoryRow = ({ passedNestedItems , componentStyles }) => {
     const items = useSelector(state => state.initial)
-    const navigation = useNavigation()      
+    const navigation = useNavigation();
     const container = useRef();
     useScrollToTop(container);
     const appendStyle = style(componentStyles)

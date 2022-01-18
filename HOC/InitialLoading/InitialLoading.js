@@ -60,7 +60,6 @@ const InitialLoading = ({ children }) => {
     useEffect(() => {
         api.post(`${config.serverPath}/baseApi/getServerTime`)
                 .then(({ data }) => {
-                    console.log(data);
                     let serverTime = +data.split(" ")[1].split(':')[1];
                     const deviceTime = new Date().getMinutes();
                     storeDispatcher(() => setSystemTime(deviceTime - serverTime));
