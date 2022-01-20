@@ -7,8 +7,8 @@ import GridItem from "./GridItem";
 import { Feather } from '@expo/vector-icons';
 import { useNavigation } from "@react-navigation/native";
 
-const CategoryGrid = ({ componentDatas , passedNestedItems , componentStyles }) => {
-    const appendStyle = useStyle(style);
+const CategoryGrid = ({ componentDatas , componentStyles }) => {
+    const appendStyle = useStyle(style , componentStyles);
     const items = useSelector(state => state.initial)
 
     const navigation = useNavigation();
@@ -31,9 +31,7 @@ const CategoryGrid = ({ componentDatas , passedNestedItems , componentStyles }) 
                     <Para color="grey" size={14}>مشاهده همه</Para>
                 </TouchableOpacity>
                 <View style={appendStyle.titleContainer}>
-                    <Para weight="bold" style={appendStyle.titleText}>
-                        انواع بیمه ها
-                    </Para>
+                    <Para weight="bold" style={appendStyle.titleText}>{componentDatas.headerMainText}</Para>
                     <View style={appendStyle.titleDivider} />
                 </View>
             </View>
@@ -48,11 +46,11 @@ const CategoryGrid = ({ componentDatas , passedNestedItems , componentStyles }) 
     )
 }
 
-const style = () => StyleSheet.create({
+const style = (_ , { mainContainerMarginTop , mainContainerMarginBottom }) => StyleSheet.create({
     container : {
         width : "100%",
-        marginTop : 10,
-        marginBottom : 10,
+        marginTop : Number(mainContainerMarginTop),
+        marginBottom : Number(mainContainerMarginBottom),
     },
     headerPanel : {
         flexDirection : "row",

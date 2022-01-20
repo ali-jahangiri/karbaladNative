@@ -9,6 +9,7 @@ import { useSelector } from '../../Store/Y-state';
 import { makeLeanComponentVariables } from "../../utils"
 import MobileModalAlert from '../../components/ModalNotification';
 import CategoryGrid from '../../components/CategoryGrid/CategoryGrid';
+import FAQ from '../../components/FAQ';
 
 
 const _dynamicElementComponent = ({...rest}) => ({
@@ -22,11 +23,7 @@ const _dynamicElementComponent = ({...rest}) => ({
     MobileSliderLabeled : <SliderLabeled {...rest} />,
     DirectInsurance : <DirectInsurance {...rest} />,
     MobileImageGallery : <ImageGallery {...rest} />,
-    // MobileBoxHeader : <BoxHeader {...rest} />,
-    // MobileFadeHeader : <FadeHeader {...rest} />,
-    // MobileFullWidthHeader : ,
-    // MobileNegativeHeader : ,
-    // MobileBadgeHeader : ,
+    MobileFAQ : <FAQ {...rest} />,
     MobileAlert : <MobileModalAlert {...rest} />
 })
 

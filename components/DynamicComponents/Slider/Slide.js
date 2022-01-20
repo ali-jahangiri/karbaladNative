@@ -30,7 +30,7 @@ const Slide = ({ Link , TEXT : title , value : image , passedStyle , backgroundC
             <View style={appendStyle.innerContainer}>
                 {
                     image ? <TouchableOpacity style={appendStyle.imageContainer} onPress={redirectionHandler}>
-                        <Image style={appendStyle.image} resizeMode="contain" source={{ uri : imageFinder(image) }} />
+                        <Image style={appendStyle.image} resizeMode={"contain"} source={{ uri : imageFinder(image) }} />
                     </TouchableOpacity> : null
                 }
                 {
@@ -64,26 +64,21 @@ const style = ({ primary }, {
                                 contentContainerYDirection , 
                                 linkTextFontSize ,
                                 imageSizeByPercentage,
-                                containerMarginTop , 
-                                containerMarginBottom,
                             }) =>  StyleSheet.create({
     container : {
         backgroundColor : backgroundColor || generateColor(primary , 5),
         flex : 1,
-        marginTop : Number(containerMarginTop),
-        marginBottom : Number(containerMarginBottom)
     },
     innerContainer : {
         flex : 1,
         alignItems : _contentContainerDirection[contentContainerXDirection],
         justifyContent : _contentContainerDirection[contentContainerYDirection],
-        width : "80%",
-        marginHorizontal : "10%",
+        width : "100%",
         padding : Number(contentContainerPadding)
     },
     title : {
         fontSize : Number(titleFontSize),
-        color : titleColor
+        color : titleColor,
     },
     subTitle : {
         fontSize : Number(subTitleFontSize),
@@ -92,8 +87,7 @@ const style = ({ primary }, {
     imageContainer : {
         width : "100%" ,
         height : `${imageSizeByPercentage}%`,
-        marginBottom : 10
-
+        marginVertical : 10,
     },
     image : {
         borderRadius : Number(imageBorderRadius),

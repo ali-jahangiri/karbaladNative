@@ -23,11 +23,9 @@ const InsIndexScreen = () => {
 
     return (
         <ScreenWrapper>
-        <HeaderProvider isNested={<HomeUserProfileBox />} title={<Image style={{ marginVertical : -15 }} source={{ uri : imageFinder(headerHomeIcon) , width : 50 , height : 50}} />} />
+        <HeaderProvider isNested={<HomeUserProfileBox />} title={<Image resizeMode='contain' style={{ marginVertical : -15 }} source={{ uri : imageFinder(headerHomeIcon) , width : 50 , height : 50}} />} />
                 <ScrollView>
-                    {/* <DirectionProvider> */}
-                        <ComponentGenerator />
-                    {/* </DirectionProvider> */}
+                    <ComponentGenerator />
                 </ScrollView>
         </ScreenWrapper>
     )
