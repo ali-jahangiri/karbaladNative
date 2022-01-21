@@ -12,9 +12,6 @@ import { setAppKey, setSeeWelcomeScreen, setSystemTime } from '../../Store/Slice
 import { setInsCat } from '../../Store/Slices/initialSlice';
 import api from '../../api';
 
-import * as SecureStore from 'expo-secure-store';
-
-
 
 import Login from '../../screens/Login';
 import InitialErrorPage from '../../screens/InitialErrorPage';

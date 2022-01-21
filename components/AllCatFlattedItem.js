@@ -1,14 +1,13 @@
 import React from 'react';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { useStyle } from '../Hooks/useStyle';
 import GridItem from './CategoryGrid/GridItem';
 import Para from './Para';
-import { Feather } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 
 
 const AllCatFlattedItem = ({ cat = [] , name , id , webIcon , passedStyle , setNestedStage }) => {
-    const appendStyle = useStyle(style , { haveNestedItem : cat.length });
+    const appendStyle = useStyle(style);
     const navigation = useNavigation();
 
 
@@ -20,43 +19,39 @@ const AllCatFlattedItem = ({ cat = [] , name , id , webIcon , passedStyle , setN
         }else navigation.push('stepScreen' , routeParameters);
     }
 
+
+    const nestedCategoryForMapping = (() => {
+        if(cat.length) return cat;
+        else return [{ webIcon , id , name , cat}]
+    })();
+
+    console.log(nestedCategoryForMapping);
+
     return (
-        <View style={{ ...appendStyle.container , ...(!cat.length ? appendStyle.flatContainer: {}) }}>
+        <View style={{ ...appendStyle.container }}>
             <View style={appendStyle.headerPanel}>
                 <Para size={16}>{name}</Para>
                 <View style={appendStyle.divider} /> 
             </View>
-            {
-                cat.length ? <View style={appendStyle.nestedItemContainer}>
-                    {
-                        cat.map((singleItem , i) => (
-                            <GridItem redirectHandler={redirectHandler} passedStyle={passedStyle} key={i} {...singleItem} />
-                        ))
-                    }
-                </View> : <TouchableOpacity onPress={() => redirectHandler({cat , name , id})} style={appendStyle.flatItemDirectContainer}>
-                    <Feather style={appendStyle.goToDetailsTriggerIcon} name="arrow-left" size={20} />
-                    <Para style={appendStyle.goToDetailsTriggerText}>مشاهده</Para>
-                </TouchableOpacity>
-            }
+            <View style={appendStyle.nestedItemContainer}>
+                {
+                    nestedCategoryForMapping.map((singleItem , i) => (
+                        <GridItem redirectHandler={redirectHandler} passedStyle={passedStyle} key={i} {...singleItem} />
+                    ))
+                }
+            </View>
         </View>
     )
 }
 
 
-const style = ({ primary } , { haveNestedItem }) => StyleSheet.create({
+const style = ({ primary }) => StyleSheet.create({
     container : {
         marginVertical : 10,
     },
-    flatContainer : {
-        flexDirection : "row-reverse",
-        alignItems : 'center',
-        justifyContent : "space-between",
-        width : "100%",
-        paddingRight : 10
-    },
     headerPanel : {
         flexDirection : "row",
-        width : haveNestedItem ? "100%" : "auto",
+        width : "100%",
         justifyContent : "flex-end",
         alignItems : 'center',
         marginBottom : 10,

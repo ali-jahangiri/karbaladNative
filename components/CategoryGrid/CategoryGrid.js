@@ -1,15 +1,18 @@
-import React from "react";
+import React, { useRef } from "react";
 import { ScrollView, StyleSheet , TouchableOpacity, View } from "react-native"
+import { Feather } from '@expo/vector-icons';
+import { useNavigation } from "@react-navigation/native";
+
 import useStyle from "../../Hooks/useStyle/useStyle"
 import useSelector from "../../Store/Y-state/useSelector";
 import Para from "../Para";
 import GridItem from "./GridItem";
-import { Feather } from '@expo/vector-icons';
-import { useNavigation } from "@react-navigation/native";
 
 const CategoryGrid = ({ componentDatas , componentStyles }) => {
     const appendStyle = useStyle(style , componentStyles);
-    const items = useSelector(state => state.initial)
+    const items = useSelector(state => state.initial);
+    const scrollViewContainerRef = useRef();
+
 
     const navigation = useNavigation();
 
@@ -35,7 +38,12 @@ const CategoryGrid = ({ componentDatas , componentStyles }) => {
                     <View style={appendStyle.titleDivider} />
                 </View>
             </View>
-            <ScrollView horizontal={true} contentContainerStyle={{ width : "130%" , flexDirection : "row" , flexWrap : "wrap" , alignItems : "flex-start"}}>
+            <ScrollView 
+                horizontal 
+                contentContainerStyle={appendStyle.scrollViewContainer}
+                ref={scrollViewContainerRef}
+                onContentSizeChange={() => scrollViewContainerRef.current.scrollToEnd({animated: true})}
+            >
                 {
                     items.map((item , i) => (
                         <GridItem passedStyle={componentStyles} redirectHandler={redirectHandler} {...item} key={i} />
@@ -75,6 +83,12 @@ const style = (_ , { mainContainerMarginTop , mainContainerMarginBottom }) => St
     },
     titleText : {
         fontSize : 17,
+    },
+    scrollViewContainer : {
+        width : "130%",
+        flexDirection : "row-reverse",
+        flexWrap : "wrap",
+        alignItems : "flex-start",
     }
 }) 
 

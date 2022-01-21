@@ -26,7 +26,12 @@ const FAQ = ({ componentStyles , componentDatas }) => {
             <ScrollView>
                 {
                     questionList.map((qus , i) => (
-                        <FAQItem passedStyle={componentStyles} question={qus} answerer={answererList[i]} />
+                        <FAQItem 
+                            key={i}
+                            passedStyle={componentStyles} 
+                            question={qus} 
+                            answerer={answererList[i]} 
+                        />
                     ))
                 }
             </ScrollView>
