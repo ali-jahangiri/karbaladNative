@@ -7,11 +7,32 @@ import { Home , Wallet , Profile ,InsuranceHistory } from "../screens"
 
 import TabBarItem from "./TabBarItem";
 import { useSelector } from '../Store/Y-state';
+import useData from '../Hooks/useData/useData';
 
 const Tab = createBottomTabNavigator();
 
+const DEFAULTS_SETUP = {
+    home : {
+        component : Home,
+        icon : "home" 
+    },
+    insurance : {
+        component : InsuranceHistory,
+        icon : "file"
+    },
+    wallet : {
+        component : Wallet,
+        icon : "credit-card"
+    },
+    profile : {
+        component : Profile,
+        icon : "user"
+    },
+}
+
 const TabNavigation = () => {
     const { primary } = useStyle();
+    const data = useData()
     const tabBarBgColor = useSelector(state => state.ui.tabBarBgColor);
 
     return (

@@ -82,9 +82,15 @@ const InitialLoading = ({ children }) => {
                                     .then(({ data }) => {
                                         const { mainData : { components } , manifest } = data;
                                         const { componentStyles : configStyle , componentDatas : configData } = components.find(el => el.name === "MobileConfig")
-                                        dataDispatcher({...makeLeanPallet(configData) , businessIcon : manifest.icons[0].src} , false);
+                                        // put the right menu content here
+
+                                        dataDispatcher({...makeLeanPallet(configData) , businessIcon : manifest.icons[0].src } , false);
                                         styleDispatcher(makeLeanPallet(configStyle)); 
+
+                                        // categories goes here
                                         storeDispatcher(() => setInsCat(data.categories.cat));
+
+
                                         storeDispatcher(() => setDynamicComponent(components.filter(el => el.name !== "MobileConfig")))
                                         setLoading(false)
                                     })
