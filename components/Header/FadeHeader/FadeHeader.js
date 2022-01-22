@@ -11,10 +11,8 @@ import { useNavigation } from '@react-navigation/native';
 
 import { generateColor }  from "../../../utils"
 
-const DEFAULT_ICON_PATH = "846086bc-4811-4837-afda-ba39f6e0c4d8.png{DATA}";
-
 const FadeHeader = ({ isNested , title = "" }) => {
-    const appendStyle = useStyle(style , isNested);
+    const appendStyle = useStyle(style);
     const { headerBgColor , headerTitleColor , primary , headerFontSize } = useStyle();
     
     const navigation = useNavigation();
@@ -34,13 +32,13 @@ const FadeHeader = ({ isNested , title = "" }) => {
 }
 
 
-const style = ({ headerHeight , headerBgColor , nestedHeaderHeight } , isNested) => StyleSheet.create({
+const style = ({ headerHeight , headerBgColor }) => StyleSheet.create({
     container : {
         paddingTop : StatusBar.currentHeight,
         minHeight : 100,
         alignItems : 'center',
         justifyContent : 'space-between',
-        height: (isNested ? Number(nestedHeaderHeight) : Number(headerHeight)) * 1.7,
+        height: Number(headerHeight) * 1.7,
         backgroundColor : headerBgColor
     },
     innerContainer : {

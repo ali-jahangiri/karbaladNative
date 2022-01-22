@@ -1,14 +1,11 @@
+import React from 'react';
 import { Feather } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import { useStyle } from '../Hooks/useStyle';
-import { generateColor } from '../utils';
 
 const HomeUserProfileBox = () => {
     const appendedStyle = useStyle(style);
-    const { primary } = useStyle()
-
     const navigation = useNavigation();
     const redirectToUserProfile = () => navigation.navigate('profile');
 

@@ -5,16 +5,19 @@ import useFetch from '../Providers/useFetch';
 
 import LoadingScreen from "../HOC/InitialLoading/LoadingScreen";
 import HeaderProvider from '../Providers/HeaderProvider/HeaderProvider';
+import ComponentGenerator from '../HOC/ComponentGenerator/ComponentGenerator';
 
 const GhostScreen = ({ guid , routeName }) => {
     
     const fetcher = useFetch();
     const [loading , setLoading] = useState(true);
+    const [componentList , setComponentList] = useState([])
 
     useEffect(() => {
         fetcher("getActivityData" , { Guid : guid })
             .then(({ data }) => {
-                console.log(data);
+                const componentList = data.pagesDetails[0].Components;
+                setComponentList(componentList);
                 setLoading(false);
             })
     } , []);
@@ -22,7 +25,7 @@ const GhostScreen = ({ guid , routeName }) => {
     return loading ? <LoadingScreen /> :  (
         <View>
             <HeaderProvider title={routeName} />
-            <Para>Rerum laboriosam dolores et. Sed sequi consequatur tenetur iure quia corporis fuga sed modi. Id aut minima voluptatem omnis dolorum a. Modi consequuntur nemo sint voluptatem inventore at rerum. Soluta voluptate ea quia repellendus.</Para>
+            <ComponentGenerator itemListForRender={componentList} />
         </View>
     )
 }

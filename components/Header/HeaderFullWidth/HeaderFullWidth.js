@@ -1,6 +1,7 @@
-import { useNavigation } from '@react-navigation/native';
 import React from 'react';
+import { useNavigation } from '@react-navigation/native';
 import { StatusBar, StyleSheet, View } from 'react-native';
+
 import { useStyle } from '../../../Hooks/useStyle';
 import { generateColor } from '../../../utils';
 import DirectionCta from '../../DirectionCta';
@@ -8,7 +9,7 @@ import Para from '../../Para';
 
 
 const HeaderFullWidth = ({ title , isNested })  => {
-    const appendStyle = useStyle(style , isNested);
+    const appendStyle = useStyle(style);
     const { headerTitleColor , primary , headerFontSize } = useStyle();
 
     const navigation = useNavigation();
@@ -28,13 +29,13 @@ const HeaderFullWidth = ({ title , isNested })  => {
 }
 
 
-const style = ({ headerBgColor , headerHeight , nestedHeaderHeight } , isNested ) => StyleSheet.create({
+const style = ({ headerBgColor , headerHeight }) => StyleSheet.create({
     container : {
         flexDirection : 'row',
         alignItems : 'center',
         justifyContent : 'space-between',
         backgroundColor : headerBgColor,
-        paddingTop : StatusBar.currentHeight + ((isNested ? Number(nestedHeaderHeight) : Number(headerHeight)) / 2),
+        paddingTop : StatusBar.currentHeight + Number(headerHeight) / 2,
         paddingBottom : Number(headerHeight),
         marginBottom : 10,
         

@@ -61,6 +61,7 @@ const TabNavigation = () => {
                                     options={{ tabBarButton : props => <TabBarItem title={booleanExtractor(showTitle) && (haveStaticDefinition ? haveStaticDefinition.title : menuItem.Name)} {...props} /> , tabBarIcon : () => <Image resizeMode='contain' source={{ uri : imageFinder(menuItem.IconName) , width : iconSize , height : iconSize }} /> }} />
                     })())
                 }
+                
         </Tab.Navigator>
     )
 }

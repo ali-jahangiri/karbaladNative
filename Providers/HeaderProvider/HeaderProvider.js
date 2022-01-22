@@ -17,13 +17,13 @@ const _headerClone = ({ ...rest }) => ({
 const HeaderProvider = ({ title , isNested }) => {
     const { indexHeader , headerHeight , headerBgColor } = useStyle();
 
-
+    
     const headerInjectedStyle = {
         headerBgColor,
         headerHeight,
     }
 
-    return _headerClone({ title , isNested : false , componentStyles : headerInjectedStyle , componentData : { title } })[indexHeader]
+    return _headerClone({ title , isNested , componentStyles : headerInjectedStyle , componentData : { title } })[indexHeader]
 }
 
 

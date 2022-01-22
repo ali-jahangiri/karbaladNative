@@ -1,21 +1,19 @@
 import React from 'react';
 import { Dimensions, Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useStyle } from '../../Hooks/useStyle';
+import { borderConstructor, imageFinder } from '../../utils';
 import Para from '../Para';
 
 
-const Item = ({ name , icon , link , redirectHandler , availableCountOfItem }) => {
-    const appendedStyle = useStyle(style , availableCountOfItem);
+const Item = ({ Link , TEXT , value , redirectHandler , availableCountOfItem , passedStyle }) => {
+    const appendedStyle = useStyle(style , {availableCountOfItem , ...passedStyle });
     
     return (
-        <TouchableOpacity activeOpacity={.9} onPress={() => redirectHandler(link)} style={appendedStyle.container}>
+        <TouchableOpacity activeOpacity={.9} onPress={() => redirectHandler(Link)} style={appendedStyle.container}>
             <View style={appendedStyle.imgContainer}>
-                <Image resizeMode='contain' style={appendedStyle.img} source={{ uri : 
-                        // imageFinder(webIcon)
-                        icon
-                    }} />
+                <Image resizeMode='contain' style={appendedStyle.img} source={{ uri : imageFinder(value)}} />
             </View>
-            <Para align='center' style={appendedStyle.titleText}>{name}</Para>
+            <Para align='center' style={appendedStyle.titleText}>{TEXT}</Para>
         </TouchableOpacity>
     )
 }
@@ -23,7 +21,7 @@ const Item = ({ name , icon , link , redirectHandler , availableCountOfItem }) =
 const screenWidth =  Dimensions.get("screen").width;
 
 
-const style = (_ , availableCountOfItem) => StyleSheet.create({
+const style = (_ , { availableCountOfItem , itemTextColor , itemFontSize , itemBgColor , itemImageContainerSize , itemImageBoxBorder , }) => StyleSheet.create({
     container : {
         width : screenWidth / availableCountOfItem, 
         marginVertical : 10,
@@ -39,15 +37,14 @@ const style = (_ , availableCountOfItem) => StyleSheet.create({
         height : 50
     },
     imgContainer : {
-        // backgroundColor : itemBgColor,
-        // padding : Number(itemImageContainerSize),
-        // ...borderConstructor(itemImageBoxBorder),
+        backgroundColor : itemBgColor,
+        padding : Number(itemImageContainerSize),
+        ...borderConstructor(itemImageBoxBorder),
     },
     titleText : {
-        // color : itemFontColor,
-        color : "red",
+        color : itemTextColor,
         marginTop : 5,
-        fontSize : 13
+        fontSize : Number(itemFontSize)
     },
 })
 

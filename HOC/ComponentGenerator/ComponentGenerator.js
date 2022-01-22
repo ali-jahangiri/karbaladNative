@@ -1,7 +1,6 @@
 import React from 'react';
 import CategoryRow from '../../components/CategoryRow/CategoryRow';
 import { DynamicImage, DynamicText , DynamicSlider , CircleSlider, SliderLabeled, DirectInsurance } from '../../components/DynamicComponents';
-import { BadgeHeader , NegativeHeader , ShallowHeader, FadeHeader , HeaderFullWidth , BoxHeader } from "../../components/Header"
 import ImageGallery from '../../components/DynamicComponents/ImageGallery/ImageGallery';
 import InsuranceDirectory from '../../components/InsuranceDirectory';
 import { useSelector } from '../../Store/Y-state';
@@ -10,6 +9,7 @@ import { makeLeanComponentVariables } from "../../utils"
 import MobileModalAlert from '../../components/ModalNotification';
 import CategoryGrid from '../../components/CategoryGrid/CategoryGrid';
 import FAQ from '../../components/FAQ';
+import ScrollableGridLayout from '../../components/ScrollableGridLayout/ScrollableGridLayout';
 
 
 const _dynamicElementComponent = ({...rest}) => ({
@@ -24,12 +24,16 @@ const _dynamicElementComponent = ({...rest}) => ({
     DirectInsurance : <DirectInsurance {...rest} />,
     MobileImageGallery : <ImageGallery {...rest} />,
     MobileFAQ : <FAQ {...rest} />,
-    MobileAlert : <MobileModalAlert {...rest} />
+    MobileAlert : <MobileModalAlert {...rest} />,
+    ScrollableGridLayout : <ScrollableGridLayout {...rest} />
 })
 
-const ComponentGenerator = () => {
+const ComponentGenerator = ({ itemListForRender }) => {
     const dynamicComponentList = useSelector(state => state.dynamicComponent) || [];
-    return dynamicComponentList.map((el , i) => _dynamicElementComponent({ componentDatas : makeLeanComponentVariables(el.ComponentDatas) , componentStyles : makeLeanComponentVariables(el.ComponentStyles) , key : i })?.[el.Name])
+    
+    const componentListForRender = itemListForRender || dynamicComponentList;
+
+    return componentListForRender.map((el , i) => _dynamicElementComponent({ componentDatas : makeLeanComponentVariables(el.ComponentDatas) , componentStyles : makeLeanComponentVariables(el.ComponentStyles) , key : i })?.[el.Name])
 }
 
 

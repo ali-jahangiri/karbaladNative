@@ -25,8 +25,6 @@ const AllCatFlattedItem = ({ cat = [] , name , id , webIcon , passedStyle , setN
         else return [{ webIcon , id , name , cat}]
     })();
 
-    console.log(nestedCategoryForMapping);
-
     return (
         <View style={{ ...appendStyle.container }}>
             <View style={appendStyle.headerPanel}>

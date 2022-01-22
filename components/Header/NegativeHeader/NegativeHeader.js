@@ -8,7 +8,7 @@ import Para from '../../Para';
 
 
 const NegativeHeader = ({ title , isNested }) => {
-    const appendStyle = useStyle(style , isNested);
+    const appendStyle = useStyle(style);
     const { headerTitleColor , primary , headerFontSize } = useStyle();
 
     const navigation = useNavigation();
@@ -24,9 +24,9 @@ const NegativeHeader = ({ title , isNested }) => {
 }
 
 
-const style = ({ headerHeight , headerBgColor , nestedHeaderHeight } , isNested) => StyleSheet.create({
+const style = ({ headerHeight , headerBgColor }) => StyleSheet.create({
     container : {
-        height : isNested ? Number(nestedHeaderHeight) * 5 : Number(headerHeight) * 5,
+        height : Number(headerHeight) * 5,
         backgroundColor : headerBgColor,
         paddingBottom : 15,
         alignItems :'center',

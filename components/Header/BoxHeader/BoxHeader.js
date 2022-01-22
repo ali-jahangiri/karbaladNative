@@ -44,14 +44,14 @@ const BoxHeader = ({ isNested , title }) => {
 }
 
 
-const style = ({ baseBorderRadius , headerBgColor , headerHeight , headerTitleColor , nestedHeaderHeight } , isNested) => StyleSheet.create({
+const style = ({ baseBorderRadius , headerBgColor , headerHeight , headerTitleColor } , isNested) => StyleSheet.create({
     container : {
         backgroundColor : headerBgColor,
         marginBottom : 15,
         borderRadius : baseBorderRadius,
         marginTop : StatusBar.currentHeight,
         width : "90%",
-        height : isNested ? Number(nestedHeaderHeight) : Number(headerHeight),
+        height : Number(headerHeight),
         marginHorizontal : "5%",
         paddingHorizontal : 20,
         flexDirection : "row",

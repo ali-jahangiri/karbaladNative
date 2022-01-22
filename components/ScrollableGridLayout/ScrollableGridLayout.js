@@ -6,74 +6,26 @@ import { useStyle } from '../../Hooks/useStyle';
 import Para from '../Para';
 import Item from './Item';
 
-const MOCK = [
-    {
-        name : "بیمه دانا"  ,
-        icon : "https://logosource.ir/wp-content/uploads/2016/02/Dana.jpg",
-        link : "https://logosource.ir/wp-content/uploads/2016/02/Dana.jpg",
-    },
-    {
-        name : "بیمه دانا"  ,
-        icon : "https://logosource.ir/wp-content/uploads/2016/02/Dana.jpg",
-        link : "https://logosource.ir/wp-content/uploads/2016/02/Dana.jpg",
-    },
-    {
-        name : "بیمه دانا"  ,
-        icon : "https://logosource.ir/wp-content/uploads/2016/02/Dana.jpg",
-        link : "https://logosource.ir/wp-content/uploads/2016/02/Dana.jpg",
-    },
-    {
-        name : "بیمه دانا"  ,
-        icon : "https://logosource.ir/wp-content/uploads/2016/02/Dana.jpg",
-        link : "https://logosource.ir/wp-content/uploads/2016/02/Dana.jpg",
-    },
-    {
-        name : "بیمه دانا"  ,
-        icon : "https://logosource.ir/wp-content/uploads/2016/02/Dana.jpg",
-        link : "https://logosource.ir/wp-content/uploads/2016/02/Dana.jpg",
-    },
-    {
-        name : "بیمه دانا"  ,
-        icon : "https://logosource.ir/wp-content/uploads/2016/02/Dana.jpg",
-        link : "https://logosource.ir/wp-content/uploads/2016/02/Dana.jpg",
-    },
-    {
-        name : "بیمه دانا"  ,
-        icon : "https://logosource.ir/wp-content/uploads/2016/02/Dana.jpg",
-        link : "https://logosource.ir/wp-content/uploads/2016/02/Dana.jpg",
-    },
-    {
-        name : "بیمه دانا"  ,
-        icon : "https://logosource.ir/wp-content/uploads/2016/02/Dana.jpg",
-        link : "https://logosource.ir/wp-content/uploads/2016/02/Dana.jpg",
-    },
-    {
-        name : "بیمه دانا"  ,
-        icon : "https://logosource.ir/wp-content/uploads/2016/02/Dana.jpg",
-        link : "https://logosource.ir/wp-content/uploads/2016/02/Dana.jpg",
-    },
-    {
-        name : "بیمه دانا"  ,
-        icon : "https://logosource.ir/wp-content/uploads/2016/02/Dana.jpg",
-        link : "https://logosource.ir/wp-content/uploads/2016/02/Dana.jpg",
-    },
-]
-
-const MOCK_ROW_NUMBER = 2;
-const MOCK_COLUMN_NUMBER = 4;
 
 const ScrollableGridLayout = ({ componentStyles , componentDatas }) => {
-    const appendedStyle = useStyle(style);
+    const itemsFormMapping = JSON.parse(componentDatas.items);
+
+    const appendedStyle = useStyle(style , { ...componentStyles , itemsFormMapping});
     const itemScrollViewContainer = useRef();
 
+    
     const itemRedirectHandler = webLink => {
         Linking.openURL(webLink);
     }
 
+
+    console.log(itemsFormMapping , 'loren');
+
+
     return (
         <View style={appendedStyle.container}>
             <View style={appendedStyle.headerPanel}>
-                <Para weight='bold' style={appendedStyle.titleText}>شرکت های بیمه</Para>
+                <Para weight='bold' style={appendedStyle.titleText}>{componentDatas.headerText}</Para>
                 <View style={appendedStyle.headerPanelDivider} />
             </View>
             <ScrollView
@@ -83,8 +35,14 @@ const ScrollableGridLayout = ({ componentStyles , componentDatas }) => {
                 onContentSizeChange={() => itemScrollViewContainer.current.scrollToEnd({animated: true})}
             >
                 {
-                    MOCK.map((item , index) => (
-                        <Item availableCountOfItem={MOCK_COLUMN_NUMBER} redirectHandler={itemRedirectHandler} key={index} {...item} /> 
+                    itemsFormMapping.map((item , index) => (
+                        <Item 
+                            passedStyle={componentStyles}
+                            availableCountOfItem={Number(componentStyles.itemCountInScreen)} 
+                            redirectHandler={itemRedirectHandler} 
+                            key={index} 
+                            {...item} 
+                        /> 
                     ))
                 }
             </ScrollView>
@@ -94,13 +52,13 @@ const ScrollableGridLayout = ({ componentStyles , componentDatas }) => {
 
 const screenWidth =  Dimensions.get("screen").width;
 
-const style = ({ primary }) => StyleSheet.create({
+const style = ({ primary } , { containerMarginBottom , containerMarginTop , headerFontSize , itemRowCount , itemCountInScreen , itemImageContainerSize , itemsFormMapping }) => StyleSheet.create({
     container : {
-        marginTop : 0,
-        marginBottom : 0,
+        marginTop : Number(containerMarginTop),
+        marginBottom : Number(containerMarginBottom),
     },
     titleText : {
-        fontSize: 17
+        fontSize: Number(headerFontSize)
     },
     headerPanel : {
         flexDirection : "row",
@@ -116,8 +74,8 @@ const style = ({ primary }) => StyleSheet.create({
         marginLeft : 10
     },
     scrollViewContainer : {
-        width : (MOCK.length * (screenWidth / MOCK_COLUMN_NUMBER)) / MOCK_ROW_NUMBER,
-        height : MOCK_ROW_NUMBER * 100,
+        width : (itemsFormMapping.length * (screenWidth / itemCountInScreen)) / itemRowCount,
+        height : (Number(itemRowCount) * 100) + (Number(itemRowCount) * Number(itemImageContainerSize)) ,
         flexDirection : "row-reverse",
         flexWrap : "wrap",
         alignItems : "flex-start",

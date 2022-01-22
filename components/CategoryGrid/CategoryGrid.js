@@ -26,7 +26,6 @@ const CategoryGrid = ({ componentDatas , componentStyles }) => {
         navigation.push("allFlattedCategory"  , { passedStyle : componentStyles })
     }
 
-
     return (
         <View style={appendStyle.container}>
             <View style={appendStyle.headerPanel}>

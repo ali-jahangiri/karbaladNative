@@ -30,7 +30,7 @@ const BadgeHeader = ({ title , isNested }) => {
 
 
 
-const style = ({ baseBorderRadius , headerBgColor , headerHeight , nestedHeaderHeight } , isNested) => StyleSheet.create({
+const style = ({ baseBorderRadius , headerBgColor , headerHeight}) => StyleSheet.create({
     container : {
         flexDirection : 'row',
         alignItems : "center",
@@ -41,7 +41,7 @@ const style = ({ baseBorderRadius , headerBgColor , headerHeight , nestedHeaderH
         marginBottom : 10
     },
     badge : {
-        height: isNested ? Number(nestedHeaderHeight) : Number(headerHeight),
+        height: Number(headerHeight),
         paddingHorizontal : 30,
         borderRadius : baseBorderRadius,
         backgroundColor : headerBgColor,
