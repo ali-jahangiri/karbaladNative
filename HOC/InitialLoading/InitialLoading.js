@@ -5,7 +5,7 @@ import { useStyleDispatcher } from "../../Hooks/useStyle"
 import encrypt from '../../utils/encrypt';
 import client from '../../client';
 import config from '../../config';
-import { makeLeanPallet, persister } from '../../utils';
+import { dataModelExtractor, makeLeanPallet, persister } from '../../utils';
 
 import { useDispatch, useSelector } from '../../Store/Y-state';
 import { setAppKey, setSeeWelcomeScreen, setSystemTime } from '../../Store/Slices/authSlice';
@@ -52,7 +52,7 @@ const InitialLoading = ({ children }) => {
         setSomethingWentWrong(false);
         setForceToReRender(prev => !prev)
     };
-    const continueHandler = () => storeDispatcher(() => setSeeWelcomeScreen(true))
+    const continueHandler = () => storeDispatcher(() => setSeeWelcomeScreen(true));
 
     useEffect(() => {
         api.post(`${config.serverPath}/baseApi/getServerTime`)
@@ -78,21 +78,60 @@ const InitialLoading = ({ children }) => {
                                     storeDispatcher(() => setSeeWelcomeScreen(true));
                                     storeDispatcher(() => setAppKey(data));
                                 }
-                                return api.post("baseData" , {} , { headers : { packageName : config.packageName , appToken } })
-                                    .then(({ data }) => {
-                                        const { mainData : { components } , manifest } = data;
-                                        const { componentStyles : configStyle , componentDatas : configData } = components.find(el => el.name === "MobileConfig")
-                                        // put the right menu content here
+                                return api.post("getMainData" , {} , { headers : { packageName : config.packageName , appToken } })
+                                    .then(({ data: basePackageData }) => {
+                                        const baseDatas = JSON.parse(basePackageData.data).pagesDetails[0];
 
-                                        dataDispatcher({...makeLeanPallet(configData) , businessIcon : manifest.icons[0].src } , false);
-                                        styleDispatcher(makeLeanPallet(configStyle)); 
+                                        const [header , body , bottomNavigator] = baseDatas.Components;
 
-                                        // categories goes here
-                                        storeDispatcher(() => setInsCat(data.categories.cat));
+                                        const headerExtractor = dataModelExtractor(header);
+                                        const bodyExtractor = dataModelExtractor(body);
+                                        const bottomNavigatorExtractor = dataModelExtractor(bottomNavigator);
+
+                                        const headerStyle = {
+                                            indexHeader : headerExtractor("type"),
+
+                                            headerFontSize :  headerExtractor("titleFontSize") ,
+                                            headerBgColor :  headerExtractor("bgColor") ,
+                                            headerHeight : headerExtractor("height") ,
+                                            headerTitleColor : headerExtractor("titleColor"),
+                                        }
 
 
-                                        storeDispatcher(() => setDynamicComponent(components.filter(el => el.name !== "MobileConfig")))
-                                        setLoading(false)
+                                        const bodyStyle = {
+                                            primary : bodyExtractor("primary"),
+                                            ctaTextColor : bodyExtractor("ctaTextColor"),
+                                            baseBorderRadius : +bodyExtractor("baseBorderRadius"),
+                                        }
+
+                                        const buttonNavigationStyle = {
+                                            showTitle : bottomNavigatorExtractor("showTitle"),
+                                            iconSize : +bottomNavigatorExtractor("iconSize"),
+                                            titleTextColor : bottomNavigatorExtractor("titleTextColor"),
+                                            titleFontSize : +bottomNavigatorExtractor("titleFontSize"),
+                                        }
+                                        
+                                        const configStyle = {
+                                            ...headerStyle,
+                                            ...bodyStyle,
+                                            ...buttonNavigationStyle,
+                                        }
+
+                                        return api.post("getInsuranceCategories" , {} , { headers : { packageName : config.packageName , appToken } })
+                                            .then(({ data : categories }) => {
+                                                dataDispatcher({ businessIcon : "" , termsAndConditions: "" , welcomePageContent : "" , menu : basePackageData?.menu || []});
+                                                styleDispatcher(configStyle);
+        
+                                                storeDispatcher(() => setInsCat(categories));
+
+                                                return api.post("getActivityData" , {
+                                                    Guid : "صفحه_اصلی_(موبایل)"
+                                                } , { headers : { packageName : config.packageName , appToken } })
+                                                    .then(({ data : homePageDetails }) => {
+                                                        storeDispatcher(() => setDynamicComponent(homePageDetails.pagesDetails[0].Components))
+                                                        setLoading(false)
+                                                    })
+                                            })
                                     })
                             }).catch(err => {
                                 throw new Error(err);

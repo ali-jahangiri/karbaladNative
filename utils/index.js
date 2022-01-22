@@ -15,6 +15,8 @@ import booleanExtractor from "./booleanExtractor";
 import shareAppHandler from "./shareAppHandler";
 import detectAvailableInsuranceInput from "./detectAvailableInsuranceInput";
 import detectIsInInsuranceDynamicFlow from "./detectIsInInsuranceDynamicFlow";
+import dataModelExtractor from "./dataModelExtractor";
+
 
 export {
     generateColor,
@@ -34,4 +36,5 @@ export {
     shareAppHandler,
     detectAvailableInsuranceInput,
     detectIsInInsuranceDynamicFlow,
+    dataModelExtractor
 }

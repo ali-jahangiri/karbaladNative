@@ -29,7 +29,7 @@ const _dynamicElementComponent = ({...rest}) => ({
 
 const ComponentGenerator = () => {
     const dynamicComponentList = useSelector(state => state.dynamicComponent) || [];
-    return dynamicComponentList.map((el , i) => _dynamicElementComponent({ componentDatas : makeLeanComponentVariables(el.componentDatas) , componentStyles : makeLeanComponentVariables(el.componentStyles) , key : i })?.[el.name])
+    return dynamicComponentList.map((el , i) => _dynamicElementComponent({ componentDatas : makeLeanComponentVariables(el.ComponentDatas) , componentStyles : makeLeanComponentVariables(el.ComponentStyles) , key : i })?.[el.Name])
 }
 
 

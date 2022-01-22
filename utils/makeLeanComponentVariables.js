@@ -1,6 +1,6 @@
 const makeLeanComponentsStyle = (componentStyles = []) => {
     const baseStyle = {};
-    componentStyles.map(el => baseStyle[el.name] = el.value)
+    componentStyles.map(el => baseStyle[el.Name] = el.Value)
     return baseStyle
 }
 

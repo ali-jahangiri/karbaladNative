@@ -15,7 +15,7 @@ const _headerClone = ({ ...rest }) => ({
 });
 
 const HeaderProvider = ({ title , isNested }) => {
-    const { indexHeader , nestedHeader , headerHeight , headerBgColor } = useStyle();
+    const { indexHeader , headerHeight , headerBgColor } = useStyle();
 
 
     const headerInjectedStyle = {
@@ -23,7 +23,7 @@ const HeaderProvider = ({ title , isNested }) => {
         headerHeight,
     }
 
-    return _headerClone({ title , isNested , componentStyles : headerInjectedStyle , componentData : { title } })[isNested ? nestedHeader : indexHeader]
+    return _headerClone({ title , isNested : false , componentStyles : headerInjectedStyle , componentData : { title } })[indexHeader]
 }
 
 

@@ -14,6 +14,7 @@ const FAQ = ({ componentStyles , componentDatas }) => {
 
     const questionList = Object.entries(componentDatas).filter(([key]) => key.includes("question")).map(el => el[1])
     const answererList = Object.entries(componentDatas).filter(([key]) => key.includes("answear")).map(el => el[1])
+
     
     const moreItemRedirectHandler = () => redirectHandler();
 

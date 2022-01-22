@@ -12,22 +12,17 @@ import { Image, ScrollView } from 'react-native';
 import useData from '../Hooks/useData/useData';
 import { imageFinder } from '../utils'
 import HomeUserProfileBox from '../components/HomeUserProfileBox';
-import ScrollableGridLayout from '../components/ScrollableGridLayout';
-
 
 
 const InsIndexScreen = () => {
     const { businessIcon } = useData();
     const headerHomeIcon = businessIcon.slice(businessIcon.indexOf("/" , 1) + 1);
     
-
-
     return (
         <ScreenWrapper>
         <HeaderProvider isNested={<HomeUserProfileBox />} title={<Image resizeMode='contain' style={{ marginVertical : -15 }} source={{ uri : imageFinder(headerHomeIcon) , width : 50 , height : 50}} />} />
                 <ScrollView>
                     <ComponentGenerator />
-                    <ScrollableGridLayout />
                 </ScrollView>
         </ScreenWrapper>
     )

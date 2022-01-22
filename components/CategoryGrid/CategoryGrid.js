@@ -26,6 +26,7 @@ const CategoryGrid = ({ componentDatas , componentStyles }) => {
         navigation.push("allFlattedCategory"  , { passedStyle : componentStyles })
     }
 
+
     return (
         <View style={appendStyle.container}>
             <View style={appendStyle.headerPanel}>
@@ -45,7 +46,7 @@ const CategoryGrid = ({ componentDatas , componentStyles }) => {
                 onContentSizeChange={() => scrollViewContainerRef.current.scrollToEnd({animated: true})}
             >
                 {
-                    items.map((item , i) => (
+                    items.filter(el => el.thisFavorit).map((item , i) => (
                         <GridItem passedStyle={componentStyles} redirectHandler={redirectHandler} {...item} key={i} />
                     ))
                 }

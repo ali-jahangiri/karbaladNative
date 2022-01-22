@@ -57,36 +57,6 @@ const MOCK = [
         icon : "https://logosource.ir/wp-content/uploads/2016/02/Dana.jpg",
         link : "https://logosource.ir/wp-content/uploads/2016/02/Dana.jpg",
     },
-    {
-        name : "بیمه دانا"  ,
-        icon : "https://logosource.ir/wp-content/uploads/2016/02/Dana.jpg",
-        link : "https://logosource.ir/wp-content/uploads/2016/02/Dana.jpg",
-    },
-    {
-        name : "بیمه دانا"  ,
-        icon : "https://logosource.ir/wp-content/uploads/2016/02/Dana.jpg",
-        link : "https://logosource.ir/wp-content/uploads/2016/02/Dana.jpg",
-    },
-    {
-        name : "بیمه دانا"  ,
-        icon : "https://logosource.ir/wp-content/uploads/2016/02/Dana.jpg",
-        link : "https://logosource.ir/wp-content/uploads/2016/02/Dana.jpg",
-    },
-    {
-        name : "بیمه دانا"  ,
-        icon : "https://logosource.ir/wp-content/uploads/2016/02/Dana.jpg",
-        link : "https://logosource.ir/wp-content/uploads/2016/02/Dana.jpg",
-    },
-    {
-        name : "بیمه دانا"  ,
-        icon : "https://logosource.ir/wp-content/uploads/2016/02/Dana.jpg",
-        link : "https://logosource.ir/wp-content/uploads/2016/02/Dana.jpg",
-    },
-    {
-        name : "بیمه دانا"  ,
-        icon : "https://logosource.ir/wp-content/uploads/2016/02/Dana.jpg",
-        link : "https://logosource.ir/wp-content/uploads/2016/02/Dana.jpg",
-    },
 ]
 
 const MOCK_ROW_NUMBER = 2;
@@ -96,7 +66,6 @@ const ScrollableGridLayout = ({ componentStyles , componentDatas }) => {
     const appendedStyle = useStyle(style);
     const itemScrollViewContainer = useRef();
 
-    
     const itemRedirectHandler = webLink => {
         Linking.openURL(webLink);
     }

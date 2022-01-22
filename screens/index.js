@@ -7,6 +7,7 @@ import Welcome from "./Welcome";
 import Reminder from "./Reminder";
 import Support from "./Support";
 import TermsAndConditions from "./TermsAndConditions";
+import GhostScreen from "./GhostScreen";
 
 export {
     Home,
@@ -18,4 +19,5 @@ export {
     Reminder,
     Support,
     TermsAndConditions,
+    GhostScreen,
 }
