@@ -12,7 +12,7 @@ const FAQ = ({ componentStyles , componentDatas }) => {
     const redirectHandler = useRedirection({ webLink : componentDatas.webLinkMoreOptionPath , selectedInternalPath : componentStyles.internalMoreOptionPath })
 
 
-    const questionList = Object.entries(componentDatas).filter(([key]) => key.includes("question")).map(el => el[1])
+    const questionList = Object.entries(componentDatas).filter(([key]) => key.includes("question")).map(el => el[1]).filter(el => el)
     const answererList = Object.entries(componentDatas).filter(([key]) => key.includes("answear")).map(el => el[1])
 
     

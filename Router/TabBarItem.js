@@ -8,17 +8,15 @@ import { generateColor } from '../utils';
 
 const TabBarItem = ({ onPress , children , title }) => {
     const isFocused  = useIsFocused();
-    const appendStyle = useStyle(style);
-
-
+    const appendStyle = useStyle(style , isFocused ? {} : null);
 
     return (
-        <TouchableOpacity style={{ ...appendStyle.container , ...(title && appendStyle.containerSpace) }} onPress={onPress}>
+        <TouchableOpacity style={appendStyle.container} onPress={onPress}>
             <View style={{ flex : 1 }}>
                 {children}
             </View>
             {
-                title ? <Para style={appendStyle.titleText}>{title}</Para> : null
+                title ? <Para style={{ ...appendStyle.titleText ,  ...(title && appendStyle.containerSpace)}}>{title}</Para> : null
             }
             {
                 !title && isFocused && <View style={appendStyle.circle}></View>
@@ -27,7 +25,7 @@ const TabBarItem = ({ onPress , children , title }) => {
     )
 }
 
-const style = ({ primary , baseBorderRadius , titleTextColor , titleFontSize }) => StyleSheet.create({
+const style = ({ primary , baseBorderRadius , titleTextColor , titleFontSize } , isFocused) => StyleSheet.create({
     container : {
         flex: 1,
         justifyContent : 'center',
@@ -45,7 +43,7 @@ const style = ({ primary , baseBorderRadius , titleTextColor , titleFontSize }) 
     },
     titleText : {
         fontSize : titleFontSize,
-        color : titleTextColor
+        color : isFocused ? primary : titleTextColor
     }
 })
 

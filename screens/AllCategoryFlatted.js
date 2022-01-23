@@ -23,6 +23,8 @@ const AllCategoryFlatted = ({ route : { params } }) => {
 
     const itemForMapping = nestedStage ? nestedStage.cat : items
     
+    console.log(itemForMapping , 'map[ing');
+
     return (
         <View style={appendStyle.container}>
             <View style={appendStyle.header}>

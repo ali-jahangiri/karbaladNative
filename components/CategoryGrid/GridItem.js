@@ -16,7 +16,7 @@ const GridItem = ({
     const appendStyle = useStyle(style , passedStyle);
     
     return (
-        <TouchableOpacity activeOpacity={.9} onPress={() => redirectHandler({cat , name , id})} style={appendStyle.container}>
+        <TouchableOpacity activeOpacity={.9} onPress={() => redirectHandler({cat: cat || [] , name , id})} style={appendStyle.container}>
             <View style={appendStyle.imgContainer}>
                 <Image resizeMode='contain' style={appendStyle.img} source={{ uri : imageFinder(webIcon) }} />
             </View>

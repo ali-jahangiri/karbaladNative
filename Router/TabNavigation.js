@@ -39,7 +39,8 @@ const DEFAULTS_SETUP = [
 
 const TabNavigation = () => {
     const { showTitle , iconSize } = useStyle();
-    const { menu } = useData();
+    const { menu , homeIcon } = useData();
+    
     const tabBarBgColor = useSelector(state => state.ui.tabBarBgColor);
 
     return (
@@ -47,7 +48,7 @@ const TabNavigation = () => {
             <Tab.Screen 
                 name="home" 
                 component={Home}
-                options={{ tabBarButton : props => <TabBarItem title={booleanExtractor(showTitle) ? "خانه" : ""} {...props} /> , tabBarIcon : ({ color , size }) =>  <Feather name="home" color={color} size={size} /> }} />
+                options={{ tabBarButton : props => <TabBarItem title={booleanExtractor(showTitle) ? "خانه" : ""} {...props} /> , tabBarIcon : ({ color , size }) =>  !homeIcon ? <Feather name="home" color={color} size={size} /> : <Image resizeMode='contain' source={{ uri : imageFinder(homeIcon) , width : iconSize , height : iconSize }} />}} />
                 {
                 
                     menu.map((menuItem , index) => (() => {

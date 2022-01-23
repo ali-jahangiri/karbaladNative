@@ -18,7 +18,9 @@ const CategoryGrid = ({ componentDatas , componentStyles }) => {
 
 
     const redirectHandler = routeParameters => {
-        navigation.push('stepScreen' , routeParameters);
+        if(!routeParameters.cat.length) {
+            navigation.push('stepScreen' , routeParameters);
+        }else redirectToAllListHandler();
     }
 
 

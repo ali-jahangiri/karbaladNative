@@ -16,15 +16,14 @@ import HomeUserProfileBox from '../components/HomeUserProfileBox';
 
 
 const InsIndexScreen = () => {
-    // const { businessIcon } = useData();
-    // const headerHomeIcon = businessIcon.slice(businessIcon.indexOf("/" , 1) + 1);
-    
+    const { brandIcon } = useData();
+
     return (
         <ScreenWrapper>
         <HeaderProvider 
             isNested={<HomeUserProfileBox />} 
-            title={<Image resizeMode='contain' style={{ marginVertical : -15 }} source={{ uri : imageFinder("") , width : 50 , height : 50}} />}
-             />
+            title={<Image resizeMode='contain' style={{ marginVertical : -15 }} source={{ uri : imageFinder(brandIcon) , width : 50 , height : 50}} />}
+        />
                 <ScrollView>
                     <ComponentGenerator />
                 </ScrollView>

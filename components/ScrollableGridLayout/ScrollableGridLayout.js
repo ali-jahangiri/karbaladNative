@@ -15,11 +15,10 @@ const ScrollableGridLayout = ({ componentStyles , componentDatas }) => {
 
     
     const itemRedirectHandler = webLink => {
-        Linking.openURL(webLink);
+        if(webLink) {
+            Linking.openURL(webLink);
+        }
     }
-
-
-    console.log(itemsFormMapping , 'loren');
 
 
     return (

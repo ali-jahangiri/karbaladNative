@@ -57,6 +57,7 @@ const InitialLoading = ({ children }) => {
     useEffect(() => {
         api.post(`${config.serverPath}/baseApi/getServerTime`)
                 .then(({ data }) => {
+                    
                     let serverTime = +data.split(" ")[1].split(':')[1];
                     const deviceTime = new Date().getMinutes();
                     storeDispatcher(() => setSystemTime(deviceTime - serverTime));
@@ -67,6 +68,7 @@ const InitialLoading = ({ children }) => {
                             PackageName : config.packageName
                         }, serverTime),
                     }).then(({ data : appToken }) => {
+                        
                         if(data === client.static.ACCESS_DENIED) throw new Error("دسترسی بسته شده");
                         setSomethingWentWrong(null);
                         return appToken
@@ -80,6 +82,7 @@ const InitialLoading = ({ children }) => {
                                 }
                                 return api.post("getMainData" , {} , { headers : { packageName : config.packageName , appToken } })
                                     .then(({ data: basePackageData }) => {
+                                        console.log(basePackageData);
                                         const baseDatas = JSON.parse(basePackageData.data).pagesDetails[0];
 
                                         const [header , body , bottomNavigator] = baseDatas.Components;
@@ -119,7 +122,13 @@ const InitialLoading = ({ children }) => {
 
                                         return api.post("getInsuranceCategories" , {} , { headers : { packageName : config.packageName , appToken } })
                                             .then(({ data : categories }) => {
-                                                dataDispatcher({ businessIcon : "" , termsAndConditions: "" , welcomePageContent : "" , menu : basePackageData?.menu || []});
+                                                dataDispatcher({ 
+                                                    businessIcon : "" , 
+                                                    termsAndConditions: "" , 
+                                                    welcomePageContent : "" , 
+                                                    menu : basePackageData?.menu || [] , 
+                                                    homeIcon : bottomNavigator.ComponentDatas.find(el => el.Name === "homeIcon")?.Value , 
+                                                    brandIcon : header.ComponentDatas.find(el => el.Name === "brandIcon").Value });
                                                 styleDispatcher(configStyle);
         
                                                 storeDispatcher(() => setInsCat(categories));

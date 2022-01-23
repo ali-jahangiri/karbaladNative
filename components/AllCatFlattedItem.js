@@ -13,7 +13,7 @@ const AllCatFlattedItem = ({ cat = [] , name , id , webIcon , passedStyle , setN
 
 
     const redirectHandler = routeParameters => {
-        if(routeParameters.cat.length) {
+        if(routeParameters?.cat?.length) {
             // third nested stage
             setNestedStage(routeParameters)
         }else navigation.push('stepScreen' , routeParameters);
@@ -21,8 +21,8 @@ const AllCatFlattedItem = ({ cat = [] , name , id , webIcon , passedStyle , setN
 
 
     const nestedCategoryForMapping = (() => {
-        if(cat.length) return cat;
-        else return [{ webIcon , id , name , cat}]
+        if(cat?.length) return cat;
+        else return [{ webIcon , id , name , cat : cat || []}]
     })();
 
     return (
