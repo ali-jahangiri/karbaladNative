@@ -1,5 +1,5 @@
 const client = {
-    version : "1.5.0",
+    version : "1.6.0",
     style : {
         colors : {
             insStageBackStepBgColor :  "#EEEEEE",
@@ -33,7 +33,7 @@ const client = {
             REGISTER_KEY : "register",
             FORGOT_key : "forgot",
             LOGIN_SCREEN_DESK : "",
-            LOGIN_APP_NAME : "کاربلد",
+            LOGIN_APP_NAME : "بیمیتک",
             AUTH_ERRORS : {
                 EMPTY_PASSWORD : "رمز عبور خود را وارد کنید",
                 DIFFERENCE_PASSWORD : "رمز عبور و تکرار آن مطابقت ندارد . مجددا برسی نمایید",

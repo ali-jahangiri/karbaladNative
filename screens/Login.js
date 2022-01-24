@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { Keyboard, StyleSheet , View } from 'react-native';
 
-import Input from '../components/Input';
-
 import client from '../client';
 import useFetch from '../Providers/useFetch';
 
@@ -11,7 +9,7 @@ import { persister } from '../utils';
 import { useDispatch } from '../Store/Y-state';
 import { setAppKey, setSeeWelcomeScreen } from '../Store/Slices/authSlice';
 
-import { VerifyInput , PhoneInput , AuthLanding, AuthModePlayground, PasswordInput } from '../components/Login';
+import { VerifyInput , PhoneInput , AuthLanding, AuthModePlayground } from '../components/Login';
 import VerifyTextHelper from '../components/Login/VerifyTextHelpler';
 
 

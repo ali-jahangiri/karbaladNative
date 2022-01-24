@@ -1,8 +1,8 @@
 const config = {
-    packageName : "bimitek.ir",
-    serverPath: "https://bimitek.ir/",
-    adminUserName : "sIILmwaNW",
-    adminPassword : "k9tD69bjkH",
+    packageName : "rahatbime.com",
+    serverPath: "https://rahatbime.com/",
+    adminUserName : "LMKGvkA67X",
+    adminPassword : "nwGsa34Qdm",
 }
 
 export default config;

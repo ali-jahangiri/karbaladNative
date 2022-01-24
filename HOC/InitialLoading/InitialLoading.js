@@ -5,7 +5,7 @@ import { useStyleDispatcher } from "../../Hooks/useStyle"
 import encrypt from '../../utils/encrypt';
 import client from '../../client';
 import config from '../../config';
-import { dataModelExtractor, makeLeanPallet, persister } from '../../utils';
+import { dataModelExtractor, persister } from '../../utils';
 
 import { useDispatch, useSelector } from '../../Store/Y-state';
 import { setAppKey, setSeeWelcomeScreen, setSystemTime } from '../../Store/Slices/authSlice';
@@ -82,7 +82,6 @@ const InitialLoading = ({ children }) => {
                                 }
                                 return api.post("getMainData" , {} , { headers : { packageName : config.packageName , appToken } })
                                     .then(({ data: basePackageData }) => {
-                                        console.log(basePackageData);
                                         const baseDatas = JSON.parse(basePackageData.data).pagesDetails[0];
 
                                         const [header , body , bottomNavigator] = baseDatas.Components;
@@ -124,8 +123,8 @@ const InitialLoading = ({ children }) => {
                                             .then(({ data : categories }) => {
                                                 dataDispatcher({ 
                                                     businessIcon : "" , 
-                                                    termsAndConditions: "" , 
-                                                    welcomePageContent : "" , 
+                                                    termsAndConditions: body.ComponentDatas.find(el => el.Name === "termsAndConditions")?.Value, 
+                                                    welcomePageContent : body.ComponentDatas.find(el => el.Name === "welcomePageContent")?.Value,
                                                     menu : basePackageData?.menu || [] , 
                                                     homeIcon : bottomNavigator.ComponentDatas.find(el => el.Name === "homeIcon")?.Value , 
                                                     brandIcon : header.ComponentDatas.find(el => el.Name === "brandIcon").Value });

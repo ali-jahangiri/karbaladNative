@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useStyle } from '../../Hooks/useStyle';
 import Para from '../Para';
 import UserIconBox from '../UserIconBox';
@@ -19,7 +19,7 @@ const AuthLanding = ({ setAuthMode  }) => {
     return (
         <>
             <View style={{ alignItems : "center" }}>
-                <UserIconBox />
+                <Image style={{ width : 100 , height : 100 }} source={require("../../assets/icon.png")} />
                 <Para size={20} >{LOGIN_APP_NAME}</Para>
             </View>
             <View style={appendStyle.descContainer}>

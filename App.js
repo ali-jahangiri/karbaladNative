@@ -20,9 +20,14 @@ import myStore from './Store/myStore';
 import config from './config';
 import OfflineProvider from './Providers/OfflineProvider/OfflineProvider';
 import DataProvider from './HOC/DataProvider/DataProvider';
+const ReactNative = require('react-native');
 
 
 dayjs.extend(jalaliday);
+
+try {
+  ReactNative.I18nManager.allowRTL(false);
+} catch (e) {}
 
 export default function App() {
   return (

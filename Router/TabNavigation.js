@@ -13,7 +13,7 @@ import { booleanExtractor, imageFinder } from '../utils';
 
 const Tab = createBottomTabNavigator();
 
-const DEFAULTS_SETUP = [
+export const DEFAULTS_SETUP = [
     {
         component : InsuranceHistory,
         icon : "file",
@@ -62,7 +62,6 @@ const TabNavigation = () => {
                                     options={{ tabBarButton : props => <TabBarItem title={booleanExtractor(showTitle) && (haveStaticDefinition ? haveStaticDefinition.title : menuItem.Name)} {...props} /> , tabBarIcon : () => <Image resizeMode='contain' source={{ uri : imageFinder(menuItem.IconName) , width : iconSize , height : iconSize }} /> }} />
                     })())
                 }
-                
         </Tab.Navigator>
     )
 }

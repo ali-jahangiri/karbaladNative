@@ -11,13 +11,25 @@ import MoreDetailsPay from '../screens/MoreDetailsPay';
 import Playground from '../screens/Playground';
 import InsuranceStepper from '../screens/InsuranceStepper';
 import AllCategoryFlatted from '../screens/AllCategoryFlatted';
+import useData from '../Hooks/useData/useData';
+import { DEFAULTS_SETUP } from './TabNavigation';
 
 const Stack = createStackNavigator();
 
-const HomeInsRouter = ({ indexScreen , nestedScreen }) => (
-    <React.Fragment>
+const HomeInsRouter = ({ indexScreen , nestedScreen }) => {
+    const { menu } = useData()
+
+    console.log(DEFAULTS_SETUP.filter(defaultMenuItem => !menu.find(el => el.Link === defaultMenuItem.staticName)));
+
+    return (
+        <React.Fragment>
             <Stack.Navigator screenOptions={{ headerShown : false }}>
                 <Stack.Screen name="home" component={indexScreen} />
+                {
+                    DEFAULTS_SETUP.filter(defaultMenuItem => !menu.find(el => el.Link === defaultMenuItem.staticName)).map((screen , index) => (
+                        <Stack.Screen key={index} component={screen.component} name={screen.routeName} />
+                    ))
+                }
                 <Stack.Screen name="allFlattedCategory" component={AllCategoryFlatted} />
                 <Stack.Screen name="insStepper" component={InsuranceStepper} />
                 <Stack.Screen name="stepScreen" component={nestedScreen} />
@@ -31,6 +43,7 @@ const HomeInsRouter = ({ indexScreen , nestedScreen }) => (
                 <Stack.Screen name="playground" component={Playground} />
             </Stack.Navigator>
     </React.Fragment>
-)
+    )
+}
 
 export default HomeInsRouter;

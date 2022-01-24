@@ -16,6 +16,8 @@ const CategoryGrid = ({ componentDatas , componentStyles }) => {
 
     const navigation = useNavigation();
 
+    console.log(items , "lorem");
+
 
     const redirectHandler = routeParameters => {
         if(!routeParameters.cat.length) {
