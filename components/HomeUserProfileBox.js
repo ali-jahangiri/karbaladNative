@@ -25,7 +25,7 @@ const style = ({ baseBorderRadius }) => StyleSheet.create({
         width: 50,
         alignItems : 'center',
         justifyContent : 'center',
-        marginVertical : -25,
+        // marginVertical : -25,
         borderRadius : Number(baseBorderRadius)
     }
 })

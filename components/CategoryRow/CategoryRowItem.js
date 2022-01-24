@@ -8,7 +8,7 @@ import Para from '../Para';
 const CategoryRowItem = ({ name , onItemPress , cat , id , webIcon , passedStyle }) => {
     const appendStyle = useStyle(style , !!webIcon , passedStyle);
     return (
-        <TouchableOpacity onPress={() => onItemPress({cat , name , id})} style={appendStyle.container}>
+        <TouchableOpacity onPress={() => onItemPress({cat : cat || [] , name , id})} style={appendStyle.container}>
             {
                 !!webIcon && <View style={appendStyle.imageContainer}>
                     <Image source={{ uri : imageFinder(webIcon) , width : 50 , height : 50}} />

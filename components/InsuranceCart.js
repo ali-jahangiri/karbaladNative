@@ -11,7 +11,7 @@ const InsuranceCart = ({ name , onItemPress , cat , id , webIcon , passedStyle }
     const appendStyle = useStyle(style , passedStyle);
 
     return (
-        <TouchableWithoutFeedback style={{ flex : 1 }} onPress={() => onItemPress({cat , name , id})}>
+        <TouchableWithoutFeedback style={{ flex : 1 }} onPress={() => onItemPress({cat : cat || [] , name , id})}>
             <View style={appendStyle.container}>
                 <Para weight={passedStyle.fontWeight} style={appendStyle.label} size={18}>{name}</Para>
                 <View style={appendStyle.bottomContainer}>

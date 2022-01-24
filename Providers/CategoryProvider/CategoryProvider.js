@@ -11,7 +11,8 @@ const _categoryClone = ({ ...rest }) => ({
 
 const CategoryProvider = ({ passedNestedItems }) => {
     const filterBase = useSelector(state => state.dynamicComponent);
-    const { name : selectedCategoryModeName , componentStyles : selectedCategoryStyle } = filterBase.find(el => el.name === "MobileInsuranceCategoryBox" || el.name === "MobileInsuranceCategoryRow")
+    console.log(passedNestedItems , 'lorem' , filterBase , "filterBase");
+    const { Name : selectedCategoryModeName , ComponentStyles : selectedCategoryStyle } = filterBase.find(el => el.Name === "MobileInsuranceCategoryBox" || el.Name === "MobileInsuranceCategoryRow")
     return _categoryClone({ passedNestedItems , componentStyles : makeLeanComponentVariables(selectedCategoryStyle) })[selectedCategoryModeName]
 }
 

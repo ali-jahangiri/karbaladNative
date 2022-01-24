@@ -11,7 +11,6 @@ import { Feather } from '@expo/vector-icons';
 const ImageGalleryItem = ({ value , Link , selectedInternalPath , passedStyle , desc }) => {
     const appendedStyle = useStyle(itemStyle , passedStyle);
     const redirectionHandler = useRedirection({ webLink : Link , selectedInternalPath})
-    
     return (
         <TouchableOpacity activeOpacity={!Link ? 1 : .9} style={appendedStyle.container} onPress={redirectionHandler}>
             <Image style={appendedStyle.image} resizeMode="contain" source={{ uri: imageFinder(value), }} />

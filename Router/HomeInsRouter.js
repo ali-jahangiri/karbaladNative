@@ -19,8 +19,6 @@ const Stack = createStackNavigator();
 const HomeInsRouter = ({ indexScreen , nestedScreen }) => {
     const { menu } = useData()
 
-    console.log(DEFAULTS_SETUP.filter(defaultMenuItem => !menu.find(el => el.Link === defaultMenuItem.staticName)));
-
     return (
         <React.Fragment>
             <Stack.Navigator screenOptions={{ headerShown : false }}>

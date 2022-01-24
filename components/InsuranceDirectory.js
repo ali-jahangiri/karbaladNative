@@ -14,7 +14,11 @@ const InsuranceDirectory = ({ passedNestedItems , componentStyles }) => {
     useScrollToTop(container);
 
     const handler = routeParameters => {
-        navigation.push('stepScreen' , routeParameters);
+        if(routeParameters.cat.length) {
+            navigation.push('stepScreen' , routeParameters);
+        }else {
+            navigation.push('stepScreen' , routeParameters);
+        }
     }
 
     const itemList = passedNestedItems || items
