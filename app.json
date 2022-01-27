@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "بیمیتک",
-    "slug": "Bimitek",
+    "name": "راحت بیمه",
+    "slug": "RahatBimeh",
     "version": "1.6.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -26,7 +26,7 @@
       "package": "com.karbalad.karbalad",
       "versionCode": 1,
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/icon.png",
         "backgroundColor": "#FFFFFF"
       }
     },

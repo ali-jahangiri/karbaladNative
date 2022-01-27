@@ -10,9 +10,8 @@ import client from "../../client";
 const useFetch = () => {
   const { api } = useContext(FetchContext);
   
-  const ticket = useSelector(state => state.auth.appKey)
-
-  
+  const ticket = useSelector(state => state.auth.appKey) || ""
+    
   return (path = "" , config) => {
     return new Promise((resolve , _) => {
         api.post(`${appConfig.serverPath}/baseApi/getServerTime`)

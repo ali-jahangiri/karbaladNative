@@ -26,7 +26,7 @@ const client = {
         ERROR_BOUNDARY_MAIN_MESSAGE : "مشکلی در پردازش رخ داده است ، مجددا تلاش نمایید",
         REFRESH_ALERT_TEXT : "بروزرسانی اطلاعات",
         OPTIONAL_STEP_TEXT : "مرحله اختیاری",
-        SHARE_WITH_FRIEND : "دانلود نرم افزار راحت بیمه از ",
+        SHARE_WITH_FRIEND : "دانلود نرم افزار بیمیتک از ",
         TERMS_AND_CONDITION_HEADER : "قوانین و مقررات",
         LOGIN : {
             LOGIN_KEY : "login",
