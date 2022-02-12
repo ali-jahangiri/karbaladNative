@@ -3,11 +3,10 @@ import { StyleSheet , ScrollView , View , Image , TouchableOpacity} from 'react-
 import { Feather } from '@expo/vector-icons';
 
 import Para from './Para';
-import StepperLabel from './StepperLabel';
-
 import { generateColor, imageFinder } from '../utils';
 import { useStyle } from '../Hooks/useStyle';
 import CarSelectionHeaderLabel from './CarSelectionHeaderLabel';
+
 
 
 const CarCategory = ({ list , value : { CarCategoryId , searchFilterBase}, setValue}) => {

@@ -31,7 +31,7 @@ export const DEFAULTS_SETUP = [
     {
         component : Profile,
         icon : "user",
-        staticName : "",
+        staticName : "پروفایل",
         routeName : "profile",
         title : "پروفایل"
     },
@@ -52,7 +52,7 @@ const TabNavigation = () => {
                 {
                 
                     menu.map((menuItem , index) => (() => {
-                        const haveStaticDefinition = DEFAULTS_SETUP.find(defaultMenu => defaultMenu.staticName === menuItem.Link);
+                        const haveStaticDefinition = DEFAULTS_SETUP.find(defaultMenu => defaultMenu.staticName === menuItem.Link || defaultMenu.staticName === menuItem.Name);
                         const WrappedGhostScreen = ({ ...rest }) => <GhostScreen guid={menuItem.Link} routeName={menuItem.Name} {...rest} />;
 
                         return <Tab.Screen

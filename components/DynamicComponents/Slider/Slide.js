@@ -2,7 +2,7 @@ import React from 'react';
 import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 
 
-import { Feather } from '@expo/vector-icons';
+// import { Feather } from '@expo/vector-icons';
 import { useStyle } from '../../../Hooks/useStyle';
 import Para from '../../Para';
 import { generateColor, imageFinder } from '../../../utils';
@@ -39,12 +39,12 @@ const Slide = ({ Link , TEXT : title , value : image , passedStyle , backgroundC
                 {
                     !!desc && <Para style={appendStyle.subTitle}>{desc}</Para>
                 }
-                {
+                {/* {
                     Link ? <TouchableOpacity style={appendStyle.linkToWeb} onPress={redirectionHandler}>
                         <Feather style={{ marginRight : 5 }} name="arrow-up-left" size={24} color="black" />
                         <Para style={appendStyle.linkText}>{webLinkLabel}</Para>
                     </TouchableOpacity> : null
-                }
+                } */}
             </View>
         </View>
     )

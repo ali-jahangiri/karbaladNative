@@ -76,6 +76,8 @@ const DEFAULT_IMG_SRC = 'a26dec84-ba92-4e31-b597-704ca6634798.jpg{DATA}';
 const ImageGallery = ({ componentDatas , componentStyles }) => {
     const imageList = Object.entries(componentDatas).filter(([label , imgSrc]) => label.includes("image") && imgSrc !== DEFAULT_IMG_SRC).map(([, value]) => value);
     const descList = Object.entries(componentDatas).filter(([label , value]) => label.includes("itemDesc") && value && value !== " ").map(([, value]) => value);
+    const linkList = Object.entries(componentDatas).filter(([label , value]) => label.includes("webLinkMoreOptionPath") && value && value !== " ").map(([, value]) => value);
+
 
     const appendedStyle = useStyle(style , componentStyles);
 
@@ -90,7 +92,7 @@ const ImageGallery = ({ componentDatas , componentStyles }) => {
             </View>
             <View style={appendedStyle.itemContainer}>
                 {
-                    imageList.map((el , i) => <ImageGalleryItem desc={descList?.[i]} key={i} passedStyle={componentStyles} Link={""} value={el} selectedInternalPath={internalPathList[i]} />)
+                    imageList.map((el , i) => <ImageGalleryItem desc={descList?.[i]} key={i} passedStyle={componentStyles} Link={linkList[i]} value={el} selectedInternalPath={internalPathList[i]} />)
                 }
                 {
                     !!booleanExtractor(componentStyles.showMoreOption) && <MoreMocked webLink={componentDatas.webLinkMoreOptionPath} internalPath={componentStyles.internalMoreOptionPath} passedStyle={componentStyles} text={""} />

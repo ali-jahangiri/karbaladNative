@@ -97,6 +97,7 @@ const InitialLoading = ({ children }) => {
                                             headerBgColor :  headerExtractor("bgColor") ,
                                             headerHeight : headerExtractor("height") ,
                                             headerTitleColor : headerExtractor("titleColor"),
+                                            headerBrandIconSize : +headerExtractor("brandIconSize"),
                                         }
 
 
@@ -129,7 +130,6 @@ const InitialLoading = ({ children }) => {
                                                     homeIcon : bottomNavigator.ComponentDatas.find(el => el.Name === "homeIcon")?.Value , 
                                                     brandIcon : header.ComponentDatas.find(el => el.Name === "brandIcon").Value });
                                                 styleDispatcher(configStyle);
-        
                                                 storeDispatcher(() => setInsCat(categories));
 
                                                 return api.post("getActivityData" , {
@@ -137,7 +137,7 @@ const InitialLoading = ({ children }) => {
                                                 } , { headers : { packageName : config.packageName , appToken } })
                                                     .then(({ data : homePageDetails }) => {
                                                         storeDispatcher(() => setDynamicComponent(homePageDetails.pagesDetails[0].Components))
-                                                        setLoading(false)
+                                                        setLoading(false);
                                                     })
                                             })
                                     })

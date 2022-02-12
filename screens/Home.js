@@ -10,19 +10,20 @@ import CategoryProvider from '../Providers/CategoryProvider/CategoryProvider';
 import ComponentGenerator from '../HOC/ComponentGenerator/ComponentGenerator';
 import { Image, ScrollView } from 'react-native';
 import useData from '../Hooks/useData/useData';
+import useStyle from "../Hooks/useStyle/useStyle"
 import { imageFinder } from '../utils'
 import HomeUserProfileBox from '../components/HomeUserProfileBox';
 
 
-
 const InsIndexScreen = () => {
     const { brandIcon } = useData();
+    const { headerBrandIconSize } = useStyle();
 
     return (
         <ScreenWrapper>
         <HeaderProvider 
             isNested={<HomeUserProfileBox />} 
-            title={<Image resizeMode='contain' style={{ marginVertical : -15 }} source={{ uri : imageFinder(brandIcon) , width : 50 , height : 50}} />}
+            title={<Image resizeMode='contain' style={{ marginVertical : -15 }} source={{ uri : imageFinder(brandIcon) , width : headerBrandIconSize , height : headerBrandIconSize}} />}
         />
                 <ScrollView>
                     <ComponentGenerator />

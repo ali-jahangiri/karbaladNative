@@ -20,10 +20,7 @@ const AllCategoryFlatted = ({ route : { params } }) => {
         else setNestedStage(null);
     }
 
-
-    const itemForMapping = nestedStage ? nestedStage.cat : items
-    
-    console.log(itemForMapping , 'map[ing');
+    const itemForMapping = nestedStage ? nestedStage.cat : items;
 
     return (
         <View style={appendStyle.container}>
@@ -48,7 +45,7 @@ const AllCategoryFlatted = ({ route : { params } }) => {
             <View style={{ flex : 1 }}>
                 <ScrollView >
                     {
-                        itemForMapping.map((item , index) => (
+                        itemForMapping.filter(el => !el?.thisFavorit && itemForMapping.every(item => item.id !== el.parentId)).map((item , index) => (
                             <AllCatFlattedItem setNestedStage={nestedReplaceHandler} passedStyle={params?.passedStyle} key={index} {...item} />
                         ))
                     }
