@@ -11,6 +11,7 @@ import CategoryGrid from '../../components/CategoryGrid/CategoryGrid';
 import FAQ from '../../components/FAQ';
 import ScrollableGridLayout from '../../components/ScrollableGridLayout/ScrollableGridLayout';
 import DefaultMyInsurance from '../../components/DefaultMyInsurance';
+import DefaultWallet from '../../components/DefaultWallet';
 
 
 const _dynamicElementComponent = ({...rest}) => ({
@@ -27,7 +28,9 @@ const _dynamicElementComponent = ({...rest}) => ({
     MobileFAQ : <FAQ {...rest} />,
     MobileAlert : <MobileModalAlert {...rest} />,
     ScrollableGridLayout : <ScrollableGridLayout {...rest} />,
+
     DefaultMyInsurance : <DefaultMyInsurance {...rest} />,
+    DefaultWallet : <DefaultWallet {...rest} />,
 })
 
 const ComponentGenerator = ({ itemListForRender , ownerProps = {} }) => {

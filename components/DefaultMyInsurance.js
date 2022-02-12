@@ -8,7 +8,6 @@ import Loading from './Loading';
 
 const DefaultMyInsurance = ({ haveNestedComponents }) => {
     const [insItems, setInsItems] = useState([]);
-    const [refresh, setRefresh] = useState(false);
     const [loading, setLoading] = useState(true);
 
     const navHash = useSelector(state => state.navigation.navigationHash)
@@ -30,9 +29,9 @@ const DefaultMyInsurance = ({ haveNestedComponents }) => {
         }else {
             dataFetcherInstance()
                 .then(_ => {
-                    setRefresh(true);
                     let timer = setTimeout(() => {
-                        setRefresh(false);
+                        // TODO
+                        // show an alert
                         clearTimeout(timer)
                     } , 3000)
                 })
