@@ -10,6 +10,7 @@ import MobileModalAlert from '../../components/ModalNotification';
 import CategoryGrid from '../../components/CategoryGrid/CategoryGrid';
 import FAQ from '../../components/FAQ';
 import ScrollableGridLayout from '../../components/ScrollableGridLayout/ScrollableGridLayout';
+import DefaultMyInsurance from '../../components/DefaultMyInsurance';
 
 
 const _dynamicElementComponent = ({...rest}) => ({
@@ -25,15 +26,23 @@ const _dynamicElementComponent = ({...rest}) => ({
     MobileImageGallery : <ImageGallery {...rest} />,
     MobileFAQ : <FAQ {...rest} />,
     MobileAlert : <MobileModalAlert {...rest} />,
-    ScrollableGridLayout : <ScrollableGridLayout {...rest} />
+    ScrollableGridLayout : <ScrollableGridLayout {...rest} />,
+    DefaultMyInsurance : <DefaultMyInsurance {...rest} />,
 })
 
-const ComponentGenerator = ({ itemListForRender }) => {
+const ComponentGenerator = ({ itemListForRender , ownerProps = {} }) => {
     const dynamicComponentList = useSelector(state => state.dynamicComponent) || [];
     
     const componentListForRender = itemListForRender || dynamicComponentList;
 
-    return componentListForRender.map((el , i) => _dynamicElementComponent({ componentDatas : makeLeanComponentVariables(el.ComponentDatas) , componentStyles : makeLeanComponentVariables(el.ComponentStyles) , key : i })?.[el.Name])
+    const dynamicComponentsProps = (element , index) => ({
+        componentDatas : makeLeanComponentVariables(element.ComponentDatas),
+        componentStyles : makeLeanComponentVariables(element.ComponentStyles),
+        key : index,
+        ...ownerProps,
+    });
+
+    return componentListForRender.map((el , i) => _dynamicElementComponent(dynamicComponentsProps(el , i))?.[el.Name])
 }
 
 

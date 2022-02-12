@@ -40,7 +40,6 @@ const InsuranceConfirm = ({ route : { params : { factorItems , insModel , haveIn
                 <Para size={16} color="grey">{insModel.category}</Para>
                 
             </View>
-            
                 <ScrollView>
                     <View style={appendStyle.starterBullet} />
                     {
@@ -53,25 +52,24 @@ const InsuranceConfirm = ({ route : { params : { factorItems , insModel , haveIn
                         ))
                     }
                 </ScrollView>
-
-                    <View style={appendStyle.ctaContainer}>
-                        <View style={appendStyle.price}>
-                            <Para size={12} color="grey" style={appendStyle.priceUnit}>تومان</Para>
-                            <Para size={18} weight="bold">{toFarsiNumber(insModel.price)}</Para>
-                        </View>
-                        <View style={appendStyle.actionsContainer}>
-                            <TouchableOpacity onPress={goDirectlyToRequirement} style={[appendStyle.action , { backgroundColor : generateColor(primary , 5) }]}>
-                                <Para color={ctaTextColor} weight="bold" align="center" size={16}>
-                                    { haveInstallment ? CASH : DIRECT_ORDER }
-                                </Para>
-                            </TouchableOpacity>
-                            {
-                                haveInstallment ? <TouchableOpacity onPress={installmentHandler} style={[appendStyle.action , { backgroundColor : generateColor(primary , 3) }]}>
-                                        <Para color={ctaTextColor} weight="bold" align="center" size={16}>{INSTALLMENT}</Para>
-                                    </TouchableOpacity> : null
-                            }
-                        </View>
+                <View style={appendStyle.ctaContainer}>
+                    <View style={appendStyle.price}>
+                        <Para size={12} color="grey" style={appendStyle.priceUnit}>تومان</Para>
+                        <Para size={18} weight="bold">{toFarsiNumber(insModel.price)}</Para>
                     </View>
+                    <View style={appendStyle.actionsContainer}>
+                        <TouchableOpacity onPress={goDirectlyToRequirement} style={[appendStyle.action , { backgroundColor : generateColor(primary , 5) }]}>
+                            <Para color={ctaTextColor} weight="bold" align="center" size={16}>
+                                { haveInstallment ? CASH : DIRECT_ORDER }
+                            </Para>
+                        </TouchableOpacity>
+                        {
+                            haveInstallment ? <TouchableOpacity onPress={installmentHandler} style={[appendStyle.action , { backgroundColor : generateColor(primary , 3) }]}>
+                                    <Para color={ctaTextColor} weight="bold" align="center" size={16}>{INSTALLMENT}</Para>
+                                </TouchableOpacity> : null
+                        }
+                    </View>
+                </View>
         </ScreenWrapper>
     )
 }
@@ -82,11 +80,12 @@ const style = ({ baseBorderRadius , primary }) => StyleSheet.create({
     },
     header : {
         alignItems : "center",
-        marginTop : StatusBar.currentHeight + 10
+        marginTop : StatusBar.currentHeight
     },
     price : {
         flexDirection : "row",
-        alignItems : 'center',
+        alignItems : 'flex-start',
+        flexDirection : "column",
         height: "100%",
         flex: .35
     },  
@@ -102,7 +101,6 @@ const style = ({ baseBorderRadius , primary }) => StyleSheet.create({
         flexDirection : "row",
         justifyContent : "space-between",
         flex: .7,
-        borderRadius : 15,
         overflow: "hidden"
     },
     action : {
@@ -111,8 +109,8 @@ const style = ({ baseBorderRadius , primary }) => StyleSheet.create({
         padding: 15
     },
     priceUnit : {
-        position: "absolute",
-        top: -10,
+        // position: "absolute",
+        // top: -10,
     },
     starterBullet : {
         width : 15,

@@ -7,14 +7,14 @@ import InsuranceHistoryItem from './InsuranceHistoryItem';
 import EmptyScreen from "../screens/EmptyScreen";
 import client from '../client';
 
-const InsuranceHistoryDirectory = ({ items }) => {
+const InsuranceHistoryDirectory = ({ items , haveNestedChild }) => {
     const container = useRef();
     useScrollToTop(container);
     return items.length ? (<ScrollView ref={container}>
                             {
                                 items.map((el,i) => <InsuranceHistoryItem key={i} {...el} />)
                             }
-    </ScrollView> ) : <EmptyScreen desc={client.static.EMPTY_SCREEN_INSURANCE_HISTORY} />
+    </ScrollView> ) : <EmptyScreen shouldFillFullScreen={!haveNestedChild} desc={client.static.EMPTY_SCREEN_INSURANCE_HISTORY} />
 
 }
 

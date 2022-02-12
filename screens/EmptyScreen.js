@@ -1,6 +1,6 @@
 import { Feather } from '@expo/vector-icons';
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View , Dimensions } from 'react-native';
 import client from '../client';
 import Para from '../components/Para';
 import { useStyle } from '../Hooks/useStyle';
@@ -9,8 +9,9 @@ import { generateColor } from '../utils';
 
 const { EMPTY_SCREEN_TEXT } = client.static;
 
-const EmptyScreen = ({ message = EMPTY_SCREEN_TEXT , desc = ""  , extendStyle}) => {
-    const appendStyle = useStyle(style);
+const EmptyScreen = ({ message = EMPTY_SCREEN_TEXT , desc = ""  , extendStyle , shouldFillFullScreen = true }) => {
+
+    const appendStyle = useStyle(style , { shouldFillFullScreen });
     return (
         <View style={[appendStyle.container , extendStyle]}>
             <Feather style={appendStyle.icon} name="archive" size={40} color="black" />
@@ -20,9 +21,11 @@ const EmptyScreen = ({ message = EMPTY_SCREEN_TEXT , desc = ""  , extendStyle}) 
     )
 }
 
-const style = ({ primary  }) => StyleSheet.create({
+const screenHeight = Dimensions.get("screen").height;
+
+const style = ({ primary } , { shouldFillFullScreen }) => StyleSheet.create({
     container : {
-        flex: 1,
+        ...(shouldFillFullScreen ? { flex : 1 } : { height : screenHeight / 2 }),
         alignItems : "center",
         justifyContent : 'center',
 

@@ -136,8 +136,11 @@ const client = {
             "بیمه مهندسی",
             "اقساط بیمه"
         ],
-        ROUTES : {
-            
+        ROUTES_GUID : {
+            myInsurance : "بیمه_نامه_ها",
+            wallet : "کیف_پول",
+            insuranceResult : "صفحه_نتیجه",
+            insuranceConfirm : "صفحه_تایید_بیمه_نامه",
         }
     }
 }

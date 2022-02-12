@@ -1,69 +1,33 @@
-import React, { useEffect, useState } from 'react';
-import { View } from "react-native"
+import React from 'react';
+import { ScrollView } from "react-native"
 import { createStackNavigator } from "@react-navigation/stack";
 
-import InsuranceHistoryDirectory from '../components/InsuranceHistoryDirectory';
 import ScreenWrapper from "../components/ScreenWrapper";
-
-
 import InsuranceHistoryDetails from './InsuranceHistoryDetails';
 import InsuranceHistoryImages from './InsuranceHistoryImages';
-import { useSelector } from '../Store/Y-state';
-import Loading from '../components/Loading';
-import useFetch from '../Providers/useFetch';
-import { useIsFocused } from '@react-navigation/native';
-import RefreshAlert from '../components/RefreshAlert';
 import HeaderProvider from '../Providers/HeaderProvider/HeaderProvider';
 import DirectionProvider from '../Providers/DirectoryProvider/DirectionProvider';
+import client from '../client';
+import useScreenDynamic from '../Hooks/useScreenDynamic/useScreenDynamic';
+import ComponentGenerator from '../HOC/ComponentGenerator/ComponentGenerator';
 
 
 
 const Stack = createStackNavigator();
 
 const Home = () => {
-    const [loading, setLoading] = useState(true);
-    const [insItems, setInsItems] = useState([]);
-    const [refresh, setRefresh] = useState(false);
-
-
-    const navHash = useSelector(state => state.navigation.navigationHash)
-    const fetcher = useFetch()
-    const isFocused = useIsFocused()
+    const [screenDetailsLoading , screenDetails , screenDetailsExtractor] = useScreenDynamic(client.static.ROUTES_GUID.myInsurance);
     
-
-    const dataFetcherInstance = () => {
-        return fetcher("UserInsurance")
-                .then(({ data }) => {
-                    setInsItems(JSON.parse(JSON.stringify(data)));
-                })
-    }
-
-    useEffect(() => {
-        if(loading) {
-            dataFetcherInstance()
-                .then(_ => setLoading(false));
-        }else {
-            dataFetcherInstance()
-                .then(_ => {
-                    setRefresh(true);
-                    let timer = setTimeout(() => {
-                        setRefresh(false);
-                        clearTimeout(timer)
-                    } , 3000)
-                })
-        }
-    } , [navHash , isFocused])
-
-    if(loading) return <Loading />
     return (
         <React.Fragment>
-            <HeaderProvider title="بیمه نامه" />
+            <HeaderProvider title={!screenDetailsLoading ?screenDetailsExtractor("data" , "pageTitle").value : ""} />
             <DirectionProvider>
-                <InsuranceHistoryDirectory items={insItems} />
+                <ScrollView>
+                    {
+                        !screenDetailsLoading && <ComponentGenerator ownerProps={{ haveNestedComponents : !!screenDetails.components.length }} itemListForRender={screenDetails.components} />
+                    }
+                </ScrollView>
             </DirectionProvider>
-                {
-                    refresh ? <RefreshAlert /> : null
-                }
         </React.Fragment>
     )
 }
