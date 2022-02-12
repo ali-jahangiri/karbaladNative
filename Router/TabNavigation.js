@@ -3,7 +3,7 @@ import { createBottomTabNavigator  } from "@react-navigation/bottom-tabs";
 import { Feather } from '@expo/vector-icons';
 
 import { useStyle } from '../Hooks/useStyle';
-import { Home , Wallet , Profile ,InsuranceHistory, GhostScreen } from "../screens"
+import { Home , Wallet , Profile ,InsuranceHistory, GhostScreen } from "../screens";
 
 import TabBarItem from "./TabBarItem";
 import { useSelector } from '../Store/Y-state';
@@ -38,13 +38,25 @@ export const DEFAULTS_SETUP = [
 ]
 
 const TabNavigation = () => {
-    const { showTitle , iconSize } = useStyle();
+    const { showTitle , iconSize , navigatorContainerHeight } = useStyle();
     const { menu , homeIcon } = useData();
     
     const tabBarBgColor = useSelector(state => state.ui.tabBarBgColor);
 
+    const itemsContainerStyle = {
+        borderWidth : 0,
+        borderTopColor : "transparent",
+        height: navigatorContainerHeight + 15,
+        elevation : 0,
+        flexDirection : "row",
+        justifyContent : 'space-between',
+        backgroundColor : tabBarBgColor,
+        paddingTop : 15
+    }
+
+
     return (
-        <Tab.Navigator tabBarOptions={{ showLabel : false , style : { borderWidth : 0 , borderTopColor : "transparent" , height: 70 , elevation : 0  , flexDirection : "row" , justifyContent : 'space-between' , backgroundColor : tabBarBgColor} , tabStyle : {backgroundColor : 'red' ,elevation : 0 }}}>
+        <Tab.Navigator tabBarOptions={{ showLabel : false , style : itemsContainerStyle }}>
             <Tab.Screen 
                 name="home" 
                 component={Home}

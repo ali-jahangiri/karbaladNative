@@ -14,11 +14,10 @@ const FAQItem = ({ question , answerer , passedStyle }) => {
             <View style={appendStyle.questionContainer}>
                 <Para style={appendStyle.questionText}>{question}</Para>
                 <View style={appendStyle.iconContainer}>
-                    <AntDesign style={appendStyle} name={isCollapseOpen ? "minus" : "plus"} size={20} color="black" />
+                    <AntDesign name={isCollapseOpen ? "minus" : "plus"} size={20} color="black" />
                 </View>
             </View>
-            {
-                isCollapseOpen && <View>
+            {isCollapseOpen && <View>
                     <View style={appendStyle.divider} />
                     <View style={appendStyle.answererContainer}>
                         <Para style={appendStyle.answererText}>{answerer}</Para>
@@ -28,8 +27,6 @@ const FAQItem = ({ question , answerer , passedStyle }) => {
         </TouchableOpacity>
     )
 }
-
-// #00B5FF
 
 const style = (_ , { containerBorder , questionTextColor , questionTextFontSize , answererTextColor , answererTextFontSize }) => StyleSheet.create({
     container : {
@@ -65,3 +62,7 @@ const style = (_ , { containerBorder , questionTextColor , questionTextFontSize 
 })
 
 export default FAQItem;
+
+
+
+

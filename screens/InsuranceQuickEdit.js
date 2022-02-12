@@ -81,8 +81,8 @@ const InsuranceQuickEdit = ({ navigation , route : { params } }) => {
                     setAvailableRenderClone(prev => ({
                         ...prev,
                         [targetItem.formName] : {
-                            actives : selectedValue.actives,
-                            deActives : selectedValue.deActives
+                            actives : selectedValue?.actives || [],
+                            deActives : selectedValue?.deActives || []
                         }
                     }))
                 }

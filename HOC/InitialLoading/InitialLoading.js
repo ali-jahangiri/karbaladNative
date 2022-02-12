@@ -112,6 +112,7 @@ const InitialLoading = ({ children }) => {
                                             iconSize : +bottomNavigatorExtractor("iconSize"),
                                             titleTextColor : bottomNavigatorExtractor("titleTextColor"),
                                             titleFontSize : +bottomNavigatorExtractor("titleFontSize"),
+                                            navigatorContainerHeight : +bottomNavigatorExtractor("containerHeight"),
                                         }
                                         
                                         const configStyle = {

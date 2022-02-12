@@ -19,7 +19,7 @@ const FAQ = ({ componentStyles , componentDatas }) => {
     const moreItemRedirectHandler = () => redirectHandler();
 
     return (
-        <View style={appendStyle.container}>
+        <View>
             <View style={appendStyle.headerPanel}>
                 <Para weight='bold' style={appendStyle.titleText}>سوالات متدول</Para>
                 <View style={appendStyle.titleDivider} />
@@ -45,9 +45,6 @@ const FAQ = ({ componentStyles , componentDatas }) => {
 }
 
 const style = (_ , { moreCtaTextColor }) => StyleSheet.create({
-    container : {
-
-    },
     headerPanel : {
         flexDirection : "row",
         justifyContent : "flex-end",

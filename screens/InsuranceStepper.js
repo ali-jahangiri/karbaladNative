@@ -68,7 +68,6 @@ const InsuranceStepper = ({ route : { params : { id , name }} }) => {
     const nextStepHandler = haveNewTempValueForSet => {
         setCurrentStage(prev =>  prev + 1);
         if(haveNewTempValueForSet) setValueStore(prev => ({ ...prev , ...haveNewTempValueForSet}));
-        // redirectionHandler(currentStage  + 1 , { ...valueStore , ...haveNewTempValueForSet})
         setRedirectKey(Date.now())
     }   
     

@@ -95,7 +95,7 @@ const style = ({ primary , baseBorderRadius }) => StyleSheet.create({
         zIndex : 2,
         width : 80,
         height : 80,
-        borderRadius : baseBorderRadius - 5
+        borderRadius : baseBorderRadius,
     },
     moreItem : {
         width: '50%',
