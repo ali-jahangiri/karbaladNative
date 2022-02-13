@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native';
 import React , { useState , useEffect } from 'react';
 import useFetch from '../../Providers/useFetch';
 
@@ -10,6 +11,8 @@ const useScreenDynamic = (screen) => {
     });
 
     const fetcher = useFetch();
+    const navigation = useNavigation();
+    const goHomeHandler = () => navigation.navigate('home');
 
 
     useEffect(function getScreenInitialDetails() {
@@ -22,6 +25,10 @@ const useScreenDynamic = (screen) => {
                 screenStyle : PageStyles,
             });
             setLoading(false);
+        }).catch(err => {
+            goHomeHandler();
+            // TODO 
+            // show alert
         })
     } , []);
 

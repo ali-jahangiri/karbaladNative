@@ -2,24 +2,26 @@ import React from 'react';
 import { Image, ScrollView, StatusBar, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useStyle } from '../Hooks/useStyle';
 import { generateColor, imageFinder, toFarsiNumber } from '../utils';
-import InsConfirmItem from '../components/InsConfirmItem';
 
 import Para from '../components/Para';
 import DirectionCta from "../components/DirectionCta";
 
 import ScreenWrapper from "../components/ScreenWrapper";
 import client from '../client';
+import ComponentGenerator from '../HOC/ComponentGenerator/ComponentGenerator';
+import useScreenDynamic from '../Hooks/useScreenDynamic/useScreenDynamic';
+
 
 const { CASH , INSTALLMENT , DIRECT_ORDER } = client.static.INS_CONFIRM
 
 const InsuranceConfirm = ({ route : { params : { factorItems , insModel , haveInstallment , reqId , installment_Value , formulId } } , navigation }) => {
     const appendStyle = useStyle(style);
     const { primary , ctaTextColor } = useStyle();
+    const [screenDetailsLoading , screenDetails] = useScreenDynamic(client.static.ROUTES_GUID.insuranceConfirm);
     
 
     const installmentHandler = () => navigation.push("insuranceInstallment" , { factorId : haveInstallment , reqId , installment_Value })
     const goDirectlyToRequirement = () => navigation.push("insuranceRequirements" , { factorId : formulId , reqId , installmentId : null })
-    
 
     return (
         <ScreenWrapper>
@@ -40,44 +42,34 @@ const InsuranceConfirm = ({ route : { params : { factorItems , insModel , haveIn
                 <Para size={16} color="grey">{insModel.category}</Para>
                 
             </View>
-                <ScrollView>
-                    <View style={appendStyle.starterBullet} />
-                    {
-                        factorItems?.map((el , i) => (
-                            <InsConfirmItem 
-                                index={i}
-                                label={el.lable} 
-                                value={el.show_Value} 
-                                key={i} />
-                        ))
-                    }
-                </ScrollView>
-                <View style={appendStyle.ctaContainer}>
-                    <View style={appendStyle.price}>
-                        <Para size={12} color="grey" style={appendStyle.priceUnit}>تومان</Para>
-                        <Para size={18} weight="bold">{toFarsiNumber(insModel.price)}</Para>
-                    </View>
-                    <View style={appendStyle.actionsContainer}>
-                        <TouchableOpacity onPress={goDirectlyToRequirement} style={[appendStyle.action , { backgroundColor : generateColor(primary , 5) }]}>
-                            <Para color={ctaTextColor} weight="bold" align="center" size={16}>
-                                { haveInstallment ? CASH : DIRECT_ORDER }
-                            </Para>
-                        </TouchableOpacity>
-                        {
-                            haveInstallment ? <TouchableOpacity onPress={installmentHandler} style={[appendStyle.action , { backgroundColor : generateColor(primary , 3) }]}>
-                                    <Para color={ctaTextColor} weight="bold" align="center" size={16}>{INSTALLMENT}</Para>
-                                </TouchableOpacity> : null
-                        }
-                    </View>
+            <ScrollView>
+                {
+                    !screenDetailsLoading && <ComponentGenerator ownerProps={{ factorItems }} itemListForRender={screenDetails.components} />
+                }
+            </ScrollView>
+            <View style={appendStyle.ctaContainer}>
+                <View style={appendStyle.price}>
+                    <Para size={12} color="grey">تومان</Para>
+                    <Para size={18} weight="bold">{toFarsiNumber(insModel.price)}</Para>
                 </View>
+                <View style={appendStyle.actionsContainer}>
+                    <TouchableOpacity onPress={goDirectlyToRequirement} style={[appendStyle.action , { backgroundColor : generateColor(primary , 5) }]}>
+                        <Para color={ctaTextColor} weight="bold" align="center" size={16}>
+                            { haveInstallment ? CASH : DIRECT_ORDER }
+                        </Para>
+                    </TouchableOpacity>
+                    {
+                        haveInstallment ? <TouchableOpacity onPress={installmentHandler} style={[appendStyle.action , { backgroundColor : generateColor(primary , 3) }]}>
+                                <Para color={ctaTextColor} weight="bold" align="center" size={16}>{INSTALLMENT}</Para>
+                            </TouchableOpacity> : null
+                    }
+                </View>
+            </View>
         </ScreenWrapper>
     )
 }
 
-const style = ({ baseBorderRadius , primary }) => StyleSheet.create({
-    container : {
-        flex: 1
-    },
+const style = ({ baseBorderRadius }) => StyleSheet.create({
     header : {
         alignItems : "center",
         marginTop : StatusBar.currentHeight
@@ -108,18 +100,6 @@ const style = ({ baseBorderRadius , primary }) => StyleSheet.create({
         width: "100%",
         padding: 15
     },
-    priceUnit : {
-        // position: "absolute",
-        // top: -10,
-    },
-    starterBullet : {
-        width : 15,
-        height : 15,
-        marginTop : 10,
-        borderRadius : baseBorderRadius,
-        backgroundColor : generateColor(primary , 3),
-        alignSelf : "center",
-    }
 })
 
 

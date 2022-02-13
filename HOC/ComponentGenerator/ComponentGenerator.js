@@ -13,6 +13,7 @@ import ScrollableGridLayout from '../../components/ScrollableGridLayout/Scrollab
 import DefaultMyInsurance from '../../components/DefaultMyInsurance';
 import DefaultWallet from '../../components/DefaultWallet';
 import DefaultResult from '../../components/DefaultResult';
+import DefaultConfirm from '../../components/DefaultConfirm';
 
 
 const _dynamicElementComponent = ({...rest}) => ({
@@ -33,6 +34,7 @@ const _dynamicElementComponent = ({...rest}) => ({
     DefaultMyInsurance : <DefaultMyInsurance {...rest} />,
     DefaultWallet : <DefaultWallet {...rest} />,
     DefaultResult : <DefaultResult {...rest} />,
+    DefaultConfirm : <DefaultConfirm {...rest} />,
 })
 
 const ComponentGenerator = ({ itemListForRender , ownerProps = {} }) => {
