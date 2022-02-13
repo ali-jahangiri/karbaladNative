@@ -182,11 +182,6 @@ const InsurancePay = ({ navigation , route : { params : { id } } }) => {
         </>)
 }
 
-// const redirectToMobileAppAction = () => {
-    // const url = 'intent://APP_HOST/#Intent;scheme=KarbaladNative;package=com.karbalad.karbalad;end';
-    // window.location.replace(url);
-// }
-
 const style = ({ primary , baseBorderRadius }) => StyleSheet.create({
     container : {
         flex: 1,

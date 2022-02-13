@@ -13,7 +13,7 @@ import EmptyScreen from '../screens/EmptyScreen';
 const { DONE , FAIL , FA_DONE , FA_FAIL } = client.static.TRANSACTION;
 
 
-const DefaultWallet = ({ ownerProps }) => {
+const DefaultWallet = ({ haveSibling }) => {
     const [walletData, setWalletData] = useState(null)
     const [isInPaymentProcess, setIsInPaymentProcess] = useState(false);
     const [transactionStatus, setTransactionStatus] = useState(false);
@@ -79,7 +79,7 @@ const DefaultWallet = ({ ownerProps }) => {
                             ))
                         }
                     </ScrollView>
-                </> : <EmptyScreen desc={client.static.EMPTY_SCREEN_WALLET} />
+                </> : <EmptyScreen shouldFillFullScreen={!haveSibling} desc={client.static.EMPTY_SCREEN_WALLET} />
             }
         </React.Fragment>
     )

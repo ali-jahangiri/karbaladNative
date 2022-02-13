@@ -1,13 +1,13 @@
 import React from 'react';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View  , Dimensions } from 'react-native';
 import { useStyle } from '../Hooks/useStyle';
 import Para from './Para';
 
 import { Feather } from '@expo/vector-icons';
 import { generateColor } from '../utils';
 
-const EmptyState = ({ actionHandler , ctaText , title , desc }) => {
-    const appendStyle = useStyle(style);
+const EmptyState = ({ actionHandler , ctaText , title , desc , shouldFillFullScreen = true }) => {
+    const appendStyle = useStyle(style , { shouldFillFullScreen });
 
     return (
         <View style={appendStyle.container}>
@@ -21,12 +21,14 @@ const EmptyState = ({ actionHandler , ctaText , title , desc }) => {
     )
 }
 
+const screenHeight = Dimensions.get("screen").height;
 
-const style = ({ primary, baseBorderRadius }) => StyleSheet.create({
+
+const style = ({ primary, baseBorderRadius } , { shouldFillFullScreen }) => StyleSheet.create({
     container : {
+        ...(shouldFillFullScreen ? { flex : 1 } : { height : screenHeight / 2 }),
         width: "90%",
         marginHorizontal : "5%",
-        flex : 1,
         justifyContent: 'center',
     },  
     icon : {

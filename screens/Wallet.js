@@ -18,8 +18,6 @@ const Wallet = () => {
 
     const [screenDetailsLoading , screenDetails , screenDetailsExtractor] = useScreenDynamic(client.static.ROUTES_GUID.wallet);
 
-    console.log(screenDetails);
-
     // const drawerCloseHandler = () => {
     //     setTransactionStatus(null)
     //     setIsInPaymentProcess(false);
@@ -31,7 +29,7 @@ const Wallet = () => {
             <HeaderProvider title={!screenDetailsLoading ? screenDetailsExtractor("data" , "pageTitle").value : ""} />
             <DirectionProvider>
                 <ScrollView>
-                    <ComponentGenerator itemListForRender={screenDetails.components} />
+                    <ComponentGenerator ownerProps={{ haveSibling : !!screenDetails.components.length }} itemListForRender={screenDetails.components} />
                 </ScrollView>
             </DirectionProvider>
         </ScreenWrapper>

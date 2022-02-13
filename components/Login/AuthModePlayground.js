@@ -70,7 +70,7 @@ const style = ({ primary , baseBorderRadius }) => StyleSheet.create({
         width : 30,
         height : 30,
         backgroundColor : generateColor(primary , 6),
-        borderRadius : baseBorderRadius - 5,
+        borderRadius : baseBorderRadius,
         marginLeft : 10
     },
     error : { 
