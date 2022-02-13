@@ -1,5 +1,5 @@
 import React from 'react';
-import { TouchableOpacity , View , ScrollView } from 'react-native';
+import { TouchableOpacity , ScrollView } from 'react-native';
 
 import ScreenWrapper from '../components/ScreenWrapper';
 
@@ -13,6 +13,7 @@ import DirectionProvider from '../Providers/DirectoryProvider/DirectionProvider'
 import ComponentGenerator from "../HOC/ComponentGenerator/ComponentGenerator";
 import useScreenDynamic from '../Hooks/useScreenDynamic/useScreenDynamic';
 import client from '../client';
+import ToastsProvider from '../Providers/ToastsProvider/ToastsProvider';
 
 const Wallet = () => {
 
@@ -22,16 +23,19 @@ const Wallet = () => {
     //     setTransactionStatus(null)
     //     setIsInPaymentProcess(false);
     // };
+
+    const haveSibling = screenDetails.components.length !== 1;
     
      return (
         <>
         <ScreenWrapper>
             <HeaderProvider title={!screenDetailsLoading ? screenDetailsExtractor("data" , "pageTitle").value : ""} />
             <DirectionProvider>
-                <ScrollView>
-                    <ComponentGenerator ownerProps={{ haveSibling : !!screenDetails.components.length }} itemListForRender={screenDetails.components} />
+                <ScrollView contentContainerStyle={!haveSibling ? { flex : 1 } : {}}>
+                    <ComponentGenerator ownerProps={{ haveSibling }} itemListForRender={screenDetails.components} />
                 </ScrollView>
             </DirectionProvider>
+            <ToastsProvider />
         </ScreenWrapper>
         {/* {
             transactionStatus ? <Drawer onClose={drawerCloseHandler}>

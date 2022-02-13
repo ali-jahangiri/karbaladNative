@@ -1,6 +1,7 @@
 import React , { useEffect, useState } from 'react';
 import { useFonts } from 'expo-font';
 
+
 import { useStyleDispatcher } from "../../Hooks/useStyle"
 import encrypt from '../../utils/encrypt';
 import client from '../../client';
@@ -19,6 +20,7 @@ import { Welcome } from '../../screens';
 import LoadingScreen from "./LoadingScreen";
 import { setDynamicComponent } from '../../Store/Slices/dynamicComponentSlice';
 import useDataDispatcher from '../../Hooks/useData/useDataDispatcher';
+// import ToastsProvider from '../../Providers/ToastsProvider/ToastsProvider';
 
 
 const InitialLoading = ({ children }) => {
@@ -171,7 +173,12 @@ const InitialLoading = ({ children }) => {
         if(isAuth) {
             if(!seeWelcome) {
                 return <Welcome continueHandler={continueHandler} />
-            }else return children
+            }else return (
+                <React.Fragment>
+                    {children}
+                    {/* <ToastsProvider /> */}
+                </React.Fragment>
+            )
         };
         return <Login />
     }

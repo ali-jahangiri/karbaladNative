@@ -10,6 +10,7 @@ import DirectionProvider from '../Providers/DirectoryProvider/DirectionProvider'
 import client from '../client';
 import useScreenDynamic from '../Hooks/useScreenDynamic/useScreenDynamic';
 import ComponentGenerator from '../HOC/ComponentGenerator/ComponentGenerator';
+import ToastsProvider from '../Providers/ToastsProvider/ToastsProvider';
 
 
 
@@ -39,6 +40,7 @@ const InsuranceHistory = () => (
             <Stack.Screen name="insuranceHistoryDetails" component={InsuranceHistoryDetails} />
             <Stack.Screen name="insuranceHistoryImages" component={InsuranceHistoryImages} />
         </Stack.Navigator>
+        <ToastsProvider />
     </ScreenWrapper>
 )
 

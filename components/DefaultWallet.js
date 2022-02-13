@@ -1,14 +1,13 @@
-import { useIsFocused, useScrollToTop } from '@react-navigation/native';
-import { StyleSheet } from "react-native";
 import React , { useState , useEffect , useRef } from 'react';
+import { useIsFocused, useScrollToTop } from '@react-navigation/native';
+import Toast from 'react-native-toast-message';
+
 import client from '../client';
-import { useStyle } from '../Hooks/useStyle';
 import useFetch from '../Providers/useFetch';
-import { useSelector } from '../Store/Y-state';
 import Loading from './Loading';
 import WalletCart from './WalletCard';
-import { generateColor } from '../utils';
 import EmptyScreen from '../screens/EmptyScreen';
+
 
 const { DONE , FAIL , FA_DONE , FA_FAIL } = client.static.TRANSACTION;
 
@@ -18,48 +17,40 @@ const DefaultWallet = ({ haveSibling }) => {
     const [isInPaymentProcess, setIsInPaymentProcess] = useState(false);
     const [transactionStatus, setTransactionStatus] = useState(false);
     const [loading, setLoading] = useState(true);
-    const [refresh, setRefresh] = useState(false);
-
+    
     const fetcher = useFetch();
-
+    const isFocused = useIsFocused();
     const transactionContainerRef = useRef();
-
     useScrollToTop(transactionContainerRef);
 
-    const navHash = useSelector(state => state.navigation.navigationHash);
-    
-    const appendStyle = useStyle(style);
-    
-
-    const isFocused = useIsFocused();
 
 
     const fetchDataHandler = () => {
         return fetcher("UserWallet")
                 .then(({ data }) => {
                     setWalletData(data);
-                    const currentStatus = data?.checkTransactionToWallet
+                    const currentStatus = data?.checkTransactionToWallet;
                     if([DONE , FAIL].includes(currentStatus)) 
                         setTransactionStatus(currentStatus)
                 })
     }
 
-
     useEffect(() => {
-        if(!loading) {
+        if(isFocused && !loading) {
             fetchDataHandler()
                 .then(_ => {
-                    setRefresh(true)
-                    let timer = setTimeout(() => {
-                        setRefresh(false);
-                        clearTimeout(timer);
-                    } , 2500)
+                    Toast.show({
+                        type: 'refreshToast',
+                        visibilityTime : 1000,
+                    });
                 })
-        }else {
-            fetchDataHandler()
-                .then(_ => setLoading(false))
-        }
-    } , [isFocused , navHash])
+        }else Toast.hide();
+    } , [isFocused , loading])
+
+    useEffect(() => {
+        fetchDataHandler()
+            .then(_ => setLoading(false));
+    } , [])
 
     if(!walletData) return <Loading />
     if(loading) return <Loading />
@@ -85,20 +76,20 @@ const DefaultWallet = ({ haveSibling }) => {
     )
 }
 
-const style = ({ primary , baseBorderRadius }) => StyleSheet.create({
-    doneCta : {
-        backgroundColor : generateColor(primary , 5),
-        borderRadius : baseBorderRadius,
-        padding : 15,
-        width : "90%",
-        marginTop : 10
-    },
-    drawerContentContainer : {
-        justifyContent : "center",
-        alignItems : 'center',
-        height : "100%"
-    }
-})
+// const style = ({ primary , baseBorderRadius }) => StyleSheet.create({
+//     doneCta : {
+//         backgroundColor : generateColor(primary , 5),
+//         borderRadius : baseBorderRadius,
+//         padding : 15,
+//         width : "90%",
+//         marginTop : 10
+//     },
+//     drawerContentContainer : {
+//         justifyContent : "center",
+//         alignItems : 'center',
+//         height : "100%"
+//     }
+// })
 
 
 export default DefaultWallet;

@@ -1,5 +1,7 @@
 import { useIsFocused } from '@react-navigation/native';
 import React , { useState , useEffect } from 'react';
+import Toast from 'react-native-toast-message';
+
 import useFetch from '../Providers/useFetch';
 import { useSelector } from '../Store/Y-state';
 import InsuranceHistoryDirectory from './InsuranceHistoryDirectory';
@@ -23,17 +25,17 @@ const DefaultMyInsurance = ({ haveNestedComponents }) => {
 
 
     useEffect(() => {
+        console.log('come inside my insurance refresher');
         if(loading) {
             dataFetcherInstance()
-                .then(_ => setLoading(false));
+                .then(() => setLoading(false));
         }else {
             dataFetcherInstance()
-                .then(_ => {
-                    let timer = setTimeout(() => {
-                        // TODO
-                        // show an alert
-                        clearTimeout(timer)
-                    } , 3000)
+                .then(() => {
+                    Toast.show({
+                        type: 'refreshToast',
+                        visibilityTime : 1000,
+                    });
                 })
         }
     } , [navHash , isFocused])
