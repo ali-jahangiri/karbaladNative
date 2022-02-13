@@ -25,7 +25,6 @@ const DefaultMyInsurance = ({ haveNestedComponents }) => {
 
 
     useEffect(() => {
-        console.log('come inside my insurance refresher');
         if(loading) {
             dataFetcherInstance()
                 .then(() => setLoading(false));

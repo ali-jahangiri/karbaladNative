@@ -4,7 +4,6 @@ import { Image, ScrollView, StyleSheet, View , TouchableOpacity } from 'react-na
 import { useStyle } from '../Hooks/useStyle';
 import { generateColor, imageFinder, statusChecker, toFarsiNumber } from '../utils';
 import Para from '../components/Para';
-import TabScreenHeader from '../components/TabScreenHeader';
 import { useSelector } from '../Store/Y-state';
 
 import dayjs from 'dayjs';
@@ -189,7 +188,6 @@ const style = ({ primary , baseBorderRadius } , statusColor) => StyleSheet.creat
         marginLeft : 20
     },
     imageContainer : {
-        // flexDirection : "row",
         alignItems : 'center',
         marginVertical : 20,
         width: "90%",

@@ -27,9 +27,9 @@ const Welcome = ({ continueHandler }) => {
     const fetcher = useFetch();
 
     useEffect(() => {
-        fetcher("getCategories")
-            .then(({ data }) => {
-                storeDispatcher(() => setInsCat(data.cat));
+        fetcher("getInsuranceCategories")
+            .then(({ data :  category }) => {
+                storeDispatcher(() => setInsCat(category));
                 setLoading(false);
             })
     } , []);

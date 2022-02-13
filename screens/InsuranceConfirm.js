@@ -10,6 +10,7 @@ import ScreenWrapper from "../components/ScreenWrapper";
 import client from '../client';
 import ComponentGenerator from '../HOC/ComponentGenerator/ComponentGenerator';
 import useScreenDynamic from '../Hooks/useScreenDynamic/useScreenDynamic';
+import Loading from '../components/Loading';
 
 
 const { CASH , INSTALLMENT , DIRECT_ORDER } = client.static.INS_CONFIRM
@@ -23,7 +24,7 @@ const InsuranceConfirm = ({ route : { params : { factorItems , insModel , haveIn
     const installmentHandler = () => navigation.push("insuranceInstallment" , { factorId : haveInstallment , reqId , installment_Value })
     const goDirectlyToRequirement = () => navigation.push("insuranceRequirements" , { factorId : formulId , reqId , installmentId : null })
 
-    return (
+    return screenDetailsLoading ? <Loading /> : (
         <ScreenWrapper>
             <View style={appendStyle.header}>
                 <DirectionCta
@@ -44,7 +45,7 @@ const InsuranceConfirm = ({ route : { params : { factorItems , insModel , haveIn
             </View>
             <ScrollView>
                 {
-                    !screenDetailsLoading && <ComponentGenerator ownerProps={{ factorItems }} itemListForRender={screenDetails.components} />
+                    <ComponentGenerator ownerProps={{ factorItems }} itemListForRender={screenDetails.components} />
                 }
             </ScrollView>
             <View style={appendStyle.ctaContainer}>

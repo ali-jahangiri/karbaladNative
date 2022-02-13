@@ -35,9 +35,9 @@ const baseToastContainerStyle = ({ baseBorderRadius } , toastPrimary , onFlyStyl
         ...onFlyStyle,
     },
     text : {
-        marginRight : 10,
         fontFamily : "bold",
-        color : "#626262"
+        color : "#626262",
+        padding : 20
     },
     innerIconContainer : {
         width : "70%",
@@ -74,6 +74,9 @@ const toastConfig = {
     ),
     info: (props) => (
         <BaseToastContainer onFlyStyle={props?.props?.onFlyStyle} toastPrimary={"#006ce0"} text={props.text1} icon={props?.props?.icon || <Ionicons name="information"  size={20} color="#006ce0" />} />
+    ),
+    error : props => (
+        <BaseToastContainer text={props.text1} toastPrimary={'#ea4e2c'} icon={<Ionicons name="warning-outline" size={20} color="#ea4e2c" />} />
     ),
     refreshToast : ({ text1 , props }) => (
         <BaseToastContainer onFlyStyle={{ width : "50%" }} text={"بروزرسانی اطلاعات"} icon={<MaterialCommunityIcons name="star-four-points-outline" size={20} color="#006ce0" />} toastPrimary="#006ce0" />

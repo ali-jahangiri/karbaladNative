@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Alert, Linking, ScrollView, StatusBar, StyleSheet, TouchableOpacity, View } from 'react-native';
+import Toast from 'react-native-toast-message';
+
 
 import { useStyle } from '../Hooks/useStyle';
 import ScreenWrapper from '../components/ScreenWrapper';
@@ -18,6 +20,7 @@ import { useSelector } from '../Store/Y-state';
 import Loading from '../components/Loading';
 import client from '../client';
 import Drawer from '../components/Drawer';
+import ToastsProvider from '../Providers/ToastsProvider/ToastsProvider';
 
 const InsurancePay = ({ navigation , route : { params : { id } } }) => {
     const [payResponse, setPayResponse] = useState(null);
@@ -44,7 +47,7 @@ const InsurancePay = ({ navigation , route : { params : { id } } }) => {
             .then(({ data }) => {
                 setPayResponse(data);
                     if(data.deliveryModelsItems) {
-                        setDeliverOption(data.deliveryModelsItems?.find(el => el.thisDefault).id);
+                        setDeliverOption(data.deliveryModelsItems?.find(el => el.thisDefault)?.id);
                     }
                     setLoading(false)
         })
@@ -62,16 +65,22 @@ const InsurancePay = ({ navigation , route : { params : { id } } }) => {
 
         fetcher("InsurancePayWallet" , {factorId : id , deliveryMethod : deliverOption})
             .then(({ data }) => {
+                
                 if(data === client.static.TRANSACTION.FAIL) {
-                    setAfterPaymentMessage({
-                        wasOk : false,
-                        message : 'اعتبار کیف پول کمتر از مبلغ بیمه نامه میباشد'
+                    Toast.show({
+                        type: 'error',
+                        text1 : "اعتبار کیف پول کمتر از مبلغ بیمه نامه میباشد"
                     });
-                }else {
+                }else if(data === client.static.TRANSACTION.DONE) {
                     setAfterPaymentMessage({
                         wasOk : true,
                         message : "پرداخت موفقیت آمیز بود"
                     })
+                }else {
+                    Toast.show({
+                        type: 'error',
+                        text1 : "خظایی رخ داده است"
+                    });
                 }
             }).finally(() =>{ 
                 setIsInsidePaymentProcess(false);
@@ -101,12 +110,10 @@ const InsurancePay = ({ navigation , route : { params : { id } } }) => {
                 }
             }).catch(_ => {
                 setIsInsidePaymentProcess(false);
-                Alert.alert("", "مشکلی  در پروسه انتقال به درگاه رخ داد . مجددا تلاش کنید" , [
-                    {
-                        text : "تایید",
-                        onPress : () => {}
-                    }
-                ])
+                Toast.show({
+                    type: 'error',
+                    text1 : "مشکلی  در پروسه انتقال به درگاه رخ داد . مجددا تلاش کنید"
+                });
             })
     }
 
@@ -158,6 +165,7 @@ const InsurancePay = ({ navigation , route : { params : { id } } }) => {
                 </View>
             </View>
         </View>
+        <ToastsProvider />
         </ScreenWrapper>
                     {
                         afterPaymentMessage ? <Drawer onClose={() => setAfterPaymentMessage(false)}>

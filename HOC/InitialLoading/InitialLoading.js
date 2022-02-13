@@ -20,8 +20,6 @@ import { Welcome } from '../../screens';
 import LoadingScreen from "./LoadingScreen";
 import { setDynamicComponent } from '../../Store/Slices/dynamicComponentSlice';
 import useDataDispatcher from '../../Hooks/useData/useDataDispatcher';
-// import ToastsProvider from '../../Providers/ToastsProvider/ToastsProvider';
-
 
 const InitialLoading = ({ children }) => {
     const [somethingWentWrong, setSomethingWentWrong] = useState(false);
@@ -125,6 +123,7 @@ const InitialLoading = ({ children }) => {
 
                                         return api.post("getInsuranceCategories" , {} , { headers : { packageName : config.packageName , appToken } })
                                             .then(({ data : categories }) => {
+                                                storeDispatcher(() => setInsCat(categories));
                                                 dataDispatcher({ 
                                                     businessIcon : "" , 
                                                     termsAndConditions: body.ComponentDatas.find(el => el.Name === "termsAndConditions")?.Value, 
@@ -133,7 +132,7 @@ const InitialLoading = ({ children }) => {
                                                     homeIcon : bottomNavigator.ComponentDatas.find(el => el.Name === "homeIcon")?.Value , 
                                                     brandIcon : header.ComponentDatas.find(el => el.Name === "brandIcon").Value });
                                                 styleDispatcher(configStyle);
-                                                storeDispatcher(() => setInsCat(categories));
+                                                
 
                                                 return api.post("getActivityData" , {
                                                     Guid : "صفحه_اصلی_(موبایل)"
@@ -173,12 +172,7 @@ const InitialLoading = ({ children }) => {
         if(isAuth) {
             if(!seeWelcome) {
                 return <Welcome continueHandler={continueHandler} />
-            }else return (
-                <React.Fragment>
-                    {children}
-                    {/* <ToastsProvider /> */}
-                </React.Fragment>
-            )
+            }else return children;
         };
         return <Login />
     }
