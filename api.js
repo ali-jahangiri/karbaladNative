@@ -1,11 +1,12 @@
 import axios from "axios"
-import config from "./config"
+import appConfig from "./app.json";
+
 
 const api = axios.create({
     headers : {
-        packageName : config.packageName
+        packageName : appConfig.customConfigDetails.packageName,
     },
-    baseURL : `${config.serverPath}/MobileApi/`
+    baseURL : `${appConfig.customConfigDetails.serverPath}/MobileApi/`
 })
 
 

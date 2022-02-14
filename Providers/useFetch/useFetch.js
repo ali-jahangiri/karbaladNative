@@ -2,7 +2,8 @@ import { useContext } from "react";
 import encrypt from "../../utils/encrypt";
 import { FetchContext } from "./FetchProvider";
 
-import appConfig from "../../config";
+import appConfig from "../../app.json";
+
 
 import { useSelector } from "../../Store/Y-state";
 import client from "../../client";
@@ -14,15 +15,15 @@ const useFetch = () => {
     
   return (path = "" , config) => {
     return new Promise((resolve , _) => {
-        api.post(`${appConfig.serverPath}/baseApi/getServerTime`)
+        api.post(`${appConfig.customConfigDetails.serverPath}/baseApi/getServerTime`)
           .then(({data}) => {
             console.log('FETCH START');
             let serverTime = +data.split(" ")[1].split(':')[1];
-            api.post(`${appConfig.serverPath}/baseApi/getAppToken` , {
+            api.post(`${appConfig.customConfigDetails.serverPath}/baseApi/getAppToken` , {
               Key : encrypt.encrypt({
-                  UserName : appConfig.adminUserName,
-                  Password : appConfig.adminPassword,
-                  PackageName : appConfig.packageName
+                  UserName : appConfig.customConfigDetails.adminUserName,
+                  Password : appConfig.customConfigDetails.adminPassword,
+                  PackageName : appConfig.customConfigDetails.packageName
               }, serverTime)
               })
               .then(({ data }) => {

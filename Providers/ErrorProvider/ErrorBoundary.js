@@ -1,9 +1,9 @@
 import axios from 'axios';
 import React from 'react';
 
-import api from '../../api';
 import client from '../../client';
-import config from '../../config';
+import appConfig from "../../app.json";
+
 import { persister } from '../../utils';
 
 import FallbackScreen from './FallbackScreen';
@@ -25,7 +25,7 @@ class ErrorBoundary extends React.Component {
         // connect to error monitoring service
         this.setState({ message: error.message , trace : info.componentStack });
         const caller = axios.create({
-            url : `${config.serverPath}/MobileApi/saveException`,
+            url : `${appConfig.customConfigDetails.serverPath}/MobileApi/saveException`,
             method : "POST"
         });
         

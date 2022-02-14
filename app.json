@@ -33,5 +33,11 @@
     "web": {
       "favicon": "./assets/favicon.png"
     }
+  },
+  "customConfigDetails": {
+    "packageName" : "rahatbime.com",
+    "serverPath": "https://rahatbime.com/",
+    "adminUserName" : "LMKGvkA67X",
+    "adminPassword" : "nwGsa34Qdm"
   }
 }

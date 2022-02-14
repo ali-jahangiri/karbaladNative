@@ -5,7 +5,8 @@ import { useFonts } from 'expo-font';
 import { useStyleDispatcher } from "../../Hooks/useStyle"
 import encrypt from '../../utils/encrypt';
 import client from '../../client';
-import config from '../../config';
+import appConfig from "../../app.json";
+
 import { dataModelExtractor, persister } from '../../utils';
 
 import { useDispatch, useSelector } from '../../Store/Y-state';
@@ -55,17 +56,17 @@ const InitialLoading = ({ children }) => {
     const continueHandler = () => storeDispatcher(() => setSeeWelcomeScreen(true));
 
     useEffect(() => {
-        api.post(`${config.serverPath}/baseApi/getServerTime`)
+        api.post(`${appConfig.customConfigDetails.serverPath}/baseApi/getServerTime`)
                 .then(({ data }) => {
                     
                     let serverTime = +data.split(" ")[1].split(':')[1];
                     const deviceTime = new Date().getMinutes();
                     storeDispatcher(() => setSystemTime(deviceTime - serverTime));
-                    api.post(`${config.serverPath}/baseApi/getAppToken` , {
+                    api.post(`${appConfig.customConfigDetails.serverPath}/baseApi/getAppToken` , {
                         Key : encrypt.encrypt({
-                            UserName : config.adminUserName,
-                            Password : config.adminPassword,
-                            PackageName : config.packageName
+                            UserName : appConfig.customConfigDetails.adminUserName,
+                            Password : appConfig.customConfigDetails.adminPassword,
+                            PackageName : appConfig.customConfigDetails.packageName
                         }, serverTime),
                     }).then(({ data : appToken }) => {
                         
@@ -80,7 +81,7 @@ const InitialLoading = ({ children }) => {
                                     storeDispatcher(() => setSeeWelcomeScreen(true));
                                     storeDispatcher(() => setAppKey(data));
                                 }
-                                return api.post("getMainData" , {} , { headers : { packageName : config.packageName , appToken } })
+                                return api.post("getMainData" , {} , { headers : { packageName : appConfig.customConfigDetails.packageName , appToken } })
                                     .then(({ data: basePackageData }) => {
                                         const baseDatas = JSON.parse(basePackageData.data).pagesDetails[0];
 
@@ -121,7 +122,7 @@ const InitialLoading = ({ children }) => {
                                             ...buttonNavigationStyle,
                                         }
 
-                                        return api.post("getInsuranceCategories" , {} , { headers : { packageName : config.packageName , appToken } })
+                                        return api.post("getInsuranceCategories" , {} , { headers : { packageName : appConfig.customConfigDetails.packageName , appToken } })
                                             .then(({ data : categories }) => {
                                                 storeDispatcher(() => setInsCat(categories));
                                                 dataDispatcher({ 
@@ -136,7 +137,7 @@ const InitialLoading = ({ children }) => {
 
                                                 return api.post("getActivityData" , {
                                                     Guid : "صفحه_اصلی_(موبایل)"
-                                                } , { headers : { packageName : config.packageName , appToken } })
+                                                } , { headers : { packageName : appConfig.customConfigDetails.packageName , appToken } })
                                                     .then(({ data : homePageDetails }) => {
                                                         storeDispatcher(() => setDynamicComponent(homePageDetails.pagesDetails[0].Components))
                                                         setLoading(false);

@@ -12,9 +12,7 @@ const CategoryGrid = ({ componentDatas , componentStyles }) => {
     const appendStyle = useStyle(style , componentStyles);
     const items = useSelector(state => state.initial);
     const scrollViewContainerRef = useRef();
-
-    console.log(items , "lorem_");
-
+    
     const navigation = useNavigation();
 
     const redirectHandler = routeParameters => {

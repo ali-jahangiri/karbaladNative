@@ -1,9 +1,9 @@
-import config from "../config"
+import appConfig from "../app.json";
 
 const imageFinder = (path = "") => {
     if(path.includes("{") && path.includes("}")) {
-        return `${config.serverPath}/files/${path.slice(0 , path.indexOf("{"))}`
-    }else return `${config.serverPath}/files/${path}`
+        return `${appConfig.customConfigDetails.serverPath}/files/${path.slice(0 , path.indexOf("{"))}`
+    }else return `${appConfig.customConfigDetails.serverPath}/files/${path}`
 }
 
 

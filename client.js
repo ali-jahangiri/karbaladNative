@@ -1,3 +1,5 @@
+import appConfig from "./app.json";
+
 const client = {
     version : "1.6.0",
     style : {
@@ -26,14 +28,14 @@ const client = {
         ERROR_BOUNDARY_MAIN_MESSAGE : "مشکلی در پردازش رخ داده است ، مجددا تلاش نمایید",
         REFRESH_ALERT_TEXT : "بروزرسانی اطلاعات",
         OPTIONAL_STEP_TEXT : "مرحله اختیاری",
-        SHARE_WITH_FRIEND : "دانلود نرم افزار بیمیتک از ",
+        SHARE_WITH_FRIEND : `دانلود نرم افزار ${appConfig.expo.name} از`,
         TERMS_AND_CONDITION_HEADER : "قوانین و مقررات",
         LOGIN : {
             LOGIN_KEY : "login",
             REGISTER_KEY : "register",
             FORGOT_key : "forgot",
             LOGIN_SCREEN_DESK : "",
-            LOGIN_APP_NAME : "بیمیتک",
+            LOGIN_APP_NAME : appConfig.expo.name,
             AUTH_ERRORS : {
                 EMPTY_PASSWORD : "رمز عبور خود را وارد کنید",
                 DIFFERENCE_PASSWORD : "رمز عبور و تکرار آن مطابقت ندارد . مجددا برسی نمایید",

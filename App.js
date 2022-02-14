@@ -17,7 +17,7 @@ import CommutingProvider from './Providers/CommutingProvider';
 
 
 import myStore from './Store/myStore';
-import config from './config';
+import appConfig from "./app.json";
 import OfflineProvider from './Providers/OfflineProvider/OfflineProvider';
 import DataProvider from './HOC/DataProvider/DataProvider';
 const ReactNative = require('react-native');
@@ -36,7 +36,7 @@ export default function App() {
         {/* <OfflineProvider> */}
           <StoreProvider store={myStore}>
             <CommutingProvider />
-            <FetchProvider packageName={config.packageName} baseURL={`${config.serverPath}/MobileApi/`}>
+            <FetchProvider packageName={appConfig.customConfigDetails.packageName} baseURL={`${appConfig.customConfigDetails.serverPath}/MobileApi/`}>
               <StyleProvider>
                 <DataProvider>
                   <InitialLoading>

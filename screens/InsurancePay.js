@@ -117,6 +117,7 @@ const InsurancePay = ({ navigation , route : { params : { id } } }) => {
             })
     }
 
+
     return loading ? <Loading /> : (<><ScreenWrapper>
         <View style={appendStyle.mainContainer}>
             <View style={appendStyle.container}>
