@@ -20,6 +20,7 @@
     "buffer": "^6.0.3",
     "dayjs": "^1.10.6",
     "expo": "~41.0.1",
+    "expo-cli": "^5.4.9",
     "expo-font": "~9.1.0",
     "expo-image-picker": "~10.1.4",
     "expo-linear-gradient": "~9.1.0",
@@ -36,7 +37,8 @@
     "react-native-screens": "~3.0.0",
     "react-native-toast-message": "^2.1.1",
     "react-native-web": "~0.13.12",
-    "react-native-webview": "^11.2.3"
+    "react-native-webview": "^11.2.3",
+    "expo-updates": "~0.5.4"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0"

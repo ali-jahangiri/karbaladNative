@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "راحت بیمه",
-    "slug": "RahatBimeh",
+    "name": "بیمه یک",
+    "slug": "bimehyik",
     "version": "1.6.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -35,9 +35,9 @@
     }
   },
   "customConfigDetails": {
-    "packageName" : "rahatbime.com",
-    "serverPath": "https://rahatbime.com/",
-    "adminUserName" : "LMKGvkA67X",
-    "adminPassword" : "nwGsa34Qdm"
+    "packageName" : "bimehyik.ir",
+    "serverPath": "https://bimehyik.ir/",
+    "adminUserName" : "sIIwxwaFs",
+    "adminPassword" : "k98D85bjwH"
   }
 }
